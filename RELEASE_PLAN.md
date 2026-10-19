@@ -8,7 +8,7 @@ Baseline: **v0.1.0**, milestone 1 (foundations and money core), shipped 2026-10-
 
 When the owner says "move on to the next release":
 
-1. Take the first release below whose status is **Not started**. Never skip one.
+1. Take the first release below that is not **Completed**. Never skip one. If it is already **In progress**, carry on from where it stopped.
 2. Set its status to **In progress** in this file.
 3. Build everything in its scope. Anything that turns out not to fit is moved to a later release or to the backlog, with a one-line reason, rather than dropped silently.
 4. Check: `npm run check`, `npm run build:fixtures` (or `npm run build` once fixtures are retired), `npm run e2e`, and screenshots of every changed screen on desktop, at 390 px and in dark mode.
@@ -19,7 +19,7 @@ Work goes straight to `main`. The site is not shared until the owner decides, so
 
 ## What a maintenance release is
 
-A maintenance release adds no new features. It reviews the previous feature release, fixes what the review finds, and writes the findings to `docs/reviews/<version>.md`.
+A maintenance release adds no new features. It reviews the previous feature release, fixes what the review finds, and writes the findings to `docs/reviews/<version>.md`. The review can be run first on its own; its findings then become the release's items.
 
 **Code review**
 
@@ -47,7 +47,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | Version | Type | Theme | Status |
 | --- | --- | --- | --- |
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
-| 0.1.1 | Maintenance | Review of 0.1.0 | Not started |
+| 0.1.1 | Maintenance | Review of 0.1.0 | In progress: review done, fixes not started |
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal | Not started |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
@@ -77,15 +77,45 @@ Static TypeScript app with no runtime dependencies; Finland and US (federal, Tex
 
 ### 0.1.1 — Maintenance: review of 0.1.0
 
-**Status:** Not started
+**Status:** In progress. Review done 2026-10-19; fixes not started.
 
-Standard code and UX review, plus these known items:
+Findings and their status are tracked in [docs/reviews/0.1.1.md](docs/reviews/0.1.1.md). IDs below refer to that file.
 
-- Confirm Tampere's 2026 municipal tax rate (7.60%) against Verohallinto's official list.
-- Update GitHub Actions to versions that run on Node 24 (CI warns that Node 20 actions are deprecated), and pin the runner image ahead of the ubuntu-latest move to Ubuntu 26.
-- Add a `package-lock.json` generated in CI, so installs are reproducible.
-- On phones the household panel fills the first screen; start it collapsed after the first visit and show a one-line summary instead.
-- California exemption-credit phase-out for head-of-household filers is not modelled; find the threshold or record why it is deferred.
+**Wrong or misleading figures, unusable controls**
+
+- R1 Desktop household form can be collapsed by keyboard and not reopened by mouse: make it a plain section on desktop.
+- R2 Monthly income mode: changing payments per year must keep the typed monthly amount and recalculate the annual figure.
+- R3 Discretionary presets: label them as per adult with children at 30%, or show the household total.
+
+**Accessibility and confusing UX**
+
+- R4 Empty or invalid income: mark the field invalid and replace stale results with a prompt.
+- R5 Unknown city in a link: say the city isn't in this release instead of showing another city.
+- R6 Control borders to at least 3:1 contrast in both themes.
+- R7 Groceries ribbon label to at least 4.5:1 contrast.
+- R8 Phones: household form collapsed after the first visit, with a one-line summary.
+- R9 Tests for the Finnish Yle tax between the threshold and the cap.
+
+**Tidy-up**
+
+- R10 Ribbon summary read once, not twice, by screen readers.
+- R11 Page title per city and screen.
+- R12 Hide the household form on the "How it works" page.
+- R13 Thousands separators for income amounts.
+- R14 Plain wording for the household-size note on groceries.
+- R15 Remove dead code (`sumDeductions`, `toEurRange`, `uid`).
+- R16 Store band messages without the band name instead of stripping it.
+- R17 Version the data release separately from the exchange-rate date.
+- R18 Boundary check to cover `export … from` and dynamic `import()`.
+
+**Carried over from 0.1.0**
+
+- C1 Confirm Tampere's 2026 municipal tax rate (7.60%) against Verohallinto's official list.
+- C2 GitHub Actions on Node 24 versions; pin the runner image ahead of the move to Ubuntu 26.
+- C3 `package-lock.json` generated in CI.
+- C4 California head-of-household exemption-credit phase-out: model it or record why it is deferred.
+
+**Validated when** every item above is fixed or deferred with a reason in the review file, CI is green, and screenshots of Explore and "How it works" on desktop, at 390 px and in dark mode show no remaining finding.
 
 ### 0.2.0 — Tax models: Estonia, Germany, Spain, Portugal
 
