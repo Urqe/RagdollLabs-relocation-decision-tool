@@ -1,5 +1,5 @@
 import { progressiveTax } from './brackets.ts';
-import type { Bracket, TaxInput, TaxLine, TaxResult } from './types.ts';
+import { childCount, type Bracket, type TaxInput, type TaxLine, type TaxResult } from './types.ts';
 import { roundCents } from '../money/money.ts';
 
 export type FilingStatus = 'single' | 'joint' | 'headOfHousehold';
@@ -52,18 +52,39 @@ export interface UsParams {
 interface Return {
   status: FilingStatus;
   earners: number[];
-  children: number;
+  /** Children under 17, for the child tax credit. */
+  creditChildren: number;
+  /** All dependent children, for California's dependent exemption credit. */
+  dependants: number;
 }
 
-/** Married households file one joint return. Otherwise each earner files alone; the first earner claims the children as head of household. */
-export function filingReturns(input: TaxInput): Return[] {
+const under17 = (input: TaxInput): number => input.children.under14 + input.children.from14to16;
+
+/**
+ * Federal returns. Married couples file one joint return. Otherwise each earner files alone: the earner who
+ * pays more than half of the household's costs files as head of household and claims the children; if
+ * nobody does, both file as single and the children go with whichever earner gives the lower tax.
+ * Registered partners and civil unions are not married for federal tax.
+ */
+export function federalReturns(input: TaxInput, claimant: number): Return[] {
   const earners = input.grossLocal.map((_, i) => i);
-  if (input.married) return [{ status: 'joint', earners, children: input.children }];
+  const kids = childCount(input.children);
+  if (input.relationship === 'married') return [{ status: 'joint', earners, creditChildren: under17(input), dependants: kids }];
+  const hoh = kids > 0 ? input.costPayer : null;
   return earners.map((i) => ({
-    status: i === 0 && input.children > 0 ? 'headOfHousehold' : 'single',
+    status: i === hoh ? 'headOfHousehold' : 'single',
     earners: [i],
-    children: i === 0 ? input.children : 0,
+    creditChildren: i === claimant ? under17(input) : 0,
+    dependants: i === claimant ? kids : 0,
   }));
+}
+
+/** California follows federal status, except that registered domestic partners file one joint state return. */
+export function californiaReturns(input: TaxInput, federal: Return[]): Return[] {
+  if (input.relationship === 'registered') {
+    return [{ status: 'joint', earners: input.grossLocal.map((_, i) => i), creditChildren: under17(input), dependants: childCount(input.children) }];
+  }
+  return federal;
 }
 
 export function federalIncomeTax(wages: number, status: FilingStatus, children: number, p: UsParams['federal']): {
@@ -103,32 +124,47 @@ export function californiaIncomeTax(wages: number, status: FilingStatus, childre
   return Math.max(0, tax - creditTotal) + behavioral;
 }
 
+function householdTax(input: TaxInput, p: UsParams, gross: number[], claimant: number): { lines: TaxLine[]; federal: Return[]; state: Return[] } {
+  const lines: TaxLine[] = [];
+  const wagesOf = (r: Return): number => r.earners.reduce((s, i) => s + (gross[i] ?? 0), 0);
+  const tagOf = (r: Return): { earner?: number } => (r.earners.length === 1 ? { earner: r.earners[0]! } : {});
+  const federal = federalReturns(input, claimant);
+  for (const r of federal) {
+    const wages = wagesOf(r);
+    const fed = federalIncomeTax(wages, r.status, r.creditChildren, p.federal);
+    lines.push({
+      id: 'us.federal', label: 'Federal income tax', kind: 'incomeTax', amount: roundCents(fed.net), ...tagOf(r),
+      ...(fed.childCredit > 0 ? { note: `After a child tax credit of $${Math.round(fed.childCredit)}` } : {}),
+    });
+    const addl = Math.max(0, wages - p.fica.additionalMedicareThreshold[r.status]) * p.fica.additionalMedicareRate;
+    if (addl > 0) lines.push({ id: 'us.addlMedicare', label: 'Additional Medicare tax', kind: 'employeeContribution', amount: roundCents(addl), ...tagOf(r) });
+  }
+  const state = input.subdivision === 'ca' ? californiaReturns(input, federal) : [];
+  for (const r of state) {
+    lines.push({ id: 'us.ca.income', label: 'California income tax', kind: 'incomeTax', amount: roundCents(californiaIncomeTax(wagesOf(r), r.status, r.dependants, p.states.ca)), ...tagOf(r) });
+  }
+  return { lines, federal, state };
+}
+
 export function usTax(input: TaxInput, p: UsParams): TaxResult {
   const state = input.subdivision;
   if (state !== 'tx' && state !== 'ca') throw new Error(`No ${p.taxYear} state model for "${state}"`);
   const gross = input.grossLocal.map((g) => Math.max(0, g));
-  const lines: TaxLine[] = [];
   const notes: string[] = [];
 
-  for (const r of filingReturns(input)) {
-    const wages = r.earners.reduce((s, i) => s + (gross[i] ?? 0), 0);
-    const tag = r.earners.length === 1 ? { earner: r.earners[0]! } : {};
-    const fed = federalIncomeTax(wages, r.status, r.children, p.federal);
-    lines.push({
-      id: 'us.federal',
-      label: 'Federal income tax',
-      kind: 'incomeTax',
-      amount: roundCents(fed.net),
-      ...tag,
-      ...(fed.childCredit > 0 ? { note: `After a child tax credit of $${Math.round(fed.childCredit)}` } : {}),
-    });
-    if (state === 'ca') {
-      lines.push({ id: 'us.ca.income', label: 'California income tax', kind: 'incomeTax', amount: roundCents(californiaIncomeTax(wages, r.status, r.children, p.states.ca)), ...tag });
-    }
-    const threshold = p.fica.additionalMedicareThreshold[r.status];
-    const addl = Math.max(0, wages - threshold) * p.fica.additionalMedicareRate;
-    if (addl > 0) lines.push({ id: 'us.addlMedicare', label: 'Additional Medicare tax', kind: 'employeeContribution', amount: roundCents(addl), ...tag });
+  // Who claims the children: the head of household if there is one; otherwise whichever earner gives
+  // the lower household tax, so the order of income entries never matters.
+  const kids = childCount(input.children);
+  const candidates = input.relationship === 'married' || kids === 0 ? [0]
+    : input.costPayer !== null ? [input.costPayer] : gross.map((_, i) => i);
+  const total = (ls: TaxLine[]): number => ls.reduce((s, l) => s + l.amount, 0);
+  let best = householdTax(input, p, gross, candidates[0]!);
+  let claimant = candidates[0]!;
+  for (const c of candidates.slice(1)) {
+    const next = householdTax(input, p, gross, c);
+    if (total(next.lines) < total(best.lines) - 0.005) { best = next; claimant = c; }
   }
+  const lines = best.lines;
 
   gross.forEach((g, i) => {
     lines.push(
@@ -149,8 +185,18 @@ export function usTax(input: TaxInput, p: UsParams): TaxResult {
   const grossAnnual = gross.reduce((s, g) => s + g, 0);
   const deductions = lines.filter((l) => l.kind !== 'employerContribution').reduce((s, l) => s + l.amount, 0);
 
+  const hoh = best.federal.some((r) => r.status === 'headOfHousehold');
+  const many = gross.length > 1;
+  if (input.relationship === 'married') notes.push('Married couple filing jointly.');
+  else {
+    if (input.relationship === 'registered') notes.push('Registered partners are not married for federal tax, so each earner files a federal return.');
+    if (kids === 0) notes.push(many ? 'Each earner files as single.' : 'Files as single.');
+    else if (hoh) notes.push(many ? 'The earner who pays more than half of the household’s costs files as head of household and claims the children; the other files as single.' : 'Files as head of household, assuming this earner pays more than half of the household’s costs.');
+    else notes.push(`Both earners file as single, because neither pays more than half of the household’s costs; the children are claimed by earner ${claimant + 1}, which gives the lower tax.`);
+    if (input.relationship === 'registered' && state === 'ca') notes.push('Registered domestic partners file one joint California return.');
+  }
+  if (input.children.from17to24 > 0) notes.push('Children aged 17 or over do not qualify for the child tax credit; the $500 credit for other dependants is not included.');
   notes.push(
-    input.married ? 'Married couple filing jointly.' : input.children > 0 ? 'Unmarried: the first earner files as head of household and claims the children; any other earner files as single.' : 'Each earner files as single.',
     'Standard deduction; no itemised deductions, retirement contributions or pre-tax health premiums.',
     'The child tax credit is included because it is part of the federal income tax calculation; other credits are not.',
   );

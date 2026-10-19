@@ -1,4 +1,4 @@
-import { DEFAULT_HOUSEHOLD, type CityOverrides, type Household } from '../core/budget/household.ts';
+import { DEFAULT_HOUSEHOLD, normalizeHousehold, type CityOverrides, type Household } from '../core/budget/household.ts';
 
 export type IncomeMode = 'annual' | 'monthly';
 
@@ -26,7 +26,15 @@ export const DEFAULT_PROFILE: Profile = { household: DEFAULT_HOUSEHOLD, incomeMo
 // ---- routing (hash based, so deep links work on GitHub Pages) ----
 
 export function parseRoute(hash: string): Route {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  // A malformed escape (for example "#/explore/%") is kept as typed, so it shows as an unknown city.
+  const decode = (part: string): string => {
+    try {
+      return decodeURIComponent(part);
+    } catch {
+      return part;
+    }
+  };
+  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decode);
   if (parts[0] === 'methodology') return { screen: 'methodology' };
   if (parts[0] === 'explore') return { screen: 'explore', cityId: parts[1] ?? null };
   return { screen: 'explore', cityId: null };
@@ -39,22 +47,35 @@ export function formatRoute(r: Route): string {
 
 // ---- persistence (versioned; unreadable data falls back to defaults) ----
 
+const PROFILE_VERSION = 2;
+
 export function serializeProfile(p: Profile): string {
-  return JSON.stringify({ v: 1, profile: p });
+  return JSON.stringify({ v: PROFILE_VERSION, profile: p });
 }
 
+/** Version 1 stored `married: boolean` and `children: number`; children were then treated as under 14. */
+function migrateV1Household(h: Record<string, unknown>): Record<string, unknown> {
+  const { married, children, ...rest } = h;
+  return {
+    ...rest,
+    relationship: married === true ? 'married' : 'unmarried',
+    children: { under14: typeof children === 'number' ? children : 0, from14to16: 0, from17to24: 0 },
+  };
+}
+
+/**
+ * Restores a saved profile. Every field is checked and the household goes through the same normalizer
+ * as the form, so a malformed, old or tampered profile can only ever produce a valid household.
+ */
 export function parseProfile(raw: string | null): Profile {
   if (raw === null) return DEFAULT_PROFILE;
   try {
-    const parsed = JSON.parse(raw) as { v?: number; profile?: Partial<Profile> };
-    if (parsed.v !== 1 || typeof parsed.profile !== 'object' || parsed.profile === null) return DEFAULT_PROFILE;
-    const p = parsed.profile;
-    const household = { ...DEFAULT_HOUSEHOLD, ...(p.household ?? {}) };
-    if (!Array.isArray(household.earnersGrossEur) || household.earnersGrossEur.length < 1 || household.earnersGrossEur.length > 2 || household.earnersGrossEur.some((g) => typeof g !== 'number' || !(g >= 0))) {
-      household.earnersGrossEur = DEFAULT_HOUSEHOLD.earnersGrossEur;
-    }
+    const parsed = JSON.parse(raw) as { v?: unknown; profile?: unknown };
+    if ((parsed.v !== 1 && parsed.v !== PROFILE_VERSION) || typeof parsed.profile !== 'object' || parsed.profile === null) return DEFAULT_PROFILE;
+    const p = parsed.profile as Record<string, unknown>;
+    const storedHousehold = typeof p.household === 'object' && p.household !== null ? (p.household as Record<string, unknown>) : {};
     return {
-      household,
+      household: normalizeHousehold(parsed.v === 1 ? migrateV1Household(storedHousehold) : storedHousehold),
       incomeMode: p.incomeMode === 'monthly' ? 'monthly' : 'annual',
       monthsPerYear: p.monthsPerYear === 13 || p.monthsPerYear === 14 ? p.monthsPerYear : 12,
     };

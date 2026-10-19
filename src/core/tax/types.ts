@@ -1,3 +1,5 @@
+import type { ChildAges, Relationship } from '../types.ts';
+
 export type LineKind = 'incomeTax' | 'employeeContribution' | 'employerContribution';
 
 /** One annual amount in local currency. Employer lines never reduce take-home pay. */
@@ -14,11 +16,17 @@ export interface TaxLine {
 export interface TaxInput {
   /** Annual gross employment income per earner, local currency. One or two entries. */
   grossLocal: number[];
-  married: boolean;
-  children: number;
+  /** Relationship of the two adults; 'unmarried' for a one-adult household. Each model decides what it means for tax. */
+  relationship: Relationship;
+  children: ChildAges;
   subdivision: string;
-  /** All adults in the household, earning or not. Defaults to the number of earners. */
-  adults?: number;
+  /** All adults in the household, earning or not. Both adults are assumed to be parents of the children. */
+  adults: number;
+  /**
+   * Earner who pays more than half of the household's running costs, or null if none does.
+   * Used only where filing status depends on it (US head of household).
+   */
+  costPayer: number | null;
   /** Member of a church that levies church tax (Finland, Germany). Default false. */
   churchMember?: boolean;
 }
@@ -41,3 +49,5 @@ export interface Bracket {
   rate: number;
 }
 
+
+export const childCount = (c: ChildAges): number => c.under14 + c.from14to16 + c.from17to24;

@@ -2,7 +2,7 @@ import type { City, Country, FxSnapshot } from '../types.ts';
 import { computeTax, type TaxParamSet, type TaxResult } from '../tax/index.ts';
 import { eurToLocal } from '../money/money.ts';
 import { buildBudget, costCategories, type BudgetResult } from './budget.ts';
-import { householdProblems, type CityOverrides, type Household } from './household.ts';
+import { adults, householdCostPayer, householdProblems, normalizeHousehold, type CityOverrides, type Household } from './household.ts';
 
 export interface CityResult {
   cityId: string;
@@ -27,8 +27,10 @@ export function computeCityResult(
   taxParams: TaxParamSet,
 ): CityResult {
   const currency = country.currency;
-  const grossEur = overrides.earnersGrossEur ?? household.earnersGrossEur;
-  const problems = householdProblems({ ...household, earnersGrossEur: grossEur });
+  // A per-city income override can change the number of earners, so the household is normalized again.
+  const hh = normalizeHousehold({ ...household, earnersGrossEur: overrides.earnersGrossEur ?? household.earnersGrossEur });
+  const grossEur = hh.earnersGrossEur;
+  const problems = householdProblems(hh);
   const fxRate = eurToLocal(1, currency, fx);
 
   let tax: TaxResult | null = null;
@@ -40,17 +42,18 @@ export function computeCityResult(
       city.tax,
       {
         grossLocal: grossEur.map((g) => eurToLocal(g, currency, fx)),
-        married: household.married,
-        children: household.children,
-        adults: household.earnersGrossEur.length + household.nonEarningAdults,
-        churchMember: household.churchMember,
+        relationship: hh.relationship,
+        children: hh.children,
+        adults: adults(hh),
+        costPayer: householdCostPayer(hh),
+        churchMember: hh.churchMember,
       },
       taxParams,
     );
     takeHome = tax.netAnnual / 12;
   }
 
-  const categories = costCategories(city, household, overrides, fx, currency);
+  const categories = costCategories(city, hh, overrides, fx, currency);
   return {
     cityId: city.id,
     currency,

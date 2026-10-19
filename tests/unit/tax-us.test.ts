@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { californiaIncomeTax, federalIncomeTax, usTax, type UsParams } from '../../src/core/tax/us.ts';
-import { loadJson, near } from './helpers.ts';
+import { kids, loadJson, near, taxInput } from './helpers.ts';
 
 const p = loadJson<UsParams>('data/tax/us/2026.json');
 const line = (r: ReturnType<typeof usTax>, id: string, earner?: number): number =>
@@ -34,12 +34,12 @@ describe('US federal 2026', () => {
 
 describe('FICA 2026', () => {
   test('Social Security stops at the $184,500 wage base', () => {
-    const r = usTax({ grossLocal: [200000], married: false, children: 0, subdivision: 'tx' }, p);
+    const r = usTax(taxInput({ grossLocal: [200000], relationship: 'unmarried', children: 0, subdivision: 'tx' }), p);
     near(line(r, 'us.socialSecurity'), 11439, 0.01);
   });
 
   test('additional Medicare tax above $200,000 for a single filer', () => {
-    const r = usTax({ grossLocal: [250000], married: false, children: 0, subdivision: 'tx' }, p);
+    const r = usTax(taxInput({ grossLocal: [250000], relationship: 'unmarried', children: 0, subdivision: 'tx' }), p);
     near(line(r, 'us.addlMedicare'), 450, 0.01);
   });
 });
@@ -51,7 +51,7 @@ describe('California', () => {
   });
 
   test('single $100,000 → $5,054.98 California tax and $1,300 SDI', () => {
-    const r = usTax({ grossLocal: [100000], married: false, children: 0, subdivision: 'ca' }, p);
+    const r = usTax(taxInput({ grossLocal: [100000], relationship: 'unmarried', children: 0, subdivision: 'ca' }), p);
     near(line(r, 'us.ca.income'), 5054.98, 0.01);
     near(line(r, 'us.ca.sdi'), 1300, 0.01);
     near(r.netAnnual, 100000 - 13170 - 6200 - 1450 - 5054.98 - 1300, 0.02);
@@ -64,7 +64,7 @@ describe('California', () => {
   });
 
   test('Texas has no state income tax line', () => {
-    const r = usTax({ grossLocal: [100000], married: false, children: 0, subdivision: 'tx' }, p);
+    const r = usTax(taxInput({ grossLocal: [100000], relationship: 'unmarried', children: 0, subdivision: 'tx' }), p);
     assert.equal(line(r, 'us.ca.income'), 0);
     near(r.netAnnual, 100000 - 13170 - 6200 - 1450, 0.02);
   });
@@ -72,21 +72,21 @@ describe('California', () => {
 
 describe('US households', () => {
   test('unmarried earners file separately; married earners file jointly', () => {
-    const unmarried = usTax({ grossLocal: [60000, 60000], married: false, children: 0, subdivision: 'tx' }, p);
-    const single = usTax({ grossLocal: [60000], married: false, children: 0, subdivision: 'tx' }, p);
+    const unmarried = usTax(taxInput({ grossLocal: [60000, 60000], relationship: 'unmarried', children: 0, subdivision: 'tx' }), p);
+    const single = usTax(taxInput({ grossLocal: [60000], relationship: 'unmarried', children: 0, subdivision: 'tx' }), p);
     near(unmarried.netAnnual, 2 * single.netAnnual, 0.02);
-    const married = usTax({ grossLocal: [60000, 60000], married: true, children: 0, subdivision: 'tx' }, p);
+    const married = usTax(taxInput({ grossLocal: [60000, 60000], relationship: 'married', children: 0, subdivision: 'tx' }), p);
     assert.equal(married.lines.filter((l) => l.id === 'us.federal').length, 1);
   });
 
   test('employer contributions are separate and never reduce take-home', () => {
-    const r = usTax({ grossLocal: [80000], married: false, children: 0, subdivision: 'ca' }, p);
+    const r = usTax(taxInput({ grossLocal: [80000], relationship: 'unmarried', children: 0, subdivision: 'ca' }), p);
     const employee = r.lines.filter((l) => l.kind !== 'employerContribution').reduce((s, l) => s + l.amount, 0);
     near(r.netAnnual, 80000 - employee, 0.01);
     assert.ok(line(r, 'us.employer.fica') > 0);
   });
 
   test('unknown state is an error, not a guess', () => {
-    assert.throws(() => usTax({ grossLocal: [80000], married: false, children: 0, subdivision: 'ny' }, p));
+    assert.throws(() => usTax(taxInput({ grossLocal: [80000], relationship: 'unmarried', children: 0, subdivision: 'ny' }), p));
   });
 });

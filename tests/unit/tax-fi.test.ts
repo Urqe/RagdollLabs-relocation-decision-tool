@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { finnishEarner, finnishTax, type FiParams } from '../../src/core/tax/fi.ts';
-import { loadJson, near } from './helpers.ts';
+import { kids, loadJson, near, taxInput } from './helpers.ts';
 
 const p = loadJson<FiParams>('data/tax/fi/2026.json');
 
@@ -39,7 +39,7 @@ describe('Finland 2026 against published payslip examples', () => {
 
 describe('Finland 2026 rules', () => {
   test('zero income pays nothing', () => {
-    const r = finnishTax({ grossLocal: [0], married: false, children: 0, subdivision: 'helsinki' }, p);
+    const r = finnishTax(taxInput({ grossLocal: [0], relationship: 'unmarried', children: 0, subdivision: 'helsinki' }), p);
     assert.equal(r.netAnnual, 0);
     assert.ok(r.lines.every((l) => l.amount === 0));
   });
@@ -71,27 +71,27 @@ describe('Finland 2026 rules', () => {
   });
 
   test('two earners are taxed separately, not as one combined salary', () => {
-    const together = finnishTax({ grossLocal: [40000, 40000], married: true, children: 0, subdivision: 'helsinki' }, p);
-    const single = finnishTax({ grossLocal: [40000], married: false, children: 0, subdivision: 'helsinki' }, p);
-    const combinedAsOne = finnishTax({ grossLocal: [80000], married: false, children: 0, subdivision: 'helsinki' }, p);
+    const together = finnishTax(taxInput({ grossLocal: [40000, 40000], relationship: 'married', children: 0, subdivision: 'helsinki' }), p);
+    const single = finnishTax(taxInput({ grossLocal: [40000], relationship: 'unmarried', children: 0, subdivision: 'helsinki' }), p);
+    const combinedAsOne = finnishTax(taxInput({ grossLocal: [80000], relationship: 'unmarried', children: 0, subdivision: 'helsinki' }), p);
     near(together.netAnnual, 2 * single.netAnnual, 0.02);
     assert.ok(together.netAnnual > combinedAsOne.netAnnual);
   });
 
   test('employer contributions do not reduce take-home', () => {
-    const r = finnishTax({ grossLocal: [50000], married: false, children: 0, subdivision: 'helsinki' }, p);
+    const r = finnishTax(taxInput({ grossLocal: [50000], relationship: 'unmarried', children: 0, subdivision: 'helsinki' }), p);
     const employee = r.lines.filter((l) => l.kind !== 'employerContribution').reduce((s, l) => s + l.amount, 0);
     near(r.netAnnual, 50000 - employee, 0.01);
     assert.ok(r.lines.some((l) => l.kind === 'employerContribution' && l.amount > 0));
   });
 
   test('Tampere has higher tax than Helsinki at the same gross', () => {
-    const h = finnishTax({ grossLocal: [50000], married: false, children: 0, subdivision: 'helsinki' }, p);
-    const t = finnishTax({ grossLocal: [50000], married: false, children: 0, subdivision: 'tampere' }, p);
+    const h = finnishTax(taxInput({ grossLocal: [50000], relationship: 'unmarried', children: 0, subdivision: 'helsinki' }), p);
+    const t = finnishTax(taxInput({ grossLocal: [50000], relationship: 'unmarried', children: 0, subdivision: 'tampere' }), p);
     assert.ok(t.netAnnual < h.netAnnual);
   });
 
   test('unknown municipality is an error, not a guess', () => {
-    assert.throws(() => finnishTax({ grossLocal: [50000], married: false, children: 0, subdivision: 'nowhere' }, p));
+    assert.throws(() => finnishTax(taxInput({ grossLocal: [50000], relationship: 'unmarried', children: 0, subdivision: 'nowhere' }), p));
   });
 });

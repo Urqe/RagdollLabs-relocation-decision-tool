@@ -6,15 +6,14 @@ import { lowIncomeCredit, spanishSocial, spanishTax, workIncomeReduction, type E
 import { existenceAbatement, portugueseTax, type PtParams } from '../../src/core/tax/pt.ts';
 import { progressiveTax } from '../../src/core/tax/brackets.ts';
 import type { TaxResult } from '../../src/core/tax/types.ts';
-import { loadJson, near } from './helpers.ts';
+import { kids, loadJson, near, taxInput } from './helpers.ts';
 
 const ee = loadJson<EeParams>('data/tax/ee/2026.json');
 const de = loadJson<DeParams>('data/tax/de/2026.json');
 const es = loadJson<EsParams>('data/tax/es/2026.json');
 const pt = loadJson<PtParams>('data/tax/pt/2026.json');
 
-const one = (gross: number, extra: Partial<{ children: number; adults: number; subdivision: string; married: boolean }> = {}) =>
-  ({ grossLocal: [gross], married: false, children: 0, subdivision: 'x', ...extra });
+const one = (gross: number, extra: Omit<Parameters<typeof taxInput>[0], 'grossLocal'> = {}) => taxInput({ grossLocal: [gross], ...extra });
 const line = (r: TaxResult, id: string): number => r.lines.filter((l) => l.id === id).reduce((s, l) => s + l.amount, 0);
 // Expected values were worked separately from the parameter files, outside this code.
 // Tolerance €12 a year = €1 a month (release acceptance criterion).
@@ -70,9 +69,9 @@ describe('Germany 2026', () => {
     test(`single €${gross} → €${net} net`, () => near(germanTax(one(gross), de).netAnnual, net, YEAR));
   }
   test('married couple with income splitting pays less than two single assessments', () => {
-    const joint = germanTax({ grossLocal: [60000, 30000], married: true, children: 0, subdivision: 'berlin' }, de);
+    const joint = germanTax(taxInput({ grossLocal: [60000, 30000], relationship: 'married', children: 0, subdivision: 'berlin' }), de);
     near(joint.netAnnual, 59271, YEAR);
-    const separate = germanTax({ grossLocal: [60000, 30000], married: false, children: 0, subdivision: 'berlin' }, de);
+    const separate = germanTax(taxInput({ grossLocal: [60000, 30000], relationship: 'unmarried', children: 0, subdivision: 'berlin' }), de);
     near(separate.netAnnual, 58774, YEAR);
     assert.equal(joint.lines.filter((l) => l.id === 'de.income').length, 1);
   });
@@ -100,10 +99,40 @@ describe('Spain 2026', () => {
     near(lowIncomeCredit(17094, es.lowIncomeCredit), 590.89, 0.01);
     near(lowIncomeCredit(20048.45, es.lowIncomeCredit), 0, 0.01);
   });
-  test('child allowances: a sole earner takes them all; two earners split them', () => {
-    near(spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2 }), es).netAnnual, 37139.98, YEAR);
-    const two = spanishTax({ grossLocal: [50000, 50000], married: false, children: 2, subdivision: 'madrid' }, es);
-    near(two.netAnnual, 2 * 36665.09, 2 * YEAR);
+  // Worked by hand from data/tax/es/2026.json (Madrid, €50,000 gross, two children under 14):
+  // social security 6.5% = 3,250; net work income 46,750; less €2,000 other expenses = 44,750; no work-income reduction.
+  // Separate return, half the child minimums: state 6,129.50 − tax on minimum 8,100 (769.50) = 5,360.00;
+  //   Madrid 5,463.85 − tax on minimum 8,693.49 (738.95) = 4,724.90; take-home 50,000 − 3,250 − 10,084.90 = 36,665.10.
+  // Full child minimums (single parent): take-home 37,139.98.
+  // Joint return: base 44,750 − 3,400 = 41,350; state 5,500.50 − tax on 10,650 (1,011.75) = 4,488.75;
+  //   Madrid 4,872.25 − tax on 11,430.33 (971.58) = 3,900.67; take-home 50,000 − 3,250 − 8,389.42 = 38,360.58.
+  test('child allowances: parents living together share them, whoever earns (reopened S2)', () => {
+    const withPartner = spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2 }), es);
+    near(withPartner.netAnnual, 36665.10, YEAR);
+    const zeroIncomeEntry = spanishTax(taxInput({ grossLocal: [50000, 0], children: 2, subdivision: 'madrid' }), es);
+    near(zeroIncomeEntry.netAnnual, withPartner.netAnnual, 0.01);
+    const two = spanishTax(taxInput({ grossLocal: [50000, 50000], children: 2, subdivision: 'madrid' }), es);
+    near(two.netAnnual, 2 * 36665.10, 2 * YEAR);
+  });
+  test('a single parent takes the full child allowances', () => {
+    near(spanishTax(one(50000, { subdivision: 'madrid', children: 2 }), es).netAnnual, 37139.98, YEAR);
+  });
+  test('a married one-earner couple files jointly when that is lower', () => {
+    const married = spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2, relationship: 'married' }), es);
+    near(married.netAnnual, 38360.58, YEAR);
+    assert.equal(married.lines.filter((l) => l.id === 'es.state').length, 1);
+    assert.match(married.notes.join(' '), /joint return/);
+    const asTwoEntries = spanishTax(taxInput({ grossLocal: [50000, 0], children: 2, subdivision: 'madrid', relationship: 'married' }), es);
+    near(asTwoEntries.netAnnual, married.netAnnual, 0.01);
+  });
+  test('a married two-earner couple keeps separate returns when those are lower', () => {
+    const married = spanishTax(taxInput({ grossLocal: [50000, 50000], children: 2, subdivision: 'madrid', relationship: 'married' }), es);
+    near(married.netAnnual, 2 * 36665.10, 2 * YEAR);
+    assert.equal(married.lines.filter((l) => l.id === 'es.state').length, 2);
+  });
+  test('registered partners cannot file jointly', () => {
+    const registered = spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2, relationship: 'registered' }), es);
+    near(registered.netAnnual, 36665.10, YEAR);
   });
   test('unknown region is an error', () => {
     assert.throws(() => spanishTax(one(30000, { subdivision: 'nowhere' }), es));
@@ -124,17 +153,19 @@ describe('Portugal 2026', () => {
   for (const [gross, net] of [[20000, 15741.69], [35000, 24995.74], [60000, 38275.32], [120000, 66503.27]] as const) {
     test(`€${gross} → €${net} net`, () => near(portugueseTax(one(gross), pt).netAnnual, net, YEAR));
   }
-  test('€600 per child, one earner', () => {
+  test('€600 per child for a single parent; half each when two parents live together', () => {
     near(portugueseTax(one(35000, { children: 2 }), pt).netAnnual, 26195.74, YEAR);
+    // Each parent deducts €300 per child, so the earner's tax rises by €600 against the single-parent case.
+    near(portugueseTax(one(35000, { children: 2, adults: 2 }), pt).netAnnual, 26195.74 - 600, YEAR);
   });
 });
 
 describe('all four countries', () => {
   for (const [name, run] of [
-    ['Estonia', (g: number[]) => estonianTax({ grossLocal: g, married: false, children: 0, subdivision: 'x' }, ee)],
-    ['Germany', (g: number[]) => germanTax({ grossLocal: g, married: false, children: 0, subdivision: 'x' }, de)],
-    ['Spain', (g: number[]) => spanishTax({ grossLocal: g, married: false, children: 0, subdivision: 'madrid' }, es)],
-    ['Portugal', (g: number[]) => portugueseTax({ grossLocal: g, married: false, children: 0, subdivision: 'x' }, pt)],
+    ['Estonia', (g: number[]) => estonianTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'x' }), ee)],
+    ['Germany', (g: number[]) => germanTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'x' }), de)],
+    ['Spain', (g: number[]) => spanishTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'madrid' }), es)],
+    ['Portugal', (g: number[]) => portugueseTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'x' }), pt)],
   ] as const) {
     test(`${name}: two unmarried earners are taxed separately; employer cost never reduces take-home`, () => {
       const two = run([50000, 30000]);

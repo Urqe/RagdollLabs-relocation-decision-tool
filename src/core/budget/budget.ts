@@ -1,6 +1,6 @@
 import type { City, CurrencyCode, FxSnapshot, Observation } from '../types.ts';
 import { addRanges, eurToLocal, mapRange, point, scaleRange, type Range } from '../money/money.ts';
-import { adultEquivalents, adults, DISCRETIONARY_PRESETS_EUR, type CityOverrides, type Household } from './household.ts';
+import { adultEquivalents, adults, DISCRETIONARY_PRESETS_EUR, totalChildren, type CityOverrides, type Household } from './household.ts';
 
 export type CategoryId = 'rent' | 'utilities' | 'internet' | 'groceries' | 'transport' | 'healthcare' | 'childcare' | 'discretionary';
 
@@ -97,9 +97,10 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
   const utilities = includesItem(rentObs, 'utilities') ? included('utilities', 'rent') : fromObs('utilities', true, c.utilities?.[bedroomKey], 1);
   const internet = includesItem(rentObs, 'internet') ? included('internet', 'rent') : fromObs('internet', true, c.internet, 1);
 
-  const kids = h.children === 0 ? '' : ` and ${h.children} ${h.children === 1 ? 'child' : 'children'}`;
+  const nKids = totalChildren(h.children);
+  const kids = nKids === 0 ? '' : ` and ${nKids} ${nKids === 1 ? 'child' : 'children'}`;
   const groceries = fromObs('groceries', true, c.groceriesPerAdultEquivalent, adultEquivalents(h), [
-    `Sized for ${nAdults} ${nAdults === 1 ? 'adult' : 'adults'}${kids}.`,
+    `Sized for ${nAdults} ${nAdults === 1 ? 'adult' : 'adults'}${kids} on the modified OECD scale (children under 14 count less).`,
   ]);
 
   let transport: CategoryResult;
@@ -122,7 +123,7 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
     }
   }
 
-  const people = nAdults + h.children;
+  const people = nAdults + nKids;
   const healthcare = fromObs('healthcare', true, c.healthcarePerPerson, people, ['Mandatory health contributions already deducted from pay are not counted here.']);
 
   const childcare = h.childrenInDaycare > 0

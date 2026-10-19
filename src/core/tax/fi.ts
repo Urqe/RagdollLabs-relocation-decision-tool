@@ -129,8 +129,9 @@ export function finnishTax(input: TaxInput, p: FiParams): TaxResult {
 
   const lines: TaxLine[] = [];
   input.grossLocal.forEach((gross, i) => {
-    // Both adults are assumed to be guardians of the household's children.
-    const r = finnishEarner(gross, input.children, muni.rate, churchRate, p);
+    // Both adults are assumed to be guardians of the household's children. The credit's child increase
+    // is for children under 18; the 17–24 band cannot be split, so only children under 17 are counted.
+    const r = finnishEarner(gross, input.children.under14 + input.children.from14to16, muni.rate, churchRate, p);
     for (const l of r.lines) lines.push({ ...l, earner: i });
   });
 
@@ -147,7 +148,7 @@ export function finnishTax(input: TaxInput, p: FiParams): TaxResult {
     notes: [
       'Each earner is taxed separately; Finland has no joint taxation.',
       'Wage income only, with the automatic €750 work-expense deduction and no other deductions.',
-      'Children add a little to each parent’s earned-income tax credit.',
+      'Children under 17 add a little to each parent’s earned-income tax credit (the law counts children under 18).',
       'Child benefit and other benefits are not included.',
       churchRate > 0 ? 'Church tax at the national average rate.' : 'No church tax.',
       'Employer contributions use national average rates and do not reduce take-home pay.',

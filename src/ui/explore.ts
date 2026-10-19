@@ -13,8 +13,25 @@ const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
   workable: () => 'All costs are covered, with less than 15% of take-home left to save.',
   tight: () => 'Essentials are covered, but not this level of discretionary spending.',
   short: () => 'Essential costs are higher than take-home pay.',
-  incomplete: (r) => `There is no data for ${r.budget.missing.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m).join(', ')}, so this city cannot be judged affordable. Enter your own figure below to complete it.`,
+  incomplete: (r) => {
+    const own = r.budget.missing.filter((m) => OWN_FIGURE_CATEGORIES.includes(m));
+    const stuck = r.budget.missing.filter((m) => !OWN_FIGURE_CATEGORIES.includes(m));
+    const recovery = stuck.length === 0
+      ? ' Enter your own figure below to complete it.'
+      : own.length > 0
+        ? ` You can enter your own ${missingList(r, own)} below; ${missingList(r, stuck)} cannot be entered yet, so the budget stays incomplete.`
+        : ` ${upperFirst(missingList(r, stuck))} cannot be entered yet, so the budget cannot be completed for this city.`;
+    return `There is no data for ${missingList(r, r.budget.missing)}, so this city cannot be judged affordable.${recovery}`;
+  },
 };
+
+/** Missing categories the user can fill in with "Use your own figures". */
+const OWN_FIGURE_CATEGORIES: readonly string[] = ['rent'];
+const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
+function missingList(r: CityResult, ids: string[]): string {
+  const names = ids.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m);
+  return names.length <= 1 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
+}
 
 export const APP_NAME = 'Where could we live?';
 
@@ -62,9 +79,11 @@ function ribbon(r: CityResult): HTMLElement {
   };
   const segs = parts.map((p) => seg(p.id, SHORT[p.id] ?? p.label, p.value));
   if (left > 0) segs.push(seg('left', 'Left over', left));
-  const label = left >= 0
-    ? `Of ${f.monthly(b.takeHome, cur)} take-home, ${f.monthly(spend, cur)} goes to spending and ${f.monthly(left, cur)} is left.`
-    : `Spending of ${f.monthly(spend, cur)} is ${f.monthly(-left, cur)} more than take-home of ${f.monthly(b.takeHome, cur)}.`;
+  const partial = b.missing.length > 0;
+  const excluded = partial ? ` Not counting ${missingList(r, b.missing)}, which has no data.` : '';
+  const label = (left >= 0
+    ? `Of ${f.monthly(b.takeHome, cur)} take-home, ${f.monthly(spend, cur)} goes to ${partial ? 'known ' : ''}spending and ${f.monthly(left, cur)} is left.`
+    : `${partial ? 'Known spending' : 'Spending'} of ${f.monthly(spend, cur)} is ${f.monthly(-left, cur)} more than take-home of ${f.monthly(b.takeHome, cur)}.`) + excluded;
   return h('figure', { class: 'ribbon-figure' },
     h('div', { class: `ribbon${left < 0 ? ' over' : ''}`, role: 'img', 'aria-labelledby': 'ribbon-caption' },
       segs,
@@ -82,8 +101,18 @@ function balances(r: CityResult): HTMLElement {
         h('span', { class: `figure${typical < 0 ? ' negative' : ''}` }, money(typical, cur, r.fxDate, r.fxRate)),
         range && Math.round(range.low / 10) !== Math.round(range.high / 10) ? h('span', { class: 'tile-range' }, `Range ${rangeText(range, cur)}`) : null,
         h('span', { class: 'def' }, def)));
+  const takeHome = tile('take-home', 'Take-home', b.takeHome, null, r.takeHomeSource === 'override' ? 'Your own net figure.' : 'Gross pay minus income tax and employee contributions, per month.');
+  if (b.missing.length > 0) {
+    // With an essential cost missing, the balances below take-home are partial, not estimates.
+    const without = `Leaves out ${missingList(r, b.missing)}, which has no data.`;
+    return h('dl', { class: 'balances partial' },
+      takeHome,
+      tile('essentials', 'Known essentials', b.essentials.typical, null, `${without} Not the full cost of essentials.`),
+      tile('partial', 'Partial balance', b.savings.typical, null, `Take-home minus known essentials and discretionary spending. ${without} Not an estimate of savings.`, 'savings'),
+    );
+  }
   return h('dl', { class: 'balances' },
-    tile('take-home', 'Take-home', b.takeHome, null, r.takeHomeSource === 'override' ? 'Your own net figure.' : 'Gross pay minus income tax and employee contributions, per month.'),
+    takeHome,
     tile('essentials', 'Essentials', b.essentials.typical, b.essentials, 'Housing, utilities, food, transport, healthcare and childcare.'),
     tile('left', 'Left after essentials', b.leftAfterEssentials.typical, b.leftAfterEssentials, 'Take-home minus essentials.'),
     tile('savings', 'Estimated savings', b.savings.typical, b.savings, 'Left after essentials, minus discretionary spending.', 'savings'),
@@ -145,7 +174,7 @@ function ownFigures(city: City, r: CityResult, ov: CityOverrides, store: Store):
     const { [k]: _drop, ...rest } = o;
     return rest;
   };
-  return h('details', { class: 'own', open: ov.rentMonthlyLocal !== undefined || ov.netMonthlyEur !== undefined || r.budget.band === 'incomplete' },
+  return h('details', { class: 'own', open: ov.rentMonthlyLocal !== undefined || ov.netMonthlyEur !== undefined || r.budget.missing.some((m) => OWN_FIGURE_CATEGORIES.includes(m)) },
     h('summary', {}, 'Use your own figures for this city'),
     numberField(`rent-override-${city.id}`, 'Rent', `${r.currency} / month`, ov.rentMonthlyLocal, (v) => set((o) => (v === undefined ? without(o, 'rentMonthlyLocal') : { ...o, rentMonthlyLocal: v }))),
     numberField(`net-override-${city.id}`, 'Household take-home', '€ / month', ov.netMonthlyEur, (v) => set((o) => (v === undefined ? without(o, 'netMonthlyEur') : { ...o, netMonthlyEur: v }))),

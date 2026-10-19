@@ -27,7 +27,7 @@ test('a deep link loads directly under the repository subpath', async ({ page })
 
 test('a missing cost marks the budget incomplete and names it', async ({ page }) => {
   await page.goto('./#/explore/us-sacramento');
-  await page.getByLabel('Children', { exact: true }).fill('1');
+  await page.getByLabel('Under 14').fill('1');
   await page.getByLabel('Of whom in daycare').fill('1');
   await expect(page.locator('.band')).toContainText('Incomplete');
   await expect(page.locator('.band')).toContainText('childcare');
@@ -66,9 +66,11 @@ test('controls are keyboard-operable', async ({ page }) => {
 
 test('no horizontal scrolling at phone width', async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile', 'mobile only');
-  await page.goto('./#/explore/fi-tampere');
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow).toBeLessThanOrEqual(0);
+  for (const route of ['./#/explore/fi-tampere', './#/methodology']) {
+    await page.goto(route);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, route).toBeLessThanOrEqual(0);
+  }
 });
 
 // ---- 0.1.1 review fixes ----
@@ -87,7 +89,7 @@ test('R3: discretionary hint shows the household amount', async ({ page }) => {
   const more = page.locator('details.more');
   if (!(await more.getAttribute('open'))) await more.locator('summary').click();
   await expect(page.locator('#discretionary-hint')).toContainText('€500 a month');
-  await page.getByLabel('Children', { exact: true }).fill('2');
+  await page.getByLabel('Under 14').fill('2');
   await expect(page.locator('#discretionary-hint')).toContainText('€800 a month for your household');
 });
 
@@ -150,4 +152,98 @@ test('every city in the release computes take-home, including Helsinki', async (
     await expect(page.locator('[data-balance="take-home"] .figure')).toHaveText(/\d/);
     await expect(page.locator('main')).not.toContainText('cannot be calculated');
   }
+});
+
+// ---- 0.2.2 corrective release ----
+
+const openMore = async (page: import('playwright/test').Page): Promise<void> => {
+  const more = page.locator('details.more');
+  if (!(await more.getAttribute('open'))) await more.locator('summary').click();
+};
+const takeHomeText = (page: import('playwright/test').Page) => page.locator('[data-balance="take-home"] .figure');
+
+test('F1: removing the partner removes joint taxation (Berlin, €60,000)', async ({ page }) => {
+  await page.goto('./#/explore/de-berlin');
+  await page.getByLabel('Gross income').fill('60000');
+  await expect(takeHomeText(page)).toHaveText(/^€3,1\d\d$/); // about €3,129 a month as a single person
+  const single = (await takeHomeText(page).textContent())!;
+  await openMore(page);
+  await page.getByLabel('A second adult without income').check();
+  await page.getByRole('radio', { name: 'Married' }).check();
+  await expect(takeHomeText(page)).not.toHaveText(single);
+  await page.getByLabel('A second adult without income').uncheck();
+  await expect(page.getByRole('radio', { name: 'Married' })).toHaveCount(0);
+  await expect(takeHomeText(page)).toHaveText(single);
+});
+
+test('F3: the household-cost question appears only for two unmarried earners with children', async ({ page }) => {
+  await page.goto('./#/explore/us-austin');
+  await page.getByRole('radio', { name: 'Two' }).check();
+  await page.getByLabel('Under 14').fill('1');
+  await openMore(page);
+  const question = page.getByRole('group', { name: /pays more than half/ });
+  await expect(question).toBeVisible();
+  await question.getByRole('radio', { name: 'Earner 1' }).check();
+  await expect(page.locator('details.pay')).toContainText('head of household');
+  await page.getByRole('radio', { name: 'Married' }).check();
+  await expect(question).toHaveCount(0);
+  await expect(page.locator('details.pay')).toContainText('Married couple filing jointly');
+});
+
+test('F5: "Clear my data" also clears this city\'s own figures', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  const own = page.locator('details.own');
+  if (!(await own.getAttribute('open'))) await own.locator('summary').click();
+  await page.getByLabel('Household take-home').fill('9000');
+  await page.getByLabel('Household take-home').press('Tab');
+  await page.getByLabel('Rent').fill('500');
+  await page.getByLabel('Rent').press('Tab');
+  await expect(takeHomeText(page)).toHaveText('€9,000');
+  await page.getByRole('button', { name: 'Clear my data' }).click();
+  await expect(takeHomeText(page)).not.toHaveText('€9,000');
+  await expect(page.locator('[data-balance="take-home"]')).toContainText('Gross pay minus');
+  await page.getByLabel('City').selectOption({ label: 'Helsinki' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere' });
+  await expect(page.getByLabel('Household take-home')).toHaveValue('');
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Your figure');
+});
+
+test('F6: a missing essential cost gives a partial balance, not estimated savings', async ({ page }) => {
+  await page.goto('./#/explore/us-sacramento');
+  await page.getByLabel('Under 14').fill('1');
+  await page.getByLabel('Of whom in daycare').fill('1');
+  await expect(page.locator('[data-balance="partial"]')).toContainText('Partial balance');
+  await expect(page.locator('[data-balance="partial"]')).toContainText('Not an estimate of savings');
+  await expect(page.locator('[data-balance="savings"]')).toHaveCount(0);
+  await expect(page.locator('.band')).toContainText('Childcare cannot be entered yet');
+  await expect(page.locator('.band')).not.toContainText('Enter your own figure');
+});
+
+test('F7: reducing children updates the daycare count and its limit', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  await page.getByLabel('Under 14').fill('3');
+  await page.getByLabel('Of whom in daycare').fill('3');
+  await page.getByLabel('Under 14').fill('1');
+  await expect(page.getByLabel('Of whom in daycare')).toHaveValue('1');
+  await expect(page.getByLabel('Of whom in daycare')).toHaveAttribute('max', '1');
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('1 child in daycare');
+});
+
+test('F7: an invalid field stays invalid when the form is rebuilt', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  await page.getByRole('radio', { name: 'Two' }).check();
+  await page.getByLabel('Earner 2 gross income').fill('');
+  await expect(page.getByLabel('Earner 2 gross income')).toHaveAttribute('aria-invalid', 'true');
+  await page.getByLabel('Under 14').fill('1'); // adds the daycare field, which rebuilds the form
+  await expect(page.getByLabel('Of whom in daycare')).toBeVisible();
+  await expect(page.getByLabel('Earner 2 gross income')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.getByLabel('Earner 2 gross income')).toHaveValue('');
+  await expect(page.getByRole('status')).toContainText('Fix the highlighted household field');
+});
+
+test('F9: a malformed link opens the app with "City not found"', async ({ page }) => {
+  await page.goto('./#/explore/%');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('City not found');
+  await page.getByLabel('City').selectOption({ label: 'Tampere' });
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tampere');
 });

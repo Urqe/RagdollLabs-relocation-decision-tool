@@ -37,8 +37,28 @@ export interface Source {
   licenceUrl?: string;
   attribution: string;
   cadence: 'daily' | 'monthly' | 'quarterly' | 'annual' | 'irregular';
+  /** Date the source was last reviewed for updates. Not the period the data describes (Observation.period) or the FX date. */
   lastChecked: string;
+  /** A documented decision to publish with this source overdue for review, until the given date. */
+  reviewDeferral?: { until: string; reason: string };
   fixture?: boolean;
+}
+
+/**
+ * How the two adults are related. Tax treatment differs by country: Germany taxes married couples and
+ * registered partners together; US federal tax only married couples; California state tax both.
+ * A one-adult household is always 'unmarried'.
+ */
+export type Relationship = 'married' | 'registered' | 'unmarried';
+
+/** Children living in the household, by the age bands the supported rules need. */
+export interface ChildAges {
+  /** Weighted 0.3 on the modified OECD scale; the only children who can be in daycare. */
+  under14: number;
+  /** Weighted 0.5 on the modified OECD scale; qualify for the US child tax credit. */
+  from14to16: number;
+  /** Weighted 0.5; do not qualify for the US child tax credit. Older children are assumed to be dependants up to 24. */
+  from17to24: number;
 }
 
 export type BedroomCount = 1 | 2 | 3 | 4;

@@ -1,6 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DEFAULT_PROFILE, formatRoute, loadProfile, parseProfile, parseRoute, saveProfile, serializeProfile, type KeyValueStore } from '../../src/state/store.ts';
+import { kids } from './helpers.ts';
 
 describe('routes', () => {
   test('hash routes round-trip', () => {
@@ -16,7 +17,7 @@ describe('routes', () => {
 
 describe('saved profile', () => {
   test('round-trips through storage', () => {
-    const p = { ...DEFAULT_PROFILE, household: { ...DEFAULT_PROFILE.household, earnersGrossEur: [61000, 42000], children: 2 } };
+    const p = { ...DEFAULT_PROFILE, household: { ...DEFAULT_PROFILE.household, earnersGrossEur: [61000, 42000], children: kids(2) } };
     assert.deepEqual(parseProfile(serializeProfile(p)), p);
   });
   test('corrupt or old data falls back to defaults', () => {

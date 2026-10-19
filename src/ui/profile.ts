@@ -1,14 +1,20 @@
-import { adultEquivalents, DISCRETIONARY_PRESETS_EUR, type DiscretionaryLevel, type Household } from '../core/budget/household.ts';
+import { adultEquivalents, asksMainCostPayer, DISCRETIONARY_PRESETS_EUR, MAX_CHILDREN, normalizeHousehold, totalChildren, type ChildAges, type DiscretionaryLevel, type Household, type Relationship } from '../core/budget/household.ts';
 import { clearProfile, DEFAULT_PROFILE, type AppState, type Profile, type Store } from '../state/store.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
 
 type Patch = (p: Profile) => Profile;
-const setHousehold = (fn: (hh: Household) => Partial<Household>): Patch => (p) => ({ ...p, household: { ...p.household, ...fn(p.household) } });
+/** Every household edit goes through the normalizer, so hidden or dependent fields cannot keep stale values. */
+const setHousehold = (fn: (hh: Household) => Partial<Household>): Patch => (p) => ({ ...p, household: normalizeHousehold({ ...p.household, ...fn(p.household) }) });
 
 /** Inputs that change which fields exist trigger a re-render; plain value edits do not, so focus is never lost while typing. */
 const structureKey = (p: Profile): string =>
-  [p.household.earnersGrossEur.length, p.household.nonEarningAdults, p.household.children > 0, p.incomeMode, p.household.discretionary.kind].join('|');
+  [p.household.earnersGrossEur.length, p.household.nonEarningAdults, p.household.relationship, p.household.children.under14 > 0,
+    asksMainCostPayer(p.household), p.incomeMode, p.household.discretionary.kind].join('|');
+
+const CHILD_BANDS: [keyof ChildAges, string][] = [['under14', 'Under 14'], ['from14to16', 'Aged 14 to 16'], ['from17to24', 'Aged 17 to 24']];
+const RELATIONSHIPS: [Relationship, string][] = [['married', 'Married'], ['registered', 'Registered partners'], ['unmarried', 'Neither']];
+const DAYCARE_HINT = 'Children below school age who need paid care.';
 
 const LEVEL_NAME: Record<DiscretionaryLevel, string> = { lean: 'Lean', moderate: 'Moderate', comfortable: 'Comfortable' };
 const plural = (n: number, one: string, many: string): string => `${n} ${n === 1 ? one : many}`;
@@ -20,7 +26,8 @@ export function householdSummary(p: Profile): string {
   const earners = hh.earnersGrossEur.length === 1
     ? `One earner, ${incomes[0]} a year${hh.nonEarningAdults ? ', plus one adult' : ''}`
     : `Two earners, ${incomes.join(' and ')} a year`;
-  const kids = hh.children === 0 ? 'no children' : plural(hh.children, 'child', 'children');
+  const n = totalChildren(hh.children);
+  const kids = n === 0 ? 'no children' : plural(n, 'child', 'children');
   return `${earners}, ${kids}, ${plural(hh.bedrooms, 'bedroom', 'bedrooms')}`;
 }
 
@@ -34,8 +41,8 @@ function discretionaryHint(hh: Household): string {
   if (hh.discretionary.kind === 'custom') return 'Your amount is used as it is in every city.';
   const perAdult = DISCRETIONARY_PRESETS_EUR[hh.discretionary.level];
   const total = perAdult * adultEquivalents(hh);
-  const sized = hh.children > 0 || hh.earnersGrossEur.length + hh.nonEarningAdults > 1
-    ? `${f.whole(total, 'EUR')} a month for your household (${f.whole(perAdult, 'EUR')} for the first adult, half that for another adult, 30% for each child)`
+  const sized = totalChildren(hh.children) > 0 || hh.earnersGrossEur.length + hh.nonEarningAdults > 1
+    ? `${f.whole(total, 'EUR')} a month for your household (${f.whole(perAdult, 'EUR')} for the first adult, half that for each other person aged 14 or over, 30% for each child under 14)`
     : `${f.whole(total, 'EUR')} a month`;
   return `About ${sized} at euro-area prices, then adjusted for prices in each city. Covers eating out, leisure, clothes and other optional spending.`;
 }
@@ -95,6 +102,21 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
     });
     const d = document.getElementById('discretionary-hint');
     if (d) d.textContent = discretionaryHint(hh);
+    syncDependent(s);
+  };
+
+  /** Keeps inputs whose value or limit depends on other fields in step with the household state. */
+  const syncDependent = (s: AppState): void => {
+    const hh = s.profile.household;
+    const sync = (id: string, value: number, max: number): void => {
+      const el = document.getElementById(id) as HTMLInputElement | null;
+      if (!el) return;
+      el.max = String(max);
+      if (!s.invalidFields.includes(id) && el.valueAsNumber !== value) el.value = String(value);
+    };
+    const n = totalChildren(hh.children);
+    for (const [band] of CHILD_BANDS) sync(`children-${band}`, hh.children[band], MAX_CHILDREN - n + hh.children[band]);
+    sync('daycare', hh.childrenInDaycare, hh.children.under14);
   };
 
   const render = (s: AppState): void => {
@@ -102,6 +124,12 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
     const hh = profile.household;
     const months = profile.incomeMode === 'monthly' ? profile.monthsPerYear : 1;
     const active = document.activeElement?.id ?? null;
+    const moreOpen = root.querySelector<HTMLDetailsElement>('details.more')?.open ?? false;
+    // Inputs holding an invalid value keep it, and stay marked, when the form is rebuilt.
+    const invalidKept = s.invalidFields.map((id) => {
+      const el = document.getElementById(id) as HTMLInputElement | null;
+      return { id, value: el?.value ?? null, message: document.getElementById(`${id}-hint`)?.textContent ?? '' };
+    });
 
     const incomeInputs = hh.earnersGrossEur.map((gross, i) => {
       const id = `income-${i}`;
@@ -140,24 +168,33 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
           }, ([12, 13, 14] as const).map((m) => h('option', { value: m, selected: m === profile.monthsPerYear }, m === 12 ? '12' : `${m} (with extra holiday or bonus months)`))))
         : null,
       incomeInputs,
-      field('children', 'Children', h('input', { id: 'children', type: 'number', min: 0, max: 8, step: 1, value: hh.children, 'aria-describedby': 'children-hint',
-        oninput: (e: Event) => {
-          const v = readNumber(e.target as HTMLInputElement, { integer: true, max: 8 }, 'Enter a whole number from 0 to 8.', () => '');
-          if (v === null) return;
-          update(setHousehold((x) => ({ children: v, childrenInDaycare: Math.min(x.childrenInDaycare, v) })));
-        } }), ''),
-      hh.children > 0
-        ? field('daycare', 'Of whom in daycare', h('input', { id: 'daycare', type: 'number', min: 0, max: hh.children, step: 1, value: hh.childrenInDaycare, 'aria-describedby': 'daycare-hint',
+      h('fieldset', { class: 'children' },
+        h('legend', {}, 'Children living with you'),
+        h('div', { class: 'children-row' }, CHILD_BANDS.map(([band, label]) => {
+          const id = `children-${band}`;
+          return field(id, label, h('input', { id, type: 'number', min: 0, max: MAX_CHILDREN - totalChildren(hh.children) + hh.children[band], step: 1, value: hh.children[band], 'aria-describedby': `${id}-hint`,
             oninput: (e: Event) => {
               const el = e.target as HTMLInputElement;
-              const v = readNumber(el, { integer: true, max: store.get().profile.household.children }, 'Enter a whole number, no more than the number of children.', () => 'Children below school age who need paid care.');
+              const c = store.get().profile.household.children;
+              const max = MAX_CHILDREN - totalChildren(c) + c[band];
+              const v = readNumber(el, { integer: true, max }, `Enter a whole number from 0 to ${max}.`, () => '');
+              if (v === null) return;
+              update(setHousehold((x) => ({ children: { ...x.children, [band]: v } })));
+            } }), '');
+        })),
+        h('p', { class: 'hint' }, `Up to ${MAX_CHILDREN} in total. Ages change which tax credits apply and how food and spending are sized.`)),
+      hh.children.under14 > 0
+        ? field('daycare', 'Of whom in daycare', h('input', { id: 'daycare', type: 'number', min: 0, max: hh.children.under14, step: 1, value: hh.childrenInDaycare, 'aria-describedby': 'daycare-hint',
+            oninput: (e: Event) => {
+              const el = e.target as HTMLInputElement;
+              const v = readNumber(el, { integer: true, max: store.get().profile.household.children.under14 }, 'Enter a whole number, no more than the children under 14.', () => DAYCARE_HINT);
               if (v === null) return;
               update(setHousehold(() => ({ childrenInDaycare: v })));
-            } }), 'Children below school age who need paid care.')
+            } }), DAYCARE_HINT)
         : null,
       field('bedrooms', 'Bedrooms', h('select', { id: 'bedrooms', onchange: (e: Event) => update(setHousehold(() => ({ bedrooms: Number((e.target as HTMLSelectElement).value) as 1 | 2 | 3 | 4 }))) },
         ([1, 2, 3, 4] as const).map((b) => h('option', { value: b, selected: b === hh.bedrooms }, String(b))))),
-      h('details', { class: 'more' },
+      h('details', { class: 'more', open: moreOpen },
         h('summary', {}, 'More assumptions'),
         choice('location', 'Where in the city', [['central', 'Central'], ['outer', 'Outer']], hh.location, (v) => update(setHousehold(() => ({ location: v === 'outer' ? 'outer' : 'central' })))),
         choice('cars', 'Cars', [['0', 'None'], ['1', 'One'], ['2', 'Two']], String(hh.cars), (v) => update(setHousehold(() => ({ cars: Number(v) as 0 | 1 | 2 })))),
@@ -179,13 +216,23 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
           ? h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'non-earner', checked: hh.nonEarningAdults === 1, onchange: (e: Event) => update(setHousehold(() => ({ nonEarningAdults: (e.target as HTMLInputElement).checked ? 1 : 0 }))) }), h('span', {}, 'A second adult without income'))
           : null,
         twoAdults
-          ? h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'married', checked: hh.married, onchange: (e: Event) => update(setHousehold(() => ({ married: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Married or registered partners', h('span', { class: 'check-hint' }, 'Changes tax in Germany and the US, where couples are taxed together.')))
+          ? h('div', { class: 'with-hint' },
+              choice('relationship', 'The two adults are', RELATIONSHIPS, hh.relationship, (v) => update(setHousehold(() => ({ relationship: v as Relationship })))),
+              h('p', { class: 'hint' }, 'Married couples can be taxed together in Germany, Spain and the US. Registered partners only in Germany and for California state tax.'))
+          : null,
+        asksMainCostPayer(hh)
+          ? h('div', { class: 'with-hint' },
+              choice('cost-payer', 'Who pays more than half of the household’s running costs?', [['0', 'Earner 1'], ['1', 'Earner 2'], ['none', 'Shared, or not sure']],
+                hh.mainCostPayer === null ? 'none' : String(hh.mainCostPayer),
+                (v) => update(setHousehold(() => ({ mainCostPayer: v === '0' ? 0 : v === '1' ? 1 : null })))),
+              h('p', { class: 'hint' }, 'Used for US tax: only that earner can file as head of household.'))
           : null,
         h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'church', checked: hh.churchMember, onchange: (e: Event) => update(setHousehold(() => ({ churchMember: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Church member (Finnish church tax)')),
       ),
       h('button', { type: 'button', class: 'quiet-button', onclick: () => {
         clearProfile(storage);
-        store.set((st) => ({ ...st, profile: DEFAULT_PROFILE, invalidFields: [] }));
+        // The whole scenario resets: household, every city's own figures and any invalid field. The city stays selected.
+        store.set((st) => ({ ...st, profile: DEFAULT_PROFILE, overrides: {}, invalidFields: [] }));
         lastKey = '';
         render(store.get());
       } }, 'Clear my data'),
@@ -193,7 +240,13 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
     );
 
     lastKey = structureKey(profile);
-    if (s.invalidFields.length > 0) store.set((st) => ({ ...st, invalidFields: [] }));
+    const stillThere = invalidKept.filter((k) => k.value !== null && document.getElementById(k.id) !== null);
+    for (const k of stillThere) {
+      (document.getElementById(k.id) as HTMLInputElement).value = k.value!;
+      setInvalid(k.id, true, k.message, '');
+    }
+    const keep = new Set(stillThere.map((k) => k.id));
+    if (s.invalidFields.some((id) => !keep.has(id))) store.set((st) => ({ ...st, invalidFields: st.invalidFields.filter((id) => keep.has(id)) }));
     if (active) document.getElementById(active)?.focus();
   };
 

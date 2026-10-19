@@ -7,7 +7,11 @@
     "licence": "Free reuse with source acknowledgement; rates are for information only",
     "attribution": "Source: European Central Bank",
     "cadence": "daily",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-19",
+    "reviewDeferral": {
+      "until": "2026-12-31",
+      "reason": "Exchange rates are a dated snapshot (data/fx), refreshed with each data release rather than daily; the next refresh is part of release 0.3.0."
+    }
   },
   {
     "id": "fi-tax-2026",

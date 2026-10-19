@@ -1,4 +1,4 @@
-import type { TaxInput, TaxLine, TaxResult } from './types.ts';
+import { childCount, type TaxInput, type TaxLine, type TaxResult } from './types.ts';
 import { roundCents } from '../money/money.ts';
 
 export interface DeParams {
@@ -74,12 +74,14 @@ export function germanSocial(gross: number, children: number, p: DeParams): Earn
 }
 
 /**
- * Germany, resident employee, annual assessment. Married couples use income splitting.
+ * Germany, resident employee, annual assessment. Married couples and registered partners use income splitting.
  * Child allowances are not applied: child benefit (Kindergeld) is a cash benefit and is out of scope.
  */
 export function germanTax(input: TaxInput, p: DeParams): TaxResult {
   const gross = input.grossLocal.map((g) => Math.max(0, g));
-  const social = gross.map((g) => germanSocial(g, input.children, p));
+  const social = gross.map((g) => germanSocial(g, childCount(input.children), p));
+  // Registered life partners are taxed like married couples (§ 2 (8) EStG).
+  const joint = input.relationship === 'married' || input.relationship === 'registered';
   const lines: TaxLine[] = [];
   const church = input.churchMember === true ? p.churchTaxRate : 0;
   const income = (g: number, i: number): number => Math.max(0, g - Math.min(p.employeeLumpSum, g)) - social[i]!.deductible;
@@ -90,7 +92,7 @@ export function germanTax(input: TaxInput, p: DeParams): TaxResult {
     if (church > 0) lines.push({ id: 'de.church', label: 'Church tax', kind: 'incomeTax', amount: roundCents(est * church), ...tag });
   };
 
-  if (input.married) {
+  if (joint) {
     const zvE = Math.max(0, gross.reduce((s, g, i) => s + income(g, i), 0) - 2 * p.specialExpensesLumpSum);
     pushIncomeTax(2 * germanTariff(Math.floor(zvE) / 2, p.tariff), true, {});
   } else {
@@ -113,7 +115,7 @@ export function germanTax(input: TaxInput, p: DeParams): TaxResult {
   return {
     model: 'de', taxYear: p.taxYear, currency: 'EUR', grossAnnual, lines, netAnnual: roundCents(grossAnnual - deductions),
     notes: [
-      input.married ? 'Married couples are taxed together, which lowers tax when incomes differ.' : 'Each earner is taxed separately.',
+      joint ? 'Married couples and registered partners are taxed together, which lowers tax when incomes differ.' : 'Each earner is taxed separately.',
       'Tax for the full year with the standard work-expense allowance (€1,230); monthly payslips can differ slightly.',
       'Public health insurance at the 2026 average rate; each insurer sets its own.',
       'Child benefit (Kindergeld) and child tax allowances are not included.',

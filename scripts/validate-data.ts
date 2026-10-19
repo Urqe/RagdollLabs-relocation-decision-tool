@@ -1,6 +1,6 @@
-// Validates data/ and fixtures/. Exits non-zero on any error. Prints overdue sources as warnings.
+// Validates data/ and fixtures/. Exits non-zero on any error, including a source overdue for review without a deferral.
 import { latestFx, readJson, readTree, taxParamFiles } from './repo-data.ts';
-import { checkDataVersion, checkFx, checkTaxParams, checkTree, staleSources } from './validation.ts';
+import { checkDataVersion, checkFx, checkJurisdictions, checkTaxParams, checkTree, staleSources } from './validation.ts';
 
 const data = readTree('data');
 const fixtures = readTree('fixtures');
@@ -11,10 +11,10 @@ const errors = [
   ...checkFx(latestFx(), data.sources),
   ...checkTaxParams(taxParamFiles()),
   ...checkDataVersion(readJson<unknown>('data/release.json')),
+  ...checkJurisdictions([data, { ...fixtures, countries: [...data.countries, ...fixtures.countries] }], taxParamFiles(), latestFx().data),
+  ...staleSources(data.sources, new Date()),
 ];
-const warnings = staleSources(data.sources, new Date());
 
-for (const w of warnings) console.warn(`warning  ${w.path}: ${w.message}`);
 for (const e of errors) console.error(`error    ${e.path}: ${e.message}`);
 
 const count = data.cities.length + fixtures.cities.length;

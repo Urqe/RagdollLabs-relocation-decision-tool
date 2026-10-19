@@ -1,7 +1,8 @@
 // Hand-written validators for static datasets. Used by the build script and by unit tests.
 // Each returns a list of problems; an empty list means valid.
 
-import { TAX_MODELS } from '../core/types.ts';
+import { TAX_MODELS, type TaxModelId } from '../core/types.ts';
+import { validateTaxFile } from './tax-schemas.ts';
 
 const CURRENCIES = ['EUR', 'USD', 'CAD', 'MXN'];
 const MODELS: readonly string[] = TAX_MODELS;
@@ -63,6 +64,12 @@ export function validateSource(v: unknown, path: string): Problem[] {
   req(v, 'url', (x) => typeof x === 'string' && x.startsWith('https://'), path, 'an https URL', out);
   req(v, 'cadence', (x) => CADENCE.includes(x as string), path, `one of ${CADENCE.join(', ')}`, out);
   req(v, 'lastChecked', (x) => typeof x === 'string' && ISO_DATE.test(x), path, 'an ISO date', out);
+  if (v.reviewDeferral !== undefined) {
+    const d = v.reviewDeferral;
+    if (!isObj(d) || typeof d.until !== 'string' || !ISO_DATE.test(d.until) || !isStr(d.reason)) {
+      out.push({ path: `${path}.reviewDeferral`, message: 'must have an ISO date "until" and a non-empty "reason"' });
+    }
+  }
   return out;
 }
 
@@ -142,13 +149,14 @@ export function validateFx(v: unknown, path: string, sourceIds: Set<string>): Pr
   return out;
 }
 
-/** Walks a tax parameter file and checks every "brackets"-like list and every rate field. */
+/**
+ * Checks a tax parameter file: the model's full schema (every required parameter, its type and bounds),
+ * plus a walk over any other bracket lists and rate fields in the file.
+ */
 export function validateTaxParams(v: unknown, path: string): Problem[] {
   if (!isObj(v)) return [{ path, message: 'must be an object' }];
-  const out: Problem[] = [];
-  req(v, 'model', (x) => MODELS.includes(x as string), path, `one of ${MODELS.join(', ')}`, out);
-  req(v, 'taxYear', (x) => isNum(x) && x >= 2020 && x <= 2100, path, 'a tax year', out);
-  req(v, 'sources', (x) => Array.isArray(x) && x.length > 0 && x.every((s) => typeof s === 'string' && s.startsWith('https://')), path, 'a non-empty list of https URLs', out);
+  if (!MODELS.includes(v.model as string)) return [{ path: `${path}.model`, message: `must be one of ${MODELS.join(', ')}` }];
+  const out: Problem[] = validateTaxFile(v, path, v.model as TaxModelId);
   const walk = (node: unknown, p: string): void => {
     if (Array.isArray(node)) {
       if (node.length > 0 && node.every((b) => isObj(b) && 'from' in b && 'rate' in b)) out.push(...validateBrackets(node, p));
@@ -161,5 +169,7 @@ export function validateTaxParams(v: unknown, path: string): Problem[] {
     }
   };
   walk(v, path);
-  return out;
+  // The schema and the walk can both report the same bracket problem; report it once.
+  const seen = new Set<string>();
+  return out.filter((e) => { const k = `${e.path}|${e.message}`; if (seen.has(k)) return false; seen.add(k); return true; });
 }

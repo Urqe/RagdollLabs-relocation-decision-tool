@@ -5,7 +5,7 @@ import { computeCityResult } from '../../src/core/budget/city-result.ts';
 import { adultEquivalents, DEFAULT_HOUSEHOLD, type Household } from '../../src/core/budget/household.ts';
 import type { City, Country, FxSnapshot, Observation } from '../../src/core/types.ts';
 import type { FiParams } from '../../src/core/tax/fi.ts';
-import { loadJson, near } from './helpers.ts';
+import { kids, loadJson, near } from './helpers.ts';
 
 const fx = loadJson<FxSnapshot>('data/fx/2026-10-16.json');
 const fi = loadJson<FiParams>('data/tax/fi/2026.json');
@@ -53,7 +53,7 @@ describe('spending basket', () => {
   });
 
   test('groceries scale by the modified OECD equivalence scale', () => {
-    const household = h({ earnersGrossEur: [50000, 40000], children: 2 });
+    const household = h({ earnersGrossEur: [50000, 40000], children: kids(2) });
     near(adultEquivalents(household), 2.1, 1e-9);
     near(cat(costCategories(testCity(), household, {}, fx, 'EUR'), 'groceries').local!.typical, 840, 1e-9);
   });
@@ -64,8 +64,8 @@ describe('spending basket', () => {
   });
 
   test('childcare only when a child is in daycare', () => {
-    assert.equal(cat(costCategories(testCity(), h({ children: 1 }), {}, fx, 'EUR'), 'childcare').status, 'notApplicable');
-    assert.equal(cat(costCategories(testCity(), h({ children: 1, childrenInDaycare: 1 }), {}, fx, 'EUR'), 'childcare').local!.typical, 300);
+    assert.equal(cat(costCategories(testCity(), h({ children: kids(1) }), {}, fx, 'EUR'), 'childcare').status, 'notApplicable');
+    assert.equal(cat(costCategories(testCity(), h({ children: kids(1), childrenInDaycare: 1 }), {}, fx, 'EUR'), 'childcare').local!.typical, 300);
   });
 
   test('rent override replaces the estimate and is labelled', () => {
@@ -91,8 +91,8 @@ describe('balances and bands', () => {
 
   test('missing childcare only matters when daycare is needed', () => {
     const city = testCity({ childcarePerChild: obs(null) });
-    assert.notEqual(buildBudget(10000, costCategories(city, h({ children: 1 }), {}, fx, 'EUR'), 'EUR').band, 'incomplete');
-    assert.equal(buildBudget(10000, costCategories(city, h({ children: 1, childrenInDaycare: 1 }), {}, fx, 'EUR'), 'EUR').band, 'incomplete');
+    assert.notEqual(buildBudget(10000, costCategories(city, h({ children: kids(1) }), {}, fx, 'EUR'), 'EUR').band, 'incomplete');
+    assert.equal(buildBudget(10000, costCategories(city, h({ children: kids(1), childrenInDaycare: 1 }), {}, fx, 'EUR'), 'EUR').band, 'incomplete');
   });
 
   test('savings = take-home − essentials − discretionary, with ordered ranges', () => {

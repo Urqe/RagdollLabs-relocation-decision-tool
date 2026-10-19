@@ -1,18 +1,17 @@
 # RagdollLabs relocation decision tool
 
-A static web app for comparing cities as places to live: what a household's income turns into after tax, what living there costs, and what is left over. Preference matching (safety, climate, healthcare and so on) comes in a later milestone.
+A static web app for comparing cities as places to live: what a household's income turns into after tax, what living there costs, and what is left over. Preference matching (safety, climate, healthcare and so on), finding cities and comparing them come in later releases.
 
 It is a personal planning tool. Estimates are not tax or immigration advice, and the app does not judge whether a salary is available locally or whether anyone may live or work there.
 
 ## Status
 
-Milestone 1 of 6: foundations and money core.
+Version 0.2.2. See [RELEASE_PLAN.md](RELEASE_PLAN.md) for what comes next and [docs/reviews/](docs/reviews/) for review findings.
 
-- Real 2026 tax rules for Finland (Helsinki, Tampere) and the US (federal, Texas, California).
-- Budget engine with scenario ranges, double-count rules and affordability bands.
-- An Explore screen running on **development fixtures**: placeholder costs that are clearly labelled and are not real data.
-
-The plan for later milestones is in the project's v1 plan document.
+- Real 2026 employee tax and contribution rules for Finland, the US (federal, Texas, California), Estonia, Germany, Spain (Madrid, Valencia) and Portugal.
+- Households of one or two adults, married, registered partners or neither, with children by age band. Each model applies only the joint filing and child rules it supports, and says which in the pay detail.
+- Budget engine with scenario ranges, double-count rules and affordability bands. A budget with a missing essential cost shows a partial balance, never estimated savings.
+- An Explore screen running on **development fixtures**: placeholder costs that are clearly labelled and are not real data. Real cost data for the pilot cities (Helsinki, Berlin, Madrid, Austin, Hermosillo) comes in 0.3.0.
 
 ## Run it
 

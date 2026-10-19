@@ -10,7 +10,9 @@
     "https://www.bocm.es/boletin/CM_Orden_BOCM/2023/12/21/BOCM-20231221-2.PDF",
     "https://boe.es/ccaa/dogv/2026/10425/r00001-00125.pdf",
     "https://www.idealista.com/news/node/885453",
-    "https://guiafiscal.es/irpf/valencia/"
+    "https://guiafiscal.es/irpf/valencia/",
+    "https://sede.agenciatributaria.gob.es/Sede/irpf/tengo-que-presentar-declaracion/declaracion-individual-conjunta/caracteristicas-tributacion-conjunta.html",
+    "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-ayuda-presentacion/irpf-2025/3-cuestiones-generales/3_2-tributacion-individual-conjunta/3_2_3-normas-aplicables-tributacion-conjunta.html"
   ],
   "social": {
     "employeeRate": 0.065,
@@ -187,5 +189,9 @@
     "fullUpTo": 17094,
     "slope": 0.2,
     "note": "Real Decreto-ley 5/2026: credit against tax for gross work income up to €20,048.45."
+  },
+  "jointFiling": {
+    "marriedReduction": 3400,
+    "note": "Joint return for a married couple (art. 84 LIRPF): base reduced by €3,400; personal minimum €5,550 once whatever the number of members; amounts and limits not multiplied."
   }
 }

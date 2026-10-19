@@ -1,5 +1,6 @@
 import { validateCity, validateCountry, validateFx, validateRegion, validateSource, validateTaxParams, type Problem } from '../src/data/validate.ts';
-import type { FxSnapshot, Source } from '../src/core/types.ts';
+import { taxSubdivisions } from '../src/data/tax-schemas.ts';
+import type { FxSnapshot, Source, TaxModelId } from '../src/core/types.ts';
 import type { Tree } from './repo-data.ts';
 
 const CADENCE_DAYS: Record<Source['cadence'], number> = { daily: 7, monthly: 45, quarterly: 120, annual: 400, irregular: 730 };
@@ -59,13 +60,47 @@ export function checkTaxParams(files: { path: string; data: unknown }[]): Proble
   return files.flatMap((f) => validateTaxParams(f.data, f.path));
 }
 
+/**
+ * Sources overdue for review. Overdue sources block publication unless the source carries a dated
+ * deferral with a reason that has not yet expired (release policy in RELEASE_PLAN.md).
+ */
 export function staleSources(sources: Source[], today: Date): Problem[] {
+  const todayIso = today.toISOString().slice(0, 10);
   return sources
     .filter((s) => s.fixture !== true)
     .flatMap((s) => {
       const age = (today.getTime() - Date.parse(s.lastChecked)) / 864e5;
-      return age > CADENCE_DAYS[s.cadence] ? [{ path: `source ${s.id}`, message: `last checked ${s.lastChecked}; due for a ${s.cadence} update` }] : [];
+      if (age <= CADENCE_DAYS[s.cadence]) return [];
+      const d = s.reviewDeferral;
+      if (d && d.until >= todayIso && d.reason.trim() !== '') return [];
+      const why = d ? ` (deferral expired ${d.until})` : '';
+      return [{ path: `source ${s.id}`, message: `last checked ${s.lastChecked}; due for a ${s.cadence} review${why}. Review it, or add a dated reviewDeferral with a reason.` }];
     });
+}
+
+/**
+ * Cross-references: every city's tax model has a parameter file, its subdivision exists in that file,
+ * and its country's currency has an exchange rate.
+ */
+export function checkJurisdictions(trees: Tree[], taxFiles: { path: string; data: unknown }[], fx: FxSnapshot): Problem[] {
+  const out: Problem[] = [];
+  const byModel = new Map<string, unknown>();
+  for (const f of taxFiles) {
+    const m = (f.data as { model?: unknown }).model;
+    if (typeof m === 'string') byModel.set(m, f.data);
+  }
+  for (const tree of trees) {
+    const currency = new Map(tree.countries.map((c) => [c.data.id, c.data.currency]));
+    for (const c of tree.cities) {
+      const params = byModel.get(c.data.tax.model);
+      if (params === undefined) { out.push({ path: c.path, message: `no tax parameters for model "${c.data.tax.model}"` }); continue; }
+      const subs = taxSubdivisions(c.data.tax.model as TaxModelId, params);
+      if (subs !== null && !subs.includes(c.data.tax.subdivision)) out.push({ path: c.path, message: `tax subdivision "${c.data.tax.subdivision}" is not in the ${c.data.tax.model} parameters` });
+      const cur = currency.get(c.data.countryId);
+      if (cur !== undefined && cur !== 'EUR' && !(fx.ratesPerEur[cur]! > 0)) out.push({ path: c.path, message: `no exchange rate for ${cur}` });
+    }
+  }
+  return out;
 }
 
 /** data/release.json carries the data version, e.g. 2026-10-19.1. */

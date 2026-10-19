@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { checkDataVersion, checkTree, checkTaxParams } from '../../scripts/validation.ts';
-import { readTree, taxParamFiles } from '../../scripts/repo-data.ts';
+import { checkDataVersion, checkJurisdictions, checkTree, checkTaxParams, staleSources } from '../../scripts/validation.ts';
+import { latestFx, readTree, taxParamFiles } from '../../scripts/repo-data.ts';
 import { validateObservation } from '../../src/data/validate.ts';
 import type { City, Source } from '../../src/core/types.ts';
 
@@ -18,6 +18,79 @@ describe('repository data', () => {
 
   test('current tax parameter files are valid', () => {
     assert.deepEqual(checkTaxParams(taxParamFiles()), []);
+  });
+
+  test('every city names a tax model, subdivision and currency the release can calculate', () => {
+    assert.deepEqual(checkJurisdictions([data, { ...fixtures, countries: [...data.countries, ...fixtures.countries] }], taxParamFiles(), latestFx().data), []);
+  });
+});
+
+describe('tax parameter contract (F8)', () => {
+  const files = taxParamFiles();
+  const file = (model: string) => structuredClone(files.find((f) => (f.data as { model: string }).model === model)!.data) as Record<string, any>;
+  const problems = (data: unknown) => checkTaxParams([{ path: 'x', data }]);
+
+  test('a file with only a header fails', () => {
+    const p = problems({ model: 'de', taxYear: 2026, sources: ['https://example.org'] });
+    assert.ok(p.some((e) => e.path === 'x.tariff' && e.message === 'is required'));
+    assert.ok(p.some((e) => e.path === 'x.currency'));
+  });
+
+  for (const f of files) {
+    const model = (f.data as { model: string }).model;
+    test(`${model}: removing any top-level parameter fails`, () => {
+      for (const key of Object.keys(f.data as object).filter((k) => !['retrieved', 'sources', 'model', 'taxYear', 'currency'].includes(k))) {
+        const d = file(model);
+        if (typeof d[key] === 'string') continue; // free-text notes are optional
+        delete d[key];
+        assert.ok(problems(d).length > 0, `${model} without ${key} should fail`);
+      }
+    });
+  }
+
+  test('malformed nested values fail before runtime', () => {
+    const de = file('de');
+    de.social.health.ceiling = 'lots';
+    assert.ok(problems(de).some((e) => e.path === 'x.social.health.ceiling'));
+    const us = file('us');
+    delete us.federal.standardDeduction.headOfHousehold;
+    assert.ok(problems(us).some((e) => e.path === 'x.federal.standardDeduction.headOfHousehold'));
+    const es = file('es');
+    es.regions.madrid.childMinimums = [];
+    assert.ok(problems(es).some((e) => e.path === 'x.regions.madrid.childMinimums'));
+    const fi = file('fi');
+    fi.yleTax.max = Number.NaN;
+    assert.ok(problems(fi).some((e) => e.path === 'x.yleTax.max'));
+    const pt = file('pt');
+    pt.parcelaAbater.pop();
+    assert.ok(problems(pt).some((e) => e.path === 'x.parcelaAbater'));
+  });
+
+  test('a German tariff with zones that do not join fails', () => {
+    const de = file('de');
+    de.tariff.zone4.from += 1;
+    assert.ok(problems(de).some((e) => e.path === 'x.tariff.zone4.from'));
+  });
+
+  test('a city whose tax subdivision is not in the parameters fails', () => {
+    const city = fixtures.cities.find((c) => c.data.tax.model === 'fi')!;
+    const broken = { ...fixtures, countries: [...data.countries, ...fixtures.countries], cities: [{ ...city, data: { ...city.data, tax: { ...city.data.tax, subdivision: 'atlantis' } } }] };
+    assert.ok(checkJurisdictions([broken], files, latestFx().data).some((e) => e.message.includes('atlantis')));
+  });
+});
+
+describe('source freshness (F8)', () => {
+  const source = (extra: Partial<Source> = {}): Source => ({ id: 's', name: 'n', publisher: 'p', url: 'https://example.org', licence: 'l', attribution: 'a', cadence: 'annual', lastChecked: '2026-01-01', ...extra });
+  test('an overdue source blocks publication', () => {
+    assert.equal(staleSources([source()], new Date('2027-03-01')).length, 1);
+  });
+  test('a dated deferral with a reason allows it until the date passes', () => {
+    const deferred = source({ reviewDeferral: { until: '2027-06-30', reason: 'Waiting for the 2027 tables.' } });
+    assert.equal(staleSources([deferred], new Date('2027-03-01')).length, 0);
+    assert.equal(staleSources([deferred], new Date('2027-07-01')).length, 1);
+  });
+  test('a source within its review interval passes', () => {
+    assert.equal(staleSources([source()], new Date('2026-06-01')).length, 0);
   });
 });
 
