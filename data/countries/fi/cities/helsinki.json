@@ -16,23 +16,73 @@
     "rent": {
       "1": {
         "cityWide": {
-          "value": 1060,
+          "value": 1050,
           "unit": "EUR/month",
           "currency": "EUR",
           "retrieved": "2026-10-19",
-          "period": "2026-Q2",
+          "period": "2026-Q3",
           "geoLevel": "city",
           "provenance": "estimated",
           "derivedFrom": [
             "statfin-rents"
           ],
-          "basis": "€21.19 per m² × 50 m², the app's assumed size for 1 bedroom.",
+          "basis": "€20.99 per m² in the whole city × 50 m², the app's assumed size for 1 bedroom.",
           "includes": [
             "heating"
           ],
           "sourceId": "statfin-rents",
           "confidence": "medium",
-          "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "two-room flat (one bedroom and a living room)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        },
+        "central": {
+          "value": 1243,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€24.85 per m² in rental area 1 (inner city) × 50 m², the app's assumed size for 1 bedroom.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "two-room flat (one bedroom and a living room)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        },
+        "outer": {
+          "value": 822,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€16.43 per m² in rental area 4 (outer suburbs) × 50 m², the app's assumed size for 1 bedroom.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
           "rent": {
             "market": "new-leases",
             "statistic": "mean",
@@ -43,23 +93,73 @@
       },
       "2": {
         "cityWide": {
-          "value": 1418,
+          "value": 1411,
           "unit": "EUR/month",
           "currency": "EUR",
           "retrieved": "2026-10-19",
-          "period": "2026-Q2",
+          "period": "2026-Q3",
           "geoLevel": "city",
           "provenance": "estimated",
           "derivedFrom": [
             "statfin-rents"
           ],
-          "basis": "€20.26 per m² × 70 m², the app's assumed size for 2 bedrooms.",
+          "basis": "€20.15 per m² in the whole city × 70 m², the app's assumed size for 2 bedrooms.",
           "includes": [
             "heating"
           ],
           "sourceId": "statfin-rents",
           "confidence": "medium",
-          "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        },
+        "central": {
+          "value": 1643,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€23.47 per m² in rental area 1 (inner city) × 70 m², the app's assumed size for 2 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        },
+        "outer": {
+          "value": 1060,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.14 per m² in rental area 4 (outer suburbs) × 70 m², the app's assumed size for 2 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
           "rent": {
             "market": "new-leases",
             "statistic": "mean",
@@ -70,23 +170,73 @@
       },
       "3": {
         "cityWide": {
-          "value": 1823,
+          "value": 1813,
           "unit": "EUR/month",
           "currency": "EUR",
           "retrieved": "2026-10-19",
-          "period": "2026-Q2",
+          "period": "2026-Q3",
           "geoLevel": "city",
           "provenance": "estimated",
           "derivedFrom": [
             "statfin-rents"
           ],
-          "basis": "€20.26 per m² × 90 m², the app's assumed size for 3 bedrooms.",
+          "basis": "€20.15 per m² in the whole city × 90 m², the app's assumed size for 3 bedrooms.",
           "includes": [
             "heating"
           ],
           "sourceId": "statfin-rents",
           "confidence": "medium",
-          "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        },
+        "central": {
+          "value": 2112,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€23.47 per m² in rental area 1 (inner city) × 90 m², the app's assumed size for 3 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        },
+        "outer": {
+          "value": 1363,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.14 per m² in rental area 4 (outer suburbs) × 90 m², the app's assumed size for 3 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
           "rent": {
             "market": "new-leases",
             "statistic": "mean",
@@ -97,23 +247,73 @@
       },
       "4": {
         "cityWide": {
-          "value": 2229,
+          "value": 2217,
           "unit": "EUR/month",
           "currency": "EUR",
           "retrieved": "2026-10-19",
-          "period": "2026-Q2",
+          "period": "2026-Q3",
           "geoLevel": "city",
           "provenance": "estimated",
           "derivedFrom": [
             "statfin-rents"
           ],
-          "basis": "€20.26 per m² × 110 m², the app's assumed size for 4 bedrooms.",
+          "basis": "€20.15 per m² in the whole city × 110 m², the app's assumed size for 4 bedrooms.",
           "includes": [
             "heating"
           ],
           "sourceId": "statfin-rents",
           "confidence": "medium",
-          "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        },
+        "central": {
+          "value": 2582,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€23.47 per m² in rental area 1 (inner city) × 110 m², the app's assumed size for 4 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        },
+        "outer": {
+          "value": 1665,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.14 per m² in rental area 4 (outer suburbs) × 110 m², the app's assumed size for 4 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
           "rent": {
             "market": "new-leases",
             "statistic": "mean",
@@ -331,20 +531,36 @@
       "confidence": "medium",
       "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
     },
-    "childcarePerChild": {
-      "value": 335,
-      "low": 0,
-      "unit": "EUR/month",
-      "currency": "EUR",
-      "period": "2026-2027",
-      "geoLevel": "country",
-      "provenance": "observed",
-      "basis": "Highest municipal early-education fee from 1 August 2026 (€335 for the youngest child; €134 for the next).",
-      "sourceId": "fi-daycare-fees-2026",
-      "retrieved": "2026-10-19",
-      "confidence": "medium",
-      "limitations": "The fee depends on household income and size: a family of three pays the maximum above about €8,761 a month gross and nothing below about €5,934. A second child costs at most €134."
-    },
-    "carMonthly": null
+    "carMonthly": null,
+    "childcareIncomeBased": {
+      "rate": 0.107,
+      "maxFee": 335,
+      "minFee": 32,
+      "siblingShares": [
+        1,
+        0.4,
+        0.2
+      ],
+      "thresholdsByFamilySize": {
+        "2": 4369,
+        "3": 5635,
+        "4": 6399,
+        "5": 7163,
+        "6": 7925
+      },
+      "observation": {
+        "value": 335,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026-2027",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Municipal early-education fee from 1 August 2026: 10.7% of monthly gross household income above a threshold for the family size, at most €335 for the youngest child; under €32 nothing is charged. The second child pays 40% and each further child 20% of the youngest child's fee.",
+        "sourceId": "fi-daycare-fees-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
+      }
+    }
   }
 }

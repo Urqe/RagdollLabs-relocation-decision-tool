@@ -167,7 +167,20 @@ export function validateCity(v: unknown, path: string, sourceIds: Set<string>, c
       checkMeaning(o, `${path}.costs.lifestyle.${k}`, 'money', checks, out);
     }
   }
-  const known = new Set(['rent', 'utilities', 'lifestyle', 'servicePriceIndex', ...MONEY_KEYS]);
+  if (costs.childcareIncomeBased !== undefined) {
+    const r = costs.childcareIncomeBased;
+    const p = `${path}.costs.childcareIncomeBased`;
+    if (!isObj(r)) out.push({ path: p, message: 'must be an object' });
+    else {
+      if (!(isNum(r.rate) && r.rate > 0 && r.rate < 1)) out.push({ path: `${p}.rate`, message: 'must be a fraction' });
+      for (const k of ['maxFee', 'minFee']) if (!(isNum(r[k]) && (r[k] as number) >= 0)) out.push({ path: `${p}.${k}`, message: 'must be an amount' });
+      if (!(Array.isArray(r.siblingShares) && r.siblingShares.length > 0 && r.siblingShares.every((x) => isNum(x) && x >= 0 && x <= 1))) out.push({ path: `${p}.siblingShares`, message: 'must be a list of fractions' });
+      if (!(isObj(r.thresholdsByFamilySize) && Object.keys(r.thresholdsByFamilySize).length > 0 && Object.values(r.thresholdsByFamilySize).every((x) => isNum(x) && x > 0))) out.push({ path: `${p}.thresholdsByFamilySize`, message: 'must map family sizes to monthly thresholds' });
+      out.push(...validateObservation(r.observation, `${p}.observation`, sourceIds));
+      checkMeaning(r.observation, `${p}.observation`, 'money', checks, out);
+    }
+  }
+  const known = new Set(['rent', 'utilities', 'lifestyle', 'servicePriceIndex', 'childcareIncomeBased', ...MONEY_KEYS]);
   for (const k of Object.keys(costs)) if (!known.has(k)) out.push({ path: `${path}.costs.${k}`, message: 'unknown cost category' });
   return out;
 }

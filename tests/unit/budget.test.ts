@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBudget, costCategories } from '../../src/core/budget/budget.ts';
+import { buildBudget, costCategories, incomeBasedChildcareFees } from '../../src/core/budget/budget.ts';
 import { computeCityResult } from '../../src/core/budget/city-result.ts';
 import { adultEquivalents, DEFAULT_HOUSEHOLD, type Household } from '../../src/core/budget/household.ts';
 import type { City, Country, FxSnapshot, Observation } from '../../src/core/types.ts';
@@ -61,6 +61,13 @@ describe('spending basket', () => {
     const cats = costCategories(testCity(), h(), { rentMonthlyLocal: 1500, rentIncludes: ['utilities'] }, fx, 'EUR');
     assert.equal(cat(cats, 'utilities').status, 'included');
     assert.equal(cat(cats, 'internet').status, 'estimated');
+  });
+
+  test('a rent that includes internet never removes a combined phone-and-internet line', () => {
+    const city = testCity({ communicationsPerAdultEquivalent: obs(70) });
+    const cats = costCategories(city, h(), { rentMonthlyLocal: 1500, rentIncludes: ['internet'] }, fx, 'EUR');
+    assert.equal(cat(cats, 'internet').status, 'estimated');
+    assert.equal(cat(cats, 'internet').label, 'Phone and internet');
   });
 
   test('your own figure fills a missing essential cost', () => {
@@ -152,5 +159,35 @@ describe('city result', () => {
     const a = computeCityResult(testCity(), finland, h(), {}, fx, { fi });
     const b = computeCityResult(testCity(), finland, h(), {}, fx, { fi });
     assert.deepEqual(a, b);
+  });
+});
+
+describe('income-based daycare fees (review 0.3.1, T1)', () => {
+  const rule = {
+    rate: 0.107, maxFee: 335, minFee: 32, siblingShares: [1, 0.4, 0.2],
+    thresholdsByFamilySize: { '2': 4369, '3': 5635, '4': 6399, '5': 7163, '6': 7925 },
+    observation: obs(335),
+  };
+  const fees = (over: Partial<Household>) => incomeBasedChildcareFees(rule, h(over));
+  test('two earners on €60,000 each with one child: the highest fee', () => {
+    assert.deepEqual(fees({ earnersGrossEur: [60000, 60000], children: kids(1), childrenInDaycare: 1 }), [335]);
+  });
+  test('worked by hand: €84,000 a year (€7,000 a month), family of three, one child', () => {
+    // 10.7% × (7,000 − 5,635) = 146.06
+    near(fees({ earnersGrossEur: [84000], nonEarningAdults: 1, children: kids(1), childrenInDaycare: 1 })[0]!, 146.055, 1e-9);
+  });
+  test('below the threshold nothing is charged; under €32 nothing is charged', () => {
+    assert.deepEqual(fees({ earnersGrossEur: [50000], nonEarningAdults: 1, children: kids(1), childrenInDaycare: 1 }), [0]);
+    // €5,900 a month for three: 10.7% × 265 = 28.36, under the minimum.
+    assert.deepEqual(fees({ earnersGrossEur: [70800], nonEarningAdults: 1, children: kids(1), childrenInDaycare: 1 }), [0]);
+  });
+  test('the second child pays 40% and the third 20% of the first child’s fee', () => {
+    assert.deepEqual(fees({ earnersGrossEur: [80000, 80000], children: kids(3), childrenInDaycare: 3 }), [335, 134, 67]);
+  });
+  test('the budget uses the rule, not a flat fee per child', () => {
+    const city = testCity({ childcareIncomeBased: rule });
+    const c = cat(costCategories(city, h({ earnersGrossEur: [80000, 80000], children: kids(2), childrenInDaycare: 2 }), {}, fx, 'EUR'), 'childcare');
+    near(c.local!.typical, 335 + 134, 1e-9);
+    assert.match(c.notes.join(' '), /gross household income/);
   });
 });

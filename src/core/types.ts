@@ -77,6 +77,22 @@ export interface ChildAges {
   from17to24: number;
 }
 
+/**
+ * A daycare fee set by law from gross household income: a rate on income above a threshold that depends on
+ * family size, capped, and waived when below a minimum. Further children pay a share of the first child's fee.
+ */
+export interface IncomeBasedChildcare {
+  rate: number;
+  maxFee: number;
+  minFee: number;
+  /** Share of the youngest child's fee for the first, second and each further child, e.g. [1, 0.4, 0.2]. */
+  siblingShares: number[];
+  /** Monthly gross income threshold by family size (adults and children under 18); the largest size applies above it. */
+  thresholdsByFamilySize: Record<string, number>;
+  /** The highest fee, carrying the source, period and confidence shown in the breakdown. */
+  observation: Observation;
+}
+
 export type BedroomCount = 1 | 2 | 3 | 4;
 export type CityLocation = 'central' | 'outer';
 
@@ -120,6 +136,8 @@ export interface CityCosts {
   healthcarePerPerson?: Observation | null;
   /** Daycare per child per month. */
   childcarePerChild?: Observation | null;
+  /** Daycare fees set by household income and size (Finland). Used instead of `childcarePerChild` when present. */
+  childcareIncomeBased?: IncomeBasedChildcare;
   /**
    * Cost here, per adult equivalent per month, of the reference (Moderate) level of each lifestyle category.
    * When every category is present the presets are priced from these; otherwise the flat fallback is used.

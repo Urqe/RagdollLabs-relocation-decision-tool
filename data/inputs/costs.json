@@ -21,10 +21,24 @@
       "currency": "EUR",
       "rent": {
         "perM2": {
-          "1": 21.19,
-          "2": 20.26,
-          "3": 20.26,
-          "4": 20.26
+          "cityWide": {
+            "1": 20.99,
+            "2": 20.15,
+            "3": 20.15,
+            "4": 20.15
+          },
+          "central": {
+            "1": 24.85,
+            "2": 23.47,
+            "3": 23.47,
+            "4": 23.47
+          },
+          "outer": {
+            "1": 16.43,
+            "2": 15.14,
+            "3": 15.14,
+            "4": 15.14
+          }
         },
         "dwelling": {
           "1": "two-room flat (one bedroom and a living room)",
@@ -34,14 +48,19 @@
         },
         "market": "new-leases",
         "statistic": "mean",
-        "period": "2026-Q2",
+        "period": "2026-Q3",
         "geoLevel": "city",
         "sourceId": "statfin-rents",
         "confidence": "medium",
         "includes": [
           "heating"
         ],
-        "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not."
+        "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+        "areas": {
+          "central": "rental area 1 (inner city)",
+          "outer": "rental area 4 (outer suburbs)",
+          "cityWide": "the whole city"
+        }
       },
       "electricity": {
         "pricePerKwh": 0.2254,
@@ -94,21 +113,37 @@
         "confidence": "medium",
         "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
       },
-      "childcarePerChild": {
-        "value": 335,
-        "low": 0,
-        "unit": "EUR/month",
-        "currency": "EUR",
-        "period": "2026-2027",
-        "geoLevel": "country",
-        "provenance": "observed",
-        "basis": "Highest municipal early-education fee from 1 August 2026 (€335 for the youngest child; €134 for the next).",
-        "sourceId": "fi-daycare-fees-2026",
-        "retrieved": "2026-10-19",
-        "confidence": "medium",
-        "limitations": "The fee depends on household income and size: a family of three pays the maximum above about €8,761 a month gross and nothing below about €5,934. A second child costs at most €134."
-      },
-      "carMonthly": null
+      "carMonthly": null,
+      "childcareIncomeBased": {
+        "rate": 0.107,
+        "maxFee": 335,
+        "minFee": 32,
+        "siblingShares": [
+          1,
+          0.4,
+          0.2
+        ],
+        "thresholdsByFamilySize": {
+          "2": 4369,
+          "3": 5635,
+          "4": 6399,
+          "5": 7163,
+          "6": 7925
+        },
+        "observation": {
+          "value": 335,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026-2027",
+          "geoLevel": "country",
+          "provenance": "observed",
+          "basis": "Municipal early-education fee from 1 August 2026: 10.7% of monthly gross household income above a threshold for the family size, at most €335 for the youngest child; under €32 nothing is charged. The second child pays 40% and each further child 20% of the youngest child's fee.",
+          "sourceId": "fi-daycare-fees-2026",
+          "retrieved": "2026-10-19",
+          "confidence": "medium",
+          "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
+        }
+      }
     },
     "de-berlin": {
       "currency": "EUR",

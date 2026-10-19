@@ -1,4 +1,4 @@
-import { LIFESTYLE_CATEGORIES, type City, type CurrencyCode, type FxSnapshot, type LifestyleDefinition, type Observation } from '../types.ts';
+import { LIFESTYLE_CATEGORIES, type City, type CurrencyCode, type FxSnapshot, type IncomeBasedChildcare, type LifestyleDefinition, type Observation } from '../types.ts';
 import { addRanges, eurToLocal, mapRange, point, scaleRange, type Range } from '../money/money.ts';
 import { adultEquivalents, adults, FLAT_LIFESTYLE_EUR, totalChildren, type CityOverrides, type Household } from './household.ts';
 
@@ -140,11 +140,39 @@ function utilitiesCategory(c: City['costs'], bedroomKey: '1' | '2' | '3' | '4', 
   };
 }
 
+/** Monthly daycare fees under an income-based rule, for every child in daycare. */
+export function incomeBasedChildcareFees(rule: IncomeBasedChildcare, h: Household): number[] {
+  const familySize = adults(h) + h.children.under14 + h.children.from14to16;
+  const sizes = Object.keys(rule.thresholdsByFamilySize).map(Number).sort((a, b) => a - b);
+  const size = sizes.filter((s) => s <= familySize).at(-1) ?? sizes[0]!;
+  const threshold = rule.thresholdsByFamilySize[String(size)]!;
+  const income = h.earnersGrossEur.reduce((s, g) => s + g, 0) / 12;
+  const first = Math.min(rule.maxFee, Math.max(0, rule.rate * (income - threshold)));
+  return Array.from({ length: h.childrenInDaycare }, (_, i) => {
+    const fee = first * (rule.siblingShares[Math.min(i, rule.siblingShares.length - 1)] ?? 0);
+    return fee < rule.minFee ? 0 : fee;
+  });
+}
+
+function incomeBasedChildcare(rule: IncomeBasedChildcare, h: Household): CategoryResult {
+  const fees = incomeBasedChildcareFees(rule, h);
+  const total = fees.reduce((s, f) => s + f, 0);
+  const n = fees.length;
+  return {
+    id: 'childcare', label: LABELS.childcare, essential: true, status: 'estimated', local: point(total), observations: [rule.observation],
+    notes: [`${n} child${n > 1 ? 'ren' : ''} in daycare. The fee is set from your gross household income and family size${n > 1 ? '; further children pay a share of the first child’s fee' : ''}.`],
+  };
+}
+
 export function costCategories(city: City, h: Household, o: CityOverrides, fx: FxSnapshot, currency: CurrencyCode, lifestyle?: LifestyleDefinition): CategoryResult[] {
   const c = city.costs;
   const rent = rentCategory(city, h, o);
   const rentObs = rent.observations[0];
-  const rentCovers = (item: 'utilities' | 'internet'): boolean => (rent.status === 'override' ? (o.rentIncludes ?? []).includes(item) : includesItem(rentObs, item));
+  const rentCovers = (item: 'utilities' | 'internet'): boolean => {
+    // Phone and internet together (with devices) is never covered by rent.
+    if (item === 'internet' && c.communicationsPerAdultEquivalent !== undefined) return false;
+    return rent.status === 'override' ? (o.rentIncludes ?? []).includes(item) : includesItem(rentObs, item);
+  };
   const bedroomKey = String(h.bedrooms) as '1' | '2' | '3' | '4';
   const nAdults = adults(h);
 
@@ -193,7 +221,9 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
     ? notApplicable('childcare', true, 'No children in daycare.')
     : own.childcare !== undefined
       ? yours('childcare', true, own.childcare)
-      : fromObs('childcare', true, c.childcarePerChild, h.childrenInDaycare, [`${h.childrenInDaycare} child${h.childrenInDaycare > 1 ? 'ren' : ''} in daycare.`]);
+      : c.childcareIncomeBased
+        ? incomeBasedChildcare(c.childcareIncomeBased, h)
+        : fromObs('childcare', true, c.childcarePerChild, h.childrenInDaycare, [`${h.childrenInDaycare} child${h.childrenInDaycare > 1 ? 'ren' : ''} in daycare.`]);
 
   const discretionary = discretionaryCategory(city, h, fx, currency, lifestyle);
 

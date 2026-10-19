@@ -226,7 +226,9 @@ function ownFigures(city: City, r: CityResult, ov: CityOverrides, store: Store):
   return h('details', { class: 'own', open: anyOwn || r.budget.missing.length > 0 },
     h('summary', {}, 'Use your own figures for this city'),
     numberField(`rent-override-${city.id}`, 'Rent', cur, ov.rentMonthlyLocal, (v) => set((o) => (v === undefined ? without(without(o, 'rentMonthlyLocal'), 'rentIncludes') : { ...o, rentMonthlyLocal: v }))),
-    h('div', { class: 'rent-includes' }, includeBox('utilities', 'My rent includes utilities'), includeBox('internet', 'My rent includes internet')),
+    // Where the city has a combined phone-and-internet line, a rent that includes internet cannot remove it.
+    h('div', { class: 'rent-includes' }, includeBox('utilities', 'My rent includes utilities'),
+      city.costs.communicationsPerAdultEquivalent === undefined ? includeBox('internet', 'My rent includes internet') : null),
     numberField(`net-override-${city.id}`, 'Household take-home', '€ / month', ov.netMonthlyEur, (v) => set((o) => (v === undefined ? without(o, 'netMonthlyEur') : { ...o, netMonthlyEur: v }))),
     upfront.map(ownField),
     later.length > 0 ? h('details', { class: 'own-more' }, h('summary', {}, 'Other costs'), later.map(ownField)) : null,

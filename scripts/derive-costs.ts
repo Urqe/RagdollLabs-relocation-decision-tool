@@ -12,8 +12,13 @@ import { readTree, ROOT } from './repo-data.ts';
 type Bedrooms = '1' | '2' | '3' | '4';
 const BEDROOMS: Bedrooms[] = ['1', '2', '3', '4'];
 
+type Location = 'cityWide' | 'central' | 'outer';
+
 interface PerM2Rent {
-  perM2: Record<Bedrooms, number>;
+  /** One figure per bedroom count for the whole city, or per location when the source splits the city. */
+  perM2: Record<Bedrooms, number> | Partial<Record<Location, Record<Bedrooms, number>>>;
+  /** What each location stands for in the source, e.g. "rental area 1 (inner city)". */
+  areas?: Partial<Record<Location, string>>;
   dwelling: Record<Bedrooms, string>;
   market: RentDefinition['market'];
   statistic: RentDefinition['statistic'];
@@ -37,6 +42,7 @@ interface CityInputs {
   transitPassAdult?: Observation | null;
   healthcarePerPerson?: Observation | null;
   childcarePerChild?: Observation | null;
+  childcareIncomeBased?: CityCosts['childcareIncomeBased'];
   carMonthly?: Observation | null;
 }
 
@@ -59,15 +65,21 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
     if (c.rent) {
       const r = c.rent;
       const m2 = a.floorAreaM2[b];
-      out.rent![b] = {
-        cityWide: {
-          value: round(r.perM2[b] * m2), ...base, period: r.period, geoLevel: r.geoLevel, provenance: 'estimated',
-          derivedFrom: [r.sourceId], basis: `€${r.perM2[b].toFixed(2)} per m² × ${m2} m², the app's assumed size for ${b} bedroom${b === '1' ? '' : 's'}.`,
+      const byLocation = typeof (r.perM2 as Record<string, unknown>)['1'] === 'number'
+        ? { cityWide: r.perM2 as Record<Bedrooms, number> }
+        : (r.perM2 as Partial<Record<Location, Record<Bedrooms, number>>>);
+      const entry: Partial<Record<Location, Observation>> = {};
+      for (const [loc, values] of Object.entries(byLocation) as [Location, Record<Bedrooms, number>][]) {
+        const area = r.areas?.[loc];
+        entry[loc] = {
+          value: round(values[b] * m2), ...base, period: r.period, geoLevel: loc === 'cityWide' ? r.geoLevel : 'district', provenance: 'estimated',
+          derivedFrom: [r.sourceId], basis: `€${values[b].toFixed(2)} per m²${area ? ` in ${area}` : ''} × ${m2} m², the app's assumed size for ${b} bedroom${b === '1' ? '' : 's'}.`,
           ...(r.includes ? { includes: r.includes } : {}),
           sourceId: r.sourceId, confidence: r.confidence, limitations: r.limitations,
           rent: { market: r.market, statistic: r.statistic, dwelling: r.dwelling[b], adjustment: `Converted from a rent per m² at ${m2} m².` },
-        },
-      };
+        };
+      }
+      out.rent![b] = entry;
     } else if (c.rentObservations) {
       const r = c.rentObservations;
       out.rent![b] = {
@@ -106,8 +118,8 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
   }
 
   if (c.waterPerPerson !== undefined) out.waterPerPerson = c.waterPerPerson;
-  for (const k of ['transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'carMonthly'] as const) {
-    if (c[k] !== undefined) out[k] = c[k];
+  for (const k of ['transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const) {
+    if (c[k] !== undefined) (out as Record<string, unknown>)[k] = c[k];
   }
   return out;
 }
@@ -116,7 +128,7 @@ export function loadCostInputs(): CostInputs {
   return JSON.parse(readFileSync(join(ROOT, 'data/inputs/costs.json'), 'utf8')) as CostInputs;
 }
 
-const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'carMonthly'] as const;
+const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const;
 
 export function costDifferences(): string[] {
   const inputs = loadCostInputs();

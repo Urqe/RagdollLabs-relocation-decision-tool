@@ -7,5 +7,11 @@
     "types": [],
     "sourceMap": false
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/data/validate.ts",
+    "src/data/tax-schemas.ts"
+  ]
 }
