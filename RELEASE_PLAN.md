@@ -90,7 +90,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.1 | Maintenance | Review of 0.2.0 | Completed 2026-10-19 (ed6a50a) |
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
 | 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (40c7a70) |
-| 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (pending) |
+| 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Not started |
@@ -261,7 +261,7 @@ The pilot set shows real differences in tax system, living costs, climate and ev
 
 ### 0.3.1 — Maintenance: review of 0.3.0
 
-**Status:** Completed 2026-10-19 (pending). Four findings fixed (T1–T4); T5, T6 and T8 deferred to the owner because they need a browser; T7 (Hermosillo gaps) deferred to 0.6.0. Findings in [docs/reviews/0.3.1.md](docs/reviews/0.3.1.md).
+**Status:** Completed 2026-10-19 (218bb47). Four findings fixed (T1–T4); T5, T6 and T8 deferred to the owner because they need a browser; T7 (Hermosillo gaps) deferred to 0.6.0. Findings in [docs/reviews/0.3.1.md](docs/reviews/0.3.1.md).
 
 Standard maintenance review, plus the official calculator cross-check moved from the backlog (S7 in review 0.2.1): at least one case per pilot country (Finland, Germany, Spain, US, Mexico) against Verohallinto, BMF, AEAT, IRS and SAT tools or published examples, recorded as reference cases with inputs, tax year and date checked. If the build environment cannot reach a calculator, the owner runs the cases and they are committed as test data.
 
