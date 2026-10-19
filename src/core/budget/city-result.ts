@@ -1,4 +1,4 @@
-import type { City, Country, FxSnapshot } from '../types.ts';
+import type { City, Country, FxSnapshot, LifestyleDefinition } from '../types.ts';
 import { computeTax, type TaxParamSet, type TaxResult } from '../tax/index.ts';
 import { eurToLocal } from '../money/money.ts';
 import { buildBudget, costCategories, type BudgetResult } from './budget.ts';
@@ -25,6 +25,7 @@ export function computeCityResult(
   overrides: CityOverrides,
   fx: FxSnapshot,
   taxParams: TaxParamSet,
+  lifestyle?: LifestyleDefinition,
 ): CityResult {
   const currency = country.currency;
   // A per-city income override can change the number of earners, so the household is normalized again.
@@ -53,7 +54,7 @@ export function computeCityResult(
     takeHome = tax.netAnnual / 12;
   }
 
-  const categories = costCategories(city, hh, overrides, fx, currency);
+  const categories = costCategories(city, hh, overrides, fx, currency, lifestyle);
   return {
     cityId: city.id,
     currency,

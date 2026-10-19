@@ -1,8 +1,8 @@
 import type { AffordabilityBand, CategoryResult } from '../core/budget/budget.ts';
 import { computeCityResult, type CityResult } from '../core/budget/city-result.ts';
-import type { CityOverrides } from '../core/budget/household.ts';
+import { OWN_COST_CATEGORIES, type CityOverrides, type OwnCostCategory } from '../core/budget/household.ts';
 import type { Range } from '../core/money/money.ts';
-import type { City, CurrencyCode, Observation } from '../core/types.ts';
+import type { City, CurrencyCode, Observation, RentDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { formatRoute, type AppState, type Store } from '../state/store.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
@@ -26,7 +26,7 @@ const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
 };
 
 /** Missing categories the user can fill in with "Use your own figures". */
-const OWN_FIGURE_CATEGORIES: readonly string[] = ['rent'];
+const OWN_FIGURE_CATEGORIES: readonly string[] = ['rent', ...OWN_COST_CATEGORIES];
 const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
 function missingList(r: CityResult, ids: string[]): string {
   const names = ids.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m);
@@ -48,19 +48,47 @@ function rangeText(r: Range, cur: CurrencyCode): string {
   return `${f.monthly(r.low, cur)} to ${f.monthly(r.high, cur)}`;
 }
 
+const RENT_MARKET: Record<RentDefinition['market'], string> = {
+  'all-leases': 'all current leases', 'new-leases': 'new leases', listings: 'advertised rents', 'recent-movers': 'rents paid by recent movers',
+};
+const RENT_STAT: Record<RentDefinition['statistic'], string> = {
+  mean: 'average', median: 'median', 'lower-quartile': 'lower quartile', 'upper-quartile': 'upper quartile', '40th-percentile': '40th percentile',
+};
+const GEO_WORD: Record<string, string> = { country: 'national value', region: 'regional value', city: 'city value', district: 'district value' };
+
+/** One line saying what a value measures and how it was made, so a figure can be traced without leaving the page. */
+function definition(o: Observation): string | null {
+  const parts: string[] = [];
+  if (o.rent) parts.push(`${upperFirst(RENT_STAT[o.rent.statistic])} of ${RENT_MARKET[o.rent.market]}, ${o.rent.dwelling}${o.rent.furnished ? ', furnished' : ''}.`);
+  if (o.rent?.adjustment) parts.push(o.rent.adjustment);
+  if (o.basis) parts.push(o.basis);
+  if (o.limitations && o.confidence !== 'high') parts.push(o.limitations);
+  return parts.length > 0 ? parts.join(' ') : null;
+}
+
 function sourceCell(c: CategoryResult, data: Dataset): Child {
   if (c.status === 'override') return h('span', { class: 'src' }, 'Your figure');
   if (c.status === 'included' || c.status === 'notApplicable') return h('span', { class: 'src muted' }, c.notes[0] ?? '');
   if (c.status === 'missing') return h('span', { class: 'src missing' }, 'No data');
   const obs: Observation[] = c.observations;
   if (obs.length === 0) return h('span', { class: 'src muted' }, 'App assumption');
-  return obs.map((o) => {
+  // Values from the same source, period and confidence share one line; their explanations are listed together.
+  const groups = new Map<string, Observation[]>();
+  for (const o of obs) {
+    const key = [o.sourceId, o.period, o.confidence, o.provenance, o.geoLevel].join('|');
+    groups.set(key, [...(groups.get(key) ?? []), o]);
+  }
+  return [...groups.values()].map((group) => {
+    const o = group[0]!;
     const s = data.source(o.sourceId);
+    const defs = s?.fixture ? [] : [...new Set(group.map(definition).filter((d): d is string => d !== null))];
     return h('span', { class: `src conf-${o.confidence}` },
       s ? (s.fixture ? 'Development fixture' : h('a', { href: s.url, rel: 'noopener', target: '_blank' }, s.name)) : o.sourceId,
       `, ${o.period}`,
-      o.provenance === 'inherited' ? `, ${o.geoLevel} value` : '',
-      h('span', { class: 'conf' }, ` ${o.confidence} confidence`));
+      o.provenance === 'inherited' ? `, ${GEO_WORD[o.geoLevel] ?? `${o.geoLevel} value`}` : '',
+      o.provenance === 'estimated' && (o.derivedFrom?.length ?? 0) > 0 ? ', derived' : '',
+      h('span', { class: 'conf' }, ` ${o.confidence} confidence`),
+      defs.length > 0 ? h('details', { class: 'how' }, h('summary', {}, 'How this is estimated'), defs.map((d) => h('p', {}, d))) : null);
   });
 }
 
@@ -80,7 +108,7 @@ function ribbon(r: CityResult): HTMLElement {
   const segs = parts.map((p) => seg(p.id, SHORT[p.id] ?? p.label, p.value));
   if (left > 0) segs.push(seg('left', 'Left over', left));
   const partial = b.missing.length > 0;
-  const excluded = partial ? ` Not counting ${missingList(r, b.missing)}, which has no data.` : '';
+  const excluded = partial ? ` Not counting ${missingList(r, b.missing)}, which ${b.missing.length > 1 ? 'have' : 'has'} no data.` : '';
   const label = (left >= 0
     ? `Of ${f.monthly(b.takeHome, cur)} take-home, ${f.monthly(spend, cur)} goes to ${partial ? 'known ' : ''}spending and ${f.monthly(left, cur)} is left.`
     : `${partial ? 'Known spending' : 'Spending'} of ${f.monthly(spend, cur)} is ${f.monthly(-left, cur)} more than take-home of ${f.monthly(b.takeHome, cur)}.`) + excluded;
@@ -104,7 +132,7 @@ function balances(r: CityResult): HTMLElement {
   const takeHome = tile('take-home', 'Take-home', b.takeHome, null, r.takeHomeSource === 'override' ? 'Your own net figure.' : 'Gross pay minus income tax and employee contributions, per month.');
   if (b.missing.length > 0) {
     // With an essential cost missing, the balances below take-home are partial, not estimates.
-    const without = `Leaves out ${missingList(r, b.missing)}, which has no data.`;
+    const without = `Leaves out ${missingList(r, b.missing)}, which ${b.missing.length > 1 ? 'have' : 'has'} no data.`;
     return h('dl', { class: 'balances partial' },
       takeHome,
       tile('essentials', 'Known essentials', b.essentials.typical, null, `${without} Not the full cost of essentials.`),
@@ -153,19 +181,20 @@ function payDetail(r: CityResult): HTMLElement | null {
     h('ul', { class: 'notes' }, t.notes.map((n) => h('li', {}, n))));
 }
 
+const OWN_LABEL: Record<OwnCostCategory, string> = {
+  utilities: 'Utilities', internet: 'Internet', groceries: 'Groceries', transport: 'Transport', healthcare: 'Healthcare out of pocket', childcare: 'Childcare',
+};
+
 function ownFigures(city: City, r: CityResult, ov: CityOverrides, store: Store): HTMLElement {
-  const set = (patch: Partial<CityOverrides> | ((o: CityOverrides) => CityOverrides)): void =>
-    store.set((s) => {
-      const current = s.overrides[city.id] ?? {};
-      const next = typeof patch === 'function' ? patch(current) : { ...current, ...patch };
-      return { ...s, overrides: { ...s.overrides, [city.id]: next } };
-    });
+  const set = (patch: (o: CityOverrides) => CityOverrides): void =>
+    store.set((s) => ({ ...s, overrides: { ...s.overrides, [city.id]: patch(s.overrides[city.id] ?? {}) } }));
   const numberField = (id: string, label: string, unit: string, value: number | undefined, onSet: (v: number | undefined) => void) =>
     h('div', { class: 'field' },
       h('label', { for: id }, label),
       h('div', { class: 'with-unit' },
+        // Updates as you type, like the household form, so moving on with Tab never lands on a replaced element.
         h('input', { id, type: 'number', min: 0, step: 10, value: value === undefined ? '' : Math.round(value), placeholder: 'Use estimate',
-          onchange: (e: Event) => {
+          oninput: (e: Event) => {
             const el = e.target as HTMLInputElement;
             onSet(el.value === '' || !Number.isFinite(el.valueAsNumber) || el.valueAsNumber < 0 ? undefined : el.valueAsNumber);
           } }),
@@ -174,10 +203,33 @@ function ownFigures(city: City, r: CityResult, ov: CityOverrides, store: Store):
     const { [k]: _drop, ...rest } = o;
     return rest;
   };
-  return h('details', { class: 'own', open: ov.rentMonthlyLocal !== undefined || ov.netMonthlyEur !== undefined || r.budget.missing.some((m) => OWN_FIGURE_CATEGORIES.includes(m)) },
+  const setOwn = (k: OwnCostCategory, v: number | undefined) => set((o) => {
+    const { [k]: _drop, ...rest } = o.ownCosts ?? {};
+    const ownCosts = v === undefined ? rest : { ...rest, [k]: v };
+    return Object.keys(ownCosts).length === 0 ? without(o, 'ownCosts') : { ...o, ownCosts };
+  });
+  const cur = `${r.currency} / month`;
+  const ownField = (k: OwnCostCategory) => numberField(`own-${k}-${city.id}`, `${OWN_LABEL[k]}, whole household`, cur, ov.ownCosts?.[k], (v) => setOwn(k, v));
+  const status = (k: string) => r.budget.categories.find((c) => c.id === k)?.status;
+  const relevant = OWN_COST_CATEGORIES.filter((k) => status(k) !== 'notApplicable' && status(k) !== 'included');
+  const upfront = relevant.filter((k) => status(k) === 'missing' || ov.ownCosts?.[k] !== undefined);
+  const later = relevant.filter((k) => !upfront.includes(k));
+  const includes = ov.rentIncludes ?? [];
+  const includeBox = (item: 'utilities' | 'internet', label: string) => h('label', { class: 'check' },
+    h('input', { type: 'checkbox', id: `rent-includes-${item}-${city.id}`, checked: includes.includes(item), disabled: ov.rentMonthlyLocal === undefined,
+      onchange: (e: Event) => set((o) => {
+        const next = (e.target as HTMLInputElement).checked ? [...new Set([...(o.rentIncludes ?? []), item])] : (o.rentIncludes ?? []).filter((x) => x !== item);
+        return next.length === 0 ? without(o, 'rentIncludes') : { ...o, rentIncludes: next };
+      }) }),
+    h('span', {}, label));
+  const anyOwn = ov.rentMonthlyLocal !== undefined || ov.netMonthlyEur !== undefined || ov.ownCosts !== undefined;
+  return h('details', { class: 'own', open: anyOwn || r.budget.missing.length > 0 },
     h('summary', {}, 'Use your own figures for this city'),
-    numberField(`rent-override-${city.id}`, 'Rent', `${r.currency} / month`, ov.rentMonthlyLocal, (v) => set((o) => (v === undefined ? without(o, 'rentMonthlyLocal') : { ...o, rentMonthlyLocal: v }))),
+    numberField(`rent-override-${city.id}`, 'Rent', cur, ov.rentMonthlyLocal, (v) => set((o) => (v === undefined ? without(without(o, 'rentMonthlyLocal'), 'rentIncludes') : { ...o, rentMonthlyLocal: v }))),
+    h('div', { class: 'rent-includes' }, includeBox('utilities', 'My rent includes utilities'), includeBox('internet', 'My rent includes internet')),
     numberField(`net-override-${city.id}`, 'Household take-home', '€ / month', ov.netMonthlyEur, (v) => set((o) => (v === undefined ? without(o, 'netMonthlyEur') : { ...o, netMonthlyEur: v }))),
+    upfront.map(ownField),
+    later.length > 0 ? h('details', { class: 'own-more' }, h('summary', {}, 'Other costs'), later.map(ownField)) : null,
     h('p', { class: 'hint' }, 'Leave a field empty to use the estimate. Your figures are labelled as yours in the breakdown.'));
 }
 
@@ -185,13 +237,18 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
   const route = state.route;
   const requested = route.screen === 'explore' ? route.cityId : null;
   const found = requested ? data.city(requested) : undefined;
-  const city = requested ? found : data.cities[0];
+  const city = requested ? found : (data.cities.find((c) => !c.fixture) ?? data.cities[0]);
 
   const picker = h('select', { id: 'city-picker', onchange: (e: Event) => { location.hash = formatRoute({ screen: 'explore', cityId: (e.target as HTMLSelectElement).value }); } },
     city ? null : h('option', { value: '', selected: true, disabled: true }, 'Choose a city'),
-    [...new Set(data.cities.map((c) => c.countryId))].map((cid) =>
+    // Cities with sourced data are grouped by country; cities still on placeholder costs are kept apart.
+    [...new Set(data.cities.filter((c) => !c.fixture).map((c) => c.countryId))].map((cid) =>
       h('optgroup', { label: data.country(cid)?.name ?? cid },
-        data.cities.filter((c) => c.countryId === cid).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, c.name)))));
+        data.cities.filter((c) => c.countryId === cid && !c.fixture).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, c.name)))),
+    data.cities.some((c) => c.fixture)
+      ? h('optgroup', { label: 'Development preview (placeholder costs)' },
+          data.cities.filter((c) => c.fixture).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, `${c.name}, ${data.country(c.countryId)?.name ?? c.countryId}`)))
+      : null);
   const pickerField = h('div', { class: 'field picker' }, h('label', { for: 'city-picker' }, 'City'), picker);
 
   if (requested && !found) {
@@ -220,7 +277,7 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
       h('h1', { id: 'city-name' }, city.name),
       h('p', { class: 'place' }, [region?.name, country.name].filter(Boolean).join(', '))),
     pickerField);
-  const fixtureNote = city.fixture ? h('p', { class: 'banner fixture', role: 'note' }, 'Development data. The costs for this city are placeholders, not real figures. Tax rules are real 2026 rules.') : null;
+  const fixtureNote = city.fixture ? h('p', { class: 'banner fixture', role: 'note' }, 'Development preview. The costs for this city are placeholders, not real figures, and it is left out of any comparison. Tax rules are real 2026 rules.') : null;
 
   if (state.invalidFields.length > 0) {
     replaceChildren(root, head, fixtureNote, h('p', { class: 'empty prompt', role: 'status' }, 'Fix the highlighted household field to see results.'));
@@ -230,7 +287,7 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
   const ov = state.overrides[city.id] ?? {};
   let result: CityResult;
   try {
-    result = computeCityResult(city, country, state.profile.household, ov, data.release.fx, data.tax);
+    result = computeCityResult(city, country, state.profile.household, ov, data.release.fx, data.tax, data.release.lifestyle);
   } catch (e) {
     replaceChildren(root, head, h('p', { class: 'empty' }, `This city cannot be calculated: ${(e as Error).message}`));
     return;

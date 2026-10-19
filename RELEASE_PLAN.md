@@ -89,7 +89,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Completed 2026-10-19 (ed6a50a) |
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
-| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Not started |
+| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (pending) |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Not started |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
@@ -207,7 +207,19 @@ Findings, reproductions and acceptance are in [docs/reviews/0.2.2.md](docs/revie
 
 ### 0.3.0 — Pilot Explore on real data
 
-**Status:** Not started
+**Status:** Completed 2026-10-19 (pending)
+
+**Notes for the 0.3.1 review**
+
+- Gaps shown as missing, with an input to enter your own figure: Hermosillo rent, utilities and childcare (no usable free source found); car costs everywhere except Austin.
+- Read from sites that republish official tables, because the official endpoints were unreachable from the build environment: Statistics Finland 15fa (vuokra-arvio.fi), HUD Fair Market Rents (propmetrics.co), Child Care Aware Texas prices (FOX 7). Check each against the original.
+- Only city-wide rents: no source gave a usable central/outer split. Rents per m² are converted with app floor-area assumptions; electricity use is an app assumption.
+- Imports are curated inputs plus derivation scripts (`scripts/derive-costs.ts`, `scripts/derive-price-levels.ts`), not automatic downloads: the build shell cannot reach the statistics sites. Validation fails if a city file drifts from its inputs.
+- Lifestyle presets are priced from average spending in Finland, the home baseline, rather than a euro-area average: ICP 2021 has no EU aggregate. Budget and Rich lifestyle are half and double (app assumptions).
+- Groceries and phone and internet use the same price-level method; phone and internet replaces the internet line and includes devices and mobile.
+- Helsinki childcare uses the highest fee; the fee is income-dependent and could be modelled.
+- WebKit (desktop and iPad) runs only in CI: its browser cannot be installed here. Accessibility checks are in-house (names, ids, headings, overflow, keyboard), not axe-core, which cannot be installed here.
+- Mexico: reference cases are worked by hand from the published tariff; the SAT calculator cross-check is part of 0.3.1.
 
 The pilot set shows real differences in tax system, living costs, climate and everyday life: **Helsinki, Berlin, Madrid, Austin and Hermosillo**. Mexico is a location of high personal interest, so the Mexican tax model is part of the pilot.
 

@@ -1,4 +1,4 @@
-import type { Release, TaxModelId } from '../src/core/types.ts';
+import type { LifestyleDefinition, Release, TaxModelId } from '../src/core/types.ts';
 import { latestFx, readJson, readTree, taxParamFiles } from './repo-data.ts';
 
 /** Bundles validated static data into one release object. Fixtures only when asked. */
@@ -23,5 +23,6 @@ export function buildRelease(withFixtures: boolean, now = new Date()): Release {
     regions: [...data.regions, ...(fixtures?.regions ?? [])].map((f) => f.data),
     cities: [...data.cities, ...(fixtures?.cities ?? [])].map((f) => f.data),
     tax,
+    lifestyle: readJson<LifestyleDefinition>('data/lifestyle.json'),
   };
 }

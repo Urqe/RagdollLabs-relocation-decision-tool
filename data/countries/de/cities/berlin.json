@@ -1,0 +1,325 @@
+{
+  "id": "de-berlin",
+  "name": "Berlin",
+  "countryId": "de",
+  "regionId": "de-berlin",
+  "role": "national-capital",
+  "tax": {
+    "model": "de",
+    "subdivision": "berlin"
+  },
+  "languages": [
+    "de"
+  ],
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 789,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2025",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "ibb-rents-2025"
+          ],
+          "basis": "€15.78 per m² × 50 m², the app's assumed size for 1 bedroom.",
+          "sourceId": "ibb-rents-2025",
+          "confidence": "medium",
+          "limitations": "Median asking rent per m² across all advertised flats in Berlin (IBB Wohnungsmarktbericht 2025, 40,014 listings); no split by size. Net cold rent: operating costs and heating are added under utilities.",
+          "rent": {
+            "market": "listings",
+            "statistic": "median",
+            "dwelling": "flat of any size (net cold rent)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 1105,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2025",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "ibb-rents-2025"
+          ],
+          "basis": "€15.78 per m² × 70 m², the app's assumed size for 2 bedrooms.",
+          "sourceId": "ibb-rents-2025",
+          "confidence": "medium",
+          "limitations": "Median asking rent per m² across all advertised flats in Berlin (IBB Wohnungsmarktbericht 2025, 40,014 listings); no split by size. Net cold rent: operating costs and heating are added under utilities.",
+          "rent": {
+            "market": "listings",
+            "statistic": "median",
+            "dwelling": "flat of any size (net cold rent)",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 1420,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2025",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "ibb-rents-2025"
+          ],
+          "basis": "€15.78 per m² × 90 m², the app's assumed size for 3 bedrooms.",
+          "sourceId": "ibb-rents-2025",
+          "confidence": "medium",
+          "limitations": "Median asking rent per m² across all advertised flats in Berlin (IBB Wohnungsmarktbericht 2025, 40,014 listings); no split by size. Net cold rent: operating costs and heating are added under utilities.",
+          "rent": {
+            "market": "listings",
+            "statistic": "median",
+            "dwelling": "flat of any size (net cold rent)",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 1736,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-19",
+          "period": "2025",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "ibb-rents-2025"
+          ],
+          "basis": "€15.78 per m² × 110 m², the app's assumed size for 4 bedrooms.",
+          "sourceId": "ibb-rents-2025",
+          "confidence": "medium",
+          "limitations": "Median asking rent per m² across all advertised flats in Berlin (IBB Wohnungsmarktbericht 2025, 40,014 listings); no split by size. Net cold rent: operating costs and heating are added under utilities.",
+          "rent": {
+            "market": "listings",
+            "statistic": "median",
+            "dwelling": "flat of any size (net cold rent)",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        }
+      }
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 348,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: prices are 0.96 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 174,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: prices are 0.89 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 221,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: prices are 0.88 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 98,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: prices are 0.89 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 84,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: prices are 1.19 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "utilities": {
+      "1": {
+        "value": 230,
+        "low": 209,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-19",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "dmb-betriebskosten-2024"
+        ],
+        "basis": "Electricity: 2,000 kWh a year (app assumption for 1 bedroom) at €0.3869 per kWh, the national household price with taxes. Operating costs billed to tenants in Germany, Betriebskostenspiegel for 2024 (Deutscher Mieterbund): the sum of all cost types, €3.31 per m² a month, including heating, hot water and water; €2.89 without lift, garden care and cable. Applied to 50 m².",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "2": {
+        "value": 319,
+        "low": 289,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-19",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "dmb-betriebskosten-2024"
+        ],
+        "basis": "Electricity: 2,700 kWh a year (app assumption for 2 bedrooms) at €0.3869 per kWh, the national household price with taxes. Operating costs billed to tenants in Germany, Betriebskostenspiegel for 2024 (Deutscher Mieterbund): the sum of all cost types, €3.31 per m² a month, including heating, hot water and water; €2.89 without lift, garden care and cable. Applied to 70 m².",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "3": {
+        "value": 408,
+        "low": 370,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-19",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "dmb-betriebskosten-2024"
+        ],
+        "basis": "Electricity: 3,400 kWh a year (app assumption for 3 bedrooms) at €0.3869 per kWh, the national household price with taxes. Operating costs billed to tenants in Germany, Betriebskostenspiegel for 2024 (Deutscher Mieterbund): the sum of all cost types, €3.31 per m² a month, including heating, hot water and water; €2.89 without lift, garden care and cable. Applied to 90 m².",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "4": {
+        "value": 493,
+        "low": 447,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-19",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "dmb-betriebskosten-2024"
+        ],
+        "basis": "Electricity: 4,000 kWh a year (app assumption for 4 bedrooms) at €0.3869 per kWh, the national household price with taxes. Operating costs billed to tenants in Germany, Betriebskostenspiegel for 2024 (Deutscher Mieterbund): the sum of all cost types, €3.31 per m² a month, including heating, hot water and water; €2.89 without lift, garden care and cable. Applied to 110 m².",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      }
+    },
+    "transitPassAdult": {
+      "value": 63,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "observed",
+      "basis": "Deutschlandticket, valid on all local transport in Germany; €66.80 from January 2027.",
+      "sourceId": "deutschlandticket-2026",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "healthcarePerPerson": {
+      "value": 59,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Household out-of-pocket health spending per inhabitant in Germany (€702.63 a year).",
+      "sourceId": "eurostat-health",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+    },
+    "childcarePerChild": {
+      "value": 23,
+      "high": 123,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2025",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "basis": "Kita places in Berlin are free; parents pay a €23 meal contribution. Providers may charge up to €100 more a month for extras.",
+      "sourceId": "berlin-kita",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "limitations": "Covers public and subsidised places; a place is not guaranteed at a particular Kita."
+    },
+    "carMonthly": null
+  }
+}

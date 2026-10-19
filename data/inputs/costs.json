@@ -1,0 +1,399 @@
+{
+  "note": "Curated inputs for scripts/derive-costs.ts. Each figure is copied from the source named beside it. Rents per square metre and electricity prices are turned into monthly costs with the app assumptions below; other values are used as they are. Re-run the script after changing anything.",
+  "retrieved": "2026-10-19",
+  "assumptions": {
+    "description": "App assumptions, not measured data: typical floor area and yearly household electricity use (not heating) by number of bedrooms.",
+    "floorAreaM2": {
+      "1": 50,
+      "2": 70,
+      "3": 90,
+      "4": 110
+    },
+    "electricityKwhPerYear": {
+      "1": 2000,
+      "2": 2700,
+      "3": 3400,
+      "4": 4000
+    }
+  },
+  "cities": {
+    "fi-helsinki": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 21.19,
+          "2": 20.26,
+          "3": 20.26,
+          "4": 20.26
+        },
+        "dwelling": {
+          "1": "two-room flat (one bedroom and a living room)",
+          "2": "flat of three or more rooms",
+          "3": "flat of three or more rooms",
+          "4": "flat of three or more rooms"
+        },
+        "market": "new-leases",
+        "statistic": "mean",
+        "period": "2026-Q2",
+        "geoLevel": "city",
+        "sourceId": "statfin-rents",
+        "confidence": "medium",
+        "includes": [
+          "heating"
+        ],
+        "limitations": "Average rent per m² of new privately financed leases, read from vuokra-arvio.fi's republication of Statistics Finland table 15fa; three-or-more-room flats share one figure. Heating is normally included; water and electricity are not."
+      },
+      "electricity": {
+        "pricePerKwh": 0.2254,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "waterPerPerson": {
+        "value": 18,
+        "low": 13,
+        "high": 38,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "hsy-water-2026",
+          "motiva-water"
+        ],
+        "basis": "HSY water and wastewater fees for 2026 (€4.67 per m³ with VAT) at 130 litres a person a day; Motiva gives 90 to 270 litres, used for the range.",
+        "sourceId": "hsy-water-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Landlords often bill water as a flat fee per resident, which can differ from metered cost."
+      },
+      "transitPassAdult": {
+        "value": 73.9,
+        "low": 61.6,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "HSL 30-day season ticket, zones AB; the saver subscription costs €61.60.",
+        "sourceId": "hsl-fares-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 63,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Finland (€759.66 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 335,
+        "low": 0,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026-2027",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Highest municipal early-education fee from 1 August 2026 (€335 for the youngest child; €134 for the next).",
+        "sourceId": "fi-daycare-fees-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "The fee depends on household income and size: a family of three pays the maximum above about €8,761 a month gross and nothing below about €5,934. A second child costs at most €134."
+      },
+      "carMonthly": null
+    },
+    "de-berlin": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 15.78,
+          "2": 15.78,
+          "3": 15.78,
+          "4": 15.78
+        },
+        "dwelling": {
+          "1": "flat of any size (net cold rent)",
+          "2": "flat of any size (net cold rent)",
+          "3": "flat of any size (net cold rent)",
+          "4": "flat of any size (net cold rent)"
+        },
+        "market": "listings",
+        "statistic": "median",
+        "period": "2025",
+        "geoLevel": "city",
+        "sourceId": "ibb-rents-2025",
+        "confidence": "medium",
+        "limitations": "Median asking rent per m² across all advertised flats in Berlin (IBB Wohnungsmarktbericht 2025, 40,014 listings); no split by size. Net cold rent: operating costs and heating are added under utilities."
+      },
+      "electricity": {
+        "pricePerKwh": 0.3869,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "operatingCostsPerM2": {
+        "value": 3.31,
+        "low": 2.89,
+        "period": "2024",
+        "sourceId": "dmb-betriebskosten-2024",
+        "geoLevel": "country",
+        "basis": "Operating costs billed to tenants in Germany, Betriebskostenspiegel for 2024 (Deutscher Mieterbund): the sum of all cost types, €3.31 per m² a month, including heating, hot water and water; €2.89 without lift, garden care and cable."
+      },
+      "transitPassAdult": {
+        "value": 63,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Deutschlandticket, valid on all local transport in Germany; €66.80 from January 2027.",
+        "sourceId": "deutschlandticket-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 59,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Germany (€702.63 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 23,
+        "high": 123,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2025",
+        "geoLevel": "city",
+        "provenance": "observed",
+        "basis": "Kita places in Berlin are free; parents pay a €23 meal contribution. Providers may charge up to €100 more a month for extras.",
+        "sourceId": "berlin-kita",
+        "retrieved": "2026-10-19",
+        "confidence": "high",
+        "limitations": "Covers public and subsidised places; a place is not guaranteed at a particular Kita."
+      },
+      "carMonthly": null
+    },
+    "es-madrid": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 23.4,
+          "2": 23.4,
+          "3": 23.4,
+          "4": 23.4
+        },
+        "dwelling": {
+          "1": "flat of any size",
+          "2": "flat of any size",
+          "3": "flat of any size",
+          "4": "flat of any size"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026-09",
+        "geoLevel": "city",
+        "sourceId": "idealista-madrid-2026",
+        "confidence": "medium",
+        "limitations": "Average asking rent per m² on idealista for the city of Madrid in September 2026; districts range from about €17 to €28.5. Existing leases are much lower (€12.8 per m² in 2022, Ministry of Housing reference index)."
+      },
+      "electricity": {
+        "pricePerKwh": 0.2669,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "waterPerPerson": {
+        "value": 7,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "ine-water-2024"
+        ],
+        "basis": "Average water and sanitation cost in the Community of Madrid in 2024 (€1.74 per m³) at the measured average use of 128 litres a person a day (INE).",
+        "sourceId": "ine-water-2024",
+        "retrieved": "2026-10-19",
+        "confidence": "medium"
+      },
+      "transitPassAdult": {
+        "value": 32.7,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "30-day public transport pass, zone A, at the 2026 discounted price (Consorcio Regional de Transportes, BOCM 31 Dec 2025).",
+        "sourceId": "crtm-fares-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 54,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Spain (€647.45 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 96,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024-2025",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "Public nursery schools (0–3) in the Community of Madrid: tuition is free; meals cost €96 a month.",
+        "sourceId": "madrid-escuelas-infantiles",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Public places are limited; private nurseries charge tuition, which is not included."
+      },
+      "carMonthly": null
+    },
+    "us-austin": {
+      "currency": "USD",
+      "rentObservations": {
+        "1": {
+          "value": 1562,
+          "dwelling": "one-bedroom unit"
+        },
+        "2": {
+          "value": 1852,
+          "dwelling": "two-bedroom unit"
+        },
+        "3": {
+          "value": 2347,
+          "dwelling": "three-bedroom unit"
+        },
+        "4": {
+          "value": 2760,
+          "dwelling": "four-bedroom unit"
+        },
+        "market": "recent-movers",
+        "statistic": "40th-percentile",
+        "period": "2026",
+        "geoLevel": "region",
+        "sourceId": "hud-fmr-2026",
+        "confidence": "medium",
+        "includes": [
+          "utilities"
+        ],
+        "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms."
+      },
+      "transitPassAdult": {
+        "value": 41.25,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "CapMetro calendar-month pass for local and rapid buses; fares rise on 10 January 2027.",
+        "sourceId": "capmetro-fares",
+        "retrieved": "2026-10-19",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 256,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024-2025",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "kff-ehbs-2025",
+          "cms-nhe-2024"
+        ],
+        "basis": "Employer health plan: the average worker share of a single-coverage premium ($1,440 a year, KFF 2025) plus out-of-pocket spending per person ($556.6 billion in 2024, CMS, over 340.0 million people).",
+        "sourceId": "kff-ehbs-2025",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+      },
+      "childcarePerChild": {
+        "value": 946,
+        "low": 910,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "inherited",
+        "basis": "Average price of centre-based infant care in Texas ($11,349 a year; toddlers $10,921), Child Care Aware of America.",
+        "sourceId": "childcare-aware-2024",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A Texas average; Austin prices are likely higher."
+      },
+      "carMonthly": {
+        "value": 965,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2025",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Average cost of owning and running a new car in the US, including depreciation, finance, fuel and insurance, at 15,000 miles a year (AAA Your Driving Costs 2025).",
+        "sourceId": "aaa-driving-costs-2025",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A new-car national average; an older car costs less."
+      }
+    },
+    "mx-hermosillo": {
+      "currency": "MXN",
+      "rentMissing": true,
+      "transitPassAdult": {
+        "value": 396,
+        "high": 540,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "imtes-hermosillo-fare"
+        ],
+        "basis": "Urban bus fare of 9 pesos (kept by Sonora's transport institute in August 2025) for 44 rides a month; 60 rides for the range. There is no monthly pass.",
+        "sourceId": "imtes-hermosillo-fare",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Assumes two rides a working day."
+      },
+      "healthcarePerPerson": {
+        "value": 464,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2023",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Out-of-pocket health spending per person in Mexico (US$313.80 in 2023, World Bank) at the 2023 average exchange rate (17.74 pesos per dollar).",
+        "sourceId": "wb-oop-health",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
+      },
+      "childcarePerChild": null,
+      "carMonthly": null
+    }
+  }
+}

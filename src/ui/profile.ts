@@ -1,4 +1,5 @@
-import { adultEquivalents, asksMainCostPayer, DISCRETIONARY_PRESETS_EUR, MAX_CHILDREN, normalizeHousehold, totalChildren, type ChildAges, type DiscretionaryLevel, type Household, type Relationship } from '../core/budget/household.ts';
+import { asksMainCostPayer, MAX_CHILDREN, normalizeHousehold, totalChildren, type ChildAges, type DiscretionaryLevel, type Household, type Relationship } from '../core/budget/household.ts';
+import type { LifestyleDefinition } from '../core/types.ts';
 import { clearProfile, DEFAULT_PROFILE, type AppState, type Profile, type Store } from '../state/store.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
@@ -16,7 +17,7 @@ const CHILD_BANDS: [keyof ChildAges, string][] = [['under14', 'Under 14'], ['fro
 const RELATIONSHIPS: [Relationship, string][] = [['married', 'Married'], ['registered', 'Registered partners'], ['unmarried', 'Neither']];
 const DAYCARE_HINT = 'Children below school age who need paid care.';
 
-const LEVEL_NAME: Record<DiscretionaryLevel, string> = { lean: 'Lean', moderate: 'Moderate', comfortable: 'Comfortable' };
+const LEVELS: DiscretionaryLevel[] = ['budget', 'moderate', 'rich'];
 const plural = (n: number, one: string, many: string): string => `${n} ${n === 1 ? one : many}`;
 
 /** One line describing the household, used as the collapsed panel's label on phones. */
@@ -37,15 +38,16 @@ function incomeHint(annual: number, p: Profile): string {
   return `${f.whole(annual, 'EUR')} a year. ${tail}`;
 }
 
-function discretionaryHint(hh: Household): string {
+function discretionaryHint(hh: Household, lifestyle: LifestyleDefinition): string {
   if (hh.discretionary.kind === 'custom') return 'Your amount is used as it is in every city.';
-  const perAdult = DISCRETIONARY_PRESETS_EUR[hh.discretionary.level];
-  const total = perAdult * adultEquivalents(hh);
+  const preset = lifestyle.presets[hh.discretionary.level];
   const sized = totalChildren(hh.children) > 0 || hh.earnersGrossEur.length + hh.nonEarningAdults > 1
-    ? `${f.whole(total, 'EUR')} a month for your household (${f.whole(perAdult, 'EUR')} for the first adult, half that for each other person aged 14 or over, 30% for each child under 14)`
-    : `${f.whole(total, 'EUR')} a month`;
-  return `About ${sized} at euro-area prices, then adjusted for prices in each city. Covers eating out, leisure, clothes and other optional spending.`;
+    ? ' Scaled for your household: the first adult counts fully, each other person aged 14 or over as half, each child under 14 as 30%.'
+    : '';
+  return `${upperFirst(preset.description)} Priced for each city at local prices.${sized}`;
 }
+
+const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
 
 function field(id: string, label: string, control: HTMLElement, hint?: string): HTMLElement {
   return h('div', { class: 'field' }, h('label', { for: id }, label), control, hint !== undefined ? h('p', { class: 'hint', id: `${id}-hint` }, hint) : null);
@@ -63,7 +65,7 @@ function choice(name: string, legend: string, options: [string, string][], curre
   );
 }
 
-export function mountProfile(root: HTMLElement, store: Store, storage: Storage | null): void {
+export function mountProfile(root: HTMLElement, store: Store, storage: Storage | null, lifestyle: LifestyleDefinition): void {
   let lastKey = '';
   const update = (patch: Patch): void => store.set((s) => ({ ...s, profile: patch(s.profile) }));
 
@@ -101,7 +103,7 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
       }
     });
     const d = document.getElementById('discretionary-hint');
-    if (d) d.textContent = discretionaryHint(hh);
+    if (d) d.textContent = discretionaryHint(hh, lifestyle);
     syncDependent(s);
   };
 
@@ -201,9 +203,9 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
         field('discretionary', 'Discretionary spending', h('select', { id: 'discretionary', 'aria-describedby': 'discretionary-hint', onchange: (e: Event) => {
             const v = (e.target as HTMLSelectElement).value;
             update(setHousehold((x) => ({ discretionary: v === 'custom' ? { kind: 'custom', eurPerMonth: x.discretionary.kind === 'custom' ? x.discretionary.eurPerMonth : 800 } : { kind: 'preset', level: v as DiscretionaryLevel } })));
-          } }, [...(Object.keys(LEVEL_NAME) as DiscretionaryLevel[]).map((l) => h('option', { value: l, selected: l === discretionaryValue }, LEVEL_NAME[l])),
+          } }, [...LEVELS.map((l) => h('option', { value: l, selected: l === discretionaryValue }, lifestyle.presets[l].label)),
             h('option', { value: 'custom', selected: discretionaryValue === 'custom' }, 'My own amount')]),
-          discretionaryHint(hh)),
+          discretionaryHint(hh, lifestyle)),
         hh.discretionary.kind === 'custom'
           ? field('discretionary-amount', 'Your amount', h('div', { class: 'with-unit' }, h('input', { id: 'discretionary-amount', type: 'number', min: 0, step: 50, value: hh.discretionary.eurPerMonth, 'aria-describedby': 'discretionary-amount-hint',
               oninput: (e: Event) => {

@@ -176,8 +176,21 @@ const pt = obj({
   if (b.length !== pa.length) out.push({ path: `${path}.parcelaAbater`, message: 'must have one entry per bracket' });
 }]);
 
-const CURRENCY: Record<TaxModelId, string> = { fi: 'EUR', us: 'USD', ee: 'EUR', de: 'EUR', es: 'EUR', pt: 'EUR' };
-export const TAX_SCHEMAS: Record<TaxModelId, Check> = { fi, us, ee, de, es, pt };
+const mx = obj({
+  annualTariff: brackets,
+  uma: obj({ daily: num(1, 10000, 'a daily UMA value') }),
+  employmentSubsidy: obj({ monthly: amount, monthlyIncomeLimit: amount }),
+  statutoryBenefits: obj({ christmasBonusDays: num(0, 365, 'a number of days'), vacationDays: num(0, 365, 'a number of days'), vacationPremiumRate: fraction, christmasBonusExemptUma: amount, vacationPremiumExemptUma: amount }),
+  imss: obj({
+    baseCapUma: num(1, 100, 'a number of UMA'),
+    employee: obj({ excessOver3UmaRate: fraction, cashBenefitsRate: fraction, pensionerMedicalRate: fraction, disabilityLifeRate: fraction, oldAgeRate: fraction }),
+    employer: obj({ fixedRateOnUma: fraction, excessOver3UmaRate: fraction, cashBenefitsRate: fraction, pensionerMedicalRate: fraction, disabilityLifeRate: fraction, childcareRate: fraction, retirementRate: fraction, workRiskRate: fraction, housingRate: fraction, oldAgeByBaseUma: brackets }),
+  }),
+  states: record(obj({ name: str, payrollTaxRate: fraction, confidence: str, source: str })),
+});
+
+const CURRENCY: Record<TaxModelId, string> = { fi: 'EUR', us: 'USD', ee: 'EUR', de: 'EUR', es: 'EUR', pt: 'EUR', mx: 'MXN' };
+export const TAX_SCHEMAS: Record<TaxModelId, Check> = { fi, us, ee, de, es, pt, mx };
 
 /** Checks one tax parameter file: common header fields, then the model's own schema. */
 export function validateTaxFile(v: unknown, path: string, model: TaxModelId): Problem[] {
@@ -200,6 +213,7 @@ export function taxSubdivisions(model: TaxModelId, params: unknown): string[] | 
     case 'fi': return isObj(params.municipalTaxRate) ? Object.keys(params.municipalTaxRate) : [];
     case 'us': return isObj(params.states) ? Object.keys(params.states) : [];
     case 'es': return isObj(params.regions) ? Object.keys(params.regions) : [];
+    case 'mx': return isObj(params.states) ? Object.keys(params.states) : [];
     default: return null;
   }
 }

@@ -1,0 +1,165 @@
+{
+  "id": "mx-hermosillo",
+  "name": "Hermosillo",
+  "countryId": "mx",
+  "regionId": "mx-son",
+  "role": "regional-capital",
+  "tax": {
+    "model": "mx",
+    "subdivision": "son"
+  },
+  "languages": [
+    "es"
+  ],
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": null
+      },
+      "2": {
+        "cityWide": null
+      },
+      "3": {
+        "cityWide": null
+      },
+      "4": {
+        "cityWide": null
+      }
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 6915,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: 19.08 MXN for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 2371,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: 12.10 MXN for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 3642,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: 14.50 MXN for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 1614,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: 14.57 MXN for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 995,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: 14.13 MXN for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "utilities": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null
+    },
+    "transitPassAdult": {
+      "value": 396,
+      "high": 540,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "imtes-hermosillo-fare"
+      ],
+      "basis": "Urban bus fare of 9 pesos (kept by Sonora's transport institute in August 2025) for 44 rides a month; 60 rides for the range. There is no monthly pass.",
+      "sourceId": "imtes-hermosillo-fare",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Assumes two rides a working day."
+    },
+    "healthcarePerPerson": {
+      "value": 464,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Out-of-pocket health spending per person in Mexico (US$313.80 in 2023, World Bank) at the 2023 average exchange rate (17.74 pesos per dollar).",
+      "sourceId": "wb-oop-health",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
+    },
+    "childcarePerChild": null,
+    "carMonthly": null
+  }
+}

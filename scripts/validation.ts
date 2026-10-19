@@ -1,6 +1,6 @@
 import { validateCity, validateCountry, validateFx, validateRegion, validateSource, validateTaxParams, type Problem } from '../src/data/validate.ts';
 import { taxSubdivisions } from '../src/data/tax-schemas.ts';
-import type { FxSnapshot, Source, TaxModelId } from '../src/core/types.ts';
+import { LIFESTYLE_CATEGORIES, type FxSnapshot, type Source, type TaxModelId } from '../src/core/types.ts';
 import type { Tree } from './repo-data.ts';
 
 const CADENCE_DAYS: Record<Source['cadence'], number> = { daily: 7, monthly: 45, quarterly: 120, annual: 400, irregular: 730 };
@@ -11,7 +11,8 @@ export interface Report {
 }
 
 /** Production data must never contain fixtures; fixture files must say they are fixtures. */
-export function checkTree(tree: Tree, knownSources: Source[]): Report {
+/** `context` is another tree whose countries and regions this one may use (fixture cities in production countries). */
+export function checkTree(tree: Tree, knownSources: Source[], context?: Pick<Tree, 'countries' | 'regions'>): Report {
   const errors: Problem[] = [];
   const ids = new Set(knownSources.map((s) => s.id));
   const isData = tree.base === 'data';
@@ -26,9 +27,10 @@ export function checkTree(tree: Tree, knownSources: Source[]): Report {
     errors.push(...validateSource(s, `${tree.base}/sources.json[${i}]`));
     if (isData && s.fixture === true) errors.push({ path: `${tree.base}/sources.json[${i}]`, message: 'fixture source in data/' });
   });
-  const countryIds = new Set<string>();
-  const regionIds = new Set<string>();
+  const countryIds = new Set<string>(context?.countries.map((c) => c.data.id) ?? []);
+  const regionIds = new Set<string>(context?.regions.map((r) => r.data.id) ?? []);
   const cityIds = new Set<string>();
+  const currencyOf = new Map<string, string>([...(context?.countries ?? []), ...tree.countries].map((c) => [c.data.id, c.data.currency]));
   for (const f of tree.countries) {
     errors.push(...validateCountry(f.data, f.path));
     fixtureFlag(f.data, f.path);
@@ -41,7 +43,7 @@ export function checkTree(tree: Tree, knownSources: Source[]): Report {
     regionIds.add(f.data.id);
   }
   for (const f of tree.cities) {
-    errors.push(...validateCity(f.data, f.path, ids));
+    errors.push(...validateCity(f.data, f.path, ids, { currency: currencyOf.get(f.data.countryId), production: isData }));
     fixtureFlag(f.data, f.path);
     if (cityIds.has(f.data.id)) errors.push({ path: f.path, message: `duplicate city id "${f.data.id}"` });
     cityIds.add(f.data.id);
@@ -107,4 +109,34 @@ export function checkJurisdictions(trees: Tree[], taxFiles: { path: string; data
 export function checkDataVersion(v: unknown): Problem[] {
   const ok = typeof v === 'object' && v !== null && typeof (v as { dataVersion?: unknown }).dataVersion === 'string' && /^\d{4}-\d{2}-\d{2}\.\d+$/.test((v as { dataVersion: string }).dataVersion);
   return ok ? [] : [{ path: 'data/release.json', message: 'dataVersion must look like 2026-10-19.1' }];
+}
+
+/** The same id in data/ and fixtures/ would make one silently replace the other. */
+export function duplicateIds(data: Tree, fixtures: Tree): Problem[] {
+  const out: Problem[] = [];
+  const kinds: [string, JsonFileLike[], JsonFileLike[]][] = [['country', data.countries, fixtures.countries], ['region', data.regions, fixtures.regions], ['city', data.cities, fixtures.cities]];
+  for (const [kind, a, b] of kinds) {
+    const ids = new Set(a.map((f) => f.data.id));
+    for (const f of b) if (ids.has(f.data.id)) out.push({ path: f.path, message: `${kind} "${f.data.id}" also exists in data/; remove the fixture` });
+  }
+  return out;
+}
+type JsonFileLike = { path: string; data: { id: string } };
+
+/** The lifestyle definition: every category once, presets with positive multipliers, known sources. */
+export function checkLifestyle(v: unknown, sources: Source[]): Problem[] {
+  const path = 'data/lifestyle.json';
+  const out: Problem[] = [];
+  const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+  if (!isObj(v)) return [{ path, message: 'must be an object' }];
+  for (const k of ['reference', 'period']) if (typeof v[k] !== 'string' || v[k] === '') out.push({ path: `${path}.${k}`, message: 'must be a non-empty string' });
+  const ids = new Set(sources.map((s) => s.id));
+  if (!Array.isArray(v.sourceIds) || v.sourceIds.length === 0 || !v.sourceIds.every((s) => typeof s === 'string' && ids.has(s))) out.push({ path: `${path}.sourceIds`, message: 'must list known source ids' });
+  const cats = Array.isArray(v.categories) ? v.categories.map((c) => (isObj(c) ? c.id : undefined)) : [];
+  if ([...LIFESTYLE_CATEGORIES].sort().join() !== [...cats].sort().join()) out.push({ path: `${path}.categories`, message: `must list each of ${LIFESTYLE_CATEGORIES.join(', ')} once` });
+  for (const level of ['budget', 'moderate', 'rich']) {
+    const p = isObj(v.presets) ? v.presets[level] : undefined;
+    if (!isObj(p) || typeof p.label !== 'string' || typeof p.description !== 'string' || typeof p.multiplier !== 'number' || !(p.multiplier > 0)) out.push({ path: `${path}.presets.${level}`, message: 'must have a label, a description and a positive multiplier' });
+  }
+  return out;
 }

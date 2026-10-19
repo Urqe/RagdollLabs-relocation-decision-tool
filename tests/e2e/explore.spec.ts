@@ -7,7 +7,7 @@ test('explore a city: enter income, pick a city, see take-home, savings and sour
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
   await page.getByLabel('Gross income').fill('60000');
-  await page.getByLabel('City').selectOption({ label: 'Tampere' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
 
   await expect(page.getByRole('heading', { level: 1, name: 'Tampere' })).toBeVisible();
   await expect(page).toHaveURL(/#\/explore\/fi-tampere$/);
@@ -36,7 +36,7 @@ test('a missing cost marks the budget incomplete and names it', async ({ page })
 test('take-home override replaces the tax model', async ({ page }) => {
   await page.goto('./#/explore/fi-tampere');
   const own = page.locator('details.own');
-  if (!(await own.getAttribute('open'))) await own.locator('summary').click();
+  if (!(await own.getAttribute('open'))) await own.locator('> summary').click();
   await page.getByLabel('Household take-home').fill('2500');
   await page.getByLabel('Household take-home').press('Tab');
   await expect(page.locator('[data-balance="take-home"]').locator('.figure')).toHaveText('€2,500');
@@ -84,13 +84,13 @@ test('R2: changing payments per year keeps the typed monthly amount', async ({ p
   await expect(page.locator('#income-0-hint')).toContainText('€56,000 a year');
 });
 
-test('R3: discretionary hint shows the household amount', async ({ page }) => {
+test('R3: discretionary hint describes the preset and the household scaling', async ({ page }) => {
   await page.goto('./#/explore/fi-tampere');
   const more = page.locator('details.more');
   if (!(await more.getAttribute('open'))) await more.locator('summary').click();
-  await expect(page.locator('#discretionary-hint')).toContainText('€500 a month');
+  await expect(page.locator('#discretionary-hint')).toContainText('What an average person in Finland spends');
   await page.getByLabel('Under 14').fill('2');
-  await expect(page.locator('#discretionary-hint')).toContainText('€800 a month for your household');
+  await expect(page.locator('#discretionary-hint')).toContainText('each child under 14 as 30%');
 });
 
 test('R4: an empty income is flagged and results are replaced by a prompt', async ({ page }) => {
@@ -193,30 +193,33 @@ test('F3: the household-cost question appears only for two unmarried earners wit
 test('F5: "Clear my data" also clears this city\'s own figures', async ({ page }) => {
   await page.goto('./#/explore/fi-tampere');
   const own = page.locator('details.own');
-  if (!(await own.getAttribute('open'))) await own.locator('summary').click();
+  if (!(await own.getAttribute('open'))) await own.locator('> summary').click();
   await page.getByLabel('Household take-home').fill('9000');
   await page.getByLabel('Household take-home').press('Tab');
-  await page.getByLabel('Rent').fill('500');
-  await page.getByLabel('Rent').press('Tab');
+  await page.getByLabel('Rent', { exact: true }).fill('500');
+  await page.getByLabel('Rent', { exact: true }).press('Tab');
   await expect(takeHomeText(page)).toHaveText('€9,000');
   await page.getByRole('button', { name: 'Clear my data' }).click();
   await expect(takeHomeText(page)).not.toHaveText('€9,000');
   await expect(page.locator('[data-balance="take-home"]')).toContainText('Gross pay minus');
   await page.getByLabel('City').selectOption({ label: 'Helsinki' });
-  await page.getByLabel('City').selectOption({ label: 'Tampere' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
   await expect(page.getByLabel('Household take-home')).toHaveValue('');
   await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Your figure');
 });
 
-test('F6: a missing essential cost gives a partial balance, not estimated savings', async ({ page }) => {
+test('F6: a missing essential cost gives a partial balance, and you can enter it', async ({ page }) => {
   await page.goto('./#/explore/us-sacramento');
   await page.getByLabel('Under 14').fill('1');
   await page.getByLabel('Of whom in daycare').fill('1');
   await expect(page.locator('[data-balance="partial"]')).toContainText('Partial balance');
   await expect(page.locator('[data-balance="partial"]')).toContainText('Not an estimate of savings');
   await expect(page.locator('[data-balance="savings"]')).toHaveCount(0);
-  await expect(page.locator('.band')).toContainText('Childcare cannot be entered yet');
-  await expect(page.locator('.band')).not.toContainText('Enter your own figure');
+  await expect(page.locator('.band')).toContainText('Enter your own figure below');
+  await page.getByLabel('Childcare, whole household').fill('1200');
+  await page.getByLabel('Childcare, whole household').press('Tab');
+  await expect(page.locator('.band')).not.toContainText('Incomplete');
+  await expect(page.locator('[data-balance="savings"]')).toBeVisible();
 });
 
 test('F7: reducing children updates the daycare count and its limit', async ({ page }) => {
@@ -244,6 +247,56 @@ test('F7: an invalid field stays invalid when the form is rebuilt', async ({ pag
 test('F9: a malformed link opens the app with "City not found"', async ({ page }) => {
   await page.goto('./#/explore/%');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('City not found');
-  await page.getByLabel('City').selectOption({ label: 'Tampere' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tampere');
+});
+
+// ---- 0.3.0 pilot ----
+
+test('pilot cities run on sourced data; placeholder cities are listed apart as previews', async ({ page }) => {
+  await page.goto('./#/explore/fi-helsinki');
+  await expect(page.getByRole('note')).toHaveCount(0);
+  const table = page.getByRole('table', { name: /Monthly spending/ });
+  await expect(table).not.toContainText('Development fixture');
+  await expect(table).toContainText('Rents of dwellings');
+  const groups = await page.locator('#city-picker optgroup').evaluateAll((gs) => gs.map((g) => (g as HTMLOptGroupElement).label));
+  expect(groups).toEqual(expect.arrayContaining(['Finland', 'Germany', 'Spain', 'United States', 'Mexico', 'Development preview (placeholder costs)']));
+  const preview = await page.locator('#city-picker optgroup[label^="Development preview"] option').allTextContents();
+  expect(preview).toContain('Tampere, Finland');
+  expect(preview).not.toContain('Helsinki, Finland');
+});
+
+test('a row explains what its value measures', async ({ page }) => {
+  await page.goto('./#/explore/de-berlin');
+  const rent = page.getByRole('row', { name: /Rent/ });
+  await rent.getByText('How this is estimated').first().click();
+  await expect(rent).toContainText('Median of advertised rents');
+  await expect(rent).toContainText('per m²');
+});
+
+test('Hermosillo: missing rent can be entered, and the Mexican tax model applies', async ({ page }) => {
+  await page.goto('./#/explore/mx-hermosillo');
+  await expect(page.locator('.band')).toContainText('no data for rent');
+  await page.getByLabel('Rent', { exact: true }).fill('12000');
+  await page.getByLabel('Rent', { exact: true }).press('Tab');
+  await page.getByLabel('My rent includes utilities').check();
+  await expect(page.locator('.band')).not.toContainText('Incomplete');
+  await page.locator('details.pay summary').click();
+  await expect(page.locator('details.pay')).toContainText('Income tax (ISR)');
+  await expect(page.locator('details.pay')).toContainText('Sonora’s 3.0% state payroll tax');
+});
+
+test('lifestyle presets are named Budget, Moderate and Rich lifestyle and priced per city', async ({ page }) => {
+  await page.goto('./#/explore/es-madrid');
+  const more = page.locator('details.more');
+  if (!(await more.getAttribute('open'))) await more.locator('summary').click();
+  const options = await page.locator('#discretionary option').allTextContents();
+  expect(options).toEqual(['Budget', 'Moderate', 'Rich lifestyle', 'My own amount']);
+  const row = page.getByRole('row', { name: /Discretionary spending/ });
+  const madrid = await row.locator('td.num').first().textContent();
+  await page.getByLabel('City').selectOption({ label: 'Helsinki' });
+  const helsinki = await page.getByRole('row', { name: /Discretionary spending/ }).locator('td.num').first().textContent();
+  expect(madrid).not.toEqual(helsinki);
+  await page.locator('#discretionary').selectOption('rich');
+  await expect(page.getByRole('row', { name: /Discretionary spending/ })).toContainText('Rich lifestyle');
 });

@@ -1,6 +1,5 @@
 {
   "id": "us-tx",
   "name": "Texas",
-  "countryId": "us",
-  "fixture": true
+  "countryId": "us"
 }

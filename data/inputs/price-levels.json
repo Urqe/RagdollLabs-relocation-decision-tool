@@ -1,0 +1,153 @@
+{
+  "note": "Curated inputs for scripts/derive-price-levels.ts. Each value is copied from the source named beside it; the script derives groceries and lifestyle costs per city from them. Re-run the script after changing any value.",
+  "retrieved": "2026-10-19",
+  "reference": {
+    "description": "Average spending per person in Finland in 2024, household final consumption by purpose (Eurostat nama_10_co3_p3, current prices) divided by population (nama_10_pe), converted to adult equivalents.",
+    "country": "fi",
+    "year": 2024,
+    "populationThousands": 5620.9,
+    "consumptionMillionEur": {
+      "food": 17162,
+      "clothing": 5245,
+      "recreation": 11898,
+      "eatingOut": 9282,
+      "communications": 3333
+    },
+    "coicop": {
+      "food": "CP01 Food and non-alcoholic beverages",
+      "clothing": "CP03 Clothing and footwear",
+      "recreation": "CP09 Recreation and culture",
+      "eatingOut": "CP11 Restaurants and hotels",
+      "communications": "CP08 Communications"
+    },
+    "adultEquivalents": {
+      "description": "Persons per adult equivalent in Finland: average household size (ilc_lvph01, 2020) divided by adult equivalents per household (hbs_exp_t133, 2020: PPS per household / PPS per adult equivalent).",
+      "personsPerHousehold": 2.0,
+      "ppsPerHousehold": 28810,
+      "ppsPerAdultEquivalent": 20519
+    }
+  },
+  "priceLevels2021": {
+    "description": "World Bank ICP 2021 price level indices (world = 100). Series: food 1101000, eating out 1111000 (restaurants and hotels), recreation 9110000 (actual recreation and culture), clothing 1103000, communications 1108000.",
+    "FIN": {
+      "food": 132.991658554551,
+      "eatingOut": 176.39916910259,
+      "recreation": 138.894785575943,
+      "clothing": 152.936547412716,
+      "communications": 123.386193222084
+    },
+    "DEU": {
+      "food": 121.999091694347,
+      "eatingOut": 149.251117718439,
+      "recreation": 116.869623472476,
+      "clothing": 129.798058778059,
+      "communications": 140.492407071354
+    },
+    "ESP": {
+      "food": 114.499383072332,
+      "eatingOut": 111.09833028081,
+      "recreation": 104.457170717887,
+      "clothing": 117.364503640516,
+      "communications": 145.530951712163
+    },
+    "USA": {
+      "food": 116.516395990832,
+      "eatingOut": 142.001101841044,
+      "recreation": 114.5191667305,
+      "clothing": 122.796101192165,
+      "communications": 224.034448305857
+    },
+    "MEX": {
+      "food": 100.188851515997,
+      "eatingOut": 84.2524246622817,
+      "recreation": 79.4949236315802,
+      "clothing": 87.9884178331392,
+      "communications": 68.8496072960162
+    }
+  },
+  "exchangeRates2021": {
+    "description": "Annual average 2021, units per euro (Eurostat ert_bil_eur_a, from ECB reference rates).",
+    "EUR": 1,
+    "USD": 1.1827,
+    "MXN": 23.9852
+  },
+  "consumerPrices": {
+    "description": "All-items consumer price index, annual averages 2021 and 2024. Euro countries: HICP 2015 = 100 (Eurostat prc_hicp_aind). US: CPI-U, 1982-84 = 100 (BLS). Mexico: INPC, 2Q July 2018 = 100 (INEGI), mean of the twelve monthly values.",
+    "FIN": {
+      "2021": 106.12,
+      "2024": 119.83
+    },
+    "DEU": {
+      "2021": 109.2,
+      "2024": 129.0
+    },
+    "ESP": {
+      "2021": 107.04,
+      "2024": 123.33
+    },
+    "USA": {
+      "2021": 270.97,
+      "2024": 313.689
+    },
+    "MEX": {
+      "2021": [
+        110.21,
+        110.907,
+        111.824,
+        112.19,
+        112.419,
+        113.018,
+        113.682,
+        113.899,
+        114.601,
+        115.561,
+        116.884,
+        117.308
+      ],
+      "2024": [
+        133.555,
+        133.681,
+        134.065,
+        134.336,
+        134.087,
+        134.594,
+        136.003,
+        136.013,
+        136.08,
+        136.828,
+        137.424,
+        137.949
+      ]
+    }
+  },
+  "cities": {
+    "fi-helsinki": {
+      "country": "FIN",
+      "currency": "EUR"
+    },
+    "de-berlin": {
+      "country": "DEU",
+      "currency": "EUR"
+    },
+    "es-madrid": {
+      "country": "ESP",
+      "currency": "EUR"
+    },
+    "us-austin": {
+      "country": "USA",
+      "currency": "USD",
+      "metro": {
+        "description": "BEA regional price parities 2024, Austin-Round Rock MSA (US = 100): goods for food and clothing, other services for eating out, recreation and communications.",
+        "food": 93.757,
+        "clothing": 93.757,
+        "eatingOut": 96.24,
+        "recreation": 96.24,
+        "communications": 96.24
+      }
+    },
+    "mx-hermosillo": {
+      "country": "MEX",
+      "currency": "MXN"
+    }
+  }
+}

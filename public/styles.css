@@ -271,3 +271,11 @@ details.own[open] { display: grid; gap: var(--space-3); max-width: 420px; }
 /* Long source names and licences wrap instead of widening the page on phones. */
 table.sources { width: 100%; table-layout: fixed; }
 table.sources th, table.sources td { overflow-wrap: anywhere; }
+.def-note { display: block; color: var(--muted); font-size: 0.8125rem; margin-top: 2px; }
+.rent-includes { display: grid; gap: 0; }
+.own-more { border-top: 1px solid var(--rule); padding-top: var(--space-2); }
+.own-more > summary { cursor: pointer; font-weight: 600; min-height: 40px; display: flex; align-items: center; }
+.own-more[open] { display: grid; gap: var(--space-3); }
+.how { margin-top: 2px; font-size: 0.8125rem; color: var(--muted); }
+.how > summary { cursor: pointer; min-height: 24px; text-decoration: underline; text-underline-offset: 2px; }
+.how > p { margin: var(--space-1) 0 0; }

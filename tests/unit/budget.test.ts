@@ -45,11 +45,31 @@ describe('spending basket', () => {
     assert.equal(cat(cats, 'utilities').local!.typical, 0);
   });
 
-  test('outer location falls back to the city-wide figure with a note when not differentiated', () => {
-    const city = testCity({ rent: { '2': { central: obs(1000), outer: null } } });
+  test('outer location falls back to a city-wide figure with a note when the source does not separate areas', () => {
+    const city = testCity({ rent: { '2': { cityWide: obs(1000) } } });
     const rent = cat(costCategories(city, h({ location: 'outer' }), {}, fx, 'EUR'), 'rent');
     assert.equal(rent.local!.typical, 1000);
     assert.match(rent.notes.join(' '), /does not separate/);
+  });
+
+  test('a central figure is never used for the outer city', () => {
+    const city = testCity({ rent: { '2': { central: obs(1000), outer: null } } });
+    assert.equal(cat(costCategories(city, h({ location: 'outer' }), {}, fx, 'EUR'), 'rent').status, 'missing');
+  });
+
+  test('your rent can include utilities and internet, which are then not counted again', () => {
+    const cats = costCategories(testCity(), h(), { rentMonthlyLocal: 1500, rentIncludes: ['utilities'] }, fx, 'EUR');
+    assert.equal(cat(cats, 'utilities').status, 'included');
+    assert.equal(cat(cats, 'internet').status, 'estimated');
+  });
+
+  test('your own figure fills a missing essential cost', () => {
+    const city = testCity({ childcarePerChild: null });
+    const missing = buildBudget(4000, costCategories(city, h({ children: kids(1), childrenInDaycare: 1 }), {}, fx, 'EUR'), 'EUR');
+    assert.equal(missing.band, 'incomplete');
+    const filled = buildBudget(4000, costCategories(city, h({ children: kids(1), childrenInDaycare: 1 }), { ownCosts: { childcare: 450 } }, fx, 'EUR'), 'EUR');
+    assert.notEqual(filled.band, 'incomplete');
+    assert.equal(cat(filled.categories, 'childcare').local!.typical, 450);
   });
 
   test('groceries scale by the modified OECD equivalence scale', () => {

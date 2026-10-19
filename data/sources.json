@@ -10,7 +10,7 @@
     "lastChecked": "2026-10-19",
     "reviewDeferral": {
       "until": "2026-12-31",
-      "reason": "Exchange rates are a dated snapshot (data/fx), refreshed with each data release rather than daily; the next refresh is part of release 0.3.0."
+      "reason": "Exchange rates are a dated snapshot (data/fx), refreshed with each data release rather than daily; refreshed for 0.3.0 on 2026-10-19."
     }
   },
   {
@@ -70,6 +70,299 @@
     "url": "https://www.pwc.pt/pt/pwcinforfisco/guia-fiscal/2026/irs.html",
     "licence": "Statutory rates (facts)",
     "attribution": "Código do IRS; Orçamento do Estado 2026",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "mx-tax-2026",
+    "name": "Mexican income tax and social security 2026",
+    "publisher": "SAT; DOF; INEGI; IMSS; Sonora state",
+    "url": "https://www.sat.gob.mx/minisitio/NormatividadRMFyRGCE/documentos2026/rmf/anexos/Anexo-8-RMF-2026_DOF-28122025.pdf",
+    "licence": "Statutory rates (facts); see each linked page",
+    "attribution": "Anexo 8 RMF 2026 (SAT); employment-subsidy decree of 31 Dec 2025; UMA 2026 (INEGI); Ley del Seguro Social rates; Sonora payroll tax",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "eurostat-household-consumption",
+    "name": "Final consumption expenditure of households by consumption purpose (nama_10_co3_p3) and population (nama_10_pe)",
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/nama_10_co3_p3/default/table",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://ec.europa.eu/eurostat/about-us/policies/copyright",
+    "attribution": "Source: Eurostat",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "eurostat-hbs",
+    "name": "Household budget survey 2020: mean consumption expenditure (hbs_exp_t133) and average household size (ilc_lvph01)",
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/hbs_exp_t133/default/table",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://ec.europa.eu/eurostat/about-us/policies/copyright",
+    "attribution": "Source: Eurostat",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "icp-2021",
+    "name": "International Comparison Program 2021: price level indices by expenditure category",
+    "publisher": "World Bank",
+    "url": "https://databank.worldbank.org/source/icp-2021",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
+    "attribution": "World Bank, International Comparison Program 2021",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "consumer-prices",
+    "name": "Consumer price indices: HICP (Eurostat prc_hicp_aind), CPI-U (BLS), INPC (INEGI)",
+    "publisher": "Eurostat; US Bureau of Labor Statistics; INEGI",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_aind/default/table",
+    "licence": "Eurostat CC BY 4.0; BLS public domain; INEGI free use with attribution",
+    "attribution": "Eurostat; BLS; INEGI",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "bea-rpp",
+    "name": "Regional price parities by metropolitan area, 2024",
+    "publisher": "US Bureau of Economic Analysis (via FRED)",
+    "url": "https://fred.stlouisfed.org/series/RPPALL12420",
+    "licence": "US government work, public domain",
+    "attribution": "US Bureau of Economic Analysis",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "statfin-rents",
+    "name": "Rents of dwellings: average rents of new privately financed leases (table 15fa)",
+    "publisher": "Statistics Finland",
+    "url": "https://stat.fi/en/statistics/asvu",
+    "licence": "CC BY 4.0",
+    "attribution": "Source: Statistics Finland, rents of dwellings",
+    "cadence": "quarterly",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "eurostat-electricity",
+    "name": "Electricity prices for household consumers, 2,500–4,999 kWh, all taxes included (nrg_pc_204)",
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/nrg_pc_204/default/table",
+    "licence": "CC BY 4.0",
+    "attribution": "Source: Eurostat",
+    "cadence": "quarterly",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "hsy-water-2026",
+    "name": "Water and wastewater fees 2026",
+    "publisher": "Helsinki Region Environmental Services (HSY)",
+    "url": "https://www.sttinfo.fi/tiedote/72393871/vesi-ja-jatehuollon-hinnat-nousevat-vuodelle-2027-syyna-muun-muassa-valttamattomat-investoinnit?lang=fi",
+    "licence": "Public tariff (facts)",
+    "attribution": "HSY",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "motiva-water",
+    "name": "Household water use per resident (90–270 litres a day)",
+    "publisher": "Motiva, via the Finnish National Agency for Education",
+    "url": "https://www.oph.fi/fi/oppimateriaali/luovasti-luonnonvaroista/suomen-luonnonvarat/vesi",
+    "licence": "Facts; see page",
+    "attribution": "Motiva",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "eurostat-health",
+    "name": "Household out-of-pocket health expenditure per inhabitant (hlth_sha11_hf)",
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/hlth_sha11_hf/default/table",
+    "licence": "CC BY 4.0",
+    "attribution": "Source: Eurostat",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "hsl-fares-2026",
+    "name": "HSL fares in 2026",
+    "publisher": "Helsinki Regional Transport Authority (HSL)",
+    "url": "https://www.hsl.fi/en/hsl/news/news/2025/10/hsl-fares-in-2026",
+    "licence": "Public tariff (facts)",
+    "attribution": "HSL",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "fi-daycare-fees-2026",
+    "name": "Early childhood education client fees from 1 August 2026",
+    "publisher": "City of Kotka, applying the national fee rules",
+    "url": "https://www.kotka.fi/wp-content/uploads/2026/05/Tiedote_asiakasmaksut_01082026.pdf",
+    "licence": "Statutory fees (facts)",
+    "attribution": "Act on early childhood education client fees, index revision 1.8.2026",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "ibb-rents-2025",
+    "name": "IBB Wohnungsmarktbericht 2025: asking rents 2012–2025",
+    "publisher": "Investitionsbank Berlin (data: VALUE Marktdatenbank)",
+    "url": "https://www.ibb.de/media/dokumente/publikationen/berliner-wohnungsmarkt/wohnungsmarktbericht/2025/ibb-wohnungsmarktbericht-angebotsmieten_2012-2025.pdf",
+    "licence": "Facts from a published report; see IBB terms",
+    "attribution": "IBB Wohnungsmarktbericht 2025",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "dmb-betriebskosten-2024",
+    "name": "Betriebskostenspiegel for 2024",
+    "publisher": "Deutscher Mieterbund",
+    "url": "https://mieterbund.de/app/uploads/2025/12/20251218-3.pdf",
+    "licence": "Facts from a published report",
+    "attribution": "Deutscher Mieterbund, Betriebskostenspiegel",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "deutschlandticket-2026",
+    "name": "Deutschlandticket price",
+    "publisher": "DB Regio",
+    "url": "https://regional.bahn.de/tickets/Deutschlandticket",
+    "licence": "Public tariff (facts)",
+    "attribution": "Deutsche Bahn",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "berlin-kita",
+    "name": "Kita contributions in Berlin (Zuzahlungen ab 2025)",
+    "publisher": "Senatsverwaltung für Bildung, Jugend und Familie, Berlin",
+    "url": "https://berlin.de/sen/bjf/service/newsletter/infoschreiben-kita-zuzahlungen-ab-2025.pdf",
+    "licence": "Public information (facts)",
+    "attribution": "Senatsverwaltung für Bildung, Jugend und Familie",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "idealista-madrid-2026",
+    "name": "Rental price report, Madrid city",
+    "publisher": "idealista",
+    "url": "https://www.idealista.com/sala-de-prensa/informes-precio-vivienda/alquiler/madrid-comunidad/madrid-provincia/madrid/",
+    "licence": "Facts from a published price report",
+    "attribution": "idealista price reports",
+    "cadence": "monthly",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "crtm-fares-2026",
+    "name": "Public transport prices for 2026 (BOCM 31 Dec 2025)",
+    "publisher": "Consorcio Regional de Transportes de Madrid",
+    "url": "https://crtm.es/media/s1qi0nmo/bocm-20251231-precios_transporte.pdf",
+    "licence": "Official bulletin (facts)",
+    "attribution": "Comunidad de Madrid, BOCM",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "ine-water-2024",
+    "name": "Water supply and sanitation statistics 2024",
+    "publisher": "Instituto Nacional de Estadística (INE)",
+    "url": "https://ine.es/dyngs/Prensa/es/ESSA2024.htm",
+    "licence": "Free reuse with attribution",
+    "attribution": "Source: INE",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "madrid-escuelas-infantiles",
+    "name": "Fees in nursery schools of the public network, 2024–25",
+    "publisher": "Comunidad de Madrid (instructions of 5 July 2024)",
+    "url": "https://ecmadrid.org/es/pdfs-revistas/doc_download/8927-instrucciones-5-julio-2024-cuotas-1er-ciclo-ed-infantil-16-07-2024",
+    "licence": "Official instructions (facts)",
+    "attribution": "Comunidad de Madrid, Consejería de Educación",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "hud-fmr-2026",
+    "name": "Fair Market Rents FY2026, Austin-Round Rock-San Marcos metro area",
+    "publisher": "US Department of Housing and Urban Development (read via propmetrics.co)",
+    "url": "https://www.propmetrics.co/fair-market-rent/texas",
+    "licence": "US government data, public domain",
+    "attribution": "HUD Fair Market Rents",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "capmetro-fares",
+    "name": "CapMetro fares",
+    "publisher": "Capital Metropolitan Transportation Authority",
+    "url": "https://www.capmetro.org/fares",
+    "licence": "Public tariff (facts)",
+    "attribution": "CapMetro",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "kff-ehbs-2025",
+    "name": "2025 Employer Health Benefits Survey",
+    "publisher": "KFF",
+    "url": "https://www.kff.org/health-costs/press-release/2025-employer-health-benefits-survey/",
+    "licence": "Facts from a published survey",
+    "attribution": "KFF Employer Health Benefits Survey 2025",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "cms-nhe-2024",
+    "name": "National Health Expenditure 2024 highlights",
+    "publisher": "Centers for Medicare & Medicaid Services",
+    "url": "https://www.cms.gov/files/document/highlights.pdf",
+    "licence": "US government work, public domain",
+    "attribution": "CMS, National Health Expenditure Accounts",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "childcare-aware-2024",
+    "name": "Price of child care in Texas, 2024",
+    "publisher": "Child Care Aware of America (via FOX 7 Austin)",
+    "url": "https://www.fox7austin.com/news/texas-ranks-top-10-most-affordable-states-child-care-report",
+    "licence": "Facts from a published study",
+    "attribution": "Child Care Aware of America",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "aaa-driving-costs-2025",
+    "name": "Your Driving Costs 2025",
+    "publisher": "AAA",
+    "url": "https://mwg.aaa.com/news/press-release/september-16-2025",
+    "licence": "Facts from a published study",
+    "attribution": "AAA Your Driving Costs",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "imtes-hermosillo-fare",
+    "name": "Hermosillo urban transport fare stays at 9 pesos",
+    "publisher": "Instituto de Movilidad y Transporte de Sonora, reported by Dossier Político",
+    "url": "https://dossierpolitico.com/2025/08/05/sin-alza-al-transporte-publico-en-hermosillo/",
+    "licence": "Facts from a news report",
+    "attribution": "Dossier Político",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "wb-oop-health",
+    "name": "Out-of-pocket expenditure per capita (SH.XPD.OOPC.PC.CD)",
+    "publisher": "World Bank, from WHO Global Health Expenditure Database",
+    "url": "https://data.worldbank.org/indicator/SH.XPD.OOPC.PC.CD",
+    "licence": "CC BY 4.0",
+    "attribution": "World Bank; WHO",
     "cadence": "annual",
     "lastChecked": "2026-10-19"
   }

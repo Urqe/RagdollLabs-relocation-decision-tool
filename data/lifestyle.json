@@ -1,0 +1,44 @@
+{
+  "reference": "What an average person in Finland spent a month in 2024 on each category, from household consumption in the national accounts, per adult equivalent.",
+  "period": "2024",
+  "sourceIds": [
+    "eurostat-household-consumption",
+    "eurostat-hbs",
+    "icp-2021",
+    "consumer-prices"
+  ],
+  "categories": [
+    {
+      "id": "eatingOut",
+      "label": "Eating out and hotels",
+      "description": "Restaurants, cafés, takeaway and hotel stays."
+    },
+    {
+      "id": "recreation",
+      "label": "Leisure and holidays",
+      "description": "Recreation and culture: hobbies, sport, events, media, package holidays."
+    },
+    {
+      "id": "clothing",
+      "label": "Clothes and shoes",
+      "description": "Clothing and footwear."
+    }
+  ],
+  "presets": {
+    "budget": {
+      "label": "Budget",
+      "multiplier": 0.5,
+      "description": "half of what an average person in Finland spends on eating out, leisure and clothes."
+    },
+    "moderate": {
+      "label": "Moderate",
+      "multiplier": 1,
+      "description": "what an average person in Finland spends on eating out, leisure and clothes."
+    },
+    "rich": {
+      "label": "Rich lifestyle",
+      "multiplier": 2,
+      "description": "twice what an average person in Finland spends on eating out, leisure and clothes."
+    }
+  }
+}

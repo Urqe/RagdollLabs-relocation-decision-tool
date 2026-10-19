@@ -1,6 +1,5 @@
 {
   "id": "us",
   "name": "United States",
-  "currency": "USD",
-  "fixture": true
+  "currency": "USD"
 }

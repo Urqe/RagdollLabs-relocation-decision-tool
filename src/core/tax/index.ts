@@ -4,6 +4,7 @@ import { estonianTax, type EeParams } from './ee.ts';
 import { germanTax, type DeParams } from './de.ts';
 import { spanishTax, type EsParams } from './es.ts';
 import { portugueseTax, type PtParams } from './pt.ts';
+import { mexicanTax, type MxParams } from './mx.ts';
 import type { TaxInput, TaxResult } from './types.ts';
 import type { TaxJurisdiction } from '../types.ts';
 
@@ -14,6 +15,7 @@ export interface TaxParamSet {
   de?: DeParams;
   es?: EsParams;
   pt?: PtParams;
+  mx?: MxParams;
 }
 
 export class NoTaxModelError extends Error {
@@ -45,6 +47,9 @@ export function computeTax(j: TaxJurisdiction, input: Omit<TaxInput, 'subdivisio
     case 'pt':
       if (!params.pt) throw new NoTaxModelError('pt');
       return portugueseTax(full, params.pt);
+    case 'mx':
+      if (!params.mx) throw new NoTaxModelError('mx');
+      return mexicanTax(full, params.mx);
   }
 }
 

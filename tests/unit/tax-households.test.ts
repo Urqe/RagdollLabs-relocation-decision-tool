@@ -15,6 +15,7 @@ const params: TaxParamSet = {
   de: loadJson('data/tax/de/2026.json'),
   es: loadJson('data/tax/es/2026.json'),
   pt: loadJson('data/tax/pt/2026.json'),
+  mx: loadJson('data/tax/mx/2026.json'),
 };
 const us = params.us as UsParams;
 
@@ -26,6 +27,7 @@ const places: [string, TaxJurisdiction][] = [
   ['Germany', { model: 'de', subdivision: 'berlin' }],
   ['Spain, Madrid', { model: 'es', subdivision: 'madrid' }],
   ['Portugal', { model: 'pt', subdivision: 'lisbon' }],
+  ['Mexico, Sonora', { model: 'mx', subdivision: 'son' }],
 ];
 
 type In = { grossLocal: number[]; relationship?: Relationship; children?: ChildAges; adults?: number; costPayer?: number | null };

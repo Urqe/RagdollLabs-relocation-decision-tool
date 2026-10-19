@@ -1,0 +1,264 @@
+{
+  "id": "us-austin",
+  "name": "Austin",
+  "countryId": "us",
+  "regionId": "us-tx",
+  "role": "regional-capital",
+  "tax": {
+    "model": "us",
+    "subdivision": "tx"
+  },
+  "languages": [
+    "en"
+  ],
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 1562,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-19",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "observed",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-2026",
+          "confidence": "medium",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "one-bedroom unit"
+          }
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 1852,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-19",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "observed",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-2026",
+          "confidence": "medium",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "two-bedroom unit"
+          }
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 2347,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-19",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "observed",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-2026",
+          "confidence": "medium",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "three-bedroom unit"
+          }
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 2760,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-19",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "observed",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-2026",
+          "confidence": "medium",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "four-bedroom unit"
+          }
+        }
+      }
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 361,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024",
+      "geoLevel": "region",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices",
+        "bea-rpp"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: 1.00 USD for each euro spent in Finland, including the metro-area price level.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 184,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices",
+          "bea-rpp"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: 0.94 USD for each euro spent in Finland, including the metro-area price level.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation."
+      },
+      "recreation": {
+        "value": 242,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices",
+          "bea-rpp"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: 0.96 USD for each euro spent in Finland, including the metro-area price level.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation."
+      },
+      "clothing": {
+        "value": 101,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices",
+          "bea-rpp"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: 0.91 USD for each euro spent in Finland, including the metro-area price level.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation."
+      }
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 149,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024",
+      "geoLevel": "region",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices",
+        "bea-rpp"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: 2.12 USD for each euro spent in Finland, including the metro-area price level.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation."
+    },
+    "transitPassAdult": {
+      "value": 41.25,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2026",
+      "geoLevel": "region",
+      "provenance": "observed",
+      "basis": "CapMetro calendar-month pass for local and rapid buses; fares rise on 10 January 2027.",
+      "sourceId": "capmetro-fares",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "healthcarePerPerson": {
+      "value": 256,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024-2025",
+      "geoLevel": "country",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "kff-ehbs-2025",
+        "cms-nhe-2024"
+      ],
+      "basis": "Employer health plan: the average worker share of a single-coverage premium ($1,440 a year, KFF 2025) plus out-of-pocket spending per person ($556.6 billion in 2024, CMS, over 340.0 million people).",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+    },
+    "childcarePerChild": {
+      "value": 946,
+      "low": 910,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024",
+      "geoLevel": "region",
+      "provenance": "inherited",
+      "basis": "Average price of centre-based infant care in Texas ($11,349 a year; toddlers $10,921), Child Care Aware of America.",
+      "sourceId": "childcare-aware-2024",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "A Texas average; Austin prices are likely higher."
+    },
+    "carMonthly": {
+      "value": 965,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Average cost of owning and running a new car in the US, including depreciation, finance, fuel and insurance, at 15,000 miles a year (AAA Your Driving Costs 2025).",
+      "sourceId": "aaa-driving-costs-2025",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "A new-car national average; an older car costs less."
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import type { BedroomCount, ChildAges, CityLocation, Relationship } from '../types.ts';
+import type { BedroomCount, ChildAges, CityLocation, LifestyleLevel, Relationship } from '../types.ts';
 
 export type { ChildAges, Relationship } from '../types.ts';
 
-export type DiscretionaryLevel = 'lean' | 'moderate' | 'comfortable';
+export type DiscretionaryLevel = LifestyleLevel;
 export type Discretionary = { kind: 'preset'; level: DiscretionaryLevel } | { kind: 'custom'; eurPerMonth: number };
 
 export interface Household {
@@ -32,7 +32,15 @@ export interface CityOverrides {
   netMonthlyEur?: number;
   /** Replaces the rent estimate: per month in local currency. */
   rentMonthlyLocal?: number;
+  /** What the user's own rent already covers, so those lines are not counted twice. */
+  rentIncludes?: ('utilities' | 'internet')[];
+  /** The user's own figures for other essential costs, per month in local currency, for the whole household. */
+  ownCosts?: Partial<Record<OwnCostCategory, number>>;
 }
+
+/** Essential costs, other than rent, that the user can enter for a city. */
+export const OWN_COST_CATEGORIES = ['utilities', 'internet', 'groceries', 'transport', 'healthcare', 'childcare'] as const;
+export type OwnCostCategory = (typeof OWN_COST_CATEGORIES)[number];
 
 export const NO_CHILDREN: ChildAges = { under14: 0, from14to16: 0, from17to24: 0 };
 export const MAX_CHILDREN = 8;
@@ -52,14 +60,17 @@ export const DEFAULT_HOUSEHOLD: Household = {
 };
 
 /**
- * Discretionary presets: euros per adult equivalent per month at euro-area service prices.
- * These are app assumptions the user can replace, not measured data.
+ * Fallback for cities without lifestyle prices: euros per adult equivalent per month at euro-area
+ * service prices, scaled by the city's general service price level. App assumptions, not measured data.
  */
-export const DISCRETIONARY_PRESETS_EUR: Record<DiscretionaryLevel, number> = {
-  lean: 250,
+export const FLAT_LIFESTYLE_EUR: Record<DiscretionaryLevel, number> = {
+  budget: 250,
   moderate: 500,
-  comfortable: 900,
+  rich: 900,
 };
+
+/** Preset names before 0.3.0. */
+const OLD_LEVELS: Record<string, DiscretionaryLevel> = { lean: 'budget', comfortable: 'rich' };
 
 export const adults = (h: Household): number => h.earnersGrossEur.length + h.nonEarningAdults;
 export const totalChildren = (c: ChildAges): number => c.under14 + c.from14to16 + c.from17to24;
@@ -114,7 +125,7 @@ export function normalizeHousehold(raw: unknown): Household {
     && typeof v.discretionary.eurPerMonth === 'number' && Number.isFinite(v.discretionary.eurPerMonth) && v.discretionary.eurPerMonth >= 0
     ? { kind: 'custom', eurPerMonth: v.discretionary.eurPerMonth }
     : isObj(v.discretionary) && v.discretionary.kind === 'preset'
-      ? { kind: 'preset', level: pick(v.discretionary.level, ['lean', 'moderate', 'comfortable'] as const, 'moderate') }
+      ? { kind: 'preset', level: pick(OLD_LEVELS[v.discretionary.level as string] ?? v.discretionary.level, ['budget', 'moderate', 'rich'] as const, 'moderate') }
       : d.discretionary;
 
   const partial = { earnersGrossEur, relationship, children };

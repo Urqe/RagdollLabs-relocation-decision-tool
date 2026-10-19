@@ -1,7 +1,7 @@
 // Hand-written validators for static datasets. Used by the build script and by unit tests.
 // Each returns a list of problems; an empty list means valid.
 
-import { TAX_MODELS, type TaxModelId } from '../core/types.ts';
+import { LIFESTYLE_CATEGORIES, TAX_MODELS, type TaxModelId } from '../core/types.ts';
 import { validateTaxFile } from './tax-schemas.ts';
 
 const CURRENCIES = ['EUR', 'USD', 'CAD', 'MXN'];
@@ -11,7 +11,7 @@ const PROVENANCE = ['observed', 'estimated', 'inherited'];
 const GEO = ['country', 'region', 'city', 'district'];
 const CADENCE = ['daily', 'monthly', 'quarterly', 'annual', 'irregular'];
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
-const PERIOD = /^\d{4}(-(Q[1-4]|\d{2}))?(-\d{4})?$/;
+const PERIOD = /^\d{4}(-(Q[1-4]|S[12]|\d{2}))?(-\d{4})?$/;
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -45,7 +45,7 @@ export function validateObservation(v: unknown, path: string, sourceIds: Set<str
   if (typeof v.unit === 'string' && /^(EUR|USD|CAD|MXN)\//.test(v.unit) && v.currency !== v.unit.slice(0, 3)) {
     out.push({ path, message: 'currency must match the unit' });
   }
-  req(v, 'period', (x) => typeof x === 'string' && PERIOD.test(x), path, 'a period like 2026, 2026-Q3, 2026-08 or 1991-2020', out);
+  req(v, 'period', (x) => typeof x === 'string' && PERIOD.test(x), path, 'a period like 2026, 2026-Q3, 2026-S2, 2026-08 or 2026-2027', out);
   req(v, 'geoLevel', (x) => GEO.includes(x as string), path, `one of ${GEO.join(', ')}`, out);
   req(v, 'provenance', (x) => PROVENANCE.includes(x as string), path, `one of ${PROVENANCE.join(', ')}`, out);
   req(v, 'confidence', (x) => CONFIDENCE.includes(x as string), path, `one of ${CONFIDENCE.join(', ')}`, out);
@@ -89,9 +89,37 @@ export function validateRegion(v: unknown, path: string): Problem[] {
   return out;
 }
 
-const COST_KEYS = ['internet', 'groceriesPerAdultEquivalent', 'transitPassAdult', 'carMonthly', 'healthcarePerPerson', 'childcarePerChild', 'servicePriceIndex'];
+const MONEY_KEYS = ['waterPerPerson', 'internet', 'communicationsPerAdultEquivalent', 'groceriesPerAdultEquivalent', 'transitPassAdult', 'carMonthly', 'healthcarePerPerson', 'childcarePerChild'];
+const RENT_MARKETS = ['all-leases', 'new-leases', 'listings', 'recent-movers'];
+const RENT_STATS = ['mean', 'median', 'lower-quartile', 'upper-quartile', '40th-percentile'];
 
-export function validateCity(v: unknown, path: string, sourceIds: Set<string>): Problem[] {
+export interface CityChecks {
+  /** The country's currency: every money value must be monthly in it. */
+  currency?: string | undefined;
+  /** Production data: rents must say what they measure and derived values how they were made. */
+  production?: boolean;
+}
+
+/** A money value must be per month in the city's currency, and a production value must explain itself. */
+function checkMeaning(o: unknown, path: string, kind: 'money' | 'rent' | 'index', checks: CityChecks, out: Problem[]): void {
+  if (!isObj(o)) return;
+  if (kind !== 'index' && checks.currency !== undefined) {
+    if (o.currency !== checks.currency) out.push({ path: `${path}.currency`, message: `must be ${checks.currency}, the country's currency` });
+    if (o.unit !== `${checks.currency}/month`) out.push({ path: `${path}.unit`, message: `must be ${checks.currency}/month` });
+  }
+  if (kind === 'index' && !(typeof o.unit === 'string' && o.unit.startsWith('index'))) out.push({ path: `${path}.unit`, message: 'must be an index unit' });
+  if (!checks.production) return;
+  if (kind === 'rent') {
+    const r = o.rent;
+    if (!isObj(r) || !RENT_MARKETS.includes(r.market as string) || !RENT_STATS.includes(r.statistic as string) || !isStr(r.dwelling)) {
+      out.push({ path: `${path}.rent`, message: `must say what the rent measures: market (${RENT_MARKETS.join(', ')}), statistic (${RENT_STATS.join(', ')}) and dwelling` });
+    }
+  }
+  if (Array.isArray(o.derivedFrom) && o.derivedFrom.length > 0 && !isStr(o.basis)) out.push({ path: `${path}.basis`, message: 'a derived value must describe how it was derived' });
+  if (o.confidence === 'low' && !isStr(o.limitations)) out.push({ path: `${path}.limitations`, message: 'a low-confidence value must say what limits it' });
+}
+
+export function validateCity(v: unknown, path: string, sourceIds: Set<string>, checks: CityChecks = {}): Problem[] {
   if (!isObj(v)) return [{ path, message: 'must be an object' }];
   const out: Problem[] = [];
   for (const k of ['id', 'name', 'countryId', 'regionId']) req(v, k, isStr, path, 'a non-empty string', out);
@@ -107,18 +135,40 @@ export function validateCity(v: unknown, path: string, sourceIds: Set<string>): 
       if (!['1', '2', '3', '4'].includes(b)) out.push({ path: `${path}.costs.rent.${b}`, message: 'bedroom key must be 1–4' });
       if (!isObj(byLoc)) { out.push({ path: `${path}.costs.rent.${b}`, message: 'must be an object' }); continue; }
       for (const [loc, o] of Object.entries(byLoc)) {
-        if (!['central', 'outer'].includes(loc)) out.push({ path: `${path}.costs.rent.${b}.${loc}`, message: 'location must be central or outer' });
+        if (!['central', 'outer', 'cityWide'].includes(loc)) out.push({ path: `${path}.costs.rent.${b}.${loc}`, message: 'location must be central, outer or cityWide' });
         if (o !== undefined) out.push(...validateObservation(o, `${path}.costs.rent.${b}.${loc}`, sourceIds));
+        checkMeaning(o, `${path}.costs.rent.${b}.${loc}`, 'rent', checks, out);
+        if (isObj(o) && loc === 'cityWide' && o.geoLevel !== 'city' && o.geoLevel !== 'region') out.push({ path: `${path}.costs.rent.${b}.${loc}`, message: 'a city-wide rent must cover the city ("city") or its metro area ("region")' });
       }
     }
   }
   if (costs.utilities !== undefined) {
     if (!isObj(costs.utilities)) out.push({ path: `${path}.costs.utilities`, message: 'must be keyed by bedroom count' });
-    else for (const [b, o] of Object.entries(costs.utilities)) out.push(...validateObservation(o, `${path}.costs.utilities.${b}`, sourceIds));
+    else for (const [b, o] of Object.entries(costs.utilities)) {
+      out.push(...validateObservation(o, `${path}.costs.utilities.${b}`, sourceIds));
+      checkMeaning(o, `${path}.costs.utilities.${b}`, 'money', checks, out);
+    }
   }
-  for (const k of COST_KEYS) {
-    if (costs[k] !== undefined) out.push(...validateObservation(costs[k], `${path}.costs.${k}`, sourceIds));
+  for (const k of MONEY_KEYS) {
+    if (costs[k] !== undefined) {
+      out.push(...validateObservation(costs[k], `${path}.costs.${k}`, sourceIds));
+      checkMeaning(costs[k], `${path}.costs.${k}`, 'money', checks, out);
+    }
   }
+  if (costs.servicePriceIndex !== undefined) {
+    out.push(...validateObservation(costs.servicePriceIndex, `${path}.costs.servicePriceIndex`, sourceIds));
+    checkMeaning(costs.servicePriceIndex, `${path}.costs.servicePriceIndex`, 'index', checks, out);
+  }
+  if (costs.lifestyle !== undefined) {
+    if (!isObj(costs.lifestyle)) out.push({ path: `${path}.costs.lifestyle`, message: 'must be keyed by lifestyle category' });
+    else for (const [k, o] of Object.entries(costs.lifestyle)) {
+      if (!(LIFESTYLE_CATEGORIES as readonly string[]).includes(k)) out.push({ path: `${path}.costs.lifestyle.${k}`, message: `unknown lifestyle category; use ${LIFESTYLE_CATEGORIES.join(', ')}` });
+      out.push(...validateObservation(o, `${path}.costs.lifestyle.${k}`, sourceIds));
+      checkMeaning(o, `${path}.costs.lifestyle.${k}`, 'money', checks, out);
+    }
+  }
+  const known = new Set(['rent', 'utilities', 'lifestyle', 'servicePriceIndex', ...MONEY_KEYS]);
+  for (const k of Object.keys(costs)) if (!known.has(k)) out.push({ path: `${path}.costs.${k}`, message: 'unknown cost category' });
   return out;
 }
 

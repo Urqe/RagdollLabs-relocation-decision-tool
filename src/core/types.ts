@@ -26,6 +26,22 @@ export interface Observation {
   retrieved: string;
   confidence: Confidence;
   limitations?: string;
+  /** For rent: which market and dwelling the value describes. Required for rents in data/. */
+  rent?: RentDefinition;
+}
+
+/**
+ * What a rent figure measures. Rents from different sources answer different questions (what sitting tenants
+ * pay, what new tenants agree, what landlords ask), so each value says which.
+ */
+export interface RentDefinition {
+  market: 'all-leases' | 'new-leases' | 'listings' | 'recent-movers';
+  statistic: 'mean' | 'median' | 'lower-quartile' | 'upper-quartile' | '40th-percentile';
+  /** The dwelling the figure is for, in the source's own terms, e.g. "two-room flat (one bedroom and a living room)". */
+  dwelling: string;
+  furnished?: boolean;
+  /** How the value was moved to this dwelling size or period, if it was. */
+  adjustment?: string;
 }
 
 export interface Source {
@@ -67,13 +83,34 @@ export type CityLocation = 'central' | 'outer';
 export interface RentByLocation {
   central?: Observation | null;
   outer?: Observation | null;
+  /** A figure for the whole city, used when the source does not separate central and outer areas. */
+  cityWide?: Observation | null;
+}
+
+/** Spending categories that make up the lifestyle presets. */
+export const LIFESTYLE_CATEGORIES = ['eatingOut', 'recreation', 'clothing'] as const;
+export type LifestyleCategory = (typeof LIFESTYLE_CATEGORIES)[number];
+export type LifestyleLevel = 'budget' | 'moderate' | 'rich';
+
+/** How the lifestyle presets are defined; one definition for every city. */
+export interface LifestyleDefinition {
+  /** What the reference (Moderate) level is, in plain words. */
+  reference: string;
+  period: string;
+  sourceIds: string[];
+  categories: { id: LifestyleCategory; label: string; description: string }[];
+  presets: Record<LifestyleLevel, { label: string; multiplier: number; description: string }>;
 }
 
 export interface CityCosts {
   rent: Partial<Record<'1' | '2' | '3' | '4', RentByLocation>>;
   /** Electricity, heating, water, waste for the dwelling; per month, local currency. Keyed by bedroom count. */
   utilities?: Partial<Record<'1' | '2' | '3' | '4', Observation | null>>;
+  /** Water charged per resident, where it is billed that way (for example by Finnish landlords); added to utilities. */
+  waterPerPerson?: Observation | null;
   internet?: Observation | null;
+  /** Phone and internet (services and devices) per adult equivalent per month. Used instead of `internet` when present. */
+  communicationsPerAdultEquivalent?: Observation | null;
   /** Groceries per adult equivalent (modified OECD scale), per month. */
   groceriesPerAdultEquivalent?: Observation | null;
   transitPassAdult?: Observation | null;
@@ -83,11 +120,16 @@ export interface CityCosts {
   healthcarePerPerson?: Observation | null;
   /** Daycare per child per month. */
   childcarePerChild?: Observation | null;
-  /** Price of personal services relative to the euro area (1 = euro-area level). Scales discretionary presets. */
+  /**
+   * Cost here, per adult equivalent per month, of the reference (Moderate) level of each lifestyle category.
+   * When every category is present the presets are priced from these; otherwise the flat fallback is used.
+   */
+  lifestyle?: Partial<Record<LifestyleCategory, Observation | null>>;
+  /** Price of personal services relative to the euro area (1 = euro-area level). Used only by the flat fallback for lifestyle presets. */
   servicePriceIndex?: Observation | null;
 }
 
-export const TAX_MODELS = ['fi', 'us', 'ee', 'de', 'es', 'pt'] as const;
+export const TAX_MODELS = ['fi', 'us', 'ee', 'de', 'es', 'pt', 'mx'] as const;
 export type TaxModelId = (typeof TAX_MODELS)[number];
 
 export interface TaxJurisdiction {
@@ -139,4 +181,5 @@ export interface Release {
   regions: Region[];
   cities: City[];
   tax: Partial<Record<TaxModelId, unknown>>;
+  lifestyle: LifestyleDefinition;
 }

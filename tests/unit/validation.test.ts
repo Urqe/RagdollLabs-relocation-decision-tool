@@ -13,7 +13,7 @@ const tampere = fixtures.cities.find((c) => c.data.id === 'fi-tampere')!;
 describe('repository data', () => {
   test('current data/ and fixtures/ trees are valid', () => {
     assert.deepEqual(checkTree(data, data.sources).errors, []);
-    assert.deepEqual(checkTree(fixtures, allSources).errors, []);
+    assert.deepEqual(checkTree(fixtures, allSources, data).errors, []);
   });
 
   test('current tax parameter files are valid', () => {

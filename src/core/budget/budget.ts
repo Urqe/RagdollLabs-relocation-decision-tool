@@ -1,6 +1,6 @@
-import type { City, CurrencyCode, FxSnapshot, Observation } from '../types.ts';
+import { LIFESTYLE_CATEGORIES, type City, type CurrencyCode, type FxSnapshot, type LifestyleDefinition, type Observation } from '../types.ts';
 import { addRanges, eurToLocal, mapRange, point, scaleRange, type Range } from '../money/money.ts';
-import { adultEquivalents, adults, DISCRETIONARY_PRESETS_EUR, totalChildren, type CityOverrides, type Household } from './household.ts';
+import { adultEquivalents, adults, FLAT_LIFESTYLE_EUR, totalChildren, type CityOverrides, type Household } from './household.ts';
 
 export type CategoryId = 'rent' | 'utilities' | 'internet' | 'groceries' | 'transport' | 'healthcare' | 'childcare' | 'discretionary';
 
@@ -74,38 +74,99 @@ const notApplicable = (id: CategoryId, essential: boolean, note: string): Catego
 
 export function rentCategory(city: City, h: Household, o: CityOverrides): CategoryResult {
   if (o.rentMonthlyLocal !== undefined) {
-    return { id: 'rent', label: LABELS.rent, essential: true, status: 'override', local: point(o.rentMonthlyLocal), observations: [], notes: ['Your figure.'] };
+    const covers = o.rentIncludes ?? [];
+    return { id: 'rent', label: LABELS.rent, essential: true, status: 'override', local: point(o.rentMonthlyLocal), observations: [], notes: [covers.length > 0 ? `Your figure, including ${covers.join(' and ')}.` : 'Your figure.'] };
   }
   const byLoc = city.costs.rent[String(h.bedrooms) as '1' | '2' | '3' | '4'];
   const wanted = byLoc?.[h.location];
   if (wanted && wanted.value !== null) return fromObs('rent', true, wanted, 1);
-  if (h.location === 'outer' && byLoc?.central && byLoc.central.value !== null) {
-    return fromObs('rent', true, byLoc.central, 1, ['The source does not separate central and outer areas; city-wide figure shown.']);
+  // A city-wide figure is used only when the source says it covers the whole city, never a central figure in its place.
+  if (byLoc?.cityWide && byLoc.cityWide.value !== null) {
+    return fromObs('rent', true, byLoc.cityWide, 1, [`The source does not separate central and outer areas; this is the figure for the whole ${byLoc.cityWide.geoLevel === 'region' ? 'metro area' : 'city'}.`]);
   }
   return fromObs('rent', true, null, 1);
 }
 
+const yours = (id: CategoryId, essential: boolean, value: number): CategoryResult => ({
+  id, label: LABELS[id], essential, status: 'override', local: point(value), observations: [], notes: ['Your figure.'],
+});
+
 const includesItem = (o: Observation | null | undefined, item: string): boolean => o?.includes?.includes(item) === true;
 
-export function costCategories(city: City, h: Household, o: CityOverrides, fx: FxSnapshot, currency: CurrencyCode): CategoryResult[] {
+/**
+ * Discretionary spending. A preset is priced from the city's lifestyle costs when it has all of them:
+ * the reference level of each category per adult equivalent, times the preset's multiplier. Otherwise
+ * a flat euro amount is scaled by the city's service price level, and labelled as such.
+ */
+function discretionaryCategory(city: City, h: Household, fx: FxSnapshot, currency: CurrencyCode, lifestyle?: LifestyleDefinition): CategoryResult {
+  const base = { id: 'discretionary' as const, label: LABELS.discretionary, essential: false };
+  if (h.discretionary.kind === 'custom') {
+    return { ...base, status: 'override', local: point(eurToLocal(h.discretionary.eurPerMonth, currency, fx)), observations: [], notes: ['Your figure.'] };
+  }
+  const level = h.discretionary.level;
+  const ae = adultEquivalents(h);
+  const prices = city.costs.lifestyle ?? {};
+  const all = LIFESTYLE_CATEGORIES.map((k) => prices[k]);
+  if (lifestyle && all.every((o): o is Observation => o !== null && o !== undefined && o.value !== null)) {
+    const preset = lifestyle.presets[level];
+    const parts = all.map((o) => scaleRange(obsRange(o)!, preset.multiplier * ae));
+    const items = lifestyle.categories.map((cat) => cat.label.toLowerCase());
+    return {
+      ...base, status: 'estimated', local: addRanges(...parts), observations: all,
+      notes: [`${preset.label}: ${preset.description} Priced here for ${items.slice(0, -1).join(', ')} and ${items.at(-1)}.`],
+    };
+  }
+  const idx = city.costs.servicePriceIndex?.value ?? null;
+  const eur = FLAT_LIFESTYLE_EUR[level] * ae * (idx ?? 1);
+  return {
+    ...base, status: 'estimated', local: point(eurToLocal(eur, currency, fx)),
+    observations: city.costs.servicePriceIndex ? [city.costs.servicePriceIndex] : [],
+    notes: [
+      `${lifestyle?.presets[level].label ?? level} preset as a flat amount (app assumption): no lifestyle prices for this city yet.`,
+      idx === null ? 'Not adjusted for local prices: no price-level data.' : `Adjusted by the general price level of services (index ${idx.toFixed(2)}).`,
+    ],
+  };
+}
+
+/** Dwelling utilities plus water billed per resident, when the city's data splits them that way. */
+function utilitiesCategory(c: City['costs'], bedroomKey: '1' | '2' | '3' | '4', people: number, rentObs: Observation | undefined): CategoryResult {
+  const dwelling = fromObs('utilities', true, c.utilities?.[bedroomKey], 1);
+  if (c.waterPerPerson === undefined || includesItem(rentObs, 'water') || dwelling.local === null) return dwelling;
+  const water = obsRange(c.waterPerPerson);
+  if (water === null) return { ...dwelling, status: 'missing', local: null, notes: ['No data for water.'] };
+  return {
+    ...dwelling, local: addRanges(dwelling.local, scaleRange(water, people)), observations: [...dwelling.observations, c.waterPerPerson!],
+    notes: [...dwelling.notes, `Includes water for ${people} ${people === 1 ? 'person' : 'people'}, billed per resident.`],
+  };
+}
+
+export function costCategories(city: City, h: Household, o: CityOverrides, fx: FxSnapshot, currency: CurrencyCode, lifestyle?: LifestyleDefinition): CategoryResult[] {
   const c = city.costs;
   const rent = rentCategory(city, h, o);
   const rentObs = rent.observations[0];
+  const rentCovers = (item: 'utilities' | 'internet'): boolean => (rent.status === 'override' ? (o.rentIncludes ?? []).includes(item) : includesItem(rentObs, item));
   const bedroomKey = String(h.bedrooms) as '1' | '2' | '3' | '4';
   const nAdults = adults(h);
 
-  const utilities = includesItem(rentObs, 'utilities') ? included('utilities', 'rent') : fromObs('utilities', true, c.utilities?.[bedroomKey], 1);
-  const internet = includesItem(rentObs, 'internet') ? included('internet', 'rent') : fromObs('internet', true, c.internet, 1);
+  const own = o.ownCosts ?? {};
+  const utilities = rentCovers('utilities') ? included('utilities', 'rent') : own.utilities !== undefined ? yours('utilities', true, own.utilities) : utilitiesCategory(c, bedroomKey, adults(h) + totalChildren(h.children), rentObs);
+  const internet = rentCovers('internet') ? included('internet', 'rent')
+    : own.internet !== undefined ? yours('internet', true, own.internet)
+      : c.communicationsPerAdultEquivalent !== undefined
+        ? { ...fromObs('internet', true, c.communicationsPerAdultEquivalent, adultEquivalents(h), ['Phone and internet for the household, including devices, scaled by household size.']), label: 'Phone and internet' }
+        : fromObs('internet', true, c.internet, 1);
 
   const nKids = totalChildren(h.children);
   const kids = nKids === 0 ? '' : ` and ${nKids} ${nKids === 1 ? 'child' : 'children'}`;
-  const groceries = fromObs('groceries', true, c.groceriesPerAdultEquivalent, adultEquivalents(h), [
+  const groceries = own.groceries !== undefined ? yours('groceries', true, own.groceries) : fromObs('groceries', true, c.groceriesPerAdultEquivalent, adultEquivalents(h), [
     `Sized for ${nAdults} ${nAdults === 1 ? 'adult' : 'adults'}${kids} on the modified OECD scale (children under 14 count less).`,
   ]);
 
   let transport: CategoryResult;
   const transitAdults = Math.max(0, nAdults - h.cars);
-  if (h.cars === 0) {
+  if (own.transport !== undefined) {
+    transport = yours('transport', true, own.transport);
+  } else if (h.cars === 0) {
     transport = fromObs('transport', true, c.transitPassAdult, nAdults, [`Monthly transit pass for ${nAdults} adult${nAdults > 1 ? 's' : ''}.`]);
   } else {
     const car = obsRange(c.carMonthly);
@@ -124,31 +185,17 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
   }
 
   const people = nAdults + nKids;
-  const healthcare = fromObs('healthcare', true, c.healthcarePerPerson, people, ['Mandatory health contributions already deducted from pay are not counted here.']);
+  const healthcare = own.healthcare !== undefined
+    ? yours('healthcare', true, own.healthcare)
+    : fromObs('healthcare', true, c.healthcarePerPerson, people, [`For ${people} ${people === 1 ? 'person' : 'people'}. Health contributions already deducted from pay are not counted here.`]);
 
-  const childcare = h.childrenInDaycare > 0
-    ? fromObs('childcare', true, c.childcarePerChild, h.childrenInDaycare, [`${h.childrenInDaycare} child${h.childrenInDaycare > 1 ? 'ren' : ''} in daycare.`])
-    : notApplicable('childcare', true, 'No children in daycare.');
+  const childcare = h.childrenInDaycare === 0
+    ? notApplicable('childcare', true, 'No children in daycare.')
+    : own.childcare !== undefined
+      ? yours('childcare', true, own.childcare)
+      : fromObs('childcare', true, c.childcarePerChild, h.childrenInDaycare, [`${h.childrenInDaycare} child${h.childrenInDaycare > 1 ? 'ren' : ''} in daycare.`]);
 
-  // Discretionary: euros at euro-area prices × local service price level, then converted to local currency.
-  let discretionaryEur: number;
-  const dNotes: string[] = [];
-  if (h.discretionary.kind === 'custom') {
-    discretionaryEur = h.discretionary.eurPerMonth;
-    dNotes.push('Your figure.');
-  } else {
-    const idx = c.servicePriceIndex?.value ?? null;
-    const base = DISCRETIONARY_PRESETS_EUR[h.discretionary.level] * adultEquivalents(h);
-    discretionaryEur = base * (idx ?? 1);
-    dNotes.push(`${h.discretionary.level[0]!.toUpperCase()}${h.discretionary.level.slice(1)} preset (app assumption).`);
-    dNotes.push(idx === null ? 'Not adjusted for local prices: no price-level data.' : `Adjusted for local service prices (index ${idx.toFixed(2)}).`);
-  }
-  const discretionary: CategoryResult = {
-    id: 'discretionary', label: LABELS.discretionary, essential: false, status: h.discretionary.kind === 'custom' ? 'override' : 'estimated',
-    local: point(eurToLocal(discretionaryEur, currency, fx)),
-    observations: c.servicePriceIndex && h.discretionary.kind === 'preset' ? [c.servicePriceIndex] : [],
-    notes: dNotes,
-  };
+  const discretionary = discretionaryCategory(city, h, fx, currency, lifestyle);
 
   return [rent, utilities, internet, groceries, transport, healthcare, childcare, discretionary];
 }
