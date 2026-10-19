@@ -79,7 +79,7 @@
       "basis": "World Bank indicator SP.DYN.LE00.IN."
     },
     "oopShare": {
-      "value": 10.927,
+      "value": null,
       "unit": "% of health spending",
       "period": "2023",
       "geoLevel": "country",
@@ -87,8 +87,8 @@
       "sourceId": "wb-oop-share",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS.",
-      "limitations": "Low in the US because most health spending goes through insurance premiums, which are not counted as out of pocket."
+      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS: 10.927 in 2023.",
+      "limitations": "The US figure leaves out health insurance premiums, which most people there pay themselves, so it would make US healthcare look nearly free to use."
     },
     "eatingOutPriceLevel": {
       "value": 0.8,
@@ -99,7 +99,8 @@
       "sourceId": "icp-2021",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021."
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
     },
     "coldestMonthMean": {
       "value": 11.2,

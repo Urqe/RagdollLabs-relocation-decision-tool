@@ -13,16 +13,16 @@
   ],
   "indicators": {
     "homicideRate": {
-      "value": 24.859,
+      "value": 53.7,
       "unit": "per 100,000 people a year",
-      "period": "2023",
-      "geoLevel": "country",
+      "period": "2025",
+      "geoLevel": "region",
       "provenance": "inherited",
-      "sourceId": "wb-homicide",
+      "sourceId": "inegi-homicides",
       "retrieved": "2026-10-19",
-      "confidence": "high",
-      "basis": "World Bank indicator VC.IHR.PSRC.P5.",
-      "limitations": "A national rate; rates differ widely between Mexican states and cities."
+      "confidence": "medium",
+      "basis": "Sonora: 1,634 deaths registered as presumed homicides in 2025 per 3,041,340 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1 and 2; preliminary).",
+      "limitations": "A state rate for Sonora, by state of registration; INEGI's release does not give Hermosillo separately, and 2025 figures are preliminary."
     },
     "voiceAccountability": {
       "value": -0.282,
@@ -99,7 +99,8 @@
       "sourceId": "icp-2021",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021."
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
     },
     "coldestMonthMean": {
       "value": 17.2,

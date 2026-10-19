@@ -104,7 +104,18 @@
         "sourceId": "smn-normals"
       },
       "foreignBornShare": null,
-      "carCommuteShare": null
+      "carCommuteShare": null,
+      "regional": {
+        "homicideRate": {
+          "value": 53.7,
+          "period": "2025",
+          "geoLevel": "region",
+          "sourceId": "inegi-homicides",
+          "confidence": "medium",
+          "basis": "Sonora: 1,634 deaths registered as presumed homicides in 2025 per 3,041,340 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1 and 2; preliminary).",
+          "limitations": "A state rate for Sonora, by state of registration; INEGI's release does not give Hermosillo separately, and 2025 figures are preliminary."
+        }
+      }
     }
   },
   "national": {
@@ -281,6 +292,9 @@
           "value": 10.927,
           "year": "2023"
         }
+      },
+      "notComparable": {
+        "USA": "The US figure leaves out health insurance premiums, which most people there pay themselves, so it would make US healthcare look nearly free to use."
       }
     }
   },

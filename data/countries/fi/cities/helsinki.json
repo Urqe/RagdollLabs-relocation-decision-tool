@@ -99,7 +99,8 @@
       "sourceId": "icp-2021",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021."
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
     },
     "coldestMonthMean": {
       "value": -3.8,

@@ -377,6 +377,16 @@
     "lastChecked": "2026-10-19"
   },
   {
+    "id": "inegi-homicides",
+    "name": "Defunciones por homicidio, enero a diciembre de 2025 (preliminar), comunicado de prensa 42/26 and reporte de resultados 28/26",
+    "publisher": "INEGI",
+    "url": "https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/edr/DH2025en-jn_RR.pdf",
+    "licence": "Free use with attribution (INEGI terms of free use)",
+    "attribution": "Fuente: INEGI, Estadísticas de Defunciones Registradas",
+    "cadence": "annual",
+    "lastChecked": "2026-10-20"
+  },
+  {
     "id": "wb-wgi",
     "name": "Worldwide Governance Indicators",
     "publisher": "World Bank",

@@ -14,11 +14,14 @@ interface CityInputs {
   climate: { coldestMonthMean: number; warmestMonthMeanMax: number; station: string; period: string; sourceId: string };
   foreignBornShare: CityValue | null;
   carCommuteShare: CityValue | null;
+  /** State or regional values that replace a national indicator for this city. */
+  regional?: Record<string, CityValue & { geoLevel: 'region' }>;
 }
 interface Inputs {
   retrieved: string;
   retrievedNational: string;
-  national: Record<string, { worldBankCode: string; values: Record<string, { value: number; year: string }> }>;
+  /** `notComparable`: countries where the indicator does not measure what the dimension means; kept, with the reason, but not scored. */
+  national: Record<string, { worldBankCode: string; values: Record<string, { value: number; year: string }>; notComparable?: Record<string, string> }>;
   cities: Record<string, CityInputs>;
 }
 
@@ -46,13 +49,21 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
   const c = inputs.cities[id]!;
   const out: Record<string, Observation | null> = {};
   for (const [key, ind] of Object.entries(inputs.national)) {
+    const r = c.regional?.[key];
+    if (r) {
+      out[key] = {
+        value: r.value, unit: NATIONAL_UNIT[key]!, period: r.period, geoLevel: r.geoLevel, provenance: 'inherited', sourceId: r.sourceId,
+        retrieved: inputs.retrieved, confidence: r.confidence ?? 'medium', basis: r.basis, ...(r.limitations ? { limitations: r.limitations } : {}),
+      };
+      continue;
+    }
     const v = ind.values[c.country];
+    const notComparable = ind.notComparable?.[c.country];
     out[key] = v ? {
-      value: v.value, unit: NATIONAL_UNIT[key]!, period: v.year, geoLevel: 'country', provenance: 'inherited',
+      value: notComparable ? null : v.value, unit: NATIONAL_UNIT[key]!, period: v.year, geoLevel: 'country', provenance: 'inherited',
       sourceId: NATIONAL_SOURCE[key]!, retrieved: inputs.retrievedNational, confidence: key === 'oopShare' || key === 'lifeExpectancy' ? 'medium' : 'high',
-      basis: `World Bank indicator ${ind.worldBankCode}.`,
-      ...(key === 'oopShare' && c.country === 'USA' ? { limitations: 'Low in the US because most health spending goes through insurance premiums, which are not counted as out of pocket.' } : {}),
-      ...(key === 'homicideRate' && c.country === 'MEX' ? { limitations: 'A national rate; rates differ widely between Mexican states and cities.' } : {}),
+      basis: notComparable ? `World Bank indicator ${ind.worldBankCode}: ${v.value} in ${v.year}.` : `World Bank indicator ${ind.worldBankCode}.`,
+      ...(notComparable ? { limitations: notComparable } : {}),
     } : null;
   }
   const pli = prices.priceLevels2021;
@@ -60,6 +71,7 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
     value: Math.round((pli[c.country]!.eatingOut! / pli.FIN!.eatingOut!) * 100) / 100, unit: 'ratio to Finland', period: '2021',
     geoLevel: 'country', provenance: 'inherited', sourceId: 'icp-2021', retrieved: '2026-10-19', confidence: 'medium',
     basis: 'Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.',
+    limitations: 'The programme prices restaurants and hotels together, so hotel prices are part of this figure.',
   };
   const climate = (value: number, what: string): Observation => ({
     value, unit: '°C', period: c.climate.period, geoLevel: 'city', provenance: 'observed', sourceId: c.climate.sourceId,

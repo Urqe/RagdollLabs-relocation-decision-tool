@@ -154,7 +154,7 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .children-row .field > label { font-weight: 400; font-size: 0.875rem; }
 .children-row .hint:empty { display: none; }
 .more, .prefs { border-top: 1px solid var(--rule); padding-top: var(--space-3); }
-.more > summary, .prefs > summary { cursor: pointer; font-weight: 600; }
+.more > summary, .prefs > summary { cursor: pointer; font-weight: 600; min-height: 44px; padding-block: 10px; }
 .more[open] { display: grid; gap: var(--space-4); }
 .quiet-button {
   justify-self: start; font: inherit; font-size: 0.875rem; color: var(--muted); background: none; border: 0; padding: var(--space-2) 0;
@@ -277,7 +277,7 @@ table.sources th, table.sources td { overflow-wrap: anywhere; }
 .own-more > summary { cursor: pointer; font-weight: 600; min-height: 40px; display: flex; align-items: center; }
 .own-more[open] { display: grid; gap: var(--space-3); }
 .how { margin-top: 2px; font-size: 0.8125rem; color: var(--muted); }
-.how > summary { cursor: pointer; min-height: 24px; text-decoration: underline; text-underline-offset: 2px; }
+.how > summary { cursor: pointer; min-height: 40px; padding-block: 8px; text-decoration: underline; text-underline-offset: 2px; }
 .how > p { margin: var(--space-1) 0 0; }
 
 /* ---- fit with preferences (0.4.0) ---- */
@@ -302,5 +302,7 @@ table.sources th, table.sources td { overflow-wrap: anywhere; }
 .meter-unknown { background: repeating-linear-gradient(45deg, var(--control) 0 3px, transparent 3px 6px); }
 .indicators { margin: var(--space-1) 0 0; padding-left: 1.2em; overflow-wrap: anywhere; }
 .indicators li { margin: 2px 0; }
-details.prefs .pref { display: grid; gap: var(--space-2); }
+details.prefs .pref { display: grid; gap: var(--space-2); margin-top: var(--space-3); }
+.pref-aspects { display: grid; gap: var(--space-2); margin-left: var(--space-1); padding-left: var(--space-3); border-left: 2px solid var(--rule); }
+.pref-aspects .field > label { font-weight: 500; }
 details.prefs[open] { display: grid; gap: var(--space-3); }

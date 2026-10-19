@@ -6,7 +6,7 @@ It is a personal planning tool. Estimates are not tax or immigration advice, and
 
 ## Status
 
-Version 0.4.0. See [RELEASE_PLAN.md](RELEASE_PLAN.md) for what comes next and [docs/reviews/](docs/reviews/) for review findings.
+Version 0.4.1. See [RELEASE_PLAN.md](RELEASE_PLAN.md) for what comes next and [docs/reviews/](docs/reviews/) for review findings.
 
 - Real 2026 employee tax and contribution rules for Finland, the US (federal, Texas, California), Estonia, Germany, Spain (Madrid, Valencia), Portugal and Mexico (Sonora).
 - Households of one or two adults, married, registered partners or neither, with children by age band. Each model applies only the joint filing and child rules it supports, and says which in the pay detail.

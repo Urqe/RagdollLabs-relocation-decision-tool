@@ -142,3 +142,74 @@ export function checkLifestyle(v: unknown, sources: Source[]): Problem[] {
   }
   return out;
 }
+
+/**
+ * The preference definition: five importance labels; every rule names a defined indicator and has usable bounds
+ * (best different from worst, positive tolerance, positive bounds on a log scale); each aspect's default is one of
+ * its options and aspect ids are unique, because choices are stored by aspect id; overlap groups name real dimensions.
+ * A bad edit here would otherwise give NaN or silently wrong fits.
+ */
+export function checkPreferences(v: unknown): Problem[] {
+  const path = 'data/preferences.json';
+  const out: Problem[] = [];
+  const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+  const num = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
+  const str = (x: unknown): x is string => typeof x === 'string' && x !== '';
+  if (!isObj(v)) return [{ path, message: 'must be an object' }];
+  if (!Array.isArray(v.importance) || v.importance.length !== 5 || !v.importance.every(str)) out.push({ path: `${path}.importance`, message: 'must list five labels, for importance 0 to 4' });
+  const indicators = isObj(v.indicators) ? v.indicators : {};
+  if (!isObj(v.indicators)) out.push({ path: `${path}.indicators`, message: 'must be keyed by indicator id' });
+  for (const [k, m] of Object.entries(indicators)) {
+    if (!isObj(m) || !str(m.label) || !str(m.unit) || !['measured', 'proxy'].includes(m.kind as string)) out.push({ path: `${path}.indicators.${k}`, message: 'must have a label, a unit and a kind (measured or proxy)' });
+  }
+  const checkRule = (r: unknown, at: string): void => {
+    if (!isObj(r) || !str(r.indicator) || !(r.indicator in indicators)) { out.push({ path: at, message: 'must name an indicator defined under "indicators"' }); return; }
+    const target = r.target !== undefined || r.tolerance !== undefined;
+    if (target) {
+      if (!num(r.target) || !num(r.tolerance) || r.tolerance <= 0) out.push({ path: at, message: 'a target rule needs a numeric target and a positive tolerance' });
+      if (r.worst !== undefined || r.best !== undefined) out.push({ path: at, message: 'use either target and tolerance, or worst and best' });
+      return;
+    }
+    if (!num(r.worst) || !num(r.best) || r.worst === r.best) out.push({ path: at, message: 'needs numeric worst and best that differ' });
+    if (r.scale !== undefined && r.scale !== 'log') out.push({ path: `${at}.scale`, message: 'must be "log" or left out' });
+    if (r.scale === 'log' && !(num(r.worst) && num(r.best) && r.worst > 0 && r.best > 0)) out.push({ path: at, message: 'a log scale needs positive bounds' });
+  };
+  const dimIds = new Set<string>();
+  const aspectIds = new Set<string>();
+  const dims = Array.isArray(v.dimensions) ? v.dimensions : [];
+  if (dims.length === 0) out.push({ path: `${path}.dimensions`, message: 'must be a non-empty list' });
+  dims.forEach((d: unknown, i: number) => {
+    const at = `${path}.dimensions[${i}]`;
+    if (!isObj(d) || !str(d.id) || !str(d.label) || !str(d.description)) { out.push({ path: at, message: 'must have an id, a label and a description' }); return; }
+    if (dimIds.has(d.id)) out.push({ path: at, message: `duplicate dimension id "${d.id}"` });
+    dimIds.add(d.id);
+    if ((d.rules === undefined) === (d.aspects === undefined)) out.push({ path: at, message: 'must have either rules or aspects' });
+    if (d.rules !== undefined) {
+      if (!Array.isArray(d.rules) || d.rules.length === 0) out.push({ path: `${at}.rules`, message: 'must be a non-empty list' });
+      else d.rules.forEach((r: unknown, j: number) => checkRule(r, `${at}.rules[${j}]`));
+    }
+    if (d.aspects !== undefined) (Array.isArray(d.aspects) ? d.aspects : []).forEach((a: unknown, j: number) => {
+      const aat = `${at}.aspects[${j}]`;
+      if (!isObj(a) || !str(a.id) || !str(a.label) || !Array.isArray(a.options) || a.options.length < 2) { out.push({ path: aat, message: 'must have an id, a label and at least two options' }); return; }
+      if (aspectIds.has(a.id)) out.push({ path: aat, message: `duplicate aspect id "${a.id}"; choices are stored by aspect id` });
+      aspectIds.add(a.id);
+      const optionIds = a.options.map((o: unknown) => (isObj(o) ? o.id : undefined));
+      if (!optionIds.includes(a.default)) out.push({ path: `${aat}.default`, message: 'must be one of the options' });
+      if (new Set(optionIds).size !== optionIds.length) out.push({ path: aat, message: 'option ids must be unique' });
+      a.options.forEach((o: unknown, k: number) => {
+        const oat = `${aat}.options[${k}]`;
+        if (!isObj(o) || !str(o.id) || !str(o.label) || !Array.isArray(o.rules)) { out.push({ path: oat, message: 'must have an id, a label and a list of rules' }); return; }
+        if (o.notCovered !== undefined && (!str(o.notCovered) || o.rules.length > 0)) out.push({ path: oat, message: '"notCovered" is a reason, for an option with no rules' });
+        o.rules.forEach((r: unknown, m: number) => checkRule(r, `${oat}.rules[${m}]`));
+      });
+    });
+  });
+  (Array.isArray(v.overlapGroups) ? v.overlapGroups : []).forEach((g: unknown, i: number) => {
+    const at = `${path}.overlapGroups[${i}]`;
+    if (!isObj(g) || !Array.isArray(g.dimensions) || g.dimensions.length < 2 || !g.dimensions.every((id) => dimIds.has(id as string))) out.push({ path: at, message: 'must name at least two defined dimensions' });
+    if (!isObj(g) || !num(g.factor) || g.factor <= 0 || g.factor >= 1) out.push({ path: `${at}.factor`, message: 'must be between 0 and 1' });
+    if (!isObj(g) || !str(g.reason)) out.push({ path: `${at}.reason`, message: 'must explain the overlap' });
+  });
+  if (!Array.isArray(v.overlapGroups)) out.push({ path: `${path}.overlapGroups`, message: 'must be a list (it can be empty)' });
+  return out;
+}

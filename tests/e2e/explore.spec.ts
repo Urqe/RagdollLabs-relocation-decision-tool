@@ -303,7 +303,7 @@ test('lifestyle presets are named Budget, Moderate and Rich lifestyle and priced
 
 test('fit: nothing counts until the user says what matters', async ({ page }) => {
   await page.goto('./#/explore/fi-helsinki');
-  await expect(page.locator('section.fit')).toContainText('Tell us what matters to you');
+  await expect(page.locator('section.fit')).toContainText('Choose what matters to you');
 });
 
 test('fit: preferences give an explained fit, with a range where data is missing', async ({ page }) => {
@@ -328,4 +328,31 @@ test('fit: preferences give an explained fit, with a range where data is missing
   // Preferences are kept on reload.
   await page.reload();
   await expect(page.locator('section.fit .fit-excluded')).toBeVisible();
+});
+
+test('fit: a weak part is named, and is never a best match (0.4.1, V2)', async ({ page }) => {
+  await page.goto('./#/explore/mx-hermosillo');
+  await page.locator('details.prefs > summary').click();
+  await page.getByLabel('Climate', { exact: true }).selectOption({ label: 'Very' });
+  const fit = page.locator('section.fit');
+  await expect(fit).toContainText('Weak spot within climate: warmest month, average daily high scores 0.');
+  await expect(fit).not.toContainText('Best match: climate');
+  // The follow-up choices name their area for screen readers.
+  await expect(page.getByRole('combobox', { name: 'Climate: Summers' })).toBeVisible();
+});
+
+test('fit: an area set to matter with every choice at "No preference" is explained, not failed (0.4.1, V3)', async ({ page }) => {
+  await page.goto('./#/explore/es-madrid');
+  await page.locator('details.prefs > summary').click();
+  await page.getByLabel('Climate', { exact: true }).selectOption({ label: 'Essential' });
+  await page.getByLabel('Winters').selectOption({ label: 'No preference' });
+  await page.getByLabel('Summers').selectOption({ label: 'No preference' });
+  await page.getByLabel('Dark winter days').selectOption({ label: 'Fine with them' });
+  const fit = page.locator('section.fit');
+  await expect(fit).toContainText('nothing to score');
+  await expect(fit.locator('.fit-excluded')).toHaveCount(0);
+  await page.getByLabel('Safety', { exact: true }).selectOption({ label: 'Very' });
+  await expect(fit.locator('.fit-band')).toContainText('out of 100');
+  await expect(fit).toContainText('Climate is set to matter, but every choice under it is “No preference”');
+  await expect(fit.locator('.fit-excluded')).toHaveCount(0);
 });

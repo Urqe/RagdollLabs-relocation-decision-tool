@@ -77,11 +77,12 @@ function preferenceFields(def: PreferenceDefinition, profile: Profile, update: (
     return h('div', { class: 'pref' },
       field(id, d.label, h('select', { id, 'aria-describedby': `${id}-hint`, onchange: (e: Event) => update(setImportance(d.id, Number((e.target as HTMLSelectElement).value))) },
         def.importance.map((label, i) => h('option', { value: i, selected: i === imp }, label))), d.description),
-      imp > 0 ? (d.aspects ?? []).map((a) => {
+      // Follow-up choices sit under their area, indented, and their names say which area they belong to.
+      imp > 0 && d.aspects ? h('div', { class: 'pref-aspects' }, d.aspects.map((a) => {
         const aid = `pref-${d.id}-${a.id}`;
-        return field(aid, a.label, h('select', { id: aid, onchange: (e: Event) => update(setChoice(a.id, (e.target as HTMLSelectElement).value)) },
+        return field(aid, a.label, h('select', { id: aid, 'aria-label': `${d.label}: ${a.label}`, onchange: (e: Event) => update(setChoice(a.id, (e.target as HTMLSelectElement).value)) },
           a.options.map((o) => h('option', { value: o.id, selected: o.id === (prefs.choices[a.id] ?? a.default) }, o.label))));
-      }) : null);
+      })) : null);
   });
 }
 

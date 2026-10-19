@@ -1,4 +1,4 @@
-import { computeFit, mustHaveExclusions, type DimensionFit, type Fit, type FitBand, type IndicatorScore, type Preferences } from '../core/fit/fit.ts';
+import { computeFit, mustHaveExclusions, unscoredDimensions, type DimensionFit, type Fit, type FitBand, type IndicatorScore, type Preferences } from '../core/fit/fit.ts';
 import type { City, PreferenceDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { h, type Child } from './dom.ts';
@@ -7,8 +7,10 @@ const BAND_LABEL: Record<FitBand, string> = { strong: 'Strong', good: 'Good', mi
 const ESSENTIAL = 4;
 
 const pct = (x: number): number => Math.round(x * 100);
+const GEO_NOTE: Record<string, string> = { country: ', national value', region: ', state or regional value' };
+const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
 const scoreText = (low: number, high: number): string => (pct(low) === pct(high) ? `${pct(low)}` : `${pct(low)} to ${pct(high)}`);
-const names = (ds: DimensionFit[]): string => {
+const names = (ds: { label: string }[]): string => {
   const n = ds.map((d) => d.label.toLowerCase());
   if (n.length <= 1) return n[0] ?? '';
   // A comma before the last "and" keeps labels such as "food and dining" readable.
@@ -30,9 +32,10 @@ function indicatorRow(i: IndicatorScore, def: PreferenceDefinition, data: Datase
     o && o.value !== null
       ? [value(o.value, meta?.unit ?? ''), ` scores ${pct(i.score!)}. `,
           s ? h('a', { href: s.url, rel: 'noopener', target: '_blank' }, s.name) : o.sourceId, `, ${o.period}`,
-          o.geoLevel === 'country' ? ', national value' : '', `, ${o.confidence} confidence.`,
+          GEO_NOTE[o.geoLevel] ?? '', `, ${o.confidence} confidence.`,
           o.limitations ? ` ${o.limitations}` : '']
-      : h('span', { class: 'missing' }, 'no data.'));
+      // A value left out on purpose says why; plain missing data just says so.
+      : [h('span', { class: 'missing' }, o?.limitations ? 'not scored.' : 'no data.'), o?.limitations ? ` ${o.limitations}` : '']);
 }
 
 function dimensionRow(d: DimensionFit, def: PreferenceDefinition, data: Dataset): HTMLElement {
@@ -50,15 +53,25 @@ function dimensionRow(d: DimensionFit, def: PreferenceDefinition, data: Dataset)
         d.notCovered.map((n) => h('li', { class: 'missing' }, n)))));
 }
 
-function notes(fit: Fit, def: PreferenceDefinition, essential: string[]): Child[] {
+function unscoredNote(ids: string[], def: PreferenceDefinition): string {
+  const ds = ids.map((id) => def.dimensions.find((d) => d.id === id)!);
+  return `${upperFirst(names(ds))} ${ds.length > 1 ? 'are' : 'is'} set to matter, but every choice under ${ds.length > 1 ? 'them' : 'it'} is “No preference”, so there is nothing to score.`;
+}
+
+function notes(fit: Fit, def: PreferenceDefinition, prefs: Preferences, essential: string[]): Child[] {
   const out: Child[] = [];
-  const excluded = mustHaveExclusions(fit, essential, def);
+  const excluded = mustHaveExclusions(fit, essential, def, prefs);
   if (excluded.length > 0) out.push(h('li', { class: 'fit-excluded' }, 'Essential not met: ', excluded.join(' ')));
   if (fit.strongest.length > 0) out.push(h('li', {}, `Best match: ${names(fit.strongest)}.`));
   if (fit.compromises.length > 0) out.push(h('li', {}, `Compromise: ${names(fit.compromises)}.`));
+  for (const d of fit.weakSpots) {
+    const parts = d.weakSpots.map((i) => `${(def.indicators[i.rule.indicator]?.label ?? i.rule.indicator).toLowerCase()} scores ${pct(i.score!)}`);
+    out.push(h('li', {}, `Weak spot within ${d.label.toLowerCase()}: ${parts.join(', ')}.`));
+  }
   if (fit.missing.length > 0) out.push(h('li', {}, `Missing or partial data for ${names(fit.missing)}, so the fit is shown as a range: the low end counts missing data as the worst case, the high end as the best.`));
   if (fit.sensitive.length > 0) out.push(h('li', {}, `Sensitive to how much ${names(fit.sensitive)} ${fit.sensitive.length > 1 ? 'matter' : 'matters'}: one step more or less importance changes the band.`));
-  if (fit.national.length > 0) out.push(h('li', {}, `${names(fit.national).replace(/^./, (c) => c.toUpperCase())} ${fit.national.length > 1 ? 'use' : 'uses'} national figures, which can hide differences between cities in the same country.`));
+  if (fit.national.length > 0) out.push(h('li', {}, `${upperFirst(names(fit.national))} ${fit.national.length > 1 ? 'use' : 'uses'} national figures, which can hide differences between cities in the same country.`));
+  if (fit.unscored.length > 0) out.push(h('li', {}, unscoredNote(fit.unscored, def)));
   return out;
 }
 
@@ -71,8 +84,11 @@ export function fitSection(city: City, prefs: Preferences, data: Dataset): HTMLE
   }
   const fit = computeFit(city, prefs, def);
   if (fit === null) {
+    const unscored = unscoredDimensions(def, prefs);
     return h('section', { class: 'fit', 'aria-labelledby': 'fit-title' }, title,
-      h('p', { class: 'empty prompt' }, 'Tell us what matters to you under “What matters to you” in the household panel to see how well this city fits.'));
+      h('p', { class: 'empty prompt' }, unscored.length > 0
+        ? `${unscoredNote(unscored, def)} Pick at least one choice under “What matters to you” to see how well this city fits.`
+        : 'Choose what matters to you under “What matters to you”, with the household details, to see how well this city fits.'));
   }
   const essential = def.dimensions.filter((d) => (prefs.importance[d.id] ?? 0) >= ESSENTIAL).map((d) => d.id);
   const band = `${BAND_LABEL[fit.band]}${fit.bandHigh ? ` to ${BAND_LABEL[fit.bandHigh].toLowerCase()}` : ''} fit`;
@@ -81,8 +97,8 @@ export function fitSection(city: City, prefs: Preferences, data: Dataset): HTMLE
     h('p', { class: `fit-band fit-${fit.band}` },
       h('strong', {}, band), ' ',
       h('span', { class: 'fit-score' }, `${scoreText(fit.low, fit.high)} out of 100`),
-      `, with data for ${pct(fit.coverage)}% of what you weighted.`),
-    h('ul', { class: 'fit-notes' }, notes(fit, def, essential)),
+      fit.coverage === 1 ? '.' : `. Data covers ${pct(fit.coverage)}% of what you said matters.`),
+    h('ul', { class: 'fit-notes' }, notes(fit, def, prefs, essential)),
     h('ul', { class: 'fit-dims' }, fit.dimensions.map((d) => dimensionRow(d, def, data))),
     h('p', { class: 'hint' }, 'This scores how well the city matches the preferences you set, using fixed scales that are the same for every city. It is not an overall quality-of-life rating. Scores within 5 points of each other are too close to call.'));
 }

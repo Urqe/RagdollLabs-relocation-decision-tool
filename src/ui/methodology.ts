@@ -18,7 +18,9 @@ function fitMethod(def: PreferenceDefinition): HTMLElement[] {
     h('ul', {},
       h('li', {}, 'Missing data is never filled in. The fit is shown as a range: the low end counts the missing measure as 0, the high end as 100. Removing data can only widen the range, never raise the low end.'),
       h('li', {}, 'Bands, on the low end: strong 75 or more, good 60 or more, mixed 45 or more, weak below that. Scores within 5 points are too close to call.'),
-      h('li', {}, '“Essential” also checks the area reaches 50; a city that does not, or cannot be shown to, is flagged.'),
+      h('li', {}, '“Essential” also checks the area reaches 50; a city that does not, or cannot be shown to, is flagged. An essential area with every choice at “No preference” has nothing to check and flags no city.'),
+      h('li', {}, 'An area made of several parts, such as winters, summers and daylight, is the average of its parts. A best match must score well on every part, and a part below 45 is named as a weak spot even when the average is good.'),
+      h('li', {}, 'A figure that does not measure what the area means in a country is kept, with the reason, but not scored; it counts as missing.'),
       def.overlapGroups.map((g) => h('li', {}, `${g.dimensions.map((id) => def.dimensions.find((d) => d.id === id)?.label ?? id).join(' and ')} count ${Math.round(g.factor * 100)}% each when both matter: ${g.reason.charAt(0).toLowerCase()}${g.reason.slice(1)}`)),
       h('li', {}, 'This is a match to your preferences, not a quality-of-life rating. Several measures are national figures or proxies, and are labelled as such.')),
     h('dl', { class: 'defs' }, def.dimensions.flatMap((d) => [

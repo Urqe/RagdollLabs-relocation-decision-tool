@@ -1,7 +1,9 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { checkDataVersion, checkJurisdictions, checkTree, checkTaxParams, staleSources } from '../../scripts/validation.ts';
-import { latestFx, readTree, taxParamFiles } from '../../scripts/repo-data.ts';
+import { checkDataVersion, checkJurisdictions, checkPreferences, checkTree, checkTaxParams, staleSources } from '../../scripts/validation.ts';
+import { latestFx, readTree, ROOT, taxParamFiles } from '../../scripts/repo-data.ts';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { validateObservation } from '../../src/data/validate.ts';
 import type { City, Source } from '../../src/core/types.ts';
 
@@ -133,5 +135,40 @@ describe('build-breaking problems', () => {
   test('tax brackets out of order fail', () => {
     const bad = { model: 'fi', taxYear: 2026, sources: ['https://example.org'], scale: [{ from: 0, rate: 0.1 }, { from: 0, rate: 0.2 }] };
     assert.ok(checkTaxParams([{ path: 'bad', data: bad }]).some((e) => e.message.includes('ascending')));
+  });
+});
+
+describe('preference definition (0.4.1, V4)', () => {
+  const good = (): Record<string, unknown> => JSON.parse(readFileSync(join(ROOT, 'data/preferences.json'), 'utf8')) as Record<string, unknown>;
+  const dims = (p: Record<string, unknown>): { id: string; rules?: Record<string, unknown>[]; aspects?: { id: string; default: string; options: { id: string; rules: Record<string, unknown>[] }[] }[] }[] => p.dimensions as never;
+
+  test('the shipped definition is valid', () => {
+    assert.deepEqual(checkPreferences(good()), []);
+  });
+  test('a rule naming an undefined indicator fails', () => {
+    const p = good();
+    dims(p)[0]!.rules![0]!.indicator = 'nope';
+    assert.match(checkPreferences(p)[0]!.message, /indicator defined/);
+  });
+  test('equal bounds, a zero tolerance and a log scale through zero fail', () => {
+    const p = good();
+    dims(p)[0]!.rules![0] = { indicator: 'homicideRate', worst: 1, best: 1 };
+    dims(p)[1]!.rules![0] = { indicator: 'voiceAccountability', target: 1, tolerance: 0 };
+    dims(p)[2]!.rules![0] = { indicator: 'governmentEffectiveness', worst: -1, best: 2, scale: 'log' };
+    assert.equal(checkPreferences(p).length, 3);
+  });
+  test('a default that is not an option, and a repeated aspect id, fail', () => {
+    const p = good();
+    const climate = dims(p).find((d) => d.id === 'climate')!;
+    climate.aspects![0]!.default = 'tropical';
+    climate.aspects![1]!.id = climate.aspects![0]!.id;
+    const messages = checkPreferences(p).map((x) => x.message).join(' | ');
+    assert.match(messages, /must be one of the options/);
+    assert.match(messages, /duplicate aspect id/);
+  });
+  test('an overlap group with an unknown dimension or a factor of 1 fails', () => {
+    const p = good();
+    p.overlapGroups = [{ dimensions: ['liberty', 'nope'], factor: 1, reason: 'x' }];
+    assert.equal(checkPreferences(p).length, 2);
   });
 });

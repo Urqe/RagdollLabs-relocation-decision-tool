@@ -1,6 +1,6 @@
 {
   "name": "ragdolllabs-relocation-decision-tool",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "description": "Static web app that compares cities for relocation by take-home pay, living costs and personal preferences.",
   "type": "module",

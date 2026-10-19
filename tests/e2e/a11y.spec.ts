@@ -25,6 +25,23 @@ async function problems(page: Page): Promise<string[]> {
   });
 }
 
+// The fit section and the preference form with every area weighted, so their controls and lists are checked too.
+const ALL_WEIGHTED = JSON.stringify({ v: 2, profile: { household: {}, incomeMode: 'annual', monthsPerYear: 12, preferences: {
+  importance: { safety: 4, liberty: 2, governance: 2, healthcare: 3, community: 2, food: 2, climate: 3, convenience: 1 }, choices: {} } } });
+
+for (const route of ['./#/explore/fi-helsinki', './#/explore/mx-hermosillo']) {
+  test(`basic accessibility with preferences set: ${route}`, async ({ page }) => {
+    await page.goto(route);
+    await page.evaluate((v) => localStorage.setItem('rdt.profile.v1', v), ALL_WEIGHTED);
+    await page.reload();
+    await expect(page.locator('section.fit .fit-band')).toBeVisible();
+    const panel = page.locator('.panel-summary');
+    if (await panel.isVisible() && (await panel.getAttribute('aria-expanded')) === 'false') await panel.click();
+    for (const d of await page.locator('section.fit details.how').all()) await d.locator('> summary').click();
+    expect(await problems(page)).toEqual([]);
+  });
+}
+
 for (const route of ['./#/explore/fi-helsinki', './#/explore/mx-hermosillo', './#/explore/us-austin', './#/methodology']) {
   test(`basic accessibility: ${route}`, async ({ page }) => {
     await page.goto(route);

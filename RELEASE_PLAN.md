@@ -91,8 +91,8 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
 | 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (40c7a70) |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
-| 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed |
-| 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
+| 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
+| 0.4.1 | Maintenance | Review of 0.4.0 | In progress |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Not started |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
@@ -284,6 +284,18 @@ Notes for the 0.4.1 review:
 
 **Done when** unit tests show that removing an indicator cannot improve a city's fit, that changing an irrelevant criterion leaves the ranking alone, that ties and all-zero weights behave as documented, and that close results are shown as close; and Explore shows fit for all five pilot cities.
 
+### 0.4.1 — Maintenance: review of 0.4.0
+
+**Status:** In progress
+
+Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V13 fixed; V14 (climate normals) and V15 (Berlin born abroad) moved to the backlog because their sources could not be read in the build environment.
+
+**Notes for 0.5.0**
+
+- Find uses `mustHaveExclusions(fit, essential, def, prefs)`; an essential area with every choice at "No preference" excludes no city.
+- Best matches now require every part of an area to score at least 45; weak parts are listed in `fit.weakSpots`.
+- Compiled JavaScript is at 135.5 kB of its 150 kB budget.
+
 ### 0.5.0 — Find cities and basic Compare
 
 **Status:** Not started
@@ -356,6 +368,9 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 - Confirm Child Care Aware's Texas infant-care price on childcareaware.org. (From review 0.3.1, T8.)
 - Residents born abroad for Hermosillo (INEGI census), and commuting by car for Austin (ACS) and Hermosillo (INEGI origin-destination survey). (From 0.4.0.)
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
+- Compare the five pilot cities' climate normals with the original tables or national weather services, and confirm Hermosillo's period is 1991–2020. (From review 0.4.1, V14.)
+- Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
+- A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.

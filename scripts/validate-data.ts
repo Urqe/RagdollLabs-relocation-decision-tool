@@ -3,7 +3,7 @@ import { latestFx, readJson, readTree, taxParamFiles } from './repo-data.ts';
 import { differences as priceDifferences } from './derive-price-levels.ts';
 import { costDifferences } from './derive-costs.ts';
 import { indicatorDifferences } from './derive-indicators.ts';
-import { checkDataVersion, checkFx, checkJurisdictions, checkLifestyle, checkTaxParams, checkTree, duplicateIds, staleSources } from './validation.ts';
+import { checkDataVersion, checkFx, checkJurisdictions, checkLifestyle, checkPreferences, checkTaxParams, checkTree, duplicateIds, staleSources } from './validation.ts';
 
 const data = readTree('data');
 const fixtures = readTree('fixtures');
@@ -18,8 +18,9 @@ const errors = [
   ...checkJurisdictions([data, { ...fixtures, countries: [...data.countries, ...fixtures.countries] }], taxParamFiles(), latestFx().data),
   ...staleSources(data.sources, new Date()),
   ...checkLifestyle(readJson<unknown>('data/lifestyle.json'), data.sources),
+  ...checkPreferences(readJson<unknown>('data/preferences.json')),
   // Derived values must match their curated inputs; re-run the derive scripts after changing data/inputs/.
-  ...[...priceDifferences(), ...costDifferences(), ...indicatorDifferences()].map((d) => ({ path: d.split(':')[0]!, message: `out of date with data/inputs (${d.split(': ')[1]}); run node scripts/derive-costs.ts and node scripts/derive-price-levels.ts` })),
+  ...[...priceDifferences(), ...costDifferences(), ...indicatorDifferences()].map((d) => ({ path: d.split(':')[0]!, message: `out of date with data/inputs (${d.split(': ')[1]}); run node scripts/derive-price-levels.ts, node scripts/derive-costs.ts and node scripts/derive-indicators.ts` })),
 ];
 
 for (const e of errors) console.error(`error    ${e.path}: ${e.message}`);
