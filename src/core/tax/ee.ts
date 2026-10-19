@@ -36,10 +36,10 @@ export function estonianTax(input: TaxInput, p: EeParams): TaxResult {
   return {
     model: 'ee', taxYear: p.taxYear, currency: 'EUR', grossAnnual, lines, netAnnual: roundCents(grossAnnual - deductions),
     notes: [
-      'Each earner is taxed separately at the flat rate, with the full annual basic exemption.',
-      'Funded pension at the default 2% (people can choose 4% or 6%).',
-      'Cash benefits such as family allowances are not included.',
-      'Employer social tax uses the 2026 minimum monthly base for low wages.',
+      'Each earner pays 22% on income above the €8,400 a year tax-free amount.',
+      'Second-pillar pension at the default 2%; you can choose 4% or 6%.',
+      'Family allowances and other benefits are not included.',
+      'Employer social tax has a monthly minimum, which affects low wages only.',
     ],
   };
 }

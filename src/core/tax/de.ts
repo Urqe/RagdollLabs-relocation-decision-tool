@@ -113,12 +113,12 @@ export function germanTax(input: TaxInput, p: DeParams): TaxResult {
   return {
     model: 'de', taxYear: p.taxYear, currency: 'EUR', grossAnnual, lines, netAnnual: roundCents(grossAnnual - deductions),
     notes: [
-      input.married ? 'Married couple assessed jointly with income splitting.' : 'Each earner is assessed separately.',
-      'Annual assessment with the employee lump sum (€1,230) and standard special-expense allowance; monthly payroll withholding can differ slightly.',
-      'Statutory health insurance at the 2026 average supplementary rate (2.9%); individual funds vary.',
-      'Child allowances and child benefit (Kindergeld) are not included.',
-      church > 0 ? 'Church tax at 9% of income tax (Berlin rate).' : 'No church tax (not a church member).',
-      'Employer cost excludes accident insurance and small statutory levies.',
+      input.married ? 'Married couples are taxed together, which lowers tax when incomes differ.' : 'Each earner is taxed separately.',
+      'Tax for the full year with the standard work-expense allowance (€1,230); monthly payslips can differ slightly.',
+      'Public health insurance at the 2026 average rate; each insurer sets its own.',
+      'Child benefit (Kindergeld) and child tax allowances are not included.',
+      church > 0 ? 'Church tax at 9% of income tax, the Berlin rate.' : 'No church tax.',
+      'Employer cost leaves out accident insurance and small levies.',
     ],
   };
 }

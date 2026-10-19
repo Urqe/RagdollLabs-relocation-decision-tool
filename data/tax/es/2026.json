@@ -7,7 +7,9 @@
     "https://www.cuatrecasas.com/es/spain/laboral/art/seguridad-social-nuevos-topes-bases-cotizacion-2026",
     "https://www.ibermutua.es/wp-content/uploads/2026/04/BASES-Y-TIPOS-DE-COTIZACION-A-LA-SEGURIDAD-SOCIAL-PARA-2026.pdf",
     "https://sede.agenciatributaria.gob.es/Sede/en_gb/ayuda/manuales-videos-folletos/manuales-ayuda-presentacion/irpf-2025/7-cumplimentacion-irpf/7_1-rendimientos-trabajo-personal/7_1_6-reduccion-obtencion-rendimientos-trabajo.html",
-    "https://guiafiscal.es/irpf/madrid/",
+    "https://www.bocm.es/boletin/CM_Orden_BOCM/2023/12/21/BOCM-20231221-2.PDF",
+    "https://boe.es/ccaa/dogv/2026/10425/r00001-00125.pdf",
+    "https://www.idealista.com/news/node/885453",
     "https://guiafiscal.es/irpf/valencia/"
   ],
   "social": {
@@ -39,7 +41,7 @@
   "otherDeductibleExpenses": 2000,
   "workIncomeReduction": {
     "year": 2025,
-    "note": "2025 rule; 2026 amounts not yet published by AEAT.",
+    "note": "2025 rule; no 2026 change to this reduction found.",
     "full": 7302,
     "fullUpTo": 14852,
     "band2To": 17673.52,
@@ -87,7 +89,7 @@
   "regions": {
     "madrid": {
       "name": "Community of Madrid",
-      "confidence": "medium",
+      "confidence": "high",
       "brackets": [
         {
           "from": 0,
@@ -117,11 +119,12 @@
         4400,
         4950
       ],
-      "underThreeExtra": 3005.16
+      "underThreeExtra": 3005.16,
+      "source": "Ley 13/2023 de la Comunidad de Madrid (BOCM 21 Dec 2023), applies from 2023; no later change found"
     },
     "valencia": {
       "name": "Valencian Community",
-      "confidence": "medium",
+      "confidence": "high",
       "brackets": [
         {
           "from": 0,
@@ -175,7 +178,14 @@
         4400,
         4950
       ],
-      "underThreeExtra": 3080
+      "underThreeExtra": 3080,
+      "source": "Ley 5/2026 de la Generalitat, art. 18 (DOGV 10 Aug 2026), applies from 1 Jan 2026; minimums from Decreto-ley 14/2022"
     }
+  },
+  "lowIncomeCredit": {
+    "max": 590.89,
+    "fullUpTo": 17094,
+    "slope": 0.2,
+    "note": "Real Decreto-ley 5/2026: credit against tax for gross work income up to €20,048.45."
   }
 }

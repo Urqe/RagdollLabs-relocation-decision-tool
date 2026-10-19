@@ -49,7 +49,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
 | 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
-| 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
+| 0.2.1 | Maintenance | Review of 0.2.0 | In progress |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0 | Not started |
 | 0.4.0 | Feature | Real cost data: European cities | Not started |
@@ -218,6 +218,9 @@ Findings and their status are tracked in [docs/reviews/0.1.1.md](docs/reviews/0.
 **Done when** all checks pass and the owner agrees the URL can be shared.
 
 ## Backlog (not scheduled)
+
+- Cross-check one case per country against the official tax calculators (BMF, Spanish tax agency, Portuguese tax portal) from a machine that can reach them. (From review 0.2.1, S7.)
+- Per-city church tax rate in Germany if a city outside Berlin is added. (From review 0.2.1, S8.)
 
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.

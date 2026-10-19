@@ -146,10 +146,10 @@ export function finnishTax(input: TaxInput, p: FiParams): TaxResult {
     netAnnual: roundCents(grossAnnual - deductions),
     notes: [
       'Each earner is taxed separately; Finland has no joint taxation.',
-      'Wage income only, with the standard €750 income-acquisition deduction and no other deductions.',
-      'Children raise each guardian’s work income deduction; both adults are assumed to be guardians.',
-      'Cash benefits such as child benefit are not included.',
-      churchRate > 0 ? 'Church tax uses the national average rate.' : 'No church tax (not a church member).',
+      'Wage income only, with the automatic €750 work-expense deduction and no other deductions.',
+      'Children add a little to each parent’s earned-income tax credit.',
+      'Child benefit and other benefits are not included.',
+      churchRate > 0 ? 'Church tax at the national average rate.' : 'No church tax.',
       'Employer contributions use national average rates and do not reduce take-home pay.',
     ],
   };

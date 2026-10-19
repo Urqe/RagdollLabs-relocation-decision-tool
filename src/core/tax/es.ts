@@ -20,6 +20,7 @@ export interface EsParams {
     employerRate: number;
   };
   otherDeductibleExpenses: number;
+  lowIncomeCredit: { max: number; fullUpTo: number; slope: number };
   workIncomeReduction: { full: number; fullUpTo: number; band2To: number; band2Slope: number; band3Base: number; band3Slope: number; band3To: number };
   state: Scale;
   regions: Record<string, Scale & { name: string; confidence: string }>;
@@ -34,6 +35,11 @@ export function spanishSocial(gross: number, s: EsParams['social']): number {
     solidarity += Math.max(0, Math.min(monthly, next) - b.fromMonthly) * b.employeeRate * 12;
   });
   return Math.min(g, s.maxMonthlyBase * 12) * s.employeeRate + solidarity;
+}
+
+/** 2026 credit against tax for low gross work income (RDL 5/2026), never more than the tax due. */
+export function lowIncomeCredit(gross: number, c: EsParams['lowIncomeCredit']): number {
+  return Math.max(0, gross <= c.fullUpTo ? c.max : c.max - c.slope * (gross - c.fullUpTo));
 }
 
 export function workIncomeReduction(netBeforeOther: number, r: EsParams['workIncomeReduction']): number {
@@ -59,8 +65,9 @@ export function scaleQuota(base: number, minimum: number, brackets: Bracket[]): 
 export function spanishTax(input: TaxInput, p: EsParams): TaxResult {
   const region = p.regions[input.subdivision];
   if (!region) throw new Error(`No ${p.taxYear} regional scale for "${input.subdivision}"`);
-  const adults = input.adults ?? input.grossLocal.length;
-  const childShare = adults >= 2 ? 0.5 : 1;
+  // With two earners each takes half of the child minimums; a sole earner takes them all
+  // (as a couple with one income would by filing jointly).
+  const childShare = input.grossLocal.length >= 2 ? 0.5 : 1;
   const lines: TaxLine[] = [];
 
   input.grossLocal.forEach((gross, i) => {
@@ -70,9 +77,14 @@ export function spanishTax(input: TaxInput, p: EsParams): TaxResult {
     const base = Math.max(0, net - Math.min(p.otherDeductibleExpenses, net) - workIncomeReduction(net, p.workIncomeReduction));
     const stateMin = p.state.personalMinimum + childShare * childMinimum(input.children, p.state.childMinimums);
     const regionMin = region.personalMinimum + childShare * childMinimum(input.children, region.childMinimums);
+    const stateQuota = scaleQuota(base, stateMin, p.state.brackets);
+    const regionQuota = scaleQuota(base, regionMin, region.brackets);
+    const total = stateQuota + regionQuota;
+    const credit = Math.min(total, lowIncomeCredit(g, p.lowIncomeCredit));
+    const keep = total > 0 ? 1 - credit / total : 1;
     lines.push(
-      { id: 'es.state', label: 'Income tax, state part', kind: 'incomeTax', amount: roundCents(scaleQuota(base, stateMin, p.state.brackets)), earner: i },
-      { id: 'es.region', label: `Income tax, ${region.name} part`, kind: 'incomeTax', amount: roundCents(scaleQuota(base, regionMin, region.brackets)), earner: i },
+      { id: 'es.state', label: 'Income tax, state part', kind: 'incomeTax', amount: roundCents(stateQuota * keep), earner: i },
+      { id: 'es.region', label: `Income tax, ${region.name} part`, kind: 'incomeTax', amount: roundCents(regionQuota * keep), earner: i },
       { id: 'es.social', label: 'Social security', kind: 'employeeContribution', amount: roundCents(social), earner: i },
       { id: 'es.employer', label: 'Employer social security (approximate)', kind: 'employerContribution', amount: roundCents(Math.min(g, p.social.maxMonthlyBase * 12) * p.social.employerRate), earner: i },
     );
@@ -83,11 +95,11 @@ export function spanishTax(input: TaxInput, p: EsParams): TaxResult {
   return {
     model: 'es', taxYear: p.taxYear, currency: 'EUR', grossAnnual, lines, netAnnual: roundCents(grossAnnual - deductions),
     notes: [
-      'Individual returns; joint filing is not modelled.',
-      adults >= 2 ? 'Child minimums are split equally between two adults.' : 'Child minimums go to the single adult.',
-      'Extra minimums for children under three, regional tax credits and the low-income work reduction for 2026 are not modelled (the 2025 reduction rule is used).',
-      `${region.name} scale from secondary sources; confirm against the regional official bulletin.`,
-      'Employer social security is an approximate average including accident insurance.',
+      'Each earner files a separate return.',
+      input.grossLocal.length >= 2 ? 'The tax-free allowances for children are split between the two earners.' : 'The tax-free allowances for children all go to the one earner.',
+      'Includes the 2026 tax credit for gross pay up to about €20,000.',
+      'Extra allowances for children under three and regional tax credits (for rent, childcare and so on) are not included.',
+      'Employer social security is an approximate average.',
     ],
   };
 }

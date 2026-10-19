@@ -179,7 +179,7 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
           ? h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'non-earner', checked: hh.nonEarningAdults === 1, onchange: (e: Event) => update(setHousehold(() => ({ nonEarningAdults: (e.target as HTMLInputElement).checked ? 1 : 0 }))) }), h('span', {}, 'A second adult without income'))
           : null,
         twoAdults
-          ? h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'married', checked: hh.married, onchange: (e: Event) => update(setHousehold(() => ({ married: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Married or registered partners'))
+          ? h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'married', checked: hh.married, onchange: (e: Event) => update(setHousehold(() => ({ married: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Married or registered partners', h('span', { class: 'check-hint' }, 'Changes tax in Germany and the US, where couples are taxed together.')))
           : null,
         h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'church', checked: hh.churchMember, onchange: (e: Event) => update(setHousehold(() => ({ churchMember: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Church member (Finnish church tax)')),
       ),

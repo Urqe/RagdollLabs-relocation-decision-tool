@@ -55,9 +55,9 @@ export function portugueseTax(input: TaxInput, p: PtParams): TaxResult {
   return {
     model: 'pt', taxYear: p.taxYear, currency: 'EUR', grossAnnual, lines, netAnnual: roundCents(grossAnnual - deductions),
     notes: [
-      'Separate taxation for each earner; joint filing is optional in Portugal and not modelled.',
-      'Dependant deduction of €600 per child, split equally between earners; extra amounts for young children are not modelled.',
-      'Assumes the full €250 general family expenses deduction, which most taxpayers reach; health, education and other expense deductions and IRS Jovem are not included.',
+      'Each earner files separately; joint filing is optional in Portugal and not included.',
+      '€600 off the tax per child, shared between earners; extra amounts for young children are not included.',
+      'Assumes the full €250 general-expenses deduction, which most people reach. Health, education and housing deductions, and the reduced rate for under-35s (IRS Jovem), are not included.',
     ],
   };
 }

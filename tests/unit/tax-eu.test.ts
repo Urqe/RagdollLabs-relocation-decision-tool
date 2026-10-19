@@ -2,7 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { estonianTax, type EeParams } from '../../src/core/tax/ee.ts';
 import { germanSocial, germanTariff, germanTax, solidaritySurcharge, type DeParams } from '../../src/core/tax/de.ts';
-import { spanishSocial, spanishTax, workIncomeReduction, type EsParams } from '../../src/core/tax/es.ts';
+import { lowIncomeCredit, spanishSocial, spanishTax, workIncomeReduction, type EsParams } from '../../src/core/tax/es.ts';
 import { existenceAbatement, portugueseTax, type PtParams } from '../../src/core/tax/pt.ts';
 import { progressiveTax } from '../../src/core/tax/brackets.ts';
 import type { TaxResult } from '../../src/core/tax/types.ts';
@@ -40,6 +40,17 @@ describe('Germany 2026', () => {
     assert.equal(germanTariff(69879, de.tariff), 18213); // continuous across the boundary
     assert.equal(germanTariff(100000, de.tariff), 30864);
     assert.equal(germanTariff(300000, de.tariff), 115529);
+  });
+  test('tariff and surcharge match the published 2026 basic table (Grundtabelle)', () => {
+    // einkommensteuertabellen.finanz-tools.de Grundtabelle 2026 and finanz.de, retrieved 2026-10-19.
+    const table: [number, number, number][] = [
+      [20000, 1570, 0], [30000, 4217, 0], [31000, 4500, 0], [40000, 7209, 0], [47000, 9510, 0],
+      [60000, 14233, 0], [73000, 19524, 0], [80000, 22464, 251.57], [100000, 30864, 1251.17], [132000, 44304, 2436.72],
+    ];
+    for (const [zvE, est, soli] of table) {
+      assert.equal(germanTariff(zvE, de.tariff), est, `ESt at ${zvE}`);
+      near(solidaritySurcharge(est, false, de.solidarity), soli, 0.01, `Soli at ${zvE}`);
+    }
   });
   test('solidarity surcharge: exemption, taper zone, full rate', () => {
     assert.equal(solidaritySurcharge(20000, false, de.solidarity), 0);
@@ -83,8 +94,16 @@ describe('Spain 2026', () => {
     near(spanishTax(one(30000, { subdivision: 'valencia' }), es).netAnnual, 23306.94, YEAR);
     near(spanishTax(one(80000, { subdivision: 'valencia' }), es).netAnnual, 52476.92, YEAR);
   });
-  test('two children, two adults: half the child minimums each', () => {
-    near(spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2 }), es).netAnnual, 36665.09, YEAR);
+  test('2026 low-income credit (RDL 5/2026): full to €17,094, phased out by €20,048', () => {
+    near(spanishTax(one(18000, { subdivision: 'madrid' }), es).netAnnual, 16295.15, YEAR);
+    near(spanishTax(one(20000, { subdivision: 'madrid' }), es).netAnnual, 16828.65, YEAR);
+    near(lowIncomeCredit(17094, es.lowIncomeCredit), 590.89, 0.01);
+    near(lowIncomeCredit(20048.45, es.lowIncomeCredit), 0, 0.01);
+  });
+  test('child allowances: a sole earner takes them all; two earners split them', () => {
+    near(spanishTax(one(50000, { subdivision: 'madrid', children: 2, adults: 2 }), es).netAnnual, 37139.98, YEAR);
+    const two = spanishTax({ grossLocal: [50000, 50000], married: false, children: 2, subdivision: 'madrid' }, es);
+    near(two.netAnnual, 2 * 36665.09, 2 * YEAR);
   });
   test('unknown region is an error', () => {
     assert.throws(() => spanishTax(one(30000, { subdivision: 'nowhere' }), es));
