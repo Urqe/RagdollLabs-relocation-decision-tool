@@ -25,7 +25,7 @@ Values keep their own period; they are not forced to one reference date. The UI 
 
 | Jurisdiction | Year | Notes |
 | --- | --- | --- |
-| Finland | 2026 | Matches Veronmaksajat's published 2026 payslip examples to the cent. Tampere's municipal rate (7.60%) comes from a secondary listing and should be confirmed against Verohallinto's 2026 list. |
+| Finland | 2026 | Matches Veronmaksajat's published 2026 payslip examples to the cent. Municipal rates: Helsinki 5.30% (council decision), Tampere 7.60% (city budget proposal, unchanged from 2025). |
 | US federal | 2026 | IRS Rev. Proc. 2025-32; Social Security wage base from SSA. |
 | Texas | 2026 | No state income tax. |
 | California | 2025 schedules | FTB's 2026 estimated-tax instructions direct use of the 2025 schedules until 2026 ones are published. Update when FTB publishes them. |

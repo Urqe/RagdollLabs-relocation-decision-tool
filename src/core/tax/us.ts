@@ -13,7 +13,7 @@ interface CaParams {
   standardDeduction: ByStatus<number>;
   personalExemptionCredit: ByStatus<number>;
   dependentExemptionCredit: number;
-  exemptionPhaseOut: { start: { single: number; joint: number }; reductionPerStep: number; step: number };
+  exemptionPhaseOut: { start: ByStatus<number>; reductionPerStep: number; step: number };
   behavioralHealthTax: { threshold: number; rate: number };
   sdiRate: number;
   sdiWageBase: number | null;
@@ -96,8 +96,7 @@ export function californiaIncomeTax(wages: number, status: FilingStatus, childre
     ...Array.from({ length: personalCount }, () => personalEach),
     ...Array.from({ length: children }, () => ca.dependentExemptionCredit),
   ];
-  const start = status === 'joint' ? ca.exemptionPhaseOut.start.joint : status === 'single' ? ca.exemptionPhaseOut.start.single : null;
-  const steps = start === null ? 0 : Math.ceil(Math.max(0, wages - start) / ca.exemptionPhaseOut.step);
+  const steps = Math.ceil(Math.max(0, wages - ca.exemptionPhaseOut.start[status]) / ca.exemptionPhaseOut.step);
   const creditTotal = credits.reduce((s, c) => s + Math.max(0, c - steps * ca.exemptionPhaseOut.reductionPerStep), 0);
 
   const behavioral = Math.max(0, taxable - ca.behavioralHealthTax.threshold) * ca.behavioralHealthTax.rate;
@@ -155,7 +154,7 @@ export function usTax(input: TaxInput, p: UsParams): TaxResult {
     'Standard deduction; no itemised deductions, retirement contributions or pre-tax health premiums.',
     'The child tax credit is included because it is part of the federal income tax calculation; other credits are not.',
   );
-  if (state === 'ca') notes.push(p.states.ca.scheduleNote, 'California exemption-credit phase-out is modelled for single and joint filers only.');
+  if (state === 'ca') notes.push(p.states.ca.scheduleNote);
   if (state === 'tx') notes.push('Texas has no state income tax.');
   notes.push('Employer state unemployment insurance is not included in employer cost.');
 

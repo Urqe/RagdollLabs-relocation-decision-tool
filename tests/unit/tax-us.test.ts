@@ -57,6 +57,12 @@ describe('California', () => {
     near(r.netAnnual, 100000 - 13170 - 6200 - 1450 - 5054.98 - 1300, 0.02);
   });
 
+  test('head-of-household exemption credits phase out above $378,310 (FTB 2025 booklet)', () => {
+    // Taxable 400,000 − 11,412 = 388,588 → 3,616.45 + 9.3% × 289,598 = 30,549.06.
+    // 9 steps of $2,500 over the threshold → each credit reduced by $54: 153 → 99 and 475 → 421.
+    near(californiaIncomeTax(400000, 'headOfHousehold', 1, p.states.ca), 30549.06 - 99 - 421, 0.01);
+  });
+
   test('Texas has no state income tax line', () => {
     const r = usTax({ grossLocal: [100000], married: false, children: 0, subdivision: 'tx' }, p);
     assert.equal(line(r, 'us.ca.income'), 0);

@@ -11,17 +11,35 @@
     "https://www.veronmaksajat.fi/tutkimus-ja-tilastot/tuloverot/palkkakuitti/",
     "https://www.veronmaksajat.fi/neuvot/henkiloverotus/tyo-elake-ja-etuudet/ansiotulojen-verot-ja-maksut/yle-vero/",
     "https://www.hel.fi/fi/uutiset/kaupunginvaltuusto-paatti-pitaa-kuntaveroprosentin-edelleen-530-prosentissa",
-    "https://nettopalkkasi.fi/fi/kunta"
+    "https://www.tampere.fi/sites/default/files/2025-10/pormestarin_talousarvioehdotus_2026_esittelyaineisto.pdf"
   ],
   "stateIncomeTax": [
-    { "from": 0, "rate": 0.1264 },
-    { "from": 22000, "rate": 0.19 },
-    { "from": 32600, "rate": 0.3025 },
-    { "from": 40100, "rate": 0.3325 },
-    { "from": 52100, "rate": 0.375 }
+    {
+      "from": 0,
+      "rate": 0.1264
+    },
+    {
+      "from": 22000,
+      "rate": 0.19
+    },
+    {
+      "from": 32600,
+      "rate": 0.3025
+    },
+    {
+      "from": 40100,
+      "rate": 0.3325
+    },
+    {
+      "from": 52100,
+      "rate": 0.375
+    }
   ],
   "incomeAcquisitionDeduction": 750,
-  "basicDeduction": { "full": 4265, "phaseOutRate": 0.18 },
+  "basicDeduction": {
+    "full": 4265,
+    "phaseOutRate": 0.18
+  },
   "workIncomeDeduction": {
     "rate": 0.18,
     "max": 3430,
@@ -33,10 +51,17 @@
   "employee": {
     "pension": 0.073,
     "unemployment": 0.0089,
-    "dailyAllowance": { "rate": 0.0088, "minAnnualIncome": 17255 },
+    "dailyAllowance": {
+      "rate": 0.0088,
+      "minAnnualIncome": 17255
+    },
     "healthCare": 0.011
   },
-  "yleTax": { "rate": 0.025, "threshold": 15150, "max": 160 },
+  "yleTax": {
+    "rate": 0.025,
+    "threshold": 15150,
+    "max": 160
+  },
   "employerAverage": {
     "pension": 0.171,
     "unemployment": 0.0092,
@@ -46,9 +71,21 @@
     "note": "Average employer rates as used by Veronmaksajat's 2026 payslip examples; actual rates vary by employer."
   },
   "municipalTaxRate": {
-    "helsinki": { "rate": 0.053, "confidence": "high", "source": "City of Helsinki council decision, 5 Nov 2025" },
-    "tampere": { "rate": 0.076, "confidence": "medium", "source": "Secondary listing (nettopalkkasi.fi citing Verohallinto); confirm against the Verohallinto 2026 rate list" },
-    "average": { "rate": 0.0757, "confidence": "high", "source": "Veronmaksajat 2026 income-weighted average" }
+    "helsinki": {
+      "rate": 0.053,
+      "confidence": "high",
+      "source": "City of Helsinki council decision, 5 Nov 2025"
+    },
+    "tampere": {
+      "rate": 0.076,
+      "confidence": "high",
+      "source": "City of Tampere mayor's 2026 budget proposal (rate unchanged from 2025)"
+    },
+    "average": {
+      "rate": 0.0757,
+      "confidence": "high",
+      "source": "Veronmaksajat 2026 income-weighted average"
+    }
   },
   "churchTaxAverage": 0.0138
 }

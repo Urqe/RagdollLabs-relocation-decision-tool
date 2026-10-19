@@ -9,45 +9,117 @@
     "https://edd.ca.gov/en/payroll_taxes/rates_and_withholding",
     "https://www.ftb.ca.gov/forms/2026/2026-540-es-instructions.html",
     "https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf",
-    "https://a-us.storyblok.com/f/1015104/x/b62453f262/1225-fast-tax-facts.pdf"
+    "https://a-us.storyblok.com/f/1015104/x/b62453f262/1225-fast-tax-facts.pdf",
+    "https://www.ftb.ca.gov/forms/2025/2025-540-booklet.html"
   ],
   "federal": {
     "brackets": {
       "single": [
-        { "from": 0, "rate": 0.10 },
-        { "from": 12400, "rate": 0.12 },
-        { "from": 50400, "rate": 0.22 },
-        { "from": 105700, "rate": 0.24 },
-        { "from": 201775, "rate": 0.32 },
-        { "from": 256225, "rate": 0.35 },
-        { "from": 640600, "rate": 0.37 }
+        {
+          "from": 0,
+          "rate": 0.1
+        },
+        {
+          "from": 12400,
+          "rate": 0.12
+        },
+        {
+          "from": 50400,
+          "rate": 0.22
+        },
+        {
+          "from": 105700,
+          "rate": 0.24
+        },
+        {
+          "from": 201775,
+          "rate": 0.32
+        },
+        {
+          "from": 256225,
+          "rate": 0.35
+        },
+        {
+          "from": 640600,
+          "rate": 0.37
+        }
       ],
       "joint": [
-        { "from": 0, "rate": 0.10 },
-        { "from": 24800, "rate": 0.12 },
-        { "from": 100800, "rate": 0.22 },
-        { "from": 211400, "rate": 0.24 },
-        { "from": 403550, "rate": 0.32 },
-        { "from": 512450, "rate": 0.35 },
-        { "from": 768700, "rate": 0.37 }
+        {
+          "from": 0,
+          "rate": 0.1
+        },
+        {
+          "from": 24800,
+          "rate": 0.12
+        },
+        {
+          "from": 100800,
+          "rate": 0.22
+        },
+        {
+          "from": 211400,
+          "rate": 0.24
+        },
+        {
+          "from": 403550,
+          "rate": 0.32
+        },
+        {
+          "from": 512450,
+          "rate": 0.35
+        },
+        {
+          "from": 768700,
+          "rate": 0.37
+        }
       ],
       "headOfHousehold": [
-        { "from": 0, "rate": 0.10 },
-        { "from": 17700, "rate": 0.12 },
-        { "from": 67450, "rate": 0.22 },
-        { "from": 105700, "rate": 0.24 },
-        { "from": 201750, "rate": 0.32 },
-        { "from": 256200, "rate": 0.35 },
-        { "from": 640600, "rate": 0.37 }
+        {
+          "from": 0,
+          "rate": 0.1
+        },
+        {
+          "from": 17700,
+          "rate": 0.12
+        },
+        {
+          "from": 67450,
+          "rate": 0.22
+        },
+        {
+          "from": 105700,
+          "rate": 0.24
+        },
+        {
+          "from": 201750,
+          "rate": 0.32
+        },
+        {
+          "from": 256200,
+          "rate": 0.35
+        },
+        {
+          "from": 640600,
+          "rate": 0.37
+        }
       ]
     },
-    "standardDeduction": { "single": 16100, "joint": 32200, "headOfHousehold": 24150 },
+    "standardDeduction": {
+      "single": 16100,
+      "joint": 32200,
+      "headOfHousehold": 24150
+    },
     "childTaxCredit": {
       "perChild": 2200,
       "refundablePerChild": 1700,
       "earnedIncomeFloor": 2500,
       "refundableRate": 0.15,
-      "phaseOutStart": { "single": 200000, "joint": 400000, "headOfHousehold": 200000 },
+      "phaseOutStart": {
+        "single": 200000,
+        "joint": 400000,
+        "headOfHousehold": 200000
+      },
       "phaseOutPerThousand": 50
     }
   },
@@ -56,7 +128,11 @@
     "socialSecurityWageBase": 184500,
     "medicareRate": 0.0145,
     "additionalMedicareRate": 0.009,
-    "additionalMedicareThreshold": { "single": 200000, "joint": 250000, "headOfHousehold": 200000 }
+    "additionalMedicareThreshold": {
+      "single": 200000,
+      "joint": 250000,
+      "headOfHousehold": 200000
+    }
   },
   "employer": {
     "socialSecurityRate": 0.062,
@@ -77,49 +153,145 @@
       "scheduleNote": "California's 2026 rate schedules were not yet published; FTB's 2026 estimated-tax instructions direct taxpayers to use the 2025 schedules and exemption credits.",
       "brackets": {
         "single": [
-          { "from": 0, "rate": 0.01 },
-          { "from": 11079, "rate": 0.02 },
-          { "from": 26264, "rate": 0.04 },
-          { "from": 41452, "rate": 0.06 },
-          { "from": 57542, "rate": 0.08 },
-          { "from": 72724, "rate": 0.093 },
-          { "from": 371479, "rate": 0.103 },
-          { "from": 445771, "rate": 0.113 },
-          { "from": 742953, "rate": 0.123 }
+          {
+            "from": 0,
+            "rate": 0.01
+          },
+          {
+            "from": 11079,
+            "rate": 0.02
+          },
+          {
+            "from": 26264,
+            "rate": 0.04
+          },
+          {
+            "from": 41452,
+            "rate": 0.06
+          },
+          {
+            "from": 57542,
+            "rate": 0.08
+          },
+          {
+            "from": 72724,
+            "rate": 0.093
+          },
+          {
+            "from": 371479,
+            "rate": 0.103
+          },
+          {
+            "from": 445771,
+            "rate": 0.113
+          },
+          {
+            "from": 742953,
+            "rate": 0.123
+          }
         ],
         "joint": [
-          { "from": 0, "rate": 0.01 },
-          { "from": 22158, "rate": 0.02 },
-          { "from": 52528, "rate": 0.04 },
-          { "from": 82904, "rate": 0.06 },
-          { "from": 115084, "rate": 0.08 },
-          { "from": 145448, "rate": 0.093 },
-          { "from": 742958, "rate": 0.103 },
-          { "from": 891542, "rate": 0.113 },
-          { "from": 1485906, "rate": 0.123 }
+          {
+            "from": 0,
+            "rate": 0.01
+          },
+          {
+            "from": 22158,
+            "rate": 0.02
+          },
+          {
+            "from": 52528,
+            "rate": 0.04
+          },
+          {
+            "from": 82904,
+            "rate": 0.06
+          },
+          {
+            "from": 115084,
+            "rate": 0.08
+          },
+          {
+            "from": 145448,
+            "rate": 0.093
+          },
+          {
+            "from": 742958,
+            "rate": 0.103
+          },
+          {
+            "from": 891542,
+            "rate": 0.113
+          },
+          {
+            "from": 1485906,
+            "rate": 0.123
+          }
         ],
         "headOfHousehold": [
-          { "from": 0, "rate": 0.01 },
-          { "from": 22173, "rate": 0.02 },
-          { "from": 52530, "rate": 0.04 },
-          { "from": 67716, "rate": 0.06 },
-          { "from": 83805, "rate": 0.08 },
-          { "from": 98990, "rate": 0.093 },
-          { "from": 505208, "rate": 0.103 },
-          { "from": 606251, "rate": 0.113 },
-          { "from": 1010417, "rate": 0.123 }
+          {
+            "from": 0,
+            "rate": 0.01
+          },
+          {
+            "from": 22173,
+            "rate": 0.02
+          },
+          {
+            "from": 52530,
+            "rate": 0.04
+          },
+          {
+            "from": 67716,
+            "rate": 0.06
+          },
+          {
+            "from": 83805,
+            "rate": 0.08
+          },
+          {
+            "from": 98990,
+            "rate": 0.093
+          },
+          {
+            "from": 505208,
+            "rate": 0.103
+          },
+          {
+            "from": 606251,
+            "rate": 0.113
+          },
+          {
+            "from": 1010417,
+            "rate": 0.123
+          }
         ]
       },
-      "standardDeduction": { "single": 5706, "joint": 11412, "headOfHousehold": 11412 },
-      "personalExemptionCredit": { "single": 153, "joint": 307, "headOfHousehold": 153 },
+      "standardDeduction": {
+        "single": 5706,
+        "joint": 11412,
+        "headOfHousehold": 11412
+      },
+      "personalExemptionCredit": {
+        "single": 153,
+        "joint": 307,
+        "headOfHousehold": 153
+      },
       "dependentExemptionCredit": 475,
       "exemptionPhaseOut": {
-        "start": { "single": 252203, "joint": 504411 },
+        "start": {
+          "single": 252203,
+          "joint": 504411,
+          "headOfHousehold": 378310
+        },
         "reductionPerStep": 6,
         "step": 2500,
-        "note": "Phase-out modelled for single and joint filers only."
+        "note": "Each exemption credit is reduced by $6 per $2,500 (or part) of federal AGI above the threshold."
       },
-      "behavioralHealthTax": { "threshold": 1000000, "rate": 0.01 },
+      "behavioralHealthTax": {
+        "threshold": 1000000,
+        "rate": 0.01
+      },
       "sdiRate": 0.013,
       "sdiWageBase": null
     }
