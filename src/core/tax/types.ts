@@ -39,8 +39,3 @@ export interface Bracket {
   rate: number;
 }
 
-export function sumDeductions(lines: TaxLine[]): number {
-  return lines
-    .filter((l) => l.kind !== 'employerContribution')
-    .reduce((s, l) => s + l.amount, 0);
-}

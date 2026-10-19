@@ -27,6 +27,3 @@ export function replaceChildren(el: Element, ...children: Child[]): void {
   el.replaceChildren();
   append(el, children);
 }
-
-let idCounter = 0;
-export const uid = (prefix: string): string => `${prefix}-${++idCounter}`;

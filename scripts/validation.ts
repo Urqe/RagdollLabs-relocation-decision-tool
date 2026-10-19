@@ -67,3 +67,9 @@ export function staleSources(sources: Source[], today: Date): Problem[] {
       return age > CADENCE_DAYS[s.cadence] ? [{ path: `source ${s.id}`, message: `last checked ${s.lastChecked}; due for a ${s.cadence} update` }] : [];
     });
 }
+
+/** data/release.json carries the data version, e.g. 2026-10-19.1. */
+export function checkDataVersion(v: unknown): Problem[] {
+  const ok = typeof v === 'object' && v !== null && typeof (v as { dataVersion?: unknown }).dataVersion === 'string' && /^\d{4}-\d{2}-\d{2}\.\d+$/.test((v as { dataVersion: string }).dataVersion);
+  return ok ? [] : [{ path: 'data/release.json', message: 'dataVersion must look like 2026-10-19.1' }];
+}

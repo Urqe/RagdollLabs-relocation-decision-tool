@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { checkTree, checkTaxParams } from '../../scripts/validation.ts';
+import { checkDataVersion, checkTree, checkTaxParams } from '../../scripts/validation.ts';
 import { readTree, taxParamFiles } from '../../scripts/repo-data.ts';
 import { validateObservation } from '../../src/data/validate.ts';
 import type { City, Source } from '../../src/core/types.ts';
@@ -49,6 +49,12 @@ describe('build-breaking problems', () => {
     delete unflagged.fixture;
     const tree = { ...fixtures, cities: [{ path: tampere.path, data: unflagged }] };
     assert.ok(checkTree(tree, allSources).errors.some((e) => e.message.includes('must set "fixture": true')));
+  });
+
+  test('a malformed data version fails', () => {
+    assert.equal(checkDataVersion({ dataVersion: '2026-10-19.1' }).length, 0);
+    assert.equal(checkDataVersion({ dataVersion: 'v1' }).length, 1);
+    assert.equal(checkDataVersion({}).length, 1);
   });
 
   test('tax brackets out of order fail', () => {

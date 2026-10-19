@@ -5,6 +5,8 @@
   --ink: #1d2a33;
   --muted: #56646e;
   --rule: #d3dbd8;
+  /* control boundaries: at least 3:1 against surface and paper (WCAG 1.4.11) */
+  --control: #7a8891;
   --focus: #1f6fb2;
   --moss: #2f7a55;
   --cranberry: #a8324a;
@@ -14,7 +16,7 @@
   --c-rent: #2e4a62;
   --c-utilities: #4f6d85;
   --c-internet: #7a92a5;
-  --c-groceries: #5f8270;
+  --c-groceries: #557866;
   --c-transport: #8aa1b1;
   --c-healthcare: #a7b7c2;
   --c-childcare: #c4ced5;
@@ -44,6 +46,7 @@
     --ink: #e4eaee;
     --muted: #9aa8b2;
     --rule: #2c3a44;
+    --control: #6a7c88;
     --focus: #7cb7ec;
     --moss: #5fb488;
     --cranberry: #e07a8f;
@@ -96,24 +99,35 @@ footer.site { padding: var(--space-5); color: var(--muted); font-size: 0.875rem;
 }
 
 /* ---------- household panel ---------- */
-.panel-toggle > summary {
-  font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; cursor: pointer; padding: var(--space-2) 0; list-style-position: inside;
-}
+.panel-title { font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; margin: 0 0 var(--space-3); }
+.panel-summary { display: none; }
 @media (min-width: 861px) {
   .panel { position: sticky; top: var(--space-4); align-self: start; max-height: calc(100vh - 32px); overflow: auto; }
-  .panel-toggle > summary { pointer-events: none; list-style: none; }
-  .panel-toggle > summary::-webkit-details-marker { display: none; }
 }
 @media (max-width: 860px) {
-  .panel-toggle { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0 var(--space-4); }
-  .panel-toggle[open] { padding-bottom: var(--space-4); }
+  .panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0 var(--space-4) var(--space-4); }
+  .panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .panel-summary {
+    display: grid; gap: 2px; width: 100%; text-align: left; font: inherit; color: inherit; background: none; border: 0;
+    padding: var(--space-3) 0; min-height: 44px; cursor: pointer;
+  }
+  .panel-summary-label { font-family: var(--font-display); font-size: 1.125rem; font-weight: 600; }
+  .panel-summary-label::after { content: " ▾"; font-size: 0.875rem; }
+  .panel-summary[aria-expanded="true"] .panel-summary-label::after { content: " ▴"; }
+  .panel-summary-text { color: var(--muted); font-size: 0.875rem; }
+  .panel-summary[aria-expanded="true"] .panel-summary-text { display: none; }
+  .panel.collapsed { padding-bottom: 0; }
+  .panel.collapsed .profile { display: none; }
 }
+/* The household form is not used on "How it works". */
+body[data-screen="methodology"] .panel { display: none; }
+body[data-screen="methodology"] .layout { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
 .profile { display: grid; gap: var(--space-4); }
 .field { display: grid; gap: var(--space-1); }
 .field > label, .choice legend { font-weight: 600; font-size: 0.9375rem; }
 .hint { margin: 0; color: var(--muted); font-size: 0.8125rem; }
 input[type="number"], select {
-  font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);
+  font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--control); border-radius: var(--radius);
   padding: var(--space-2) var(--space-3); min-height: 44px; width: 100%;
 }
 input[type="number"] { font-variant-numeric: tabular-nums; }
@@ -126,7 +140,7 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .choice-option input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 .choice-option span {
   display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--space-3);
-  border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface);
+  border: 1px solid var(--control); border-radius: var(--radius); background: var(--surface);
 }
 .choice-option input:checked + span { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); font-weight: 600; }
 .choice-option input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -140,6 +154,8 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
   text-decoration: underline; text-underline-offset: 2px; cursor: pointer; min-height: 40px;
 }
 .saved-note { margin-top: calc(-1 * var(--space-4)); }
+.hint.error { color: var(--cranberry); font-weight: 600; }
+input[aria-invalid="true"] { border-color: var(--cranberry); box-shadow: inset 0 0 0 1px var(--cranberry); }
 
 /* ---------- results ---------- */
 .results { min-width: 0; outline: none; }
@@ -180,6 +196,8 @@ input[type="number"] { font-variant-numeric: tabular-nums; }
 .seg-discretionary { background: var(--c-discretionary); }
 .seg-left { background: var(--moss); }
 .takehome-mark { position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 3px dashed var(--cranberry); }
+/* On phones only label segments wide enough to hold the word. */
+@media (max-width: 640px) { .seg:not(.wide) .seg-label { display: none; } }
 .ribbon-figure figcaption { margin-top: var(--space-2); color: var(--muted); font-size: 0.9375rem; }
 
 .balances { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); margin: 0 0 var(--space-6); }
@@ -231,6 +249,7 @@ details.own[open] { display: grid; gap: var(--space-3); max-width: 420px; }
 
 .standing-note { margin-top: var(--space-6); color: var(--muted); font-size: 0.875rem; max-width: 70ch; }
 .empty { color: var(--muted); }
+.empty.prompt { margin-top: var(--space-5); padding: var(--space-4); border: 1px dashed var(--control); border-radius: var(--radius); color: var(--ink); }
 .lede { color: var(--muted); }
 .defs dt { font-weight: 600; margin-top: var(--space-3); }
 .defs dd { margin: 0; max-width: 70ch; }

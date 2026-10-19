@@ -1,9 +1,11 @@
 import type { Dataset } from '../data/load.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
+import { APP_NAME } from './explore.ts';
 
 export function renderMethodology(root: HTMLElement, data: Dataset): void {
   const r = data.release;
+  document.title = `How it works: ${APP_NAME}`;
   replaceChildren(root,
     h('h1', {}, 'How the numbers are made'),
     h('p', { class: 'lede' }, `Data release ${r.version}, built ${f.date(r.builtAt.slice(0, 10))}. Exchange rates from ${f.date(r.fx.date)}.`),

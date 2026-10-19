@@ -18,11 +18,13 @@
       </nav>
     </header>
     <div class="layout">
-      <aside class="panel" aria-label="Your household">
-        <details class="panel-toggle" open>
-          <summary>Your household</summary>
-          <form id="profile" class="profile" onsubmit="return false"></form>
-        </details>
+      <aside class="panel" id="panel" aria-labelledby="panel-title">
+        <h2 class="panel-title" id="panel-title">Your household</h2>
+        <button type="button" class="panel-summary" id="panel-summary" aria-expanded="true" aria-controls="profile">
+          <span class="panel-summary-label">Your household</span>
+          <span class="panel-summary-text" id="panel-summary-text"></span>
+        </button>
+        <form id="profile" class="profile" onsubmit="return false"></form>
       </aside>
       <main id="main" class="results" tabindex="-1">
         <p class="empty">Loading data…</p>

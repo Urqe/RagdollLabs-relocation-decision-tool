@@ -23,8 +23,12 @@ const problems: string[] = [];
 for (const file of files(src)) {
   const layer = relative(src, file).split('/')[0] as Layer;
   const text = readFileSync(file, 'utf8');
-  for (const m of text.matchAll(/^\s*import\s[^'"]*['"]([^'"]+)['"]/gm)) {
-    const spec = m[1]!;
+  const specs = [
+    ...[...text.matchAll(/^\s*(?:import|export)\s[^'";]*?\sfrom\s*['"]([^'"]+)['"]/gm)].map((m) => m[1]!),
+    ...[...text.matchAll(/^\s*import\s*['"]([^'"]+)['"]/gm)].map((m) => m[1]!),
+    ...[...text.matchAll(/\bimport\s*\(\s*['"]([^'"]+)['"]\s*\)/g)].map((m) => m[1]!),
+  ];
+  for (const spec of specs) {
     if (!spec.startsWith('.')) {
       problems.push(`${relative(ROOT, file)}: external import "${spec}" (the app has no runtime dependencies)`);
       continue;

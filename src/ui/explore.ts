@@ -9,12 +9,14 @@ import { h, replaceChildren, type Child } from './dom.ts';
 import * as f from './format.ts';
 
 const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
-  comfortable: (r) => `Comfortable. About ${f.percent(r.budget.savings.typical / r.budget.takeHome)} of take-home is left to save in the typical case.`,
-  workable: () => 'Workable. All costs are covered, with less than 15% of take-home left to save.',
-  tight: () => 'Tight. Essentials are covered, but not this level of discretionary spending.',
-  short: () => 'Short. Essential costs are higher than take-home pay.',
-  incomplete: (r) => `Incomplete. There is no data for ${r.budget.missing.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m).join(', ')}, so this city cannot be judged affordable. Enter your own figure below to complete it.`,
+  comfortable: (r) => `About ${f.percent(r.budget.savings.typical / r.budget.takeHome)} of take-home is left to save in the typical case.`,
+  workable: () => 'All costs are covered, with less than 15% of take-home left to save.',
+  tight: () => 'Essentials are covered, but not this level of discretionary spending.',
+  short: () => 'Essential costs are higher than take-home pay.',
+  incomplete: (r) => `There is no data for ${r.budget.missing.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m).join(', ')}, so this city cannot be judged affordable. Enter your own figure below to complete it.`,
 };
+
+export const APP_NAME = 'Where could we live?';
 
 const BAND_LABEL: Record<AffordabilityBand, string> = { comfortable: 'Comfortable', workable: 'Workable', tight: 'Tight', short: 'Short', incomplete: 'Incomplete' };
 
@@ -55,7 +57,7 @@ function ribbon(r: CityResult): HTMLElement {
   const SHORT: Record<string, string> = { rent: 'Rent', utilities: 'Utilities', internet: 'Net', groceries: 'Food', transport: 'Transport', healthcare: 'Health', childcare: 'Childcare', discretionary: 'Discretionary' };
   const seg = (id: string, label: string, value: number): HTMLElement => {
     const share = value / scale;
-    return h('div', { class: `seg seg-${id}`, style: `flex-basis:${share * 100}%`, title: `${label}: ${f.monthly(value, cur)}` },
+    return h('div', { class: `seg seg-${id}${share >= 0.22 ? ' wide' : ''}`, style: `flex-basis:${share * 100}%`, title: `${label}: ${f.monthly(value, cur)}` },
       share >= 0.11 ? h('span', { class: 'seg-label', 'aria-hidden': 'true' }, label) : null);
   };
   const segs = parts.map((p) => seg(p.id, SHORT[p.id] ?? p.label, p.value));
@@ -64,10 +66,10 @@ function ribbon(r: CityResult): HTMLElement {
     ? `Of ${f.monthly(b.takeHome, cur)} take-home, ${f.monthly(spend, cur)} goes to spending and ${f.monthly(left, cur)} is left.`
     : `Spending of ${f.monthly(spend, cur)} is ${f.monthly(-left, cur)} more than take-home of ${f.monthly(b.takeHome, cur)}.`;
   return h('figure', { class: 'ribbon-figure' },
-    h('div', { class: `ribbon${left < 0 ? ' over' : ''}`, role: 'img', 'aria-label': label },
+    h('div', { class: `ribbon${left < 0 ? ' over' : ''}`, role: 'img', 'aria-labelledby': 'ribbon-caption' },
       segs,
       left < 0 ? h('div', { class: 'takehome-mark', style: `left:${(b.takeHome / scale) * 100}%` }) : null),
-    h('figcaption', {}, label));
+    h('figcaption', { id: 'ribbon-caption' }, label));
 }
 
 function balances(r: CityResult): HTMLElement {
@@ -152,21 +154,47 @@ function ownFigures(city: City, r: CityResult, ov: CityOverrides, store: Store):
 
 export function renderExplore(root: HTMLElement, state: AppState, data: Dataset, store: Store): void {
   const route = state.route;
-  const cityId = route.screen === 'explore' ? route.cityId : null;
-  const city = (cityId ? data.city(cityId) : undefined) ?? data.cities[0];
+  const requested = route.screen === 'explore' ? route.cityId : null;
+  const found = requested ? data.city(requested) : undefined;
+  const city = requested ? found : data.cities[0];
 
   const picker = h('select', { id: 'city-picker', onchange: (e: Event) => { location.hash = formatRoute({ screen: 'explore', cityId: (e.target as HTMLSelectElement).value }); } },
+    city ? null : h('option', { value: '', selected: true, disabled: true }, 'Choose a city'),
     [...new Set(data.cities.map((c) => c.countryId))].map((cid) =>
       h('optgroup', { label: data.country(cid)?.name ?? cid },
         data.cities.filter((c) => c.countryId === cid).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, c.name)))));
+  const pickerField = h('div', { class: 'field picker' }, h('label', { for: 'city-picker' }, 'City'), picker);
 
-  if (!city) {
-    root.replaceChildren(h('p', { class: 'empty' }, 'No cities are available in this data release.'));
+  if (requested && !found) {
+    document.title = `City not found: ${APP_NAME}`;
+    replaceChildren(root,
+      h('header', { class: 'city-head' }, h('div', {}, h('h1', { id: 'city-name' }, 'City not found')), pickerField),
+      h('p', { class: 'empty' }, `“${requested}” isn't in this data release. Choose a city from the list.`));
     return;
   }
+  if (!city) {
+    document.title = APP_NAME;
+    replaceChildren(root, h('p', { class: 'empty' }, 'No cities are available in this data release.'));
+    return;
+  }
+  if (!requested) history.replaceState(null, '', formatRoute({ screen: 'explore', cityId: city.id }));
+
   const country = data.country(city.countryId);
   if (!country) {
-    root.replaceChildren(h('p', { class: 'empty' }, `Country data missing for ${city.name}.`));
+    replaceChildren(root, h('p', { class: 'empty' }, `Country data missing for ${city.name}.`));
+    return;
+  }
+  document.title = `${city.name}: ${APP_NAME}`;
+  const region = data.region(city.regionId);
+  const head = h('header', { class: 'city-head' },
+    h('div', {},
+      h('h1', { id: 'city-name' }, city.name),
+      h('p', { class: 'place' }, [region?.name, country.name].filter(Boolean).join(', '))),
+    pickerField);
+  const fixtureNote = city.fixture ? h('p', { class: 'banner fixture', role: 'note' }, 'Development data. The costs for this city are placeholders, not real figures. Tax rules are real 2026 rules.') : null;
+
+  if (state.invalidFields.length > 0) {
+    replaceChildren(root, head, fixtureNote, h('p', { class: 'empty prompt', role: 'status' }, 'Fix the highlighted household field to see results.'));
     return;
   }
 
@@ -175,20 +203,15 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
   try {
     result = computeCityResult(city, country, state.profile.household, ov, data.release.fx, data.tax);
   } catch (e) {
-    root.replaceChildren(h('p', { class: 'empty' }, `This city cannot be calculated: ${(e as Error).message}`));
+    replaceChildren(root, head, h('p', { class: 'empty' }, `This city cannot be calculated: ${(e as Error).message}`));
     return;
   }
 
-  const region = data.region(city.regionId);
   replaceChildren(root,
-    h('header', { class: 'city-head' },
-      h('div', {},
-        h('h1', { id: 'city-name' }, city.name),
-        h('p', { class: 'place' }, [region?.name, country.name].filter(Boolean).join(', '))),
-      h('div', { class: 'field picker' }, h('label', { for: 'city-picker' }, 'City'), picker)),
-    city.fixture ? h('p', { class: 'banner fixture', role: 'note' }, 'Development data. The costs for this city are placeholders, not real figures. Tax rules are real 2026 rules.') : null,
+    head,
+    fixtureNote,
     result.problems.length > 0 ? h('ul', { class: 'banner problems', role: 'alert' }, result.problems.map((p) => h('li', {}, p))) : null,
-    h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result).replace(/^\w+\. /, '')),
+    h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),
     ribbon(result),
     balances(result),
     breakdown(result, data),

@@ -15,7 +15,7 @@ All data is static and versioned with the code. Nothing is fetched at runtime.
 2. **Fetch by hand.** Download the source file and note its URL and retrieval date.
 3. **Transform, don't retype.** Write or reuse a small script that turns the source file into Observations. Tax parameters are the exception: they are entered by hand in `data/tax/<country>/<year>.json`, each file lists the pages its values came from, and each country has unit tests against published examples.
 4. **Validate.** `npm run check`. Review any large change against the previous values in the diff.
-5. **Release.** Update `lastChecked` in `data/sources.json`. A new FX snapshot goes in `data/fx/<date>.json`; the newest file is used.
+5. **Release.** Update `lastChecked` in `data/sources.json` and bump `dataVersion` in `data/release.json` (`<date>.<n>`). A new FX snapshot goes in `data/fx/<date>.json`; the newest file is used.
 
 ## Sources on different schedules
 

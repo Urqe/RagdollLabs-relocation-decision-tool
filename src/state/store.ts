@@ -13,6 +13,8 @@ export interface AppState {
   profile: Profile;
   route: Route;
   overrides: Record<string, CityOverrides>;
+  /** Ids of household fields that currently hold an invalid value. Results are hidden while any are invalid. */
+  invalidFields: string[];
 }
 
 export type Route = { screen: 'explore'; cityId: string | null } | { screen: 'methodology' };

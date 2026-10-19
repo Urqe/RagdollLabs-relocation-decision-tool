@@ -12,8 +12,9 @@ export function buildRelease(withFixtures: boolean, now = new Date()): Release {
     if (current === undefined || current.taxYear < p.taxYear) tax[p.model] = p;
   }
   const pkg = readJson<{ version: string }>('package.json');
+  const { dataVersion } = readJson<{ dataVersion: string }>('data/release.json');
   return {
-    version: `${pkg.version}+data.${latestFx().data.date}${withFixtures ? '.fixtures' : ''}`,
+    version: `${pkg.version}+data.${dataVersion}${withFixtures ? '.fixtures' : ''}`,
     builtAt: now.toISOString(),
     containsFixtures: withFixtures,
     fx: latestFx().data,

@@ -47,6 +47,8 @@ test('the profile survives a reload and "Clear my data" resets it', async ({ pag
   await page.goto('./#/explore/fi-tampere');
   await page.getByLabel('Gross income').fill('72000');
   await page.reload();
+  const toggle = page.getByRole('button', { name: /Your household/ });
+  if (await toggle.isVisible()) await toggle.click(); // phones start collapsed on a returning visit
   await expect(page.getByLabel('Gross income')).toHaveValue('72000');
   await page.getByRole('button', { name: 'Clear my data' }).click();
   await expect(page.getByLabel('Gross income')).toHaveValue('50000');
@@ -67,4 +69,71 @@ test('no horizontal scrolling at phone width', async ({ page }, info) => {
   await page.goto('./#/explore/fi-tampere');
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
+});
+
+// ---- 0.1.1 review fixes ----
+
+test('R2: changing payments per year keeps the typed monthly amount', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  await page.getByRole('radio', { name: 'Per month' }).check();
+  await page.getByLabel('Gross income').fill('4000');
+  await page.getByLabel('Monthly payments per year').selectOption('14');
+  await expect(page.getByLabel('Gross income')).toHaveValue('4000');
+  await expect(page.locator('#income-0-hint')).toContainText('€56,000 a year');
+});
+
+test('R3: discretionary hint shows the household amount', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  const more = page.locator('details.more');
+  if (!(await more.getAttribute('open'))) await more.locator('summary').click();
+  await expect(page.locator('#discretionary-hint')).toContainText('€500 a month');
+  await page.getByLabel('Children', { exact: true }).fill('2');
+  await expect(page.locator('#discretionary-hint')).toContainText('€800 a month for your household');
+});
+
+test('R4: an empty income is flagged and results are replaced by a prompt', async ({ page }) => {
+  await page.goto('./#/explore/fi-tampere');
+  await page.getByLabel('Gross income').fill('');
+  await expect(page.getByLabel('Gross income')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#income-0-hint')).toHaveText('Enter an amount of 0 or more.');
+  await expect(page.locator('[data-balance="take-home"]')).toHaveCount(0);
+  await expect(page.getByRole('status')).toContainText('Fix the highlighted household field');
+  await page.getByLabel('Gross income').fill('50000');
+  await expect(page.locator('[data-balance="take-home"]')).toBeVisible();
+});
+
+test('R5 and R11: an unknown city says so; titles name the city', async ({ page }) => {
+  await page.goto('./#/explore/nowhere');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('City not found');
+  await expect(page.locator('main')).toContainText('isn\'t in this data release');
+  await page.getByLabel('City').selectOption({ label: 'Austin' });
+  await expect(page).toHaveTitle('Austin: Where could we live?');
+  await page.goto('./#/methodology');
+  await expect(page).toHaveTitle('How it works: Where could we live?');
+});
+
+test('R1: on desktop the household form cannot be collapsed', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'desktop only');
+  await page.goto('./#/explore/fi-tampere');
+  await expect(page.getByRole('button', { name: /Your household/ })).toBeHidden();
+  await expect(page.getByLabel('Gross income')).toBeVisible();
+});
+
+test('R8: on phones the form starts collapsed on a returning visit and opens from its summary', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile', 'mobile only');
+  await page.goto('./#/explore/fi-tampere');
+  await expect(page.getByLabel('Gross income')).toBeVisible(); // first visit: open
+  await page.getByLabel('Gross income').fill('61000');
+  await page.reload();
+  const toggle = page.getByRole('button', { name: /Your household/ });
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(toggle).toContainText('€61,000 a year');
+  await expect(page.getByLabel('Gross income')).toBeHidden();
+  await toggle.click();
+  await expect(page.getByLabel('Gross income')).toBeVisible();
+});
+
+test('R12: the household form is hidden on "How it works"', async ({ page }) => {
+  await page.goto('./#/methodology');
+  await expect(page.getByLabel('Gross income')).toBeHidden();
 });

@@ -51,6 +51,14 @@ describe('Finland 2026 rules', () => {
     assert.ok(lines.every((l) => l.amount >= 0));
   });
 
+  test('Yle tax: 2.5% of net earned income above €15,150, capped at €160 (reached at €22,300 of wages)', () => {
+    const yle = (gross: number): number => finnishEarner(gross, 0, 0.053, 0, p).lines.find((l) => l.id === 'fi.yle')!.amount;
+    near(yle(15000), 0, 0.001);
+    near(yle(18000), 52.5, 0.001); // (18,000 − 750 − 15,150) × 2.5 %
+    near(yle(22300), 160, 0.001);
+    near(yle(60000), 160, 0.001);
+  });
+
   test('daily-allowance contribution is zero below the income threshold', () => {
     const { lines } = finnishEarner(17000, 0, 0.053, 0, p);
     assert.equal(lines.find((l) => l.id === 'fi.dailyAllowance')!.amount, 0);

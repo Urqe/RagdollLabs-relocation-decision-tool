@@ -1,5 +1,5 @@
 import type { City, CurrencyCode, FxSnapshot, Observation } from '../types.ts';
-import { addRanges, eurToLocal, localToEur, mapRange, point, scaleRange, type Range } from '../money/money.ts';
+import { addRanges, eurToLocal, mapRange, point, scaleRange, type Range } from '../money/money.ts';
 import { adultEquivalents, adults, DISCRETIONARY_PRESETS_EUR, type CityOverrides, type Household } from './household.ts';
 
 export type CategoryId = 'rent' | 'utilities' | 'internet' | 'groceries' | 'transport' | 'healthcare' | 'childcare' | 'discretionary';
@@ -97,8 +97,9 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
   const utilities = includesItem(rentObs, 'utilities') ? included('utilities', 'rent') : fromObs('utilities', true, c.utilities?.[bedroomKey], 1);
   const internet = includesItem(rentObs, 'internet') ? included('internet', 'rent') : fromObs('internet', true, c.internet, 1);
 
+  const kids = h.children === 0 ? '' : ` and ${h.children} ${h.children === 1 ? 'child' : 'children'}`;
   const groceries = fromObs('groceries', true, c.groceriesPerAdultEquivalent, adultEquivalents(h), [
-    `Scaled to ${adultEquivalents(h).toFixed(1)} adult equivalents (modified OECD scale).`,
+    `Sized for ${nAdults} ${nAdults === 1 ? 'adult' : 'adults'}${kids}.`,
   ]);
 
   let transport: CategoryResult;
@@ -186,5 +187,3 @@ export function buildBudget(takeHomeMonthly: number, categories: CategoryResult[
     missing,
   };
 }
-
-export const toEurRange = (r: Range, currency: CurrencyCode, fx: FxSnapshot): Range => mapRange(r, (n) => localToEur(n, currency, fx));

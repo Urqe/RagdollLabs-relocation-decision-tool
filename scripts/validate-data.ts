@@ -1,6 +1,6 @@
 // Validates data/ and fixtures/. Exits non-zero on any error. Prints overdue sources as warnings.
-import { latestFx, readTree, taxParamFiles } from './repo-data.ts';
-import { checkFx, checkTaxParams, checkTree, staleSources } from './validation.ts';
+import { latestFx, readJson, readTree, taxParamFiles } from './repo-data.ts';
+import { checkDataVersion, checkFx, checkTaxParams, checkTree, staleSources } from './validation.ts';
 
 const data = readTree('data');
 const fixtures = readTree('fixtures');
@@ -10,6 +10,7 @@ const errors = [
   ...checkTree(fixtures, [...data.sources, ...fixtures.sources]).errors,
   ...checkFx(latestFx(), data.sources),
   ...checkTaxParams(taxParamFiles()),
+  ...checkDataVersion(readJson<unknown>('data/release.json')),
 ];
 const warnings = staleSources(data.sources, new Date());
 
