@@ -92,7 +92,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (40c7a70) |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
-| 0.4.1 | Maintenance | Review of 0.4.0 | In progress |
+| 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Not started |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
@@ -286,7 +286,7 @@ Notes for the 0.4.1 review:
 
 ### 0.4.1 — Maintenance: review of 0.4.0
 
-**Status:** In progress
+**Status:** Completed 2026-10-20 (5b92a0a). Thirteen findings fixed (V1–V13); two moved to the backlog (V14, V15).
 
 Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V13 fixed; V14 (climate normals) and V15 (Berlin born abroad) moved to the backlog because their sources could not be read in the build environment.
 
