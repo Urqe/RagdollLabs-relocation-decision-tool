@@ -89,7 +89,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Completed 2026-10-19 (ed6a50a) |
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
-| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model | Not started |
+| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Not started |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
@@ -228,6 +228,15 @@ The pilot set shows real differences in tax system, living costs, climate and ev
 - Imports repeatable where a source allows; documented curated inputs where it does not; reviewed diffs, source and licence records, and a dated data release with a changelog. No brittle scraping to avoid a documented manual step.
 - FX snapshot refreshed and dated, including MXN.
 
+**Lifestyle presets priced per city**
+
+- Discretionary presets renamed **Budget**, **Moderate** and **Rich lifestyle**, each with a one-line description in the form.
+- Each preset is a defined basket, not a euro amount: for example meals out and coffees a month, a gym membership, clothing, streaming and leisure, and one or more trips a year. The basket is written down once in `data/` with quantities per adult equivalent.
+- Each item is priced from local data for each pilot city, so the same lifestyle costs what it costs there. The breakdown shows the basket items and their source.
+- Free sources rarely price these items at city level. Use the most local free source for each item: Eurostat category price levels for European countries, BEA regional price parities for US metro areas, INEGI prices for Mexico. Where only a national value exists, label it as inherited. Where an item has no source, mark it as missing and do not fall back to a flat amount silently.
+- The current method (a flat amount scaled by a service price index) remains only as a labelled fallback for cities without basket prices.
+- "My own amount" stays.
+
 **Explore and methodology**
 
 - Inputs for missing essential categories (childcare, healthcare, transport) and a way to describe included charges when overriding rent (F6).
@@ -236,7 +245,7 @@ The pilot set shows real differences in tax system, living costs, climate and ev
 - Non-pilot cities appear only under a separate "development preview" heading, and fixture budgets never enter rankings or comparisons.
 - WebKit added to the end-to-end suite for the Explore journey, plus an iPad-width layout check.
 
-**Done when** each pilot city has, for every essential category, a usable sourced value, a documented derivation or an explicit missing state; missing costs prevent definitive affordability claims; the Mexico model matches its reference cases within the equivalent of €1 a month; and every number on the Explore page traces to its source in two clicks or fewer.
+**Done when** each pilot city has, for every essential category, a usable sourced value, a documented derivation or an explicit missing state; missing costs prevent definitive affordability claims; the Mexico model matches its reference cases within the equivalent of €1 a month; each lifestyle preset is priced item by item for every pilot city, with any missing or inherited item labelled; and every number on the Explore page traces to its source in two clicks or fewer.
 
 ### 0.3.1 — Maintenance: review of 0.3.0
 
