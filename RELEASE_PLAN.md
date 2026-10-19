@@ -47,7 +47,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | Version | Type | Theme | Status |
 | --- | --- | --- | --- |
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
-| 0.1.1 | Maintenance | Review of 0.1.0 | In progress: review done, fixes not started |
+| 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal | Not started |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
@@ -77,7 +77,7 @@ Static TypeScript app with no runtime dependencies; Finland and US (federal, Tex
 
 ### 0.1.1 — Maintenance: review of 0.1.0
 
-**Status:** In progress. Review done 2026-10-19; fixes not started.
+**Status:** Completed 2026-10-19 (38d2867). All 19 findings and 4 carried-over items fixed; none deferred.
 
 Findings and their status are tracked in [docs/reviews/0.1.1.md](docs/reviews/0.1.1.md). IDs below refer to that file.
 
