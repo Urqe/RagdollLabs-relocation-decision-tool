@@ -48,7 +48,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | --- | --- | --- | --- |
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
 | 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
-| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | In progress |
+| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0 | Not started |
@@ -119,7 +119,14 @@ Findings and their status are tracked in [docs/reviews/0.1.1.md](docs/reviews/0.
 
 ### 0.2.0 — Tax models: Estonia, Germany, Spain, Portugal; Helsinki added
 
-**Status:** Not started
+**Status:** Completed 2026-10-19 (5b7593e)
+
+**Notes for the 0.2.1 review**
+
+- Official calculator cases were not reachable for Germany, Spain or Portugal. Tests use published anchors (Estonian €2,000 example, German tariff at €50,000, Portuguese "parcela a abater" column) plus cases worked by hand from the parameter files. Cross-check at least one case per country against the official calculators (BMF, AEAT, Portal das Finanças) from a machine that can reach them.
+- Spanish regional scales and minimums come from secondary sources; confirm against the BOCM and DOGV. The 2026 low-income work reduction is not yet published; the 2025 rule is used.
+- Portugal assumes the €250 general family expenses deduction is reached.
+- Germany models the annual assessment, not monthly withholding.
 
 - Helsinki added to the city picker, as the home baseline. Its 2026 tax rate is already in the Finnish model; costs use development fixtures until 0.4.0, like the other cities.
 - Gross-to-net for Estonia (confirm the 2026 rate with the Estonian Tax and Customs Board), Germany (with income splitting for married couples, solidarity surcharge, statutory social insurance, optional church tax), Spain (state plus Madrid and Valencia regional scales, social security), and Portugal (IRS scale, social security).
