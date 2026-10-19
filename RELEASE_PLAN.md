@@ -88,7 +88,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Completed 2026-10-19 (ed6a50a) |
-| 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (pending) |
+| 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
 | 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Not started |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
@@ -179,7 +179,7 @@ Findings are tracked in [docs/reviews/0.2.1.md](docs/reviews/0.2.1.md). S2 (Span
 
 ### 0.2.2 — Corrective: household correctness, reset and data validation
 
-**Status:** Completed 2026-10-19 (pending). F1–F5, F7, F9–F11 fixed; F6 and F8 fixed in their 0.2.2 parts with the rest in 0.3.0 as planned. Two findings added during the release (F12 Portugal child deduction, F13 Sources table width) and fixed. Portuguese joint taxation moved to 0.6.0.
+**Status:** Completed 2026-10-19 (337bdbe). F1–F5, F7, F9–F11 fixed; F6 and F8 fixed in their 0.2.2 parts with the rest in 0.3.0 as planned. Two findings added during the release (F12 Portugal child deduction, F13 Sources table width) and fixed. Portuguese joint taxation moved to 0.6.0.
 
 Findings, reproductions and acceptance are in [docs/reviews/0.2.2.md](docs/reviews/0.2.2.md). IDs below refer to that file. No tax or cost coverage is added until this release is validated.
 
