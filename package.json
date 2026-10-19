@@ -1,0 +1,26 @@
+{
+  "name": "ragdolllabs-relocation-decision-tool",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static web app that compares cities for relocation by take-home pay, living costs and personal preferences.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test \"tests/unit/**/*.test.ts\"",
+    "validate": "node scripts/validate-data.ts",
+    "boundaries": "node scripts/check-boundaries.ts",
+    "check": "npm run typecheck && npm run boundaries && npm run validate && npm test",
+    "build": "node scripts/build-site.ts",
+    "build:fixtures": "node scripts/build-site.ts --with-fixtures",
+    "serve": "node scripts/serve.ts",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "playwright": "1.56.0",
+    "typescript": "6.0.3"
+  }
+}

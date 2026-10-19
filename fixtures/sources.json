@@ -1,0 +1,13 @@
+[
+  {
+    "id": "fixture",
+    "name": "Development fixture",
+    "publisher": "None",
+    "url": "https://github.com/Urqe/RagdollLabs-relocation-decision-tool/tree/main/fixtures",
+    "licence": "Not data",
+    "attribution": "Placeholder values for development. Not real data.",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19",
+    "fixture": true
+  }
+]

@@ -1,2 +1,47 @@
-# RagdollLabs-relocation-decision-tool
-Tool for expats, which helps compare destination cities for relocation, based on personal preferences and income level.
+# RagdollLabs relocation decision tool
+
+A static web app for comparing cities as places to live: what a household's income turns into after tax, what living there costs, and what is left over. Preference matching (safety, climate, healthcare and so on) comes in a later milestone.
+
+It is a personal planning tool. Estimates are not tax or immigration advice, and the app does not judge whether a salary is available locally or whether anyone may live or work there.
+
+## Status
+
+Milestone 1 of 6: foundations and money core.
+
+- Real 2026 tax rules for Finland (Helsinki, Tampere) and the US (federal, Texas, California).
+- Budget engine with scenario ranges, double-count rules and affordability bands.
+- An Explore screen running on **development fixtures**: placeholder costs that are clearly labelled and are not real data.
+
+The plan for later milestones is in the project's v1 plan document.
+
+## Run it
+
+Needs Node 22.18 or later (TypeScript runs natively in Node; there is no bundler).
+
+```sh
+npm install
+npm run check            # type-check, module boundaries, data validation, unit tests
+npm run build:fixtures   # build dist/ including development fixtures
+npm run serve            # http://localhost:4173/RagdollLabs-relocation-decision-tool/
+npm run e2e              # end-to-end tests (needs: npx playwright install chromium)
+```
+
+## How it is built
+
+- No runtime dependencies. TypeScript compiled by `tsc` to native ES modules; plain DOM rendering.
+- `src/core` — pure calculations (money, tax, budget). No browser APIs; enforced by `npm run boundaries`.
+- `src/data` — data validators and release indexing.
+- `src/state` — profile, routing and local persistence.
+- `src/ui` — screens.
+- `data/` — production datasets and tax parameters, each value with source, period and confidence.
+- `fixtures/` — development-only data. Every file is marked `"fixture": true`; validation fails if fixtures appear in `data/`.
+
+Hash routing (`#/explore/fi-tampere`) keeps deep links working on GitHub Pages.
+
+## Deploying
+
+The workflow in `.github/workflows/ci.yml` tests every push and deploys `main` to GitHub Pages. Pages must be switched on once: repository **Settings → Pages → Source: GitHub Actions**.
+
+## Data
+
+See [docs/data-update.md](docs/data-update.md) for how data is added and refreshed.

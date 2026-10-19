@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Where could we live?</title>
+    <meta name="description" content="Compare take-home pay, living costs and what is left over across cities." />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./js/ui/main.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to results</a>
+    <header class="site">
+      <a class="wordmark" href="#/explore">Where could we live?</a>
+      <nav aria-label="Main">
+        <a href="#/explore" data-screen="explore">Explore a city</a>
+        <a href="#/methodology" data-screen="methodology">How it works</a>
+      </nav>
+    </header>
+    <div class="layout">
+      <aside class="panel" aria-label="Your household">
+        <details class="panel-toggle" open>
+          <summary>Your household</summary>
+          <form id="profile" class="profile" onsubmit="return false"></form>
+        </details>
+      </aside>
+      <main id="main" class="results" tabindex="-1">
+        <p class="empty">Loading data…</p>
+      </main>
+    </div>
+    <footer class="site">
+      <p>Estimates for planning, not tax or immigration advice. Data release <span id="release-version">–</span>.</p>
+    </footer>
+  </body>
+</html>
