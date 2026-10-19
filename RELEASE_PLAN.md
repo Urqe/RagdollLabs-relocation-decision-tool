@@ -89,7 +89,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Completed 2026-10-19 (5b7593e) |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Completed 2026-10-19 (ed6a50a) |
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
-| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (pending) |
+| 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (40c7a70) |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Not started |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
@@ -207,7 +207,7 @@ Findings, reproductions and acceptance are in [docs/reviews/0.2.2.md](docs/revie
 
 ### 0.3.0 — Pilot Explore on real data
 
-**Status:** Completed 2026-10-19 (pending)
+**Status:** Completed 2026-10-19 (40c7a70)
 
 **Notes for the 0.3.1 review**
 
