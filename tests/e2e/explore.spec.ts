@@ -300,3 +300,32 @@ test('lifestyle presets are named Budget, Moderate and Rich lifestyle and priced
   await page.locator('#discretionary').selectOption('rich');
   await expect(page.getByRole('row', { name: /Discretionary spending/ })).toContainText('Rich lifestyle');
 });
+
+test('fit: nothing counts until the user says what matters', async ({ page }) => {
+  await page.goto('./#/explore/fi-helsinki');
+  await expect(page.locator('section.fit')).toContainText('Tell us what matters to you');
+});
+
+test('fit: preferences give an explained fit, with a range where data is missing', async ({ page }) => {
+  await page.goto('./#/explore/fi-helsinki');
+  await page.locator('details.prefs > summary').click();
+  await page.getByLabel('Safety', { exact: true }).selectOption({ label: 'Essential' });
+  await page.getByLabel('Climate', { exact: true }).selectOption({ label: 'Very' });
+  await page.getByLabel('Dark winter days').selectOption({ label: 'Avoid' });
+  const fit = page.locator('section.fit');
+  await expect(fit.locator('.fit-band')).toContainText('out of 100');
+  await expect(fit.locator('[data-dimension="safety"]')).toBeVisible();
+  await expect(fit).toContainText('Compromise: climate');
+  await expect(fit).toContainText('not an overall quality-of-life rating');
+
+  // Same preferences, another city: Hermosillo fails the essential, and has no community data, so its fit is a range.
+  await page.getByLabel('Community', { exact: true }).selectOption({ label: 'Very' });
+  await page.getByLabel('City').selectOption({ label: 'Hermosillo' });
+  await expect(fit.locator('.fit-excluded')).toContainText('Safety');
+  await expect(fit.locator('.fit-score')).toContainText(' to ');
+  await expect(fit.locator('[data-dimension="community"]')).toContainText('No data');
+
+  // Preferences are kept on reload.
+  await page.reload();
+  await expect(page.locator('section.fit .fit-excluded')).toBeVisible();
+});

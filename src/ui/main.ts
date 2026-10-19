@@ -64,7 +64,7 @@ async function start(): Promise<void> {
   };
 
   mountPanelToggle(panel, document.getElementById('panel-summary') as HTMLButtonElement, returning);
-  mountProfile(form, store, storage, data.release.lifestyle);
+  mountProfile(form, store, storage, data.release.lifestyle, data.release.preferences);
   store.subscribe((s, prev) => {
     if (s.profile !== prev.profile) saveProfile(storage, s.profile);
     const active = document.activeElement?.id;

@@ -91,7 +91,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.2.2 | Corrective | Household correctness, reset and data validation | Completed 2026-10-19 (337bdbe) |
 | 0.3.0 | Feature | Pilot Explore on real data: Helsinki, Berlin, Madrid, Austin, Hermosillo; Mexico tax model; lifestyle presets priced per city | Completed 2026-10-19 (40c7a70) |
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
-| 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Not started |
+| 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Not started |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Not started |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
@@ -267,7 +267,15 @@ Standard maintenance review, plus the official calculator cross-check moved from
 
 ### 0.4.0 — Preference data and explainable fit in Explore
 
-**Status:** Not started
+**Status:** Completed 2026-10-19 (HASH). Eight dimensions, 13 indicators from 13 new sources; fit, per-area scores, best matches, compromises, missing data, sensitive areas and national figures shown in Explore for all five pilot cities. Gaps moved to the backlog: residents born abroad for Hermosillo, commuting by car for Austin and Hermosillo, and indicators for food variety and close local community.
+
+Notes for the 0.4.1 review:
+
+- Several measures are national (homicides, governance, healthcare, eating-out prices). Mexico's homicide rate in particular varies widely by state; check whether a Sonora or Hermosillo figure from INEGI can replace it.
+- Berlin's "born abroad" is foreign citizens, not foreign-born, and is marked low confidence. Madrid's car share is from 2011.
+- Bounds in `data/preferences.json` are editorial; review whether each band label reads fairly for the five cities (for example Helsinki's climate scores low for anyone who avoids dark winters, by design).
+- "Essential" (importance 4) also acts as a must-have check in Explore; Find in 0.5.0 uses the same rule to exclude cities.
+- Life expectancy and out-of-pocket share are proxies for healthcare quality and cost, and say so.
 
 - Indicator data for the eight dimensions (safety, personal liberty, governance, healthcare, community, food and dining, climate, everyday convenience) for the pilot cities, each marked as a measured indicator or an editorial proxy; national values labelled as national.
 - Desired attributes separate from importance, with compact controls first. For example climate: preferred temperature, seasons, tolerance for heat or darkness; community: local integration, international networks, street life; food: variety, particular cuisines, affordability; convenience: walking, public transport or car.
@@ -343,6 +351,11 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 ## Backlog (not scheduled)
 
 - Per-city church tax rate in Germany if a city outside Berlin is added. (From review 0.2.1, S8.)
+- Check HUD's FY2026 Fair Market Rents for Travis County by hand in a browser; HUD blocks automated requests. (From review 0.3.1, T5.)
+- Run the five official calculator cases in docs/reviews/0.3.1-calculator-cases.md and add the results as reference tests. (From review 0.3.1, T6.)
+- Confirm Child Care Aware's Texas infant-care price on childcareaware.org. (From review 0.3.1, T8.)
+- Residents born abroad for Hermosillo (INEGI census), and commuting by car for Austin (ACS) and Hermosillo (INEGI origin-destination survey). (From 0.4.0.)
+- Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.

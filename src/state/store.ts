@@ -1,4 +1,5 @@
 import { DEFAULT_HOUSEHOLD, normalizeHousehold, type CityOverrides, type Household } from '../core/budget/household.ts';
+import { NO_PREFERENCES, type Preferences } from '../core/fit/fit.ts';
 
 export type IncomeMode = 'annual' | 'monthly';
 
@@ -7,6 +8,8 @@ export interface Profile {
   incomeMode: IncomeMode;
   /** Months of pay per year used to annualise monthly input (12, 13 or 14). */
   monthsPerYear: 12 | 13 | 14;
+  /** What matters to the user. Nothing has importance until they say so. */
+  preferences: Preferences;
 }
 
 export interface AppState {
@@ -21,7 +24,7 @@ export type Route = { screen: 'explore'; cityId: string | null } | { screen: 'me
 
 export const STORAGE_KEY = 'rdt.profile.v1';
 
-export const DEFAULT_PROFILE: Profile = { household: DEFAULT_HOUSEHOLD, incomeMode: 'annual', monthsPerYear: 12 };
+export const DEFAULT_PROFILE: Profile = { household: DEFAULT_HOUSEHOLD, incomeMode: 'annual', monthsPerYear: 12, preferences: NO_PREFERENCES };
 
 // ---- routing (hash based, so deep links work on GitHub Pages) ----
 
@@ -63,6 +66,23 @@ function migrateV1Household(h: Record<string, unknown>): Record<string, unknown>
   };
 }
 
+const ID = /^[a-z][a-z-]{0,40}$/;
+
+/** Importance must be a whole number 0–4 and choices plain ids; anything else is dropped. Unknown ids are ignored by the fit. */
+export function parsePreferences(raw: unknown): Preferences {
+  if (typeof raw !== 'object' || raw === null) return NO_PREFERENCES;
+  const r = raw as { importance?: unknown; choices?: unknown };
+  const importance: Record<string, number> = {};
+  const choices: Record<string, string> = {};
+  if (typeof r.importance === 'object' && r.importance !== null) {
+    for (const [k, v] of Object.entries(r.importance)) if (ID.test(k) && Number.isInteger(v) && (v as number) >= 0 && (v as number) <= 4) importance[k] = v as number;
+  }
+  if (typeof r.choices === 'object' && r.choices !== null) {
+    for (const [k, v] of Object.entries(r.choices)) if (ID.test(k) && typeof v === 'string' && ID.test(v)) choices[k] = v;
+  }
+  return { importance, choices };
+}
+
 /**
  * Restores a saved profile. Every field is checked and the household goes through the same normalizer
  * as the form, so a malformed, old or tampered profile can only ever produce a valid household.
@@ -78,6 +98,7 @@ export function parseProfile(raw: string | null): Profile {
       household: normalizeHousehold(parsed.v === 1 ? migrateV1Household(storedHousehold) : storedHousehold),
       incomeMode: p.incomeMode === 'monthly' ? 'monthly' : 'annual',
       monthsPerYear: p.monthsPerYear === 13 || p.monthsPerYear === 14 ? p.monthsPerYear : 12,
+      preferences: parsePreferences(p.preferences),
     };
   } catch {
     return DEFAULT_PROFILE;

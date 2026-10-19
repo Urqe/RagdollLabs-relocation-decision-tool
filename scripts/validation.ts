@@ -1,7 +1,9 @@
 import { validateCity, validateCountry, validateFx, validateRegion, validateSource, validateTaxParams, type Problem } from '../src/data/validate.ts';
 import { taxSubdivisions } from '../src/data/tax-schemas.ts';
 import { LIFESTYLE_CATEGORIES, type FxSnapshot, type Source, type TaxModelId } from '../src/core/types.ts';
-import type { Tree } from './repo-data.ts';
+import { readJson, type Tree } from './repo-data.ts';
+
+const INDICATOR_IDS = new Set(Object.keys(readJson<{ indicators: Record<string, unknown> }>('data/preferences.json').indicators));
 
 const CADENCE_DAYS: Record<Source['cadence'], number> = { daily: 7, monthly: 45, quarterly: 120, annual: 400, irregular: 730 };
 
@@ -43,7 +45,7 @@ export function checkTree(tree: Tree, knownSources: Source[], context?: Pick<Tre
     regionIds.add(f.data.id);
   }
   for (const f of tree.cities) {
-    errors.push(...validateCity(f.data, f.path, ids, { currency: currencyOf.get(f.data.countryId), production: isData }));
+    errors.push(...validateCity(f.data, f.path, ids, { currency: currencyOf.get(f.data.countryId), production: isData, indicatorIds: INDICATOR_IDS }));
     fixtureFlag(f.data, f.path);
     if (cityIds.has(f.data.id)) errors.push({ path: f.path, message: `duplicate city id "${f.data.id}"` });
     cityIds.add(f.data.id);

@@ -1,5 +1,5 @@
 import { asksMainCostPayer, MAX_CHILDREN, normalizeHousehold, totalChildren, type ChildAges, type DiscretionaryLevel, type Household, type Relationship } from '../core/budget/household.ts';
-import type { LifestyleDefinition } from '../core/types.ts';
+import type { LifestyleDefinition, PreferenceDefinition } from '../core/types.ts';
 import { clearProfile, DEFAULT_PROFILE, type AppState, type Profile, type Store } from '../state/store.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
@@ -11,7 +11,8 @@ const setHousehold = (fn: (hh: Household) => Partial<Household>): Patch => (p) =
 /** Inputs that change which fields exist trigger a re-render; plain value edits do not, so focus is never lost while typing. */
 const structureKey = (p: Profile): string =>
   [p.household.earnersGrossEur.length, p.household.nonEarningAdults, p.household.relationship, p.household.children.under14 > 0,
-    asksMainCostPayer(p.household), p.incomeMode, p.household.discretionary.kind].join('|');
+    asksMainCostPayer(p.household), p.incomeMode, p.household.discretionary.kind,
+    Object.entries(p.preferences.importance).filter(([, v]) => v > 0).map(([k]) => k).sort().join(',')].join('|');
 
 const CHILD_BANDS: [keyof ChildAges, string][] = [['under14', 'Under 14'], ['from14to16', 'Aged 14 to 16'], ['from17to24', 'Aged 17 to 24']];
 const RELATIONSHIPS: [Relationship, string][] = [['married', 'Married'], ['registered', 'Registered partners'], ['unmarried', 'Neither']];
@@ -65,7 +66,26 @@ function choice(name: string, legend: string, options: [string, string][], curre
   );
 }
 
-export function mountProfile(root: HTMLElement, store: Store, storage: Storage | null, lifestyle: LifestyleDefinition): void {
+/** One importance select per dimension; a dimension's choices appear once it matters. */
+function preferenceFields(def: PreferenceDefinition, profile: Profile, update: (patch: Patch) => void): HTMLElement[] {
+  const prefs = profile.preferences;
+  const setImportance = (id: string, v: number): Patch => (p) => ({ ...p, preferences: { ...p.preferences, importance: { ...p.preferences.importance, [id]: v } } });
+  const setChoice = (id: string, v: string): Patch => (p) => ({ ...p, preferences: { ...p.preferences, choices: { ...p.preferences.choices, [id]: v } } });
+  return def.dimensions.map((d) => {
+    const imp = prefs.importance[d.id] ?? 0;
+    const id = `pref-${d.id}`;
+    return h('div', { class: 'pref' },
+      field(id, d.label, h('select', { id, 'aria-describedby': `${id}-hint`, onchange: (e: Event) => update(setImportance(d.id, Number((e.target as HTMLSelectElement).value))) },
+        def.importance.map((label, i) => h('option', { value: i, selected: i === imp }, label))), d.description),
+      imp > 0 ? (d.aspects ?? []).map((a) => {
+        const aid = `pref-${d.id}-${a.id}`;
+        return field(aid, a.label, h('select', { id: aid, onchange: (e: Event) => update(setChoice(a.id, (e.target as HTMLSelectElement).value)) },
+          a.options.map((o) => h('option', { value: o.id, selected: o.id === (prefs.choices[a.id] ?? a.default) }, o.label))));
+      }) : null);
+  });
+}
+
+export function mountProfile(root: HTMLElement, store: Store, storage: Storage | null, lifestyle: LifestyleDefinition, preferences: PreferenceDefinition): void {
   let lastKey = '';
   const update = (patch: Patch): void => store.set((s) => ({ ...s, profile: patch(s.profile) }));
 
@@ -127,6 +147,7 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
     const months = profile.incomeMode === 'monthly' ? profile.monthsPerYear : 1;
     const active = document.activeElement?.id ?? null;
     const moreOpen = root.querySelector<HTMLDetailsElement>('details.more')?.open ?? false;
+    const prefsOpen = root.querySelector<HTMLDetailsElement>('details.prefs')?.open ?? Object.values(profile.preferences.importance).some((v) => v > 0);
     // Inputs holding an invalid value keep it, and stay marked, when the form is rebuilt.
     const invalidKept = s.invalidFields.map((id) => {
       const el = document.getElementById(id) as HTMLInputElement | null;
@@ -231,6 +252,10 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
           : null,
         h('label', { class: 'check' }, h('input', { type: 'checkbox', id: 'church', checked: hh.churchMember, onchange: (e: Event) => update(setHousehold(() => ({ churchMember: (e.target as HTMLInputElement).checked }))) }), h('span', {}, 'Church member (Finnish church tax)')),
       ),
+      h('details', { class: 'prefs', open: prefsOpen },
+        h('summary', {}, 'What matters to you'),
+        h('p', { class: 'hint' }, 'Used for how well each city fits you. Nothing counts until you give it some importance. “Essential” also checks the city reaches at least half on it.'),
+        preferenceFields(preferences, profile, update)),
       h('button', { type: 'button', class: 'quiet-button', onclick: () => {
         clearProfile(storage);
         // The whole scenario resets: household, every city's own figures and any invalid field. The city stays selected.

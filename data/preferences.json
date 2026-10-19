@@ -1,0 +1,80 @@
+{
+  "importance": ["Not important", "A little", "Somewhat", "Very", "Essential"],
+  "overlapGroups": [
+    { "dimensions": ["liberty", "governance"], "factor": 0.67, "reason": "Personal liberty and governance come from the same family of World Bank governance indicators and move together; when both matter, each counts two-thirds so the shared signal is not counted twice." }
+  ],
+  "indicators": {
+    "homicideRate": { "label": "Homicides", "unit": "per 100,000 people a year", "kind": "measured" },
+    "voiceAccountability": { "label": "Voice and accountability", "unit": "index, -2.5 to 2.5", "kind": "measured" },
+    "governmentEffectiveness": { "label": "Government effectiveness", "unit": "index, -2.5 to 2.5", "kind": "measured" },
+    "ruleOfLaw": { "label": "Rule of law", "unit": "index, -2.5 to 2.5", "kind": "measured" },
+    "controlOfCorruption": { "label": "Control of corruption", "unit": "index, -2.5 to 2.5", "kind": "measured" },
+    "lifeExpectancy": { "label": "Life expectancy at birth", "unit": "years", "kind": "proxy" },
+    "oopShare": { "label": "Share of health spending paid out of pocket", "unit": "%", "kind": "proxy" },
+    "foreignBornShare": { "label": "Residents born abroad", "unit": "% of residents", "kind": "proxy" },
+    "eatingOutPriceLevel": { "label": "Price of eating out", "unit": "ratio to Finland", "kind": "measured" },
+    "coldestMonthMean": { "label": "Coldest month, average temperature", "unit": "°C", "kind": "measured" },
+    "warmestMonthMeanMax": { "label": "Warmest month, average daily high", "unit": "°C", "kind": "measured" },
+    "decemberDaylight": { "label": "Daylight on the shortest day", "unit": "hours", "kind": "measured" },
+    "carCommuteShare": { "label": "Commutes by car", "unit": "% of journeys to work", "kind": "proxy" }
+  },
+  "dimensions": [
+    { "id": "safety", "label": "Safety", "description": "How rarely people come to violent harm.",
+      "rules": [{ "indicator": "homicideRate", "worst": 20, "best": 0.5, "scale": "log" }] },
+    { "id": "liberty", "label": "Personal liberty", "description": "Freedom of expression and association and a free press.",
+      "rules": [{ "indicator": "voiceAccountability", "worst": -1, "best": 1.7 }] },
+    { "id": "governance", "label": "Governance", "description": "Effective public services, rule of law and little corruption.",
+      "rules": [
+        { "indicator": "governmentEffectiveness", "worst": -1, "best": 2 },
+        { "indicator": "ruleOfLaw", "worst": -1, "best": 2 },
+        { "indicator": "controlOfCorruption", "worst": -1, "best": 2 }
+      ] },
+    { "id": "healthcare", "label": "Healthcare", "description": "Health outcomes and how much of the cost people pay themselves.",
+      "rules": [
+        { "indicator": "lifeExpectancy", "worst": 72, "best": 84 },
+        { "indicator": "oopShare", "worst": 45, "best": 10 }
+      ] },
+    { "id": "community", "label": "Community", "description": "The kind of community you would like to be part of.",
+      "aspects": [
+        { "id": "community", "label": "What kind of community", "default": "international", "options": [
+          { "id": "international", "label": "International", "rules": [{ "indicator": "foreignBornShare", "worst": 2, "best": 30 }] },
+          { "id": "local", "label": "Close local community", "rules": [], "notCovered": "There is no indicator for local community life yet." },
+          { "id": "any", "label": "No preference", "rules": [] }
+        ] }
+      ] },
+    { "id": "food", "label": "Food and dining", "description": "Eating out: what it costs, and how varied it is.",
+      "aspects": [
+        { "id": "food", "label": "What matters most", "default": "affordable", "options": [
+          { "id": "affordable", "label": "Affordable eating out", "rules": [{ "indicator": "eatingOutPriceLevel", "worst": 1.2, "best": 0.4 }] },
+          { "id": "variety", "label": "Variety of cuisines", "rules": [], "notCovered": "There is no indicator for the variety of restaurants yet." },
+          { "id": "any", "label": "No preference", "rules": [] }
+        ] }
+      ] },
+    { "id": "climate", "label": "Climate", "description": "Winters, summers and daylight.",
+      "aspects": [
+        { "id": "winter", "label": "Winters", "default": "mild", "options": [
+          { "id": "mild", "label": "Mild", "rules": [{ "indicator": "coldestMonthMean", "worst": -10, "best": 15 }] },
+          { "id": "cold", "label": "Cold, with snow", "rules": [{ "indicator": "coldestMonthMean", "worst": 8, "best": -6 }] },
+          { "id": "any", "label": "No preference", "rules": [] }
+        ] },
+        { "id": "summer", "label": "Summers", "default": "warm", "options": [
+          { "id": "cool", "label": "Cool", "rules": [{ "indicator": "warmestMonthMeanMax", "worst": 34, "best": 22 }] },
+          { "id": "warm", "label": "Warm", "rules": [{ "indicator": "warmestMonthMeanMax", "target": 28, "tolerance": 9 }] },
+          { "id": "hot", "label": "Hot", "rules": [{ "indicator": "warmestMonthMeanMax", "worst": 24, "best": 36 }] },
+          { "id": "any", "label": "No preference", "rules": [] }
+        ] },
+        { "id": "darkness", "label": "Dark winter days", "default": "avoid", "options": [
+          { "id": "avoid", "label": "Avoid", "rules": [{ "indicator": "decemberDaylight", "worst": 6, "best": 10 }] },
+          { "id": "fine", "label": "Fine with them", "rules": [] }
+        ] }
+      ] },
+    { "id": "convenience", "label": "Everyday convenience", "description": "How you would like to get around.",
+      "aspects": [
+        { "id": "getting-around", "label": "Getting around", "default": "transit", "options": [
+          { "id": "transit", "label": "Without a car", "rules": [{ "indicator": "carCommuteShare", "worst": 75, "best": 20 }] },
+          { "id": "car", "label": "By car", "rules": [{ "indicator": "carCommuteShare", "worst": 20, "best": 75 }] },
+          { "id": "any", "label": "No preference", "rules": [] }
+        ] }
+      ] }
+  ]
+}

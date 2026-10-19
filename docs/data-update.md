@@ -60,4 +60,19 @@ Each file in `data/tax/` is checked against its model's schema in `src/data/tax-
 
 Two values are still read from a site that republishes the original, because the original blocks automated requests: HUD Fair Market Rents (via propmetrics.co) and Child Care Aware's Texas prices (via FOX 7 Austin). Both are to be checked by hand (review 0.3.1, T5 and T8).
 
+## Preference indicators (0.4.0)
+
+Dimensions, options and scoring bounds are defined in `data/preferences.json`. Bounds are fixed numbers, not the range of the cities in the app, so adding a city never changes another city's score. Change a bound only with a reason in the release notes.
+
+| Indicator | Source | Level |
+| --- | --- | --- |
+| Homicides, the four Worldwide Governance Indicators, life expectancy, out-of-pocket share of health spending | World Bank API, imported by `npm run import:worldbank` into `data/inputs/indicators.json` | National |
+| Coldest month mean, warmest month mean daily high | 1991–2020 climate normals from FMI, DWD, AEMET, NOAA and SMN, entered by hand | City weather station |
+| Daylight on the shortest day | Calculated from the city's latitude | City |
+| Price of eating out | ICP 2021 restaurants-and-hotels price level relative to Finland, from `data/inputs/price-levels.json` | National |
+| Residents born abroad | Eurostat Urban Audit (Helsinki, Madrid), Statistik Berlin-Brandenburg (Berlin, foreign citizens), ACS 2024 (Austin); Hermosillo missing | City |
+| Commutes by car | City mobility surveys (Helsinki, Berlin, Madrid); Austin and Hermosillo missing | City |
+
+`node scripts/derive-indicators.ts` writes the `indicators` block of each city file; `npm run validate` fails if a city file no longer matches `data/inputs/indicators.json`. A missing indicator is `null` and is shown as a range in the fit, never filled in.
+
 Scripts that fetch data run with `NODE_USE_ENV_PROXY=1`, so Node's fetch uses the environment's HTTPS proxy.

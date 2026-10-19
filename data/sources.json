@@ -365,5 +365,135 @@
     "attribution": "World Bank; WHO",
     "cadence": "annual",
     "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "wb-homicide",
+    "name": "Intentional homicides per 100,000 people (VC.IHR.PSRC.P5)",
+    "publisher": "World Bank, from UNODC",
+    "url": "https://data.worldbank.org/indicator/VC.IHR.PSRC.P5",
+    "licence": "CC BY 4.0",
+    "attribution": "World Bank; UNODC",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "wb-wgi",
+    "name": "Worldwide Governance Indicators",
+    "publisher": "World Bank",
+    "url": "https://www.worldbank.org/en/publication/worldwide-governance-indicators",
+    "licence": "CC BY 4.0",
+    "attribution": "World Bank, Worldwide Governance Indicators",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "wb-life-expectancy",
+    "name": "Life expectancy at birth (SP.DYN.LE00.IN)",
+    "publisher": "World Bank",
+    "url": "https://data.worldbank.org/indicator/SP.DYN.LE00.IN",
+    "licence": "CC BY 4.0",
+    "attribution": "World Bank",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "wb-oop-share",
+    "name": "Out-of-pocket expenditure, % of current health expenditure (SH.XPD.OOPC.CH.ZS)",
+    "publisher": "World Bank, from WHO Global Health Expenditure Database",
+    "url": "https://data.worldbank.org/indicator/SH.XPD.OOPC.CH.ZS",
+    "licence": "CC BY 4.0",
+    "attribution": "World Bank; WHO",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "fmi-normals",
+    "name": "Climatological normals 1991–2020 (via Wikipedia's climate table)",
+    "publisher": "Finnish Meteorological Institute",
+    "url": "https://en.wikipedia.org/wiki/Helsinki#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Finnish Meteorological Institute",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "dwd-normals",
+    "name": "Climate normals 1991–2020 (via Wikipedia's climate table)",
+    "publisher": "Deutscher Wetterdienst",
+    "url": "https://en.wikipedia.org/wiki/Berlin#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Deutscher Wetterdienst",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "aemet-normals",
+    "name": "Climate normals 1991–2020, Madrid Retiro (via Wikipedia's climate table)",
+    "publisher": "Agencia Estatal de Meteorología",
+    "url": "https://en.wikipedia.org/wiki/Madrid#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "AEMET",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "noaa-normals",
+    "name": "Climate normals 1991–2020, Austin Camp Mabry (via Wikipedia's climate table)",
+    "publisher": "NOAA",
+    "url": "https://en.wikipedia.org/wiki/Austin,_Texas#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "NOAA",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "smn-normals",
+    "name": "Climate normals, Hermosillo Observatorio (via Wikipedia's climate table)",
+    "publisher": "Servicio Meteorológico Nacional",
+    "url": "https://en.wikipedia.org/wiki/Hermosillo#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Servicio Meteorológico Nacional",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "eurostat-urban-audit",
+    "name": "Cities (Urban Audit): population by country of birth (urb_cpopcb) and transport (urb_ctran)",
+    "publisher": "Eurostat",
+    "url": "https://ec.europa.eu/eurostat/databrowser/view/urb_cpopcb/default/table",
+    "licence": "CC BY 4.0",
+    "attribution": "Source: Eurostat",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "statistik-berlin-brandenburg",
+    "name": "Einwohnerbestand in Berlin, 30 June 2026",
+    "publisher": "Amt für Statistik Berlin-Brandenburg",
+    "url": "https://www.statistik-berlin-brandenburg.de/a-i-5-hj/",
+    "licence": "Free use with attribution",
+    "attribution": "Amt für Statistik Berlin-Brandenburg",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "acs-2024",
+    "name": "American Community Survey 2024, 1-year (via Census Reporter)",
+    "publisher": "US Census Bureau",
+    "url": "https://censusreporter.org/profiles/16000US4805000-austin-tx/",
+    "licence": "US government data, public domain",
+    "attribution": "US Census Bureau, ACS",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "astronomy",
+    "name": "Day length from latitude (solar declination −23.44°, refraction allowance −0.833°)",
+    "publisher": "Calculated by the app",
+    "url": "https://en.wikipedia.org/wiki/Sunrise_equation",
+    "licence": "Calculation",
+    "attribution": "Sunrise equation",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-19"
   }
 ]

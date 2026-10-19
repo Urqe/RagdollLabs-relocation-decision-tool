@@ -33,3 +33,17 @@ describe('saved profile', () => {
     assert.deepEqual(loadProfile(null), DEFAULT_PROFILE);
   });
 });
+
+describe('saved preferences', () => {
+  test('valid importance and choices survive a round trip', () => {
+    const p = { ...DEFAULT_PROFILE, preferences: { importance: { safety: 4, climate: 2 }, choices: { winter: 'mild' } } };
+    assert.deepEqual(parseProfile(serializeProfile(p)).preferences, p.preferences);
+  });
+  test('out-of-range, fractional or malformed values are dropped', () => {
+    const raw = JSON.stringify({ v: 2, profile: { preferences: { importance: { safety: 9, climate: 2.5, food: -1, community: 3, 'Bad Id': 2 }, choices: { winter: 7, summer: 'hot', darkness: '<script>' } } } });
+    assert.deepEqual(parseProfile(raw).preferences, { importance: { community: 3 }, choices: { summer: 'hot' } });
+  });
+  test('profiles saved before 0.4.0 start with nothing weighted', () => {
+    assert.deepEqual(parseProfile(JSON.stringify({ v: 2, profile: { household: {} } })).preferences, { importance: {}, choices: {} });
+  });
+});

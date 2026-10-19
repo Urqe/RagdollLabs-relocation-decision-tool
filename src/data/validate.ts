@@ -98,6 +98,8 @@ export interface CityChecks {
   currency?: string | undefined;
   /** Production data: rents must say what they measure and derived values how they were made. */
   production?: boolean;
+  /** Indicator ids defined in data/preferences.json. */
+  indicatorIds?: Set<string>;
 }
 
 /** A money value must be per month in the city's currency, and a production value must explain itself. */
@@ -107,7 +109,7 @@ function checkMeaning(o: unknown, path: string, kind: 'money' | 'rent' | 'index'
     if (o.currency !== checks.currency) out.push({ path: `${path}.currency`, message: `must be ${checks.currency}, the country's currency` });
     if (o.unit !== `${checks.currency}/month`) out.push({ path: `${path}.unit`, message: `must be ${checks.currency}/month` });
   }
-  if (kind === 'index' && !(typeof o.unit === 'string' && o.unit.startsWith('index'))) out.push({ path: `${path}.unit`, message: 'must be an index unit' });
+  if (kind === 'index' && path.includes('.costs.') && !(typeof o.unit === 'string' && o.unit.startsWith('index'))) out.push({ path: `${path}.unit`, message: 'must be an index unit' });
   if (!checks.production) return;
   if (kind === 'rent') {
     const r = o.rent;
@@ -178,6 +180,14 @@ export function validateCity(v: unknown, path: string, sourceIds: Set<string>, c
       if (!(isObj(r.thresholdsByFamilySize) && Object.keys(r.thresholdsByFamilySize).length > 0 && Object.values(r.thresholdsByFamilySize).every((x) => isNum(x) && x > 0))) out.push({ path: `${p}.thresholdsByFamilySize`, message: 'must map family sizes to monthly thresholds' });
       out.push(...validateObservation(r.observation, `${p}.observation`, sourceIds));
       checkMeaning(r.observation, `${p}.observation`, 'money', checks, out);
+    }
+  }
+  if (v.indicators !== undefined) {
+    if (!isObj(v.indicators)) out.push({ path: `${path}.indicators`, message: 'must be keyed by indicator id' });
+    else for (const [k, o] of Object.entries(v.indicators)) {
+      if (checks.indicatorIds && !checks.indicatorIds.has(k)) out.push({ path: `${path}.indicators.${k}`, message: 'unknown indicator; define it in data/preferences.json' });
+      out.push(...validateObservation(o, `${path}.indicators.${k}`, sourceIds));
+      checkMeaning(o, `${path}.indicators.${k}`, 'index', { ...checks, currency: undefined }, out);
     }
   }
   const known = new Set(['rent', 'utilities', 'lifestyle', 'servicePriceIndex', 'childcareIncomeBased', ...MONEY_KEYS]);

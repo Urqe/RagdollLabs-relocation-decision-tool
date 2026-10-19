@@ -93,6 +93,50 @@ export interface IncomeBasedChildcare {
   observation: Observation;
 }
 
+/** How one indicator is turned into a score from 0 (worst) to 1 (best), with fixed, documented bounds. */
+export interface ScoringRule {
+  indicator: string;
+  /** Linear (or logarithmic) between a fixed worst and best value. */
+  worst?: number;
+  best?: number;
+  scale?: 'log';
+  /** Or closeness to a target: 1 at the target, 0 at the target ± tolerance. */
+  target?: number;
+  tolerance?: number;
+}
+
+export interface PreferenceOption {
+  id: string;
+  label: string;
+  rules: ScoringRule[];
+  /** Set when the app has no indicator for this choice yet: the dimension is then not covered. */
+  notCovered?: string;
+}
+
+export interface PreferenceAspect {
+  id: string;
+  label: string;
+  default: string;
+  options: PreferenceOption[];
+}
+
+export interface PreferenceDimension {
+  id: string;
+  label: string;
+  description: string;
+  /** Scoring for dimensions where more is simply better. */
+  rules?: ScoringRule[];
+  /** Choices for dimensions where people want different things; their chosen options' rules are used. */
+  aspects?: PreferenceAspect[];
+}
+
+export interface PreferenceDefinition {
+  importance: string[];
+  overlapGroups: { dimensions: string[]; factor: number; reason: string }[];
+  indicators: Record<string, { label: string; unit: string; kind: 'measured' | 'proxy' }>;
+  dimensions: PreferenceDimension[];
+}
+
 export type BedroomCount = 1 | 2 | 3 | 4;
 export type CityLocation = 'central' | 'outer';
 
@@ -179,6 +223,8 @@ export interface City {
   tax: TaxJurisdiction;
   languages: string[];
   costs: CityCosts;
+  /** Indicators for preference matching, keyed by indicator id; null means no data. */
+  indicators?: Record<string, Observation | null>;
   fixture?: boolean;
 }
 
@@ -200,4 +246,5 @@ export interface Release {
   cities: City[];
   tax: Partial<Record<TaxModelId, unknown>>;
   lifestyle: LifestyleDefinition;
+  preferences: PreferenceDefinition;
 }

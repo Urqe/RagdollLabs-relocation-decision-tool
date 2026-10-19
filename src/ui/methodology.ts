@@ -1,7 +1,35 @@
 import type { Dataset } from '../data/load.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
+import type { PreferenceDefinition, ScoringRule } from '../core/types.ts';
 import { APP_NAME } from './explore.ts';
+
+function ruleText(rule: ScoringRule, def: PreferenceDefinition): string {
+  const m = def.indicators[rule.indicator];
+  const label = `${m?.label ?? rule.indicator}${m?.kind === 'proxy' ? ' (proxy)' : ''}`;
+  if (rule.target !== undefined && rule.tolerance !== undefined) return `${label}: full score at ${rule.target} ${m?.unit ?? ''}, zero ${rule.tolerance} away`;
+  return `${label}: zero at ${rule.worst}, full score at ${rule.best} ${m?.unit ?? ''}${rule.scale === 'log' ? ', on a log scale' : ''}`;
+}
+
+function fitMethod(def: PreferenceDefinition): HTMLElement[] {
+  return [
+    h('h2', {}, 'Fit with what matters to you'),
+    h('p', {}, 'Each area you give importance to is scored from 0 to 100 on fixed scales that are the same for every city, so a city’s score does not depend on which other cities are in the app. The fit is the average of those scores, weighted by importance: “A little” counts 1, “Somewhat” 2, “Very” 3 and “Essential” 4. An area left at “Not important” has no effect.'),
+    h('ul', {},
+      h('li', {}, 'Missing data is never filled in. The fit is shown as a range: the low end counts the missing measure as 0, the high end as 100. Removing data can only widen the range, never raise the low end.'),
+      h('li', {}, 'Bands, on the low end: strong 75 or more, good 60 or more, mixed 45 or more, weak below that. Scores within 5 points are too close to call.'),
+      h('li', {}, '“Essential” also checks the area reaches 50; a city that does not, or cannot be shown to, is flagged.'),
+      def.overlapGroups.map((g) => h('li', {}, `${g.dimensions.map((id) => def.dimensions.find((d) => d.id === id)?.label ?? id).join(' and ')} count ${Math.round(g.factor * 100)}% each when both matter: ${g.reason.charAt(0).toLowerCase()}${g.reason.slice(1)}`)),
+      h('li', {}, 'This is a match to your preferences, not a quality-of-life rating. Several measures are national figures or proxies, and are labelled as such.')),
+    h('dl', { class: 'defs' }, def.dimensions.flatMap((d) => [
+      h('dt', {}, d.label),
+      h('dd', {}, d.description, ' ',
+        d.rules ? `${d.rules.map((r) => ruleText(r, def)).join('; ')}.` : null,
+        d.aspects ? h('ul', {}, d.aspects.flatMap((a) => a.options.filter((o) => o.rules.length > 0 || o.notCovered).map((o) =>
+          h('li', {}, `${a.label}, ${o.label.toLowerCase()}: `, o.notCovered ?? `${o.rules.map((r) => ruleText(r, def)).join('; ')}.`)))) : null),
+    ])),
+  ];
+}
 
 export function renderMethodology(root: HTMLElement, data: Dataset): void {
   const r = data.release;
@@ -50,6 +78,7 @@ export function renderMethodology(root: HTMLElement, data: Dataset): void {
       h('li', {}, 'United States: federal income tax with the standard deduction and child tax credit, Social Security and Medicare, and Texas or California state tax. No itemised deductions or pre-tax premiums.'),
       h('li', {}, 'Mexico: annual ISR on wage income with the 2026 employment subsidy and the tax-free parts of the legal minimum Christmas bonus and vacation premium, and IMSS employee contributions. State payroll tax is an employer cost.'),
       h('li', {}, 'Estonia and Portugal (development previews): flat-rate and progressive income tax with social contributions; each earner files separately.')),
+    fitMethod(r.preferences),
     h('h2', {}, 'What is not covered'),
     h('p', {}, 'Self-employment, cross-border and expatriate tax regimes, cash benefits, immigration and work permits, and whether the salary is available locally.'),
     h('h2', {}, 'Sources'),

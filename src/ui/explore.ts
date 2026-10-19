@@ -6,6 +6,7 @@ import type { City, CurrencyCode, Observation, RentDefinition } from '../core/ty
 import type { Dataset } from '../data/load.ts';
 import { formatRoute, type AppState, type Store } from '../state/store.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
+import { fitSection } from './fit.ts';
 import * as f from './format.ts';
 
 const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
@@ -304,6 +305,7 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
     balances(result),
     breakdown(result, data),
     payDetail(result),
+    fitSection(city, state.profile.preferences, data),
     ownFigures(city, result, ov, store),
     h('p', { class: 'standing-note' },
       'The income you enter is treated as a salary earned while living in this city. The app does not say whether that salary is available locally, and it does not check immigration, work permits or permission to work remotely.'),

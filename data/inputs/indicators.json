@@ -1,0 +1,288 @@
+{
+  "note": "Inputs for scripts/derive-indicators.ts. National values are written by scripts/import/worldbank-indicators.ts; city values are copied from the source named beside each.",
+  "retrieved": "2026-10-19",
+  "cities": {
+    "fi-helsinki": {
+      "country": "FIN",
+      "latitude": 60.17,
+      "climate": {
+        "coldestMonthMean": -3.8,
+        "warmestMonthMeanMax": 21.9,
+        "station": "Helsinki Kaisaniemi",
+        "period": "1991-2020",
+        "sourceId": "fmi-normals"
+      },
+      "foreignBornShare": {
+        "value": 17.5,
+        "period": "2024",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+      },
+      "carCommuteShare": {
+        "value": 26,
+        "period": "2018",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V)."
+      }
+    },
+    "de-berlin": {
+      "country": "DEU",
+      "latitude": 52.52,
+      "climate": {
+        "coldestMonthMean": 0.7,
+        "warmestMonthMeanMax": 25,
+        "station": "Berlin-Brandenburg",
+        "period": "1991-2020",
+        "sourceId": "dwd-normals"
+      },
+      "foreignBornShare": {
+        "value": 24.8,
+        "period": "2026",
+        "sourceId": "statistik-berlin-brandenburg",
+        "confidence": "low",
+        "basis": "Foreign citizens as a share of Berlin's registered residents on 30 June 2026 (972,941 of 3,917,196).",
+        "limitations": "Counts foreign citizens, not people born abroad; the share born abroad is higher, because many residents born abroad are German citizens."
+      },
+      "carCommuteShare": {
+        "value": 39,
+        "period": "2016",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V)."
+      }
+    },
+    "es-madrid": {
+      "country": "ESP",
+      "latitude": 40.42,
+      "climate": {
+        "coldestMonthMean": 6.5,
+        "warmestMonthMeanMax": 32.8,
+        "station": "Madrid Retiro",
+        "period": "1991-2020",
+        "sourceId": "aemet-normals"
+      },
+      "foreignBornShare": {
+        "value": 26.1,
+        "period": "2024",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+      },
+      "carCommuteShare": {
+        "value": 40.6,
+        "period": "2011",
+        "sourceId": "eurostat-urban-audit",
+        "confidence": "low",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
+        "limitations": "From 2011, the latest year published for Madrid; commuting has changed since."
+      }
+    },
+    "us-austin": {
+      "country": "USA",
+      "latitude": 30.27,
+      "climate": {
+        "coldestMonthMean": 11.2,
+        "warmestMonthMeanMax": 36.6,
+        "station": "Austin Camp Mabry",
+        "period": "1991-2020",
+        "sourceId": "noaa-normals"
+      },
+      "foreignBornShare": {
+        "value": 21.6,
+        "period": "2024",
+        "sourceId": "acs-2024",
+        "basis": "Foreign-born residents as a share of the population of the city of Austin (American Community Survey 2024, 1-year)."
+      },
+      "carCommuteShare": null
+    },
+    "mx-hermosillo": {
+      "country": "MEX",
+      "latitude": 29.07,
+      "climate": {
+        "coldestMonthMean": 17.2,
+        "warmestMonthMeanMax": 41.9,
+        "station": "Hermosillo Observatorio",
+        "period": "1991-2020",
+        "sourceId": "smn-normals"
+      },
+      "foreignBornShare": null,
+      "carCommuteShare": null
+    }
+  },
+  "national": {
+    "homicideRate": {
+      "worldBankCode": "VC.IHR.PSRC.P5",
+      "values": {
+        "DEU": {
+          "value": 0.911,
+          "year": "2023"
+        },
+        "ESP": {
+          "value": 0.691,
+          "year": "2023"
+        },
+        "FIN": {
+          "value": 0.982,
+          "year": "2023"
+        },
+        "MEX": {
+          "value": 24.859,
+          "year": "2023"
+        },
+        "USA": {
+          "value": 5.763,
+          "year": "2023"
+        }
+      }
+    },
+    "voiceAccountability": {
+      "worldBankCode": "GOV_WGI_VA.EST",
+      "values": {
+        "DEU": {
+          "value": 1.542,
+          "year": "2025"
+        },
+        "ESP": {
+          "value": 1.117,
+          "year": "2025"
+        },
+        "FIN": {
+          "value": 1.693,
+          "year": "2025"
+        },
+        "MEX": {
+          "value": -0.282,
+          "year": "2025"
+        },
+        "USA": {
+          "value": 0.645,
+          "year": "2025"
+        }
+      }
+    },
+    "governmentEffectiveness": {
+      "worldBankCode": "GOV_WGI_GE.EST",
+      "values": {
+        "DEU": {
+          "value": 1.49,
+          "year": "2025"
+        },
+        "ESP": {
+          "value": 1.13,
+          "year": "2025"
+        },
+        "FIN": {
+          "value": 1.941,
+          "year": "2025"
+        },
+        "MEX": {
+          "value": -0.181,
+          "year": "2025"
+        },
+        "USA": {
+          "value": 1.191,
+          "year": "2025"
+        }
+      }
+    },
+    "ruleOfLaw": {
+      "worldBankCode": "GOV_WGI_RL.EST",
+      "values": {
+        "DEU": {
+          "value": 1.604,
+          "year": "2025"
+        },
+        "ESP": {
+          "value": 0.869,
+          "year": "2025"
+        },
+        "FIN": {
+          "value": 2.012,
+          "year": "2025"
+        },
+        "MEX": {
+          "value": -1.168,
+          "year": "2025"
+        },
+        "USA": {
+          "value": 0.791,
+          "year": "2025"
+        }
+      }
+    },
+    "controlOfCorruption": {
+      "worldBankCode": "GOV_WGI_CC.EST",
+      "values": {
+        "DEU": {
+          "value": 1.676,
+          "year": "2025"
+        },
+        "ESP": {
+          "value": 0.653,
+          "year": "2025"
+        },
+        "FIN": {
+          "value": 2.138,
+          "year": "2025"
+        },
+        "MEX": {
+          "value": -0.942,
+          "year": "2025"
+        },
+        "USA": {
+          "value": 0.865,
+          "year": "2025"
+        }
+      }
+    },
+    "lifeExpectancy": {
+      "worldBankCode": "SP.DYN.LE00.IN",
+      "values": {
+        "DEU": {
+          "value": 80.793,
+          "year": "2024"
+        },
+        "ESP": {
+          "value": 83.888,
+          "year": "2024"
+        },
+        "FIN": {
+          "value": 82.337,
+          "year": "2024"
+        },
+        "MEX": {
+          "value": 75.264,
+          "year": "2024"
+        },
+        "USA": {
+          "value": 78.89,
+          "year": "2024"
+        }
+      }
+    },
+    "oopShare": {
+      "worldBankCode": "SH.XPD.OOPC.CH.ZS",
+      "values": {
+        "DEU": {
+          "value": 10.707,
+          "year": "2024"
+        },
+        "ESP": {
+          "value": 20.855,
+          "year": "2023"
+        },
+        "FIN": {
+          "value": 14.095,
+          "year": "2023"
+        },
+        "MEX": {
+          "value": 41.236,
+          "year": "2023"
+        },
+        "USA": {
+          "value": 10.927,
+          "year": "2023"
+        }
+      }
+    }
+  },
+  "retrievedNational": "2026-10-19"
+}
