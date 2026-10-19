@@ -1,0 +1,22 @@
+{
+  "model": "ee",
+  "taxYear": 2026,
+  "currency": "EUR",
+  "retrieved": "2026-10-19",
+  "sources": [
+    "https://emta.ee/uudised/maksumuudatused-2026",
+    "https://emta.ee/eraklient/maksud-ja-tasumine/tulu-deklareerimine/maksumaarad",
+    "https://www.emta.ee/eraklient/maksud-ja-tasumine/maksusoodustused/maksuvaba-tulu-arvestamine"
+  ],
+  "incomeTaxRate": 0.22,
+  "basicExemptionAnnual": 8400,
+  "employee": {
+    "unemploymentRate": 0.016,
+    "fundedPensionRate": 0.02
+  },
+  "employer": {
+    "socialTaxRate": 0.33,
+    "socialTaxMinMonthlyBase": 886,
+    "unemploymentRate": 0.008
+  }
+}

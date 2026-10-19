@@ -1,0 +1,83 @@
+{
+  "model": "pt",
+  "taxYear": 2026,
+  "currency": "EUR",
+  "retrieved": "2026-10-19",
+  "sources": [
+    "https://www.pwc.pt/pt/pwcinforfisco/guia-fiscal/2026/irs.html",
+    "https://simula.pt/simuladores/simulador_minimo_existencia",
+    "https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/novidades-IRS.aspx"
+  ],
+  "brackets": [
+    {
+      "from": 0,
+      "rate": 0.125
+    },
+    {
+      "from": 8342,
+      "rate": 0.157
+    },
+    {
+      "from": 12587,
+      "rate": 0.212
+    },
+    {
+      "from": 17838,
+      "rate": 0.241
+    },
+    {
+      "from": 23089,
+      "rate": 0.311
+    },
+    {
+      "from": 29397,
+      "rate": 0.349
+    },
+    {
+      "from": 43090,
+      "rate": 0.431
+    },
+    {
+      "from": 46566,
+      "rate": 0.446
+    },
+    {
+      "from": 86634,
+      "rate": 0.48
+    }
+  ],
+  "specificDeduction": 4587.09,
+  "socialSecurityEmployeeRate": 0.11,
+  "socialSecurityEmployerRate": 0.2375,
+  "solidaritySurcharge": [
+    {
+      "over": 80000,
+      "rate": 0.025
+    },
+    {
+      "over": 250000,
+      "rate": 0.05
+    }
+  ],
+  "dependentDeduction": 600,
+  "existenceMinimum": {
+    "reference": 12880,
+    "constantK": 6587.09,
+    "band2To": 14641.67,
+    "band2Slope": 2.6,
+    "band3Slope": 1.35,
+    "grossIncomeLimit": 16543.6
+  },
+  "parcelaAbater": [
+    0,
+    266.94,
+    959.26,
+    1476.45,
+    3092.77,
+    4209.94,
+    7743.27,
+    8441.48,
+    11387.17
+  ],
+  "generalFamilyExpensesDeduction": 250
+}

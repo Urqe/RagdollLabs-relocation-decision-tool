@@ -28,5 +28,45 @@
     "attribution": "IRS Rev. Proc. 2025-32; SSA; California FTB; California EDD",
     "cadence": "annual",
     "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "ee-tax-2026",
+    "name": "Estonian income tax and employment contributions 2026",
+    "publisher": "Estonian Tax and Customs Board (Maksu- ja Tolliamet)",
+    "url": "https://emta.ee/eraklient/maksud-ja-tasumine/tulu-deklareerimine/maksumaarad",
+    "licence": "Statutory rates (facts)",
+    "attribution": "Source: Maksu- ja Tolliamet",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "de-tax-2026",
+    "name": "German income tax tariff and social insurance 2026",
+    "publisher": "§32a EStG; statutory social insurance values (via finanz-tools.de and lohn-info.de)",
+    "url": "https://www.finanz-tools.de/einkommensteuer/berechnung-formeln/2026",
+    "licence": "Statutory rates (facts)",
+    "attribution": "Einkommensteuergesetz §32a; Sozialversicherungs-Rechengrößen 2026",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "es-tax-2026",
+    "name": "Spanish income tax (state, Madrid, Valencia) and social security 2026",
+    "publisher": "AEAT; Seguridad Social (via Cuatrecasas, Ibermutua); regional scales via guiafiscal.es",
+    "url": "https://www.cuatrecasas.com/es/spain/laboral/art/seguridad-social-nuevos-topes-bases-cotizacion-2026",
+    "licence": "Statutory rates (facts)",
+    "attribution": "Ley 35/2006 del IRPF; RDL 3/2026; regional tax laws of Madrid and the Valencian Community",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "pt-tax-2026",
+    "name": "Portuguese IRS and social security 2026",
+    "publisher": "Código do IRS (via PwC Guia Fiscal 2026)",
+    "url": "https://www.pwc.pt/pt/pwcinforfisco/guia-fiscal/2026/irs.html",
+    "licence": "Statutory rates (facts)",
+    "attribution": "Código do IRS; Orçamento do Estado 2026",
+    "cadence": "annual",
+    "lastChecked": "2026-10-19"
   }
 ]

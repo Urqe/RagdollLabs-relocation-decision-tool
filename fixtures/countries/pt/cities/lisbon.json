@@ -1,0 +1,292 @@
+{
+  "id": "pt-lisbon",
+  "name": "Lisbon",
+  "countryId": "pt",
+  "regionId": "pt-lisboa",
+  "role": "national-capital",
+  "tax": {
+    "model": "pt",
+    "subdivision": "lisbon"
+  },
+  "languages": [
+    "pt"
+  ],
+  "fixture": true,
+  "costs": {
+    "rent": {
+      "1": {
+        "central": {
+          "value": 1300,
+          "low": 1105,
+          "high": 1495,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        },
+        "outer": {
+          "value": 1105,
+          "low": 939,
+          "high": 1271,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        }
+      },
+      "2": {
+        "central": {
+          "value": 1690,
+          "low": 1437,
+          "high": 1943,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        },
+        "outer": {
+          "value": 1436,
+          "low": 1221,
+          "high": 1651,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        }
+      },
+      "3": {
+        "central": {
+          "value": 2080,
+          "low": 1768,
+          "high": 2392,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        },
+        "outer": {
+          "value": 1768,
+          "low": 1503,
+          "high": 2033,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        }
+      },
+      "4": {
+        "central": {
+          "value": 2470,
+          "low": 2100,
+          "high": 2841,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        },
+        "outer": {
+          "value": 2100,
+          "low": 1785,
+          "high": 2415,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "sourceId": "fixture",
+          "retrieved": "2026-10-19",
+          "confidence": "low",
+          "limitations": "Development fixture. Not real data."
+        }
+      }
+    },
+    "utilities": {
+      "1": {
+        "value": 110,
+        "low": 94,
+        "high": 126,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "sourceId": "fixture",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "Development fixture. Not real data."
+      },
+      "2": {
+        "value": 132,
+        "low": 112,
+        "high": 152,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "sourceId": "fixture",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "Development fixture. Not real data."
+      },
+      "3": {
+        "value": 154,
+        "low": 131,
+        "high": 177,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "sourceId": "fixture",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "Development fixture. Not real data."
+      },
+      "4": {
+        "value": 176,
+        "low": 150,
+        "high": 202,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "sourceId": "fixture",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "Development fixture. Not real data."
+      }
+    },
+    "internet": {
+      "value": 35,
+      "low": 30,
+      "high": 40,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 320,
+      "low": 272,
+      "high": 368,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "transitPassAdult": {
+      "value": 40,
+      "low": 34,
+      "high": 46,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "carMonthly": {
+      "value": 400,
+      "low": 340,
+      "high": 460,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "healthcarePerPerson": {
+      "value": 30,
+      "low": 26,
+      "high": 35,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "childcarePerChild": {
+      "value": 0,
+      "low": 0,
+      "high": 0,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    },
+    "servicePriceIndex": {
+      "value": 0.8,
+      "unit": "index, euro area = 1",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "estimated",
+      "sourceId": "fixture",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "limitations": "Development fixture. Not real data."
+    }
+  }
+}

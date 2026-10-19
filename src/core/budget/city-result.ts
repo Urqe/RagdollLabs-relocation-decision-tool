@@ -42,6 +42,7 @@ export function computeCityResult(
         grossLocal: grossEur.map((g) => eurToLocal(g, currency, fx)),
         married: household.married,
         children: household.children,
+        adults: household.earnersGrossEur.length + household.nonEarningAdults,
         churchMember: household.churchMember,
       },
       taxParams,

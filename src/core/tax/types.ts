@@ -17,7 +17,9 @@ export interface TaxInput {
   married: boolean;
   children: number;
   subdivision: string;
-  /** Finland: member of the Evangelical Lutheran or Orthodox church (church tax). Default false. */
+  /** All adults in the household, earning or not. Defaults to the number of earners. */
+  adults?: number;
+  /** Member of a church that levies church tax (Finland, Germany). Default false. */
   churchMember?: boolean;
 }
 

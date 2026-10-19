@@ -48,7 +48,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | --- | --- | --- | --- |
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
 | 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
-| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Not started |
+| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | In progress |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0 | Not started |

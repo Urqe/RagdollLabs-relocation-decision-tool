@@ -1,0 +1,181 @@
+{
+  "model": "es",
+  "taxYear": 2026,
+  "currency": "EUR",
+  "retrieved": "2026-10-19",
+  "sources": [
+    "https://www.cuatrecasas.com/es/spain/laboral/art/seguridad-social-nuevos-topes-bases-cotizacion-2026",
+    "https://www.ibermutua.es/wp-content/uploads/2026/04/BASES-Y-TIPOS-DE-COTIZACION-A-LA-SEGURIDAD-SOCIAL-PARA-2026.pdf",
+    "https://sede.agenciatributaria.gob.es/Sede/en_gb/ayuda/manuales-videos-folletos/manuales-ayuda-presentacion/irpf-2025/7-cumplimentacion-irpf/7_1-rendimientos-trabajo-personal/7_1_6-reduccion-obtencion-rendimientos-trabajo.html",
+    "https://guiafiscal.es/irpf/madrid/",
+    "https://guiafiscal.es/irpf/valencia/"
+  ],
+  "social": {
+    "employeeRate": 0.065,
+    "employeeRateParts": {
+      "commonContingencies": 0.047,
+      "unemployment": 0.0155,
+      "training": 0.001,
+      "intergenerationalEquity": 0.0015
+    },
+    "maxMonthlyBase": 5101.2,
+    "solidarity": [
+      {
+        "fromMonthly": 5101.2,
+        "employeeRate": 0.0019
+      },
+      {
+        "fromMonthly": 5611.32,
+        "employeeRate": 0.0021
+      },
+      {
+        "fromMonthly": 7651.8,
+        "employeeRate": 0.0024
+      }
+    ],
+    "employerRate": 0.3165,
+    "employerNote": "Common contingencies 23.60%, unemployment 5.50%, wage guarantee fund 0.20%, training 0.60%, intergenerational equity 0.75%, plus about 1.5% average accident insurance."
+  },
+  "otherDeductibleExpenses": 2000,
+  "workIncomeReduction": {
+    "year": 2025,
+    "note": "2025 rule; 2026 amounts not yet published by AEAT.",
+    "full": 7302,
+    "fullUpTo": 14852,
+    "band2To": 17673.52,
+    "band2Slope": 1.75,
+    "band3Base": 2364.34,
+    "band3Slope": 1.14,
+    "band3To": 19747.5
+  },
+  "state": {
+    "brackets": [
+      {
+        "from": 0,
+        "rate": 0.095
+      },
+      {
+        "from": 12450,
+        "rate": 0.12
+      },
+      {
+        "from": 20200,
+        "rate": 0.15
+      },
+      {
+        "from": 35200,
+        "rate": 0.185
+      },
+      {
+        "from": 60000,
+        "rate": 0.225
+      },
+      {
+        "from": 300000,
+        "rate": 0.245
+      }
+    ],
+    "personalMinimum": 5550,
+    "childMinimums": [
+      2400,
+      2700,
+      4000,
+      4500
+    ],
+    "underThreeExtra": 2800
+  },
+  "regions": {
+    "madrid": {
+      "name": "Community of Madrid",
+      "confidence": "medium",
+      "brackets": [
+        {
+          "from": 0,
+          "rate": 0.085
+        },
+        {
+          "from": 13362.22,
+          "rate": 0.107
+        },
+        {
+          "from": 19004.63,
+          "rate": 0.128
+        },
+        {
+          "from": 35425.68,
+          "rate": 0.174
+        },
+        {
+          "from": 57320.4,
+          "rate": 0.205
+        }
+      ],
+      "personalMinimum": 5956.65,
+      "childMinimums": [
+        2575.85,
+        2897.83,
+        4400,
+        4950
+      ],
+      "underThreeExtra": 3005.16
+    },
+    "valencia": {
+      "name": "Valencian Community",
+      "confidence": "medium",
+      "brackets": [
+        {
+          "from": 0,
+          "rate": 0.088
+        },
+        {
+          "from": 12000,
+          "rate": 0.117
+        },
+        {
+          "from": 22000,
+          "rate": 0.146
+        },
+        {
+          "from": 32000,
+          "rate": 0.17
+        },
+        {
+          "from": 42000,
+          "rate": 0.194
+        },
+        {
+          "from": 52000,
+          "rate": 0.219
+        },
+        {
+          "from": 62000,
+          "rate": 0.244
+        },
+        {
+          "from": 72000,
+          "rate": 0.261
+        },
+        {
+          "from": 100000,
+          "rate": 0.2735
+        },
+        {
+          "from": 150000,
+          "rate": 0.2835
+        },
+        {
+          "from": 200000,
+          "rate": 0.2935
+        }
+      ],
+      "personalMinimum": 6105,
+      "childMinimums": [
+        2640,
+        2970,
+        4400,
+        4950
+      ],
+      "underThreeExtra": 3080
+    }
+  }
+}

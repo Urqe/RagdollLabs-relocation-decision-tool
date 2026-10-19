@@ -1,7 +1,10 @@
 // Hand-written validators for static datasets. Used by the build script and by unit tests.
 // Each returns a list of problems; an empty list means valid.
 
+import { TAX_MODELS } from '../core/types.ts';
+
 const CURRENCIES = ['EUR', 'USD', 'CAD', 'MXN'];
+const MODELS: readonly string[] = TAX_MODELS;
 const CONFIDENCE = ['high', 'medium', 'low'];
 const PROVENANCE = ['observed', 'estimated', 'inherited'];
 const GEO = ['country', 'region', 'city', 'district'];
@@ -88,7 +91,7 @@ export function validateCity(v: unknown, path: string, sourceIds: Set<string>): 
   req(v, 'role', (x) => ['national-capital', 'regional-capital', 'major-city'].includes(x as string), path, 'a city role', out);
   req(v, 'languages', (x) => Array.isArray(x) && x.every(isStr), path, 'a list of language codes', out);
   const tax = v.tax;
-  if (!isObj(tax) || !['fi', 'us'].includes(tax.model as string) || !isStr(tax.subdivision)) out.push({ path: `${path}.tax`, message: 'must name a tax model and subdivision' });
+  if (!isObj(tax) || !MODELS.includes(tax.model as string) || !isStr(tax.subdivision)) out.push({ path: `${path}.tax`, message: 'must name a tax model and subdivision' });
   const costs = v.costs;
   if (!isObj(costs)) return [...out, { path: `${path}.costs`, message: 'must be an object' }];
   if (!isObj(costs.rent)) out.push({ path: `${path}.costs.rent`, message: 'must be an object keyed by bedroom count' });
@@ -143,7 +146,7 @@ export function validateFx(v: unknown, path: string, sourceIds: Set<string>): Pr
 export function validateTaxParams(v: unknown, path: string): Problem[] {
   if (!isObj(v)) return [{ path, message: 'must be an object' }];
   const out: Problem[] = [];
-  req(v, 'model', (x) => ['fi', 'us'].includes(x as string), path, 'fi or us', out);
+  req(v, 'model', (x) => MODELS.includes(x as string), path, `one of ${MODELS.join(', ')}`, out);
   req(v, 'taxYear', (x) => isNum(x) && x >= 2020 && x <= 2100, path, 'a tax year', out);
   req(v, 'sources', (x) => Array.isArray(x) && x.length > 0 && x.every((s) => typeof s === 'string' && s.startsWith('https://')), path, 'a non-empty list of https URLs', out);
   const walk = (node: unknown, p: string): void => {

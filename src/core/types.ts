@@ -67,9 +67,12 @@ export interface CityCosts {
   servicePriceIndex?: Observation | null;
 }
 
+export const TAX_MODELS = ['fi', 'us', 'ee', 'de', 'es', 'pt'] as const;
+export type TaxModelId = (typeof TAX_MODELS)[number];
+
 export interface TaxJurisdiction {
-  model: 'fi' | 'us';
-  /** For Finland: municipality id. For the US: state code. */
+  model: TaxModelId;
+  /** Finland: municipality id. US: state code. Spain: region id. Others: city id (unused by the model). */
   subdivision: string;
 }
 
@@ -115,8 +118,5 @@ export interface Release {
   countries: Country[];
   regions: Region[];
   cities: City[];
-  tax: {
-    fi?: unknown;
-    us?: unknown;
-  };
+  tax: Partial<Record<TaxModelId, unknown>>;
 }

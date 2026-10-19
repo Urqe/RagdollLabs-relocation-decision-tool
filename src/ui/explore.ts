@@ -117,7 +117,7 @@ function payDetail(r: CityResult): HTMLElement | null {
     h('table', { class: 'pay-table' },
       h('tbody', {},
         h('tr', {}, h('th', { scope: 'row' }, 'Gross income'), h('td', { class: 'num' }, f.annual(t.grossAnnual, cur))),
-        [...grouped].map(([label, amount]) => h('tr', {}, h('th', { scope: 'row' }, label), h('td', { class: 'num' }, amount < 0 ? `+${f.annual(-amount, cur)}` : `−${f.annual(amount, cur)}`))),
+        [...grouped].filter(([, amount]) => Math.abs(amount) >= 0.5).map(([label, amount]) => h('tr', {}, h('th', { scope: 'row' }, label), h('td', { class: 'num' }, amount < 0 ? `+${f.annual(-amount, cur)}` : `−${f.annual(amount, cur)}`))),
         h('tr', { class: 'total' }, h('th', { scope: 'row' }, 'Take-home'), h('td', { class: 'num' }, f.annual(t.netAnnual, cur))),
         h('tr', { class: 'employer' }, h('th', { scope: 'row' }, 'Employer contributions on top of gross (not deducted)'), h('td', { class: 'num' }, f.annual(employer, cur))))),
     r.currency !== 'EUR' ? h('p', { class: 'hint' }, `Euro income converted at ${f.whole(r.fxRate * 100, cur)} per €100 (ECB reference rate, ${f.date(r.fxDate)}). This is currency conversion only, not a cost-of-living adjustment.`) : null,

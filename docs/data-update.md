@@ -28,4 +28,8 @@ Values keep their own period; they are not forced to one reference date. The UI 
 | Finland | 2026 | Matches Veronmaksajat's published 2026 payslip examples to the cent. Municipal rates: Helsinki 5.30% (council decision), Tampere 7.60% (city budget proposal, unchanged from 2025). |
 | US federal | 2026 | IRS Rev. Proc. 2025-32; Social Security wage base from SSA. |
 | Texas | 2026 | No state income tax. |
+| Estonia | 2026 | Emta 2026 rates: 22% flat, €700 a month exemption for everyone. Matches a published calculator example (€2,000 a month → €1,658 net). |
+| Germany | 2026 | §32a EStG tariff and 2026 social insurance values. Annual assessment, not monthly withholding. No official calculator cases yet; tests use the tariff's published value at €50,000 and hand-worked cases. |
+| Spain | 2026 | State scale, Madrid and Valencian scales and minimums from secondary sources (confirm against BOE, BOCM and DOGV). 2026 low-income work reduction not yet published; 2025 rule used. |
+| Portugal | 2026 | IRS table and specific deduction from PwC's 2026 tax guide; brackets cross-checked against the published "parcela a abater" column. |
 | California | 2025 schedules | FTB's 2026 estimated-tax instructions direct use of the 2025 schedules until 2026 ones are published. Update when FTB publishes them. |

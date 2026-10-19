@@ -137,3 +137,17 @@ test('R12: the household form is hidden on "How it works"', async ({ page }) => 
   await page.goto('./#/methodology');
   await expect(page.getByLabel('Gross income')).toBeHidden();
 });
+
+// ---- 0.2.0 ----
+
+test('every city in the release computes take-home, including Helsinki', async ({ page }) => {
+  await page.goto('./#/explore/fi-helsinki');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Helsinki');
+  const ids = await page.locator('#city-picker option').evaluateAll((os) => os.map((o) => (o as HTMLOptionElement).value).filter(Boolean));
+  expect(ids).toEqual(expect.arrayContaining(['fi-helsinki', 'fi-tampere', 'ee-tallinn', 'de-berlin', 'es-madrid', 'es-valencia', 'pt-lisbon', 'pt-porto']));
+  for (const id of ids) {
+    await page.goto(`./#/explore/${id}`);
+    await expect(page.locator('[data-balance="take-home"] .figure')).toHaveText(/\d/);
+    await expect(page.locator('main')).not.toContainText('cannot be calculated');
+  }
+});

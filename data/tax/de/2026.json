@@ -1,0 +1,29 @@
+{
+  "model": "de",
+  "taxYear": 2026,
+  "currency": "EUR",
+  "retrieved": "2026-10-19",
+  "sources": [
+    "https://www.finanz-tools.de/einkommensteuer/berechnung-formeln/2026",
+    "https://lohn-info.de/sozialversicherungsbeitraege2026.html",
+    "https://www.steuerschroeder.de/Steuerrechner/Grundtabelle-Steuerrechner.html"
+  ],
+  "tariff": {
+    "basicAllowance": 12348,
+    "zone2": { "to": 17799, "a": 914.51, "b": 1400 },
+    "zone3": { "from": 17800, "to": 69878, "base": 17799, "a": 173.10, "b": 2397, "c": 1034.87 },
+    "zone4": { "from": 69879, "to": 277825, "rate": 0.42, "minus": 11135.63 },
+    "zone5": { "from": 277826, "rate": 0.45, "minus": 19470.38 }
+  },
+  "solidarity": { "rate": 0.055, "exemptionSingle": 20350, "exemptionJoint": 40700, "taperRate": 0.119 },
+  "churchTaxRate": 0.09,
+  "employeeLumpSum": 1230,
+  "specialExpensesLumpSum": 36,
+  "otherInsuranceCap": 1900,
+  "social": {
+    "pension": { "employeeRate": 0.093, "ceiling": 101400 },
+    "unemployment": { "employeeRate": 0.013, "ceiling": 101400 },
+    "health": { "employeeRate": 0.073, "averageSupplementRate": 0.029, "ceiling": 69750, "sickPayShareNotDeductible": 0.04 },
+    "care": { "employeeRate": 0.018, "childlessSurcharge": 0.006, "reductionPerChildFromSecond": 0.0025, "maxReduction": 0.01, "ceiling": 69750 }
+  }
+}
