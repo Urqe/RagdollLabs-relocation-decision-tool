@@ -267,7 +267,7 @@ Standard maintenance review, plus the official calculator cross-check moved from
 
 ### 0.4.0 — Preference data and explainable fit in Explore
 
-**Status:** Completed 2026-10-19 (HASH). Eight dimensions, 13 indicators from 13 new sources; fit, per-area scores, best matches, compromises, missing data, sensitive areas and national figures shown in Explore for all five pilot cities. Gaps moved to the backlog: residents born abroad for Hermosillo, commuting by car for Austin and Hermosillo, and indicators for food variety and close local community.
+**Status:** Completed 2026-10-19 (88729a4). Eight dimensions, 13 indicators from 13 new sources; fit, per-area scores, best matches, compromises, missing data, sensitive areas and national figures shown in Explore for all five pilot cities. Gaps moved to the backlog: residents born abroad for Hermosillo, commuting by car for Austin and Hermosillo, and indicators for food variety and close local community.
 
 Notes for the 0.4.1 review:
 
