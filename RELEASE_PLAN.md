@@ -48,7 +48,7 @@ A maintenance release adds no new features. It reviews the previous feature rele
 | --- | --- | --- | --- |
 | 0.1.0 | Feature | Foundations and money core | Completed 2026-10-19 (5eaf615) |
 | 0.1.1 | Maintenance | Review of 0.1.0 | Completed 2026-10-19 (38d2867) |
-| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal | Not started |
+| 0.2.0 | Feature | Tax models: Estonia, Germany, Spain, Portugal; Helsinki added | Not started |
 | 0.2.1 | Maintenance | Review of 0.2.0 | Not started |
 | 0.3.0 | Feature | Tax models: Canada (Ontario), Mexico | Not started |
 | 0.3.1 | Maintenance | Review of 0.3.0 | Not started |
@@ -117,15 +117,16 @@ Findings and their status are tracked in [docs/reviews/0.1.1.md](docs/reviews/0.
 
 **Validated when** every item above is fixed or deferred with a reason in the review file, CI is green, and screenshots of Explore and "How it works" on desktop, at 390 px and in dark mode show no remaining finding.
 
-### 0.2.0 — Tax models: Estonia, Germany, Spain, Portugal
+### 0.2.0 — Tax models: Estonia, Germany, Spain, Portugal; Helsinki added
 
 **Status:** Not started
 
+- Helsinki added to the city picker, as the home baseline. Its 2026 tax rate is already in the Finnish model; costs use development fixtures until 0.4.0, like the other cities.
 - Gross-to-net for Estonia (confirm the 2026 rate with the Estonian Tax and Customs Board), Germany (with income splitting for married couples, solidarity surcharge, statutory social insurance, optional church tax), Spain (state plus Madrid and Valencia regional scales, social security), and Portugal (IRS scale, social security).
 - Each model: parameters in `data/tax/<country>/2026.json` with source links, and tests against published examples or official calculators at five income levels, single and two earners.
 - Employer contributions shown separately for each.
 
-**Done when** every model matches its reference cases within €1 a month and the four countries appear in the release with development-fixture costs.
+**Done when** every model matches its reference cases within €1 a month, and Helsinki and the four countries appear in the release with development-fixture costs.
 
 ### 0.3.0 — Tax models: Canada (Ontario), Mexico
 
