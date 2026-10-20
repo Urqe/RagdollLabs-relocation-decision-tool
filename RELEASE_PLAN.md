@@ -93,7 +93,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
-| 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | In progress |
+| 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for new countries | Not started |
@@ -298,7 +298,7 @@ Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V14 fixed; V15 
 
 ### 0.5.0 — Find cities and basic Compare
 
-**Status:** In progress
+**Status:** Completed 2026-10-20 (9cd7760). Find and Compare for the five pilot cities, end-to-end tested at desktop, tablet and 390 px in Chromium and, in CI, WebKit. Nothing moved out of scope.
 
 **Notes for the 0.5.1 review**
 
