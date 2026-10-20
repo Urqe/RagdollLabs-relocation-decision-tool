@@ -365,7 +365,6 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 - Per-city church tax rate in Germany if a city outside Berlin is added. (From review 0.2.1, S8.)
 - Check HUD's FY2026 Fair Market Rents for Travis County by hand in a browser; HUD blocks automated requests. (From review 0.3.1, T5.)
 - Run the five official calculator cases in docs/reviews/0.3.1-calculator-cases.md and add the results as reference tests. (From review 0.3.1, T6.)
-- Confirm Child Care Aware's Texas infant-care price on childcareaware.org. (From review 0.3.1, T8.)
 - Residents born abroad for Hermosillo (INEGI census), and commuting by car for Austin (ACS) and Hermosillo (INEGI origin-destination survey). (From 0.4.0.)
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)

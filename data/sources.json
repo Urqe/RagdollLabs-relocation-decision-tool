@@ -328,13 +328,13 @@
   },
   {
     "id": "childcare-aware-2024",
-    "name": "Price of child care in Texas, 2024",
-    "publisher": "Child Care Aware of America (via FOX 7 Austin)",
-    "url": "https://www.fox7austin.com/news/texas-ranks-top-10-most-affordable-states-child-care-report",
+    "name": "Child care affordability in Texas, 2024–2025 price fact sheet",
+    "publisher": "Child Care Aware of America",
+    "url": "https://info.childcareaware.org/hubfs/Pricing%20and%20Landscape%20Infograms/Pricing%20Sheets%20PDF/2024-2025-price-fact-sheet-child-care-affordability-Texas.pdf",
     "licence": "Facts from a published study",
     "attribution": "Child Care Aware of America",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-20"
   },
   {
     "id": "aaa-driving-costs-2025",
