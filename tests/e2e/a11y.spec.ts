@@ -42,7 +42,7 @@ for (const route of ['./#/explore/fi-helsinki', './#/explore/mx-hermosillo']) {
   });
 }
 
-for (const route of ['./#/explore/fi-helsinki', './#/explore/mx-hermosillo', './#/explore/us-austin', './#/methodology']) {
+for (const route of ['./#/explore/fi-helsinki', './#/explore/mx-hermosillo', './#/explore/us-austin', './#/methodology', './#/find', './#/compare/fi-helsinki,es-madrid,mx-hermosillo']) {
   test(`basic accessibility: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

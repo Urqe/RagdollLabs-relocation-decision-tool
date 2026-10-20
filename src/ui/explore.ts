@@ -36,9 +36,9 @@ function missingList(r: CityResult, ids: string[]): string {
 
 export const APP_NAME = 'Where could we live?';
 
-const BAND_LABEL: Record<AffordabilityBand, string> = { comfortable: 'Comfortable', workable: 'Workable', tight: 'Tight', short: 'Short', incomplete: 'Incomplete' };
+export const BAND_LABEL: Record<AffordabilityBand, string> = { comfortable: 'Comfortable', workable: 'Workable', tight: 'Tight', short: 'Short', incomplete: 'Incomplete' };
 
-function money(n: number, cur: CurrencyCode, fxDate: string, eurRate: number): Child {
+export function money(n: number, cur: CurrencyCode, fxDate: string, eurRate: number): Child {
   const local = f.monthly(n, cur);
   if (cur === 'EUR') return local;
   return [local, h('span', { class: 'eur', title: `Converted at the ECB rate of ${f.date(fxDate)}` }, ` ≈ ${f.monthly(n / eurRate, 'EUR')}`)];
@@ -296,9 +296,20 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
     return;
   }
 
+  // A salary set for this city in Compare applies here too, so it is marked and can be undone.
+  const salaryNote = ov.earnersGrossEur
+    ? h('p', { class: 'banner own-salary', role: 'note' },
+        `This city uses its own salary, set in Compare: ${ov.earnersGrossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year. `,
+        h('button', { type: 'button', class: 'quiet-button', id: `use-household-income-${city.id}`, onclick: () => store.set((s) => {
+          const { earnersGrossEur: _drop, ...rest } = s.overrides[city.id] ?? {};
+          return { ...s, overrides: { ...s.overrides, [city.id]: rest }, linkIncomeCities: (s.linkIncomeCities ?? []).filter((x) => x !== city.id) };
+        }) }, 'Use the household income'))
+    : null;
+
   replaceChildren(root,
     head,
     fixtureNote,
+    salaryNote,
     result.problems.length > 0 ? h('ul', { class: 'banner problems', role: 'alert' }, result.problems.map((p) => h('li', {}, p))) : null,
     h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),
     ribbon(result),

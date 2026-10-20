@@ -3,14 +3,14 @@ import type { City, PreferenceDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { h, type Child } from './dom.ts';
 
-const BAND_LABEL: Record<FitBand, string> = { strong: 'Strong', good: 'Good', mixed: 'Mixed', weak: 'Weak' };
+export const FIT_BAND_LABEL: Record<FitBand, string> = { strong: 'Strong', good: 'Good', mixed: 'Mixed', weak: 'Weak' };
 const ESSENTIAL = 4;
 
 const pct = (x: number): number => Math.round(x * 100);
 const GEO_NOTE: Record<string, string> = { country: ', national value', region: ', state or regional value' };
 const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
-const scoreText = (low: number, high: number): string => (pct(low) === pct(high) ? `${pct(low)}` : `${pct(low)} to ${pct(high)}`);
-const names = (ds: { label: string }[]): string => {
+export const scoreText = (low: number, high: number): string => (pct(low) === pct(high) ? `${pct(low)}` : `${pct(low)} to ${pct(high)}`);
+export const names = (ds: { label: string }[]): string => {
   const n = ds.map((d) => d.label.toLowerCase());
   if (n.length <= 1) return n[0] ?? '';
   // A comma before the last "and" keeps labels such as "food and dining" readable.
@@ -91,7 +91,7 @@ export function fitSection(city: City, prefs: Preferences, data: Dataset): HTMLE
         : 'Choose what matters to you under “What matters to you”, with the household details, to see how well this city fits.'));
   }
   const essential = def.dimensions.filter((d) => (prefs.importance[d.id] ?? 0) >= ESSENTIAL).map((d) => d.id);
-  const band = `${BAND_LABEL[fit.band]}${fit.bandHigh ? ` to ${BAND_LABEL[fit.bandHigh].toLowerCase()}` : ''} fit`;
+  const band = `${FIT_BAND_LABEL[fit.band]}${fit.bandHigh ? ` to ${FIT_BAND_LABEL[fit.bandHigh].toLowerCase()}` : ''} fit`;
   return h('section', { class: 'fit', 'aria-labelledby': 'fit-title' },
     title,
     h('p', { class: `fit-band fit-${fit.band}` },

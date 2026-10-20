@@ -1,5 +1,6 @@
 import { DEFAULT_HOUSEHOLD, normalizeHousehold, type CityOverrides, type Household } from '../core/budget/household.ts';
 import { NO_PREFERENCES, type Preferences } from '../core/fit/fit.ts';
+import type { SortKey } from '../core/rank/rank.ts';
 
 export type IncomeMode = 'annual' | 'monthly';
 
@@ -18,9 +19,45 @@ export interface AppState {
   overrides: Record<string, CityOverrides>;
   /** Ids of household fields that currently hold an invalid value. Results are hidden while any are invalid. */
   invalidFields: string[];
+  /** How Find orders its results. */
+  findSort?: SortKey;
+  /** Compare: one income for every city, or a salary per city (job offers). */
+  compareIncome?: 'same' | 'per-city';
+  /** Cities whose salary came from a shared link, so the page can say so and offer the user's own income. */
+  linkIncomeCities?: string[];
 }
 
-export type Route = { screen: 'explore'; cityId: string | null } | { screen: 'methodology' };
+/** Up to three cities in a comparison. */
+export const MAX_COMPARE = 3;
+
+/**
+ * `pay`: gross income per earner, per city, in the order of `cityIds`; only present when the person who
+ * shared the link chose to include income.
+ */
+export type Route =
+  | { screen: 'explore'; cityId: string | null }
+  | { screen: 'find' }
+  | { screen: 'compare'; cityIds: string[]; pay: number[][] | null }
+  | { screen: 'methodology' };
+
+const MAX_GROSS = 10_000_000;
+
+/** Reads "60000+20000,70000": one entry per city, earners joined by "+". Anything malformed gives null, never a partial result. */
+export function parsePay(raw: string, cities: number): number[][] | null {
+  const entries = raw.split(',');
+  if (entries.length !== cities) return null;
+  const out: number[][] = [];
+  for (const e of entries) {
+    const earners = e.split('+');
+    if (earners.length < 1 || earners.length > 2) return null;
+    const nums = earners.map((x) => (/^\d+(\.\d+)?$/.test(x) ? Number(x) : NaN));
+    if (!nums.every((n) => Number.isFinite(n) && n >= 0 && n <= MAX_GROSS)) return null;
+    out.push(nums);
+  }
+  return out;
+}
+
+export const formatPay = (pay: number[][]): string => pay.map((p) => p.map((g) => String(Math.round(g))).join('+')).join(',');
 
 export const STORAGE_KEY = 'rdt.profile.v1';
 
@@ -37,14 +74,26 @@ export function parseRoute(hash: string): Route {
       return part;
     }
   };
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decode);
+  const [path = '', query = ''] = hash.replace(/^#\/?/, '').split('?', 2);
+  const parts = path.split('/').filter(Boolean).map(decode);
   if (parts[0] === 'methodology') return { screen: 'methodology' };
+  if (parts[0] === 'find') return { screen: 'find' };
+  if (parts[0] === 'compare') {
+    const cityIds = [...new Set((parts[1] ?? '').split(',').map((x) => x.trim()).filter(Boolean))].slice(0, MAX_COMPARE);
+    const payRaw = query.split('&').find((q) => q.startsWith('pay='))?.slice(4);
+    return { screen: 'compare', cityIds, pay: payRaw ? parsePay(decode(payRaw), cityIds.length) : null };
+  }
   if (parts[0] === 'explore') return { screen: 'explore', cityId: parts[1] ?? null };
   return { screen: 'explore', cityId: null };
 }
 
 export function formatRoute(r: Route): string {
   if (r.screen === 'methodology') return '#/methodology';
+  if (r.screen === 'find') return '#/find';
+  if (r.screen === 'compare') {
+    const base = `#/compare${r.cityIds.length > 0 ? `/${r.cityIds.map(encodeURIComponent).join(',')}` : ''}`;
+    return r.pay && r.pay.length === r.cityIds.length && r.cityIds.length > 0 ? `${base}?pay=${formatPay(r.pay)}` : base;
+  }
   return r.cityId ? `#/explore/${encodeURIComponent(r.cityId)}` : '#/explore';
 }
 
@@ -156,3 +205,16 @@ export function createStore(initial: AppState) {
   };
 }
 export type Store = ReturnType<typeof createStore>;
+
+/**
+ * A comparison link that carries salaries: they become this session's per-city salaries (never the saved
+ * household), the page is told where they came from, and the address loses the salaries so they are not
+ * passed on again by copying it. Any other state is returned unchanged.
+ */
+export function applyLinkPay(s: AppState): AppState {
+  if (s.route.screen !== 'compare' || s.route.pay === null) return s;
+  const { cityIds, pay } = s.route;
+  const overrides = { ...s.overrides };
+  cityIds.forEach((id, i) => { overrides[id] = { ...(overrides[id] ?? {}), earnersGrossEur: pay[i]! }; });
+  return { ...s, overrides, compareIncome: 'per-city', linkIncomeCities: [...cityIds], route: { ...s.route, pay: null } };
+}

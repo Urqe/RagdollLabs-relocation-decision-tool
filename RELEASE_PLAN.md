@@ -51,7 +51,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 - Data: validation passes, no overdue source without a dated deferral, every new value has source, period and confidence, and no fixture values have leaked into `data/`.
 - Tax parameters: each changed value links to its source and is covered by a test.
 - CI: no failing or new warning annotations; GitHub Actions versions are current.
-- Size: `data/release.json` and the compiled JS stay within budget (500 kB and 150 kB uncompressed).
+- Size: report the compiled JS and `data/release.json` sizes in the review. There is no fixed budget since 2026-10-20 (the 150 kB and 500 kB limits applied to the first version); the owner says if the app feels slower.
 
 **Household and tax review**
 
@@ -93,7 +93,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.3.1 | Maintenance | Review of 0.3.0; official calculator cross-checks for pilot countries | Completed 2026-10-19 (218bb47) |
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
-| 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Not started |
+| 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | In progress |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for new countries | Not started |
@@ -294,11 +294,22 @@ Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V14 fixed; V15 
 
 - Find uses `mustHaveExclusions(fit, essential, def, prefs)`; an essential area with every choice at "No preference" excludes no city.
 - Best matches now require every part of an area to score at least 45; weak parts are listed in `fit.weakSpots`.
-- Compiled JavaScript is at 135.5 kB of its 150 kB budget.
+- Compiled JavaScript is 135.5 kB. (The size budget was retired on 2026-10-20.)
 
 ### 0.5.0 — Find cities and basic Compare
 
-**Status:** Not started
+**Status:** In progress
+
+**Notes for the 0.5.1 review**
+
+- Find ranks with `rankCities` (`src/core/rank/rank.ts`). By fit: the low end of the range, then the high end, then the name. By money: estimated savings in euros at the ECB rate; incomplete budgets are listed after the ranking. "Too close to call" is under 5 fit points or under €50 a month (an app choice).
+- The no-match relax turns every "Essential" into "Very" in one click. It does not suggest which essential to drop; check whether that reads well.
+- The preference cards on Find and the selects in the household panel edit the same preferences; the panel copy is hidden on Find. Check whether two forms for one thing confuse.
+- A salary set in Compare is a per-city override for the session, like the user's own figures: it applies in Explore and Find, is marked in both, and is lost on reload (overrides are not saved). Check whether losing it on reload surprises.
+- A shared link carries salaries only when ticked (`?pay=`); opening it sets them for that visit, never in the saved household, and the address drops them. The household itself is never in the link.
+- Savings across currencies are compared at the ECB rate, with no adjustment for prices; the costs are already local.
+- Compiled JavaScript 171.3 kB (46.6 kB compressed); no budget since 2026-10-20.
+
 
 **Find**
 

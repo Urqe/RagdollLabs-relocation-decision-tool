@@ -306,3 +306,111 @@ details.prefs .pref { display: grid; gap: var(--space-2); margin-top: var(--spac
 .pref-aspects { display: grid; gap: var(--space-2); margin-left: var(--space-1); padding-left: var(--space-3); border-left: 2px solid var(--rule); }
 .pref-aspects .field > label { font-weight: 500; }
 details.prefs[open] { display: grid; gap: var(--space-3); }
+
+/* ---- Find and Compare (0.5.0) ---- */
+.results > h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.05; margin: 0; }
+.button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--space-4);
+  font: inherit; font-weight: 600; color: var(--surface); background: var(--ink); border: 1px solid var(--ink); border-radius: var(--radius);
+  text-decoration: none; cursor: pointer;
+}
+.button:hover { opacity: 0.9; }
+/* The preference form lives in the page on Find, so the panel copy is hidden there. */
+body[data-screen="find"] .panel details.prefs { display: none; }
+
+.find-prefs { margin-top: var(--space-5); border-top: 1px solid var(--rule); padding-top: var(--space-3); }
+.find-prefs > summary { cursor: pointer; font-weight: 600; min-height: 44px; padding-block: 10px; }
+.find-prefs[open] > .hint { margin-bottom: var(--space-3); }
+.pref-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); }
+.pref-card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: var(--space-3); display: grid; gap: var(--space-2); align-content: start; }
+.pref-card.on { border-color: var(--control); }
+.pref-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); }
+.pref-card-head label { font-weight: 600; }
+.pref-card .imp { font-size: 0.875rem; color: var(--muted); }
+.pref-card .imp-3, .pref-card .imp-4 { color: var(--ink); font-weight: 600; }
+.pref-card input[type="range"] { width: 100%; min-height: 40px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+.pref-card .scale { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-top: -6px; }
+
+.find-results h2 { margin-bottom: var(--space-2); }
+.find-results h2:focus { outline: none; }
+.sort { margin: var(--space-2) 0; }
+.find-list { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+.find-card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: var(--space-3) var(--space-4); }
+.find-card-head { display: flex; gap: var(--space-3); align-items: start; }
+.find-card-head > div { flex: 1; min-width: 0; }
+.find-card h3 { margin: 0; font-family: var(--font-display); font-size: 1.375rem; font-weight: 600; }
+.find-card h3 a { text-decoration: none; }
+.find-card h3 a:hover { text-decoration: underline; }
+.find-card .place { margin: 0; font-size: 0.875rem; }
+.rank { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--muted); min-width: 1.5ch; line-height: 1.1; }
+.compare-pick { flex: none; }
+.find-fit, .find-money { margin: var(--space-2) 0 0; font-size: 0.9375rem; }
+.find-fit strong, .find-money strong { font-family: var(--font-display); }
+.find-fit.fit-strong strong, .find-fit.fit-good strong { color: var(--moss); }
+.find-fit.fit-mixed strong { color: var(--amber); }
+.find-fit.fit-weak strong { color: var(--cranberry); }
+.find-money.band-comfortable strong, .find-money.band-workable strong { color: var(--moss); }
+.find-money.band-tight strong { color: var(--amber); }
+.find-money.band-short strong { color: var(--cranberry); }
+.find-money.band-incomplete strong { color: var(--muted); }
+.close-note { margin: var(--space-2) 0 0; font-size: 0.8125rem; color: var(--muted); font-style: italic; }
+.find-apart { margin-top: var(--space-5); }
+.find-apart h3 { font-family: var(--font-display); font-size: 1.125rem; margin: 0 0 var(--space-1); }
+.excluded-list { padding-left: var(--space-4); margin: var(--space-2) 0 0; }
+.excluded-list li { margin: var(--space-1) 0; }
+.no-match { margin-top: var(--space-4); padding: var(--space-4); border: 1px dashed var(--control); border-radius: var(--radius); display: grid; gap: var(--space-2); justify-items: start; }
+.no-match h2 { margin: 0; font-size: 1.25rem; }
+.no-match p { margin: 0; }
+.compare-bar {
+  position: sticky; bottom: 0; margin-top: var(--space-5); padding: var(--space-3) var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-3);
+  align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--control); border-radius: var(--radius);
+}
+
+.income-mode { margin-top: var(--space-4); }
+.income-mode .hint { margin-top: var(--space-2); }
+.banner.link-income, .banner.own-salary { background: var(--surface); border-left: 4px solid var(--focus); }
+.banner.link-income p { margin: 0; }
+.compare-wrap { margin-top: var(--space-4); }
+table.compare { width: 100%; border-collapse: collapse; table-layout: fixed; }
+table.compare caption { font-family: var(--font-body); font-size: 0.8125rem; font-weight: 400; color: var(--muted); }
+table.compare .corner { width: 22%; }
+table.compare thead th { color: var(--ink); font-size: 1rem; vertical-align: bottom; }
+.col-city { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; text-decoration: none; display: block; }
+.col-city:hover { text-decoration: underline; }
+table.compare .place { display: block; margin: 0; font-size: 0.8125rem; font-weight: 400; }
+.col-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-2); }
+.col-actions select { width: auto; max-width: 100%; min-height: 40px; padding: var(--space-1) var(--space-2); font-size: 0.875rem; }
+table.compare tbody th { font-weight: 600; font-size: 0.875rem; color: var(--muted); }
+table.compare td { font-variant-numeric: tabular-nums; }
+table.compare td .local, table.compare td .sub, table.compare td .hint, table.compare td .missing, table.compare td .own-mark { display: block; font-size: 0.8125rem; }
+table.compare td .local { color: var(--muted); }
+table.compare td .missing { color: var(--cranberry); }
+table.compare td .negative { color: var(--cranberry); }
+table.compare td .partial { color: var(--muted); font-weight: 600; }
+.own-mark { color: var(--focus); font-weight: 600; }
+.band-word, .fit-word { font-family: var(--font-display); font-weight: 600; }
+.band-word.band-comfortable, .band-word.band-workable, .fit-word.fit-strong, .fit-word.fit-good { color: var(--moss); }
+.band-word.band-tight, .fit-word.fit-mixed { color: var(--amber); }
+.band-word.band-short, .fit-word.fit-weak { color: var(--cranberry); }
+.band-word.band-incomplete { color: var(--muted); }
+.salary-inputs { display: grid; gap: var(--space-2); }
+.salary-inputs label { font-size: 0.8125rem; font-weight: 400; color: var(--muted); }
+.share { margin-top: var(--space-6); max-width: 70ch; display: grid; gap: var(--space-2); }
+.share h2 { margin: 0; }
+.share-row { display: flex; gap: var(--space-2); }
+.share-row input { flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; color: inherit; background: var(--surface); border: 1px solid var(--control); border-radius: var(--radius); padding: var(--space-2) var(--space-3); min-height: 44px; }
+
+/* Phones: each row's label spans the row and the cities sit side by side beneath it. Roles keep the table semantics. */
+@media (max-width: 640px) {
+  table.compare, table.compare thead, table.compare tbody, table.compare caption { display: block; }
+  table.compare tr { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--space-2); border-bottom: 1px solid var(--rule); padding: var(--space-2) 0; }
+  table.compare th, table.compare td { border: 0; padding: 0; overflow-wrap: anywhere; }
+  table.compare tbody th { grid-column: 1 / -1; margin-bottom: var(--space-1); }
+  table.compare .corner { display: none; }
+  .col-city { font-size: 1.0625rem; }
+  .col-actions { flex-direction: column; align-items: stretch; }
+  .col-actions select { width: 100%; }
+  .salary-inputs input { padding: var(--space-2); }
+  .share-row { flex-direction: column; }
+}
+.share-label { font-weight: 600; font-size: 0.9375rem; }

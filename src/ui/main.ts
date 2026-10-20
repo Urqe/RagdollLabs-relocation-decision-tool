@@ -1,6 +1,8 @@
 import type { Release } from '../core/types.ts';
 import { indexRelease, type Dataset } from '../data/load.ts';
-import { createStore, loadProfile, parseRoute, saveProfile, STORAGE_KEY } from '../state/store.ts';
+import { applyLinkPay, createStore, formatRoute, loadProfile, parseRoute, saveProfile, STORAGE_KEY, type AppState } from '../state/store.ts';
+import { renderCompare } from './compare.ts';
+import { renderFind } from './find.ts';
 import { h } from './dom.ts';
 import { renderExplore } from './explore.ts';
 import { renderMethodology } from './methodology.ts';
@@ -51,7 +53,13 @@ async function start(): Promise<void> {
   } catch {
     returning = false;
   }
-  const store = createStore({ profile: loadProfile(storage), route: parseRoute(location.hash), overrides: {}, invalidFields: [] });
+  // Salaries in a shared link are applied once; the address then drops them.
+  const fromLink = (s: AppState): AppState => {
+    const next = applyLinkPay(s);
+    if (next !== s) history.replaceState(null, '', formatRoute(next.route));
+    return next;
+  };
+  const store = createStore(fromLink({ profile: loadProfile(storage), route: parseRoute(location.hash), overrides: {}, invalidFields: [] }));
 
   const summary = document.getElementById('panel-summary-text')!;
   const render = (): void => {
@@ -60,6 +68,8 @@ async function start(): Promise<void> {
     document.querySelectorAll<HTMLAnchorElement>('nav a').forEach((a) => a.setAttribute('aria-current', a.dataset.screen === s.route.screen ? 'page' : 'false'));
     summary.textContent = householdSummary(s.profile);
     if (s.route.screen === 'methodology') renderMethodology(main, data);
+    else if (s.route.screen === 'find') renderFind(main, s, data, store);
+    else if (s.route.screen === 'compare') renderCompare(main, s, data, store);
     else renderExplore(main, s, data, store);
   };
 
@@ -72,7 +82,11 @@ async function start(): Promise<void> {
     // Keep focus on controls inside the results area that were re-rendered.
     if (active && !panel.contains(document.activeElement)) document.getElementById(active)?.focus();
   });
-  window.addEventListener('hashchange', () => store.set((s) => ({ ...s, route: parseRoute(location.hash) })));
+  window.addEventListener('hashchange', () => {
+    store.set((s) => fromLink({ ...s, route: parseRoute(location.hash) }));
+    // A new screen starts at the top, with focus on the results area for keyboard and screen-reader users.
+    if (!panel.contains(document.activeElement) && !main.contains(document.activeElement)) main.focus({ preventScroll: true });
+  });
   document.getElementById('release-version')!.textContent = data.release.version;
   render();
 }
