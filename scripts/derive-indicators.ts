@@ -11,7 +11,7 @@ interface CityValue { value: number; period: string; sourceId: string; basis: st
 interface CityInputs {
   country: string;
   latitude: number;
-  climate: { coldestMonthMean: number; warmestMonthMeanMax: number; station: string; period: string; sourceId: string };
+  climate: { coldestMonthMean: number; warmestMonthMeanMax: number; station: string; period: string; sourceId: string; limitations?: string };
   foreignBornShare: CityValue | null;
   carCommuteShare: CityValue | null;
   /** State or regional values that replace a national indicator for this city. */
@@ -76,6 +76,7 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
   const climate = (value: number, what: string): Observation => ({
     value, unit: '°C', period: c.climate.period, geoLevel: 'city', provenance: 'observed', sourceId: c.climate.sourceId,
     retrieved: inputs.retrieved, confidence: 'high', basis: `${what}, ${c.climate.station}, climate normals ${c.climate.period}.`,
+    ...(c.climate.limitations ? { limitations: c.climate.limitations } : {}),
   });
   out.coldestMonthMean = climate(c.climate.coldestMonthMean, 'Average temperature of the coldest month');
   out.warmestMonthMeanMax = climate(c.climate.warmestMonthMeanMax, 'Average daily high of the warmest month');

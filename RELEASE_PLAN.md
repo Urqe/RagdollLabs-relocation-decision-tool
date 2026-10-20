@@ -286,9 +286,9 @@ Notes for the 0.4.1 review:
 
 ### 0.4.1 — Maintenance: review of 0.4.0
 
-**Status:** Completed 2026-10-20 (5b92a0a). Thirteen findings fixed (V1–V13); two moved to the backlog (V14, V15).
+**Status:** Completed 2026-10-20 (5b92a0a). Fourteen findings fixed (V1–V14, V14 on the same day after the owner's check); V15 moved to the backlog.
 
-Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V13 fixed; V14 (climate normals) and V15 (Berlin born abroad) moved to the backlog because their sources could not be read in the build environment.
+Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V14 fixed; V15 (Berlin born abroad) moved to the backlog because its source could not be read in the build environment.
 
 **Notes for 0.5.0**
 
@@ -368,7 +368,6 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 - Confirm Child Care Aware's Texas infant-care price on childcareaware.org. (From review 0.3.1, T8.)
 - Residents born abroad for Hermosillo (INEGI census), and commuting by car for Austin (ACS) and Hermosillo (INEGI origin-destination survey). (From 0.4.0.)
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
-- Compare the five pilot cities' climate normals with the original tables or national weather services, and confirm Hermosillo's period is 1991–2020. (From review 0.4.1, V14.)
 - Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
 - A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
 - More cities and countries.

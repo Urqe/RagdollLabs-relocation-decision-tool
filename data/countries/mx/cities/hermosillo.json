@@ -103,26 +103,28 @@
       "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
     },
     "coldestMonthMean": {
-      "value": 17.2,
+      "value": 17.1,
       "unit": "°C",
-      "period": "1991-2020",
+      "period": "1981-2010",
       "geoLevel": "city",
       "provenance": "observed",
       "sourceId": "smn-normals",
       "retrieved": "2026-10-19",
       "confidence": "high",
-      "basis": "Average temperature of the coldest month, Hermosillo Observatorio, climate normals 1991-2020."
+      "basis": "Average temperature of the coldest month, Hermosillo Observatorio, climate normals 1981-2010.",
+      "limitations": "Wikipedia's table is captioned 1991–2020, but its source note gives 1981–2010 for temperatures; the older period is used."
     },
     "warmestMonthMeanMax": {
       "value": 41.9,
       "unit": "°C",
-      "period": "1991-2020",
+      "period": "1981-2010",
       "geoLevel": "city",
       "provenance": "observed",
       "sourceId": "smn-normals",
       "retrieved": "2026-10-19",
       "confidence": "high",
-      "basis": "Average daily high of the warmest month, Hermosillo Observatorio, climate normals 1991-2020."
+      "basis": "Average daily high of the warmest month, Hermosillo Observatorio, climate normals 1981-2010.",
+      "limitations": "Wikipedia's table is captioned 1991–2020, but its source note gives 1981–2010 for temperatures; the older period is used."
     },
     "decemberDaylight": {
       "value": 10.3,

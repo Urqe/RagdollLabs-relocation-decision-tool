@@ -97,11 +97,12 @@
       "country": "MEX",
       "latitude": 29.07,
       "climate": {
-        "coldestMonthMean": 17.2,
+        "coldestMonthMean": 17.1,
         "warmestMonthMeanMax": 41.9,
         "station": "Hermosillo Observatorio",
-        "period": "1991-2020",
-        "sourceId": "smn-normals"
+        "period": "1981-2010",
+        "sourceId": "smn-normals",
+        "limitations": "Wikipedia's table is captioned 1991–2020, but its source note gives 1981–2010 for temperatures; the older period is used."
       },
       "foreignBornShare": null,
       "carCommuteShare": null,
