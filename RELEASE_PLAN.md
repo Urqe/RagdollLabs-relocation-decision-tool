@@ -94,7 +94,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
-| 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 |
+| 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for new countries | Not started |
 | 0.7.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
@@ -328,7 +328,7 @@ Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V14 fixed; V15 
 
 ### 0.5.1 — Maintenance: review of the whole journey
 
-**Status:** Completed 2026-10-20. Eleven findings fixed (W1–W11), none deferred.
+**Status:** Completed 2026-10-20 (59d9c25). Eleven findings fixed (W1–W11), none deferred.
 
 Findings in [docs/reviews/0.5.1.md](docs/reviews/0.5.1.md).
 
