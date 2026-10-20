@@ -13,16 +13,16 @@
   ],
   "indicators": {
     "homicideRate": {
-      "value": 53.7,
+      "value": 38.9,
       "unit": "per 100,000 people a year",
       "period": "2025",
-      "geoLevel": "region",
-      "provenance": "inherited",
-      "sourceId": "inegi-homicides",
-      "retrieved": "2026-10-19",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "inegi-homicides-municipal",
+      "retrieved": "2026-10-20",
       "confidence": "medium",
-      "basis": "Sonora: 1,634 deaths registered as presumed homicides in 2025 per 3,041,340 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1 and 2; preliminary).",
-      "limitations": "A state rate for Sonora, by state of registration; INEGI's release does not give Hermosillo separately, and 2025 figures are preliminary."
+      "basis": "Municipality of Hermosillo: 374 deaths registered in 2025 as presumed homicides that occurred in the municipality, per 962,020 residents (INEGI, Defunciones por homicidio by municipality of occurrence, preliminary; population from the Encuesta Intercensal 2025).",
+      "limitations": "2025 figures are preliminary (263 in 2024, 180 in 2023, so the rate has risen sharply); the municipality includes rural areas; the population counts only people in private dwellings, which makes the rate slightly high. Sonora as a whole: 53.7."
     },
     "voiceAccountability": {
       "value": -0.282,
@@ -140,8 +140,30 @@
       "retrieved": "2026-10-19",
       "confidence": "high"
     },
-    "foreignBornShare": null,
-    "carCommuteShare": null
+    "foreignBornShare": {
+      "value": 1.1,
+      "unit": "%",
+      "period": "2025",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "inegi-eic-2025",
+      "retrieved": "2026-10-20",
+      "confidence": "medium",
+      "basis": "Residents of the municipality of Hermosillo born in the United States (0.74%) or another country (0.34%), Encuesta Intercensal 2025, Migración table 2.",
+      "limitations": "A sample survey of people in private dwellings; the share born in another country has a coefficient of variation of 25%. Many residents born in the US are children of Mexican families."
+    },
+    "carCommuteShare": {
+      "value": 59.4,
+      "unit": "%",
+      "period": "2025",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "inegi-eic-2025",
+      "retrieved": "2026-10-20",
+      "confidence": "medium",
+      "basis": "Employed residents of the municipality of Hermosillo who travel to work by car or van (57.4%) or motorcycle (2.1%), as a share of those who travel, Encuesta Intercensal 2025, Movilidad cotidiana table 22.",
+      "limitations": "People could name more than one means of travel, so the two shares may overlap slightly; a sample survey."
+    }
   },
   "costs": {
     "rent": {

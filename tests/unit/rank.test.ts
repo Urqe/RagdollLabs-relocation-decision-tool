@@ -36,10 +36,10 @@ describe('Find ranking (0.5.0)', () => {
   });
 
   test('sorting by fit uses the low end, so missing data counts against a city', () => {
-    const r = rankCities(candidates(), prefs({ safety: 2, convenience: 2 }), def, 'fit');
+    const r = rankCities(candidates(), prefs({ safety: 2, food: 2 }, { food: 'variety' }), def, 'fit');
     const lows = r.ranked.map((x) => x.fit!.low);
     assert.deepEqual(lows, [...lows].sort((a, b) => b - a));
-    // Austin has no commuting data, so its convenience counts as 0 at the low end.
+    // Food variety has no indicator yet, so it counts as 0 at the low end for every city.
     const austin = r.ranked.find((x) => x.city.id === 'us-austin')!;
     assert.ok(austin.fit!.high > austin.fit!.low);
   });

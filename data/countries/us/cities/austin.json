@@ -149,7 +149,18 @@
       "confidence": "medium",
       "basis": "Foreign-born residents as a share of the population of the city of Austin (American Community Survey 2024, 1-year)."
     },
-    "carCommuteShare": null
+    "carCommuteShare": {
+      "value": 87.9,
+      "unit": "%",
+      "period": "2024",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "acs-2024-s0801",
+      "retrieved": "2026-10-20",
+      "confidence": "high",
+      "basis": "Workers in the city of Austin who commute by car, truck or van as a share of those who travel to work: 66.1% of all workers, of the 75.2% who did not work from home (ACS 2024 1-year, table S0801).",
+      "limitations": "Motorcycles are counted with taxis and other means in S0801 (2.0% of workers), so they are left out; the Urban Audit figures for European cities include them."
+    }
   },
   "costs": {
     "rent": {
@@ -167,7 +178,7 @@
           ],
           "sourceId": "hud-fmr-2026",
           "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Checked against HUD's FY2026 documentation page for Travis County on 2026-10-20; FY2027 (from October 2026) is $1,817 for two bedrooms.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
@@ -189,7 +200,7 @@
           ],
           "sourceId": "hud-fmr-2026",
           "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Checked against HUD's FY2026 documentation page for Travis County on 2026-10-20; FY2027 (from October 2026) is $1,817 for two bedrooms.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
@@ -211,7 +222,7 @@
           ],
           "sourceId": "hud-fmr-2026",
           "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Checked against HUD's FY2026 documentation page for Travis County on 2026-10-20; FY2027 (from October 2026) is $1,817 for two bedrooms.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
@@ -233,7 +244,7 @@
           ],
           "sourceId": "hud-fmr-2026",
           "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Checked against HUD's FY2026 documentation page for Travis County on 2026-10-20; FY2027 (from October 2026) is $1,817 for two bedrooms.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",

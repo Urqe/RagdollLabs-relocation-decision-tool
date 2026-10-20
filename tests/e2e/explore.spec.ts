@@ -318,8 +318,9 @@ test('fit: preferences give an explained fit, with a range where data is missing
   await expect(fit).toContainText('Compromise: climate');
   await expect(fit).toContainText('not an overall quality-of-life rating');
 
-  // Same preferences, another city: Hermosillo fails the essential, and has no community data, so its fit is a range.
+  // Same preferences, another city: Hermosillo fails the essential, and a close local community has no indicator, so its fit is a range.
   await page.getByLabel('Community', { exact: true }).selectOption({ label: 'Very' });
+  await page.getByLabel('Community: What kind of community').selectOption({ label: 'Close local community' });
   await page.getByLabel('City').selectOption({ label: 'Hermosillo' });
   await expect(fit.locator('.fit-excluded')).toContainText('Safety');
   await expect(fit.locator('.fit-score')).toContainText(' to ');

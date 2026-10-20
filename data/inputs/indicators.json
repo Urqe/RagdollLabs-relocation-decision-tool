@@ -36,12 +36,13 @@
         "sourceId": "dwd-normals"
       },
       "foreignBornShare": {
-        "value": 24.8,
-        "period": "2026",
-        "sourceId": "statistik-berlin-brandenburg",
-        "confidence": "low",
-        "basis": "Foreign citizens as a share of Berlin's registered residents on 30 June 2026 (972,941 of 3,917,196).",
-        "limitations": "Counts foreign citizens, not people born abroad; the share born abroad is higher, because many residents born abroad are German citizens."
+        "value": 24.7,
+        "period": "2022",
+        "sourceId": "zensus-2022",
+        "confidence": "high",
+        "basis": "Berlin residents born abroad as a share of all residents on 15 May 2022: 889,904 of 3,596,999 (Zensus 2022, table 1000A-1014, EU27, rest of Europe and rest of the world).",
+        "limitations": "From the 2022 census; 4,142 residents whose place of birth is \"other\" or unknown are counted as not born abroad.",
+        "retrieved": "2026-10-20"
       },
       "carCommuteShare": {
         "value": 39,
@@ -91,7 +92,15 @@
         "sourceId": "acs-2024",
         "basis": "Foreign-born residents as a share of the population of the city of Austin (American Community Survey 2024, 1-year)."
       },
-      "carCommuteShare": null
+      "carCommuteShare": {
+        "value": 87.9,
+        "period": "2024",
+        "sourceId": "acs-2024-s0801",
+        "confidence": "high",
+        "basis": "Workers in the city of Austin who commute by car, truck or van as a share of those who travel to work: 66.1% of all workers, of the 75.2% who did not work from home (ACS 2024 1-year, table S0801).",
+        "limitations": "Motorcycles are counted with taxis and other means in S0801 (2.0% of workers), so they are left out; the Urban Audit figures for European cities include them.",
+        "retrieved": "2026-10-20"
+      }
     },
     "mx-hermosillo": {
       "country": "MEX",
@@ -104,17 +113,34 @@
         "sourceId": "smn-normals",
         "limitations": "Wikipedia's table is captioned 1991–2020, but its source note gives 1981–2010 for temperatures; the older period is used."
       },
-      "foreignBornShare": null,
-      "carCommuteShare": null,
+      "foreignBornShare": {
+        "value": 1.1,
+        "period": "2025",
+        "sourceId": "inegi-eic-2025",
+        "confidence": "medium",
+        "basis": "Residents of the municipality of Hermosillo born in the United States (0.74%) or another country (0.34%), Encuesta Intercensal 2025, Migración table 2.",
+        "limitations": "A sample survey of people in private dwellings; the share born in another country has a coefficient of variation of 25%. Many residents born in the US are children of Mexican families.",
+        "retrieved": "2026-10-20"
+      },
+      "carCommuteShare": {
+        "value": 59.4,
+        "period": "2025",
+        "sourceId": "inegi-eic-2025",
+        "confidence": "medium",
+        "basis": "Employed residents of the municipality of Hermosillo who travel to work by car or van (57.4%) or motorcycle (2.1%), as a share of those who travel, Encuesta Intercensal 2025, Movilidad cotidiana table 22.",
+        "limitations": "People could name more than one means of travel, so the two shares may overlap slightly; a sample survey.",
+        "retrieved": "2026-10-20"
+      },
       "regional": {
         "homicideRate": {
-          "value": 53.7,
+          "value": 38.9,
           "period": "2025",
-          "geoLevel": "region",
-          "sourceId": "inegi-homicides",
+          "geoLevel": "city",
+          "sourceId": "inegi-homicides-municipal",
           "confidence": "medium",
-          "basis": "Sonora: 1,634 deaths registered as presumed homicides in 2025 per 3,041,340 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1 and 2; preliminary).",
-          "limitations": "A state rate for Sonora, by state of registration; INEGI's release does not give Hermosillo separately, and 2025 figures are preliminary."
+          "basis": "Municipality of Hermosillo: 374 deaths registered in 2025 as presumed homicides that occurred in the municipality, per 962,020 residents (INEGI, Defunciones por homicidio by municipality of occurrence, preliminary; population from the Encuesta Intercensal 2025).",
+          "limitations": "2025 figures are preliminary (263 in 2024, 180 in 2023, so the rate has risen sharply); the municipality includes rural areas; the population counts only people in private dwellings, which makes the rate slightly high. Sonora as a whole: 53.7.",
+          "retrieved": "2026-10-20"
         }
       }
     }

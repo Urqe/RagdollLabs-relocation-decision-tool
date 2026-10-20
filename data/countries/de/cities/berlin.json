@@ -138,16 +138,16 @@
       "confidence": "high"
     },
     "foreignBornShare": {
-      "value": 24.8,
+      "value": 24.7,
       "unit": "%",
-      "period": "2026",
+      "period": "2022",
       "geoLevel": "city",
       "provenance": "observed",
-      "sourceId": "statistik-berlin-brandenburg",
-      "retrieved": "2026-10-19",
-      "confidence": "low",
-      "basis": "Foreign citizens as a share of Berlin's registered residents on 30 June 2026 (972,941 of 3,917,196).",
-      "limitations": "Counts foreign citizens, not people born abroad; the share born abroad is higher, because many residents born abroad are German citizens."
+      "sourceId": "zensus-2022",
+      "retrieved": "2026-10-20",
+      "confidence": "high",
+      "basis": "Berlin residents born abroad as a share of all residents on 15 May 2022: 889,904 of 3,596,999 (Zensus 2022, table 1000A-1014, EU27, rest of Europe and rest of the world).",
+      "limitations": "From the 2022 census; 4,142 residents whose place of birth is \"other\" or unknown are counted as not born abroad."
     },
     "carCommuteShare": {
       "value": 39,

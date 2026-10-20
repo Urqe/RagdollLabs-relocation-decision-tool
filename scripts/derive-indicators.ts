@@ -7,15 +7,15 @@ import { join } from 'node:path';
 import type { Observation } from '../src/core/types.ts';
 import { readTree, ROOT } from './repo-data.ts';
 
-interface CityValue { value: number; period: string; sourceId: string; basis: string; confidence?: Observation['confidence']; limitations?: string }
+interface CityValue { value: number; period: string; sourceId: string; basis: string; confidence?: Observation['confidence']; limitations?: string; /** When this value was read, if later than the file's `retrieved`. */ retrieved?: string }
 interface CityInputs {
   country: string;
   latitude: number;
   climate: { coldestMonthMean: number; warmestMonthMeanMax: number; station: string; period: string; sourceId: string; limitations?: string };
   foreignBornShare: CityValue | null;
   carCommuteShare: CityValue | null;
-  /** State or regional values that replace a national indicator for this city. */
-  regional?: Record<string, CityValue & { geoLevel: 'region' }>;
+  /** State, regional or municipal values that replace a national indicator for this city. */
+  regional?: Record<string, CityValue & { geoLevel: 'region' | 'city' }>;
 }
 interface Inputs {
   retrieved: string;
@@ -52,8 +52,8 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
     const r = c.regional?.[key];
     if (r) {
       out[key] = {
-        value: r.value, unit: NATIONAL_UNIT[key]!, period: r.period, geoLevel: r.geoLevel, provenance: 'inherited', sourceId: r.sourceId,
-        retrieved: inputs.retrieved, confidence: r.confidence ?? 'medium', basis: r.basis, ...(r.limitations ? { limitations: r.limitations } : {}),
+        value: r.value, unit: NATIONAL_UNIT[key]!, period: r.period, geoLevel: r.geoLevel, provenance: r.geoLevel === 'city' ? 'observed' : 'inherited', sourceId: r.sourceId,
+        retrieved: r.retrieved ?? inputs.retrieved, confidence: r.confidence ?? 'medium', basis: r.basis, ...(r.limitations ? { limitations: r.limitations } : {}),
       };
       continue;
     }
@@ -89,7 +89,7 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
     const v = c[key];
     out[key] = v ? {
       value: v.value, unit: '%', period: v.period, geoLevel: 'city', provenance: 'observed', sourceId: v.sourceId,
-      retrieved: inputs.retrieved, confidence: v.confidence ?? 'medium', basis: v.basis, ...(v.limitations ? { limitations: v.limitations } : {}),
+      retrieved: v.retrieved ?? inputs.retrieved, confidence: v.confidence ?? 'medium', basis: v.basis, ...(v.limitations ? { limitations: v.limitations } : {}),
     } : null;
   }
   return out;

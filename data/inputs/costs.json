@@ -335,7 +335,7 @@
         "includes": [
           "utilities"
         ],
-        "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms."
+        "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Checked against HUD's FY2026 documentation page for Travis County on 2026-10-20; FY2027 (from October 2026) is $1,817 for two bedrooms."
       },
       "transitPassAdult": {
         "value": 41.25,

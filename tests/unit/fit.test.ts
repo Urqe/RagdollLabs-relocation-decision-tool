@@ -58,7 +58,7 @@ describe('fit safeguards (0.4.0 done criteria)', () => {
   });
 
   test('a missing indicator widens the range instead of moving the fit', () => {
-    const f = computeFit(city('mx-hermosillo'), prefs({ community: 3 }), def)!;
+    const f = computeFit(without(city('mx-hermosillo'), 'foreignBornShare'), prefs({ community: 3 }), def)!;
     assert.equal(f.low, 0);
     assert.equal(f.high, 1);
     assert.equal(f.coverage, 0);
@@ -157,7 +157,7 @@ describe('must-haves', () => {
   });
   test('a must-have without data cannot be shown to pass', () => {
     const p4 = prefs({ convenience: 4 });
-    assert.match(mustHaveExclusions(computeFit(city('us-austin'), p4, def), ['convenience'], def, p4)[0]!, /there is no data/);
+    assert.match(mustHaveExclusions(computeFit(without(city('us-austin'), 'carCommuteShare'), p4, def), ['convenience'], def, p4)[0]!, /there is no data/);
   });
   test('a must-have with part of its data missing cannot be shown to pass unless the known part already does', () => {
     // Hermosillo, food essential: affordable eating out scores 90, but the variety choice has no indicator.
@@ -183,13 +183,26 @@ describe('must-haves', () => {
 });
 
 describe('indicator data (0.4.1)', () => {
-  test('Hermosillo safety uses the Sonora state rate, not the national one (V5)', () => {
+  test('Hermosillo safety uses the municipal rate, not the state or national one (V5, backlog)', () => {
     const o = city('mx-hermosillo').indicators!.homicideRate!;
-    assert.equal(o.geoLevel, 'region');
-    assert.equal(o.value, 53.7);
-    assert.equal(o.sourceId, 'inegi-homicides');
+    assert.equal(o.geoLevel, 'city');
+    assert.equal(o.provenance, 'observed');
+    assert.equal(o.value, 38.9);
+    assert.equal(o.sourceId, 'inegi-homicides-municipal');
     const f = computeFit(city('mx-hermosillo'), prefs({ safety: 3 }), def)!;
     assert.ok(!f.national.some((d) => d.id === 'safety'));
+  });
+  test('browser-checked indicators from the backlog (2026-10-20)', () => {
+    const v = (id: string, ind: string) => city(id).indicators![ind]!;
+    assert.equal(v('us-austin', 'carCommuteShare').value, 87.9);
+    assert.equal(v('us-austin', 'carCommuteShare').sourceId, 'acs-2024-s0801');
+    assert.equal(v('de-berlin', 'foreignBornShare').value, 24.7);
+    assert.equal(v('de-berlin', 'foreignBornShare').sourceId, 'zensus-2022');
+    assert.equal(v('mx-hermosillo', 'foreignBornShare').value, 1.1);
+    assert.equal(v('mx-hermosillo', 'carCommuteShare').value, 59.4);
+    for (const c of cities) {
+      for (const ind of ['foreignBornShare', 'carCommuteShare']) assert.ok(c.indicators![ind], `${c.id} has ${ind}`);
+    }
   });
   test('the US out-of-pocket share is kept with its reason but not scored (V1)', () => {
     const o = city('us-austin').indicators!.oopShare!;

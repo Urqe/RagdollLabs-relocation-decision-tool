@@ -374,16 +374,20 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 ## Backlog (not scheduled)
 
 - Per-city church tax rate in Germany if a city outside Berlin is added. (From review 0.2.1, S8.)
-- Check HUD's FY2026 Fair Market Rents for Travis County by hand in a browser; HUD blocks automated requests. (From review 0.3.1, T5.)
-- Run the five official calculator cases in docs/reviews/0.3.1-calculator-cases.md and add the results as reference tests. (From review 0.3.1, T6.)
-- Residents born abroad for Hermosillo (INEGI census) and commuting by car for Hermosillo (INEGI origin-destination survey). (From 0.4.0.)
-- **Needs a browser:** commuting by car for Austin, ACS 2024 1-year table S0801 (car, truck or van; public transport; worked from home) for the city of Austin on data.census.gov. The Census API now needs a key, and the Census Reporter profile does not show modes. Count car commuters among people who travel to work, to match the Urban Audit figures. (From 0.4.0; checked 2026-10-20.)
+- **Needs the owner:** run the Spain case (#3) in docs/reviews/0.3.1-calculator-cases.md in AEAT's Renta WEB Open simulator (ejercicio 2025, Madrid; the app uses the same state and Madrid scales for 2026). The simulator requires a name and NIF on the first page, which the owner enters. The other four cases are reference tests since 2026-10-20. (From review 0.3.1, T6.)
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
-- Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
-- A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.
 - Live exchange rates.
 
 The official calculator cross-check (review 0.2.1, S7) moved from the backlog to 0.3.1 and 0.6.1.
+
+Done from the backlog on 2026-10-20, in a browser (data release 2026-10-20.4):
+
+- HUD FY2026 Fair Market Rents for Travis County match the five figures in use (T5).
+- Official calculator cases for Finland, Germany, the US and Mexico match within the tolerance and are reference tests in `tests/unit/tax-official.test.ts` (T6; Spain still open, above).
+- Austin car commuting: 87.9% of those who travel to work (ACS 2024 1-year, S0801).
+- Berlin born abroad: 24.7% (Zensus 2022, table 1000A-1014), replacing the foreign-citizen proxy (V15).
+- Hermosillo born abroad 1.1% and car or motorcycle commuting 59.4% (INEGI Encuesta Intercensal 2025, which publishes both by municipality, so the origin-destination survey was not needed).
+- Hermosillo homicide rate 38.9 per 100,000 for the municipality (INEGI, 2025 preliminary), replacing the Sonora rate (V5).

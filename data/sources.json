@@ -289,12 +289,12 @@
   {
     "id": "hud-fmr-2026",
     "name": "Fair Market Rents FY2026, Austin-Round Rock-San Marcos metro area",
-    "publisher": "US Department of Housing and Urban Development (read via propmetrics.co)",
-    "url": "https://www.propmetrics.co/fair-market-rent/texas",
+    "publisher": "US Department of Housing and Urban Development",
+    "url": "https://www.huduser.gov/portal/datasets/fmr/fmrs/FY2026_code/2026summary.odn?fmrtype=Final&selection_type=county&fips=4845399999",
     "licence": "US government data, public domain",
     "attribution": "HUD Fair Market Rents",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-20"
   },
   {
     "id": "capmetro-fares",
@@ -384,6 +384,26 @@
     "licence": "Free use with attribution (INEGI terms of free use)",
     "attribution": "Fuente: INEGI, Estadísticas de Defunciones Registradas",
     "cadence": "annual",
+    "lastChecked": "2026-10-20"
+  },
+  {
+    "id": "inegi-homicides-municipal",
+    "name": "Defunciones por homicidio by municipality of occurrence and year of registration (interactive tables; 2025 preliminary)",
+    "publisher": "INEGI",
+    "url": "https://www.inegi.org.mx/sistemas/olap/proyectos/bd/continuas/mortalidad/defuncioneshom.asp?s=est",
+    "licence": "Free use with attribution (INEGI terms of free use)",
+    "attribution": "Fuente: INEGI, Estadísticas de Defunciones Registradas",
+    "cadence": "annual",
+    "lastChecked": "2026-10-20"
+  },
+  {
+    "id": "inegi-eic-2025",
+    "name": "Encuesta Intercensal 2025, tabulados for Sonora: Migración (table 2), Movilidad cotidiana (table 22), Población (table 2)",
+    "publisher": "INEGI",
+    "url": "https://www.inegi.org.mx/programas/eic/2025/#tabulados",
+    "licence": "Free use with attribution (INEGI terms of free use)",
+    "attribution": "Fuente: INEGI, Encuesta Intercensal 2025",
+    "cadence": "irregular",
     "lastChecked": "2026-10-20"
   },
   {
@@ -477,14 +497,14 @@
     "lastChecked": "2026-10-19"
   },
   {
-    "id": "statistik-berlin-brandenburg",
-    "name": "Einwohnerbestand in Berlin, 30 June 2026",
-    "publisher": "Amt für Statistik Berlin-Brandenburg",
-    "url": "https://www.statistik-berlin-brandenburg.de/a-i-5-hj/",
-    "licence": "Free use with attribution",
-    "attribution": "Amt für Statistik Berlin-Brandenburg",
+    "id": "zensus-2022",
+    "name": "Zensus 2022, Personen: Geburtsland (Gruppen), table 1000A-1014",
+    "publisher": "Statistische Ämter des Bundes und der Länder",
+    "url": "https://ergebnisse.zensus2022.de/datenbank/online/table/1000A-1014",
+    "licence": "Datenlizenz Deutschland – Namensnennung – Version 2.0",
+    "attribution": "© Statistische Ämter des Bundes und der Länder, Deutschland",
     "cadence": "irregular",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-20"
   },
   {
     "id": "acs-2024",
@@ -495,6 +515,16 @@
     "attribution": "US Census Bureau, ACS",
     "cadence": "annual",
     "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "acs-2024-s0801",
+    "name": "American Community Survey 2024, 1-year, table S0801 Commuting Characteristics by Sex, Austin city",
+    "publisher": "US Census Bureau",
+    "url": "https://data.census.gov/table/ACSST1Y2024.S0801?g=160XX00US4805000",
+    "licence": "US government data, public domain",
+    "attribution": "US Census Bureau, ACS",
+    "cadence": "annual",
+    "lastChecked": "2026-10-20"
   },
   {
     "id": "astronomy",
