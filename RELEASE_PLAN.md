@@ -374,7 +374,7 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 ## Backlog (not scheduled)
 
 - Per-city church tax rate in Germany if a city outside Berlin is added. (From review 0.2.1, S8.)
-- **Needs the owner:** run the Spain case (#3) in docs/reviews/0.3.1-calculator-cases.md in AEAT's Renta WEB Open simulator (ejercicio 2025, Madrid; the app uses the same state and Madrid scales for 2026). The simulator requires a name and NIF on the first page, which the owner enters. The other four cases are reference tests since 2026-10-20. (From review 0.3.1, T6.)
+- Spain calculator case (#3 in docs/reviews/0.3.1-calculator-cases.md): check it against the published tables instead of AEAT's simulator, which needs a name and NIF. Read the 2026 state scale (art. 63 LIRPF, BOE) and the Madrid scale (BOCM) at the source, work the case by hand (taxable €44,750; app: state €5,602.25, Madrid €4,957.54) and add it to `tests/unit/tax-official.test.ts`. This confirms the rates, not AEAT's handling of the work-income reduction. The other four cases are reference tests since 2026-10-20. (From review 0.3.1, T6.)
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
@@ -386,7 +386,7 @@ The official calculator cross-check (review 0.2.1, S7) moved from the backlog to
 Done from the backlog on 2026-10-20, in a browser (data release 2026-10-20.4):
 
 - HUD FY2026 Fair Market Rents for Travis County match the five figures in use (T5).
-- Official calculator cases for Finland, Germany, the US and Mexico match within the tolerance and are reference tests in `tests/unit/tax-official.test.ts` (T6; Spain still open, above).
+- Official calculator cases for Finland, Germany, the US and Mexico match within the tolerance and are reference tests in `tests/unit/tax-official.test.ts` (T6; Spain is in the backlog, above).
 - Austin car commuting: 87.9% of those who travel to work (ACS 2024 1-year, S0801).
 - Berlin born abroad: 24.7% (Zensus 2022, table 1000A-1014), replacing the foreign-citizen proxy (V15).
 - Hermosillo born abroad 1.1% and car or motorcycle commuting 59.4% (INEGI Encuesta Intercensal 2025, which publishes both by municipality, so the origin-destination survey was not needed).
