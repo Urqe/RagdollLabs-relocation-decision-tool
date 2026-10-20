@@ -1,7 +1,8 @@
 import type { AffordabilityBand } from '../budget/budget.ts';
 import type { CityResult } from '../budget/city-result.ts';
-import { close, computeFit, mustHaveExclusions, type Fit, type Preferences } from '../fit/fit.ts';
+import { computeFit, mustHaveExclusions, type Fit, type Preferences } from '../fit/fit.ts';
 import type { City, PreferenceDefinition } from '../types.ts';
+import { roundMonthly } from '../money/money.ts';
 
 export type SortKey = 'fit' | 'money';
 
@@ -45,7 +46,7 @@ export interface Ranking {
   essential: string[];
 }
 
-/** Savings within this many euros a month are too close to call. */
+/** Savings within this many euros a month, as shown (nearest €10), are too close to call. */
 export const CLOSE_EUR = 50;
 
 const savingsEur = (r: CityResult): number => r.budget.savings.typical / r.fxRate;
@@ -62,6 +63,7 @@ export function rankCities(candidates: Candidate[], prefs: Preferences, def: Pre
   const failed: Excluded[] = [];
   const excluded: Excluded[] = [];
   const kept: RankedCity[] = [];
+  let anyFit = false;
   for (const c of candidates) {
     if (c.city.fixture) continue;
     if (c.result === null) {
@@ -69,6 +71,7 @@ export function rankCities(candidates: Candidate[], prefs: Preferences, def: Pre
       continue;
     }
     const fit = computeFit(c.city, prefs, def);
+    if (fit !== null) anyFit = true;
     const reasons = mustHaveExclusions(fit, essential, def, prefs);
     if (reasons.length > 0) {
       excluded.push({ city: c.city, reasons });
@@ -78,22 +81,55 @@ export function rankCities(candidates: Candidate[], prefs: Preferences, def: Pre
   }
   const byName = (a: RankedCity, b: RankedCity): number => a.city.name.localeCompare(b.city.name) || a.city.id.localeCompare(b.city.id);
   const byMoney = (a: RankedCity, b: RankedCity): number => b.savingsEur - a.savingsEur || byName(a, b);
-  // Without any preference there is no fit to sort by, so the money order is used.
-  const effective: SortKey = sort === 'fit' && kept.some((k) => k.fit !== null) ? 'fit' : 'money';
+  // Without any preference there is no fit to sort by, so the money order is used. Whether there is a fit
+  // is decided before must-haves, so a no-match keeps the sort the user chose.
+  const effective: SortKey = sort === 'fit' && anyFit ? 'fit' : 'money';
 
   let ranked: RankedCity[];
   let unrankedIncomplete: RankedCity[] = [];
   if (effective === 'fit') {
     ranked = [...kept].sort((a, b) => (b.fit?.low ?? -1) - (a.fit?.low ?? -1) || (b.fit?.high ?? -1) - (a.fit?.high ?? -1) || byName(a, b));
-    ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && r.fit !== null && ranked[i - 1]!.fit !== null && close(r.fit, ranked[i - 1]!.fit!) }));
+    ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && r.fit !== null && ranked[i - 1]!.fit !== null && closeAsShown(r.fit.low, ranked[i - 1]!.fit!.low) }));
   } else {
     ranked = kept.filter((k) => k.band !== 'incomplete').sort(byMoney);
-    ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && Math.abs(ranked[i - 1]!.savingsEur - r.savingsEur) < CLOSE_EUR }));
+    ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && Math.abs(roundMonthly(ranked[i - 1]!.savingsEur) - roundMonthly(r.savingsEur)) < CLOSE_EUR }));
     unrankedIncomplete = kept.filter((k) => k.band === 'incomplete').sort(byName);
   }
   excluded.sort((a, b) => a.city.name.localeCompare(b.city.name));
   return { sort: effective, ranked, unrankedIncomplete, excluded, failed, essential };
 }
+
+/** Fit results within this many points, as shown (whole points), are too close to call. */
+export const CLOSE_POINTS = 5;
+
+/** Compares the scores the user sees, so two cities shown 5 points apart are never called too close. */
+const closeAsShown = (a: number, b: number): boolean => Math.abs(Math.round(a * 100) - Math.round(b * 100)) < CLOSE_POINTS;
+
+export interface RelaxOption {
+  /** The essential area that would count as "Very" important instead. */
+  dimension: string;
+  /** Cities that would come back, by name. */
+  returning: City[];
+}
+
+/**
+ * For a no-match result: for each essential area, the cities that would come back if only that one counted
+ * as "Very" important instead. Areas that would bring none back are left out; the most helpful comes first.
+ */
+export function relaxOptions(candidates: Candidate[], prefs: Preferences, def: PreferenceDefinition): RelaxOption[] {
+  const essential = def.dimensions.filter((d) => (prefs.importance[d.id] ?? 0) >= ESSENTIAL).map((d) => d.id);
+  const out: RelaxOption[] = [];
+  for (const id of essential) {
+    const relaxed = { ...prefs, importance: { ...prefs.importance, [id]: ESSENTIAL - 1 } };
+    const r = rankCities(candidates, relaxed, def, 'fit');
+    const returning = [...r.ranked, ...r.unrankedIncomplete].map((x) => x.city).sort((a, b) => a.name.localeCompare(b.name));
+    if (returning.length > 0) out.push({ dimension: id, returning });
+  }
+  return out.sort((a, b) => b.returning.length - a.returning.length || essential.indexOf(a.dimension) - essential.indexOf(b.dimension));
+}
+
+/** The relax for one essential area: it becomes "Very" important. */
+export const relaxOne = (prefs: Preferences, id: string): Preferences => ({ ...prefs, importance: { ...prefs.importance, [id]: Math.min(prefs.importance[id] ?? 0, ESSENTIAL - 1) } });
 
 /** The one-click relax for a no-match result: every must-have becomes "Very" important, still weighted but no longer excluding. */
 export function relaxEssentials(prefs: Preferences): Preferences {

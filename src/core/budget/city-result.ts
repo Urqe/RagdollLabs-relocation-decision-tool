@@ -17,6 +17,10 @@ export interface CityResult {
   problems: string[];
 }
 
+/** Whether a city's own salary can be used for this household: one income for each of its earners. */
+export const salaryFits = (household: Pick<Household, 'earnersGrossEur'>, overrides: CityOverrides): overrides is CityOverrides & { earnersGrossEur: number[] } =>
+  overrides.earnersGrossEur !== undefined && overrides.earnersGrossEur.length === household.earnersGrossEur.length;
+
 /** One city's money result. Pure: same inputs, same output. */
 export function computeCityResult(
   city: City,
@@ -28,8 +32,9 @@ export function computeCityResult(
   lifestyle?: LifestyleDefinition,
 ): CityResult {
   const currency = country.currency;
-  // A per-city income override can change the number of earners, so the household is normalized again.
-  const hh = normalizeHousehold({ ...household, earnersGrossEur: overrides.earnersGrossEur ?? household.earnersGrossEur });
+  // A salary per city replaces the earners' incomes, never the household: one with a different number of
+  // earners (from a shared link, or set before the household changed) is not used.
+  const hh = normalizeHousehold({ ...household, earnersGrossEur: salaryFits(household, overrides) ? overrides.earnersGrossEur : household.earnersGrossEur });
   const grossEur = hh.earnersGrossEur;
   const problems = householdProblems(hh);
   const fxRate = eurToLocal(1, currency, fx);

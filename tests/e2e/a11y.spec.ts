@@ -71,3 +71,22 @@ test('keyboard: the household form and the own-figures section can be completed 
   expect(await page.evaluate(() => document.activeElement !== document.body)).toBe(true);
   await expect(page.locator('.band')).not.toContainText('no data for rent');
 });
+
+// 0.5.1 (W8): Find with results and with a no-match, and Compare with a salary per city.
+const NO_MATCH = JSON.stringify({ v: 2, profile: { household: {}, incomeMode: 'annual', monthsPerYear: 12, preferences: {
+  importance: { governance: 4, food: 4, climate: 4 }, choices: { winter: 'cold', summer: 'cool', darkness: 'fine' } } } });
+for (const [name, route, profile] of [
+  ['Find with every area weighted', './#/find', ALL_WEIGHTED],
+  ['Find with no match', './#/find', NO_MATCH],
+  ['Compare with a salary per city', './#/compare/fi-helsinki,us-austin,mx-hermosillo', ALL_WEIGHTED],
+] as const) {
+  test(`basic accessibility: ${name}`, async ({ page }) => {
+    await page.goto(route);
+    await page.evaluate((v) => localStorage.setItem('rdt.profile.v1', v), profile);
+    await page.reload();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    if (route.includes('compare')) await page.locator('label[for="income-per-city"]').click();
+    else await page.locator('details.find-prefs > summary').click();
+    expect(await problems(page)).toEqual([]);
+  });
+}

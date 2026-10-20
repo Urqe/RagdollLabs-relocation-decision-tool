@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { close, computeFit, effectiveWeights, mustHaveExclusions, ruleScore, unscoredDimensions, type Preferences } from '../../src/core/fit/fit.ts';
+import { computeFit, effectiveWeights, mustHaveExclusions, ruleScore, unscoredDimensions, type Preferences } from '../../src/core/fit/fit.ts';
 import type { City, Observation, PreferenceDefinition } from '../../src/core/types.ts';
 import { readTree } from '../../scripts/repo-data.ts';
 import { decemberDaylight } from '../../scripts/derive-indicators.ts';
@@ -83,14 +83,6 @@ describe('fit safeguards (0.4.0 done criteria)', () => {
     assert.deepEqual(weighted.strongest.map((d) => d.id), ['safety', 'liberty']);
     // The order the user set importances in does not matter.
     assert.deepEqual(computeFit(tied, prefs({ liberty: 2, safety: 2 }), def), equal);
-  });
-
-  test('close results are reported as close', () => {
-    const a = computeFit(city('de-berlin'), prefs({ safety: 3 }), def)!;
-    const b = computeFit(city('fi-helsinki'), prefs({ safety: 3 }), def)!;
-    assert.ok(close(a, b), 'Berlin and Helsinki have nearly the same homicide rate');
-    const c = computeFit(city('mx-hermosillo'), prefs({ safety: 3 }), def)!;
-    assert.ok(!close(a, c));
   });
 
   test('liberty and governance share a source and count two-thirds each when both matter', () => {

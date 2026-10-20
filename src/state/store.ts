@@ -25,6 +25,8 @@ export interface AppState {
   compareIncome?: 'same' | 'per-city';
   /** Cities whose salary came from a shared link, so the page can say so and offer the user's own income. */
   linkIncomeCities?: string[];
+  /** Cities whose salary in a shared link was for a different number of earners, so it was not used. */
+  linkIncomeSkipped?: { cities: string[]; earners: number } | undefined;
 }
 
 /** Up to three cities in a comparison. */
@@ -214,7 +216,38 @@ export type Store = ReturnType<typeof createStore>;
 export function applyLinkPay(s: AppState): AppState {
   if (s.route.screen !== 'compare' || s.route.pay === null) return s;
   const { cityIds, pay } = s.route;
+  const earners = s.profile.household.earnersGrossEur.length;
   const overrides = { ...s.overrides };
-  cityIds.forEach((id, i) => { overrides[id] = { ...(overrides[id] ?? {}), earnersGrossEur: pay[i]! }; });
-  return { ...s, overrides, compareIncome: 'per-city', linkIncomeCities: [...cityIds], route: { ...s.route, pay: null } };
+  const used: string[] = [];
+  const skipped: string[] = [];
+  // A salary is for one household shape: one with a different number of earners would add or drop an adult.
+  cityIds.forEach((id, i) => {
+    if (pay[i]!.length !== earners) { skipped.push(id); return; }
+    overrides[id] = { ...(overrides[id] ?? {}), earnersGrossEur: pay[i]! };
+    used.push(id);
+  });
+  return {
+    ...s,
+    overrides,
+    ...(used.length > 0 ? { compareIncome: 'per-city' as const } : {}),
+    linkIncomeCities: used,
+    linkIncomeSkipped: skipped.length > 0 ? { cities: skipped, earners: pay[cityIds.indexOf(skipped[0]!)]!.length } : undefined,
+    route: { ...s.route, pay: null },
+  };
+}
+
+/**
+ * Drops each city's own salary that no longer fits the household (the number of earners changed), so no
+ * city is marked as having a salary it does not use. Returns the state unchanged when nothing is dropped.
+ */
+export function pruneSalaries(s: AppState): AppState {
+  const earners = s.profile.household.earnersGrossEur.length;
+  const stale = Object.entries(s.overrides).filter(([, o]) => o.earnersGrossEur && o.earnersGrossEur.length !== earners).map(([k]) => k);
+  if (stale.length === 0) return s;
+  const overrides = Object.fromEntries(Object.entries(s.overrides).map(([k, o]) => {
+    if (!stale.includes(k)) return [k, o];
+    const { earnersGrossEur: _drop, ...rest } = o;
+    return [k, rest];
+  }));
+  return { ...s, overrides, linkIncomeCities: (s.linkIncomeCities ?? []).filter((x) => !stale.includes(x)) };
 }

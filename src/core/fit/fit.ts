@@ -69,9 +69,6 @@ export function ruleScore(rule: ScoringRule, value: number): number {
 
 export const fitBand = (x: number): FitBand => (x >= 0.75 ? 'strong' : x >= 0.6 ? 'good' : x >= COMPROMISE ? 'mixed' : 'weak');
 
-/** Two fits are close when their low ends differ by less than five points. */
-export const close = (a: Fit, b: Fit): boolean => Math.abs(a.low - b.low) < 0.05;
-
 /** The scoring rules and uncovered choices that apply to a dimension under these preferences. */
 function activeRules(d: PreferenceDimension, prefs: Preferences): { rules: ScoringRule[]; notCovered: string[] } {
   if (d.rules) return { rules: d.rules, notCovered: [] };
@@ -175,6 +172,12 @@ export function computeFit(city: City, prefs: Preferences, def: PreferenceDefini
  * or has no data to show it does not. A must-have set to "No preference" on every aspect has nothing to check
  * and excludes no city. Returns the reasons, empty when the city stays in.
  */
+/**
+ * The essential bar is checked on the whole-point score the user sees, so a city shown at 50 meets it and
+ * one shown at 49 does not; 49.7 is never reported as "50 out of 100" and failed.
+ */
+const belowBar = (x: number): boolean => Math.round(x * 100) < 50;
+
 export function mustHaveExclusions(fit: Fit | null, mustHave: string[], def: PreferenceDefinition, prefs: Preferences): string[] {
   const out: string[] = [];
   const unscored = new Set(unscoredDimensions(def, prefs));
@@ -183,8 +186,8 @@ export function mustHaveExclusions(fit: Fit | null, mustHave: string[], def: Pre
     const label = def.dimensions.find((d) => d.id === id)?.label ?? id;
     const d = fit?.dimensions.find((x) => x.id === id);
     if (!d) out.push(`${label} is not set to matter, so it cannot be checked.`);
-    else if (d.high < 0.5) out.push(`${label} scores ${Math.round(d.high * 100)} out of 100; essential areas need at least 50.`);
-    else if (d.low < 0.5) out.push(`${label} cannot be shown to reach 50 out of 100: ${d.coverage === 0 ? 'there is no data' : 'part of the data is missing'}.`);
+    else if (belowBar(d.high)) out.push(`${label} scores ${Math.round(d.high * 100)} out of 100; essential areas need at least 50.`);
+    else if (belowBar(d.low)) out.push(`${label} cannot be shown to reach 50 out of 100: ${d.coverage === 0 ? 'there is no data' : 'part of the data is missing'}.`);
   }
   return out;
 }

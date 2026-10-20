@@ -94,7 +94,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.4.0 | Feature | Preference data and explainable fit in Explore (pilot cities) | Completed 2026-10-19 (88729a4) |
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
-| 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Not started |
+| 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 |
 | 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for new countries | Not started |
 | 0.7.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
@@ -328,7 +328,16 @@ Findings in [docs/reviews/0.4.1.md](docs/reviews/0.4.1.md). V1–V14 fixed; V15 
 
 ### 0.5.1 — Maintenance: review of the whole journey
 
-**Status:** Not started
+**Status:** Completed 2026-10-20. Eleven findings fixed (W1–W11), none deferred.
+
+Findings in [docs/reviews/0.5.1.md](docs/reviews/0.5.1.md).
+
+**Notes for 0.6.0**
+
+- A city's own salary is used only when it has one income per earner (`salaryFits` in `src/core/budget/city-result.ts`); it never changes the household. `pruneSalaries` drops the ones that no longer fit when the number of earners changes.
+- The essential bar and "too close to call" are judged on the figures shown (whole fit points, savings to the nearest €10).
+- `relaxOptions` reruns the ranking once per essential; with 15 cities that is still cheap, but keep it out of any per-keystroke path.
+- Compiled JavaScript 178.1 kB (48.6 kB compressed).
 
 Standard maintenance review of 0.5.0, plus an end-to-end review of Explore → Find → Compare on the pilot cities: whether the journeys connect, whether results are understandable, and whether matching and affordability tell a consistent story.
 

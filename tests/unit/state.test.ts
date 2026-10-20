@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyLinkPay, DEFAULT_PROFILE, formatRoute, loadProfile, parseProfile, parseRoute, saveProfile, serializeProfile, type KeyValueStore } from '../../src/state/store.ts';
+import { applyLinkPay, DEFAULT_PROFILE, pruneSalaries, formatRoute, loadProfile, parseProfile, parseRoute, saveProfile, serializeProfile, type KeyValueStore } from '../../src/state/store.ts';
 import { kids } from './helpers.ts';
 
 describe('routes', () => {
@@ -77,5 +77,35 @@ describe('Find and Compare routes (0.5.0)', () => {
     assert.equal(formatRoute(s.route), '#/compare/fi-helsinki,de-berlin');
     const plain = { profile: DEFAULT_PROFILE, route: parseRoute('#/compare/fi-helsinki'), overrides: {}, invalidFields: [] };
     assert.equal(applyLinkPay(plain), plain);
+  });
+});
+
+describe('salaries and the household shape (0.5.1, W1)', () => {
+  const couple = { ...DEFAULT_PROFILE, household: { ...DEFAULT_PROFILE.household, earnersGrossEur: [50000, 40000] } };
+
+  test('a link salary for a different number of earners is not used, and the page is told', () => {
+    // Default household: one earner. The link was made by a two-earner household.
+    const s = applyLinkPay({ profile: DEFAULT_PROFILE, route: parseRoute('#/compare/fi-helsinki,de-berlin?pay=60000+20000,70000'), overrides: {}, invalidFields: [] });
+    assert.equal(s.overrides['fi-helsinki']?.earnersGrossEur, undefined);
+    assert.deepEqual(s.overrides['de-berlin']?.earnersGrossEur, [70000]);
+    assert.deepEqual(s.linkIncomeCities, ['de-berlin']);
+    assert.deepEqual(s.linkIncomeSkipped, { cities: ['fi-helsinki'], earners: 2 });
+    assert.equal(s.route.screen === 'compare' && s.route.pay, null);
+  });
+
+  test('a link whose salaries all have the wrong shape leaves the income mode alone', () => {
+    const s = applyLinkPay({ profile: couple, route: parseRoute('#/compare/fi-helsinki?pay=60000'), overrides: {}, invalidFields: [] });
+    assert.equal(s.compareIncome, undefined);
+    assert.deepEqual(s.linkIncomeCities, []);
+  });
+
+  test('changing the number of earners drops the salaries that no longer fit, and only those', () => {
+    const before = { profile: couple, route: parseRoute('#/compare/fi-helsinki,de-berlin'), invalidFields: [], linkIncomeCities: ['fi-helsinki'],
+      overrides: { 'fi-helsinki': { earnersGrossEur: [60000, 30000], rentMonthlyLocal: 1200 }, 'de-berlin': { rentMonthlyLocal: 900 } } };
+    assert.equal(pruneSalaries(before), before, 'nothing to drop while the shape still fits');
+    const single = pruneSalaries({ ...before, profile: DEFAULT_PROFILE });
+    assert.deepEqual(single.overrides['fi-helsinki'], { rentMonthlyLocal: 1200 });
+    assert.deepEqual(single.overrides['de-berlin'], { rentMonthlyLocal: 900 });
+    assert.deepEqual(single.linkIncomeCities, []);
   });
 });

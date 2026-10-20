@@ -46,10 +46,11 @@ describe('household rules (F1)', () => {
     assert.equal(normalizeHousehold(couple).relationship, 'married');
   });
 
-  test('a city income override that drops an earner cannot keep joint treatment', () => {
+  test('a city salary with one income for a two-earner couple is not used: the household keeps both (0.5.1, W1)', () => {
+    // Until 0.5.1 such an override turned the couple into a single adult in that city.
     const couple = h({ earnersGrossEur: [60000, 30000], relationship: 'married' });
     const r = computeCityResult(berlin, germany, couple, { earnersGrossEur: [60000] }, fx, { de });
-    near(r.budget.takeHome, takeHome(h({ earnersGrossEur: [60000] })), 0.001);
+    near(r.budget.takeHome, takeHome(couple), 0.001);
   });
 
   test('two earners never also have a non-earning adult', () => {

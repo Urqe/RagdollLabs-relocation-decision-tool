@@ -1,4 +1,6 @@
-import { rankCities, relaxEssentials, type RankedCity, type SortKey } from '../core/rank/rank.ts';
+import { rankCities, relaxEssentials, relaxOne, relaxOptions, type Candidate, type RankedCity, type SortKey } from '../core/rank/rank.ts';
+import { salaryFits } from '../core/budget/city-result.ts';
+import type { PreferenceDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { formatRoute, MAX_COMPARE, type AppState, type Store } from '../state/store.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
@@ -45,7 +47,7 @@ function compareBar(): HTMLElement {
       : null);
 }
 
-function card(r: RankedCity, rank: number | null, data: Dataset, rerender: () => void): HTMLElement {
+function card(r: RankedCity, rank: number | null, data: Dataset, state: AppState, rerender: () => void): HTMLElement {
   const id = `cmp-${r.city.id}`;
   const full = selected.size >= MAX_COMPARE && !selected.has(r.city.id);
   return h('li', { class: 'find-card', 'data-city': r.city.id },
@@ -64,17 +66,30 @@ function card(r: RankedCity, rank: number | null, data: Dataset, rerender: () =>
         h('span', {}, 'Compare'))),
     r.closeToPrevious ? h('p', { class: 'close-note' }, 'Too close to call with the city above.') : null,
     fitLine(r),
-    h('p', { class: `find-money band-${r.band}` }, moneyLine(r)));
+    h('p', { class: `find-money band-${r.band}` }, moneyLine(r)),
+    // A salary set for this city in Compare changes its money figures, so the card says so.
+    salaryFits(state.profile.household, state.overrides[r.city.id] ?? {})
+      ? h('p', { class: 'own-mark own-salary-note' }, `Uses the salary set for this city in Compare: ${r.result.grossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year.`)
+      : null);
 }
 
-function noMatch(store: Store, essentialLabels: string): HTMLElement {
+function noMatch(store: Store, essentialLabels: string, candidates: Candidate[], prefs: AppState['profile']['preferences'], def: PreferenceDefinition): HTMLElement {
+  const options = relaxOptions(candidates, prefs, def);
+  const label = (id: string): string => def.dimensions.find((d) => d.id === id)?.label ?? id;
+  const relax = (fn: (p: typeof prefs) => typeof prefs): void => {
+    store.set((s) => ({ ...s, profile: { ...s.profile, preferences: fn(s.profile.preferences) } }));
+    document.getElementById('find-results-title')?.focus();
+  };
   return h('div', { class: 'no-match', role: 'status' },
     h('h2', {}, 'No city meets everything you marked essential'),
-    h('p', {}, `Every pilot city falls short on at least one essential area (${essentialLabels}). The reasons are listed below.`),
-    h('button', { type: 'button', class: 'button', id: 'relax', onclick: () => {
-      store.set((s) => ({ ...s, profile: { ...s.profile, preferences: relaxEssentials(s.profile.preferences) } }));
-      document.getElementById('find-results-title')?.focus();
-    } }, 'Count essentials as “Very” important instead'),
+    h('p', {}, `Every city falls short on at least one essential area (${essentialLabels}). The reasons are listed below.`),
+    options.length > 0
+      ? [h('p', {}, 'Count one area as “Very” important instead of essential:'),
+          h('ul', { class: 'relax-options' }, options.map((o) => h('li', {},
+            h('button', { type: 'button', class: 'quiet-button', id: `relax-${o.dimension}`, onclick: () => relax((p) => relaxOne(p, o.dimension)) },
+              `${label(o.dimension)}: brings back ${o.returning.map((c) => c.name).join(', ')}`))))]
+      : h('p', {}, 'Relaxing any one of them alone brings no city back.'),
+    h('button', { type: 'button', class: 'button', id: 'relax', onclick: () => relax(relaxEssentials) }, 'Count all essentials as “Very” important instead'),
     h('p', { class: 'hint' }, 'They still count for the most in the fit; they just stop leaving cities out. You can change each one again above.'));
 }
 
@@ -103,7 +118,9 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
   const candidates = data.cities.map((city) => ({ city, ...resultFor(city, state, data) }));
   const ranking = rankCities(candidates, prefs, def, requested);
   const essentialLabels = names(ranking.essential.map((id) => def.dimensions.find((d) => d.id === id)!));
-  for (const id of [...selected]) if (!data.city(id) || data.city(id)!.fixture) selected.delete(id);
+  // Only cities shown as cards can stay ticked: one left out by an essential would otherwise go to Compare unseen.
+  const shown = new Set([...ranking.ranked, ...ranking.unrankedIncomplete].map((r) => r.city.id));
+  for (const id of [...selected]) if (!shown.has(id)) selected.delete(id);
 
   const sortControl = h('fieldset', { class: 'choice sort' },
     h('legend', {}, 'Sort by'),
@@ -126,13 +143,13 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
       h('h2', { id: 'find-results-title', tabindex: -1 }, nothingRanked ? 'Results' : `${ranking.ranked.length + ranking.unrankedIncomplete.length} cities`),
       sortControl,
       sortNote,
-      nothingRanked && ranking.excluded.length > 0 ? noMatch(store, essentialLabels) : null,
-      ranking.ranked.length > 0 ? h('ol', { class: 'find-list' }, ranking.ranked.map((r, i) => card(r, i + 1, data, rerender))) : null,
+      nothingRanked && ranking.excluded.length > 0 ? noMatch(store, essentialLabels, candidates, prefs, def) : null,
+      ranking.ranked.length > 0 ? h('ol', { class: 'find-list' }, ranking.ranked.map((r, i) => card(r, i + 1, data, state, rerender))) : null,
       ranking.unrankedIncomplete.length > 0
         ? h('section', { class: 'find-apart', 'aria-labelledby': 'unranked-title' },
             h('h3', { id: 'unranked-title' }, 'Not ranked by money: a cost is missing'),
             h('p', { class: 'hint' }, 'Open the city to enter your own figure for the missing cost; it then joins the ranking.'),
-            h('ul', { class: 'find-list' }, ranking.unrankedIncomplete.map((r) => card(r, null, data, rerender))))
+            h('ul', { class: 'find-list' }, ranking.unrankedIncomplete.map((r) => card(r, null, data, state, rerender))))
         : null,
       ranking.excluded.length > 0
         ? h('section', { class: 'find-apart', 'aria-labelledby': 'excluded-title' },

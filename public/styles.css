@@ -359,6 +359,9 @@ body[data-screen="find"] .panel details.prefs { display: none; }
 .excluded-list { padding-left: var(--space-4); margin: var(--space-2) 0 0; }
 .excluded-list li { margin: var(--space-1) 0; }
 .no-match { margin-top: var(--space-4); padding: var(--space-4); border: 1px dashed var(--control); border-radius: var(--radius); display: grid; gap: var(--space-2); justify-items: start; }
+.relax-options { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.relax-options .quiet-button { min-height: 40px; text-align: left; }
+.find-card .own-salary-note { margin: var(--space-2) 0 0; font-size: 0.875rem; }
 .no-match h2 { margin: 0; font-size: 1.25rem; }
 .no-match p { margin: 0; }
 .compare-bar {
@@ -375,7 +378,7 @@ table.compare { width: 100%; border-collapse: collapse; table-layout: fixed; }
 table.compare caption { font-family: var(--font-body); font-size: 0.8125rem; font-weight: 400; color: var(--muted); }
 table.compare .corner { width: 22%; }
 table.compare thead th { color: var(--ink); font-size: 1rem; vertical-align: bottom; }
-.col-city { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; text-decoration: none; display: block; }
+.col-city { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; min-height: 40px; }
 .col-city:hover { text-decoration: underline; }
 table.compare .place { display: block; margin: 0; font-size: 0.8125rem; font-weight: 400; }
 .col-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-2); }

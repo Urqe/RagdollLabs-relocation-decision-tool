@@ -99,7 +99,7 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
         h('span', {}, label)))),
     h('p', { class: 'hint' }, mode === 'same'
       ? `Every city uses the gross income in your household details (${state.profile.household.earnersGrossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year).`
-      : 'Enter the gross salary each city would pay, for example from a job offer. Cities you leave alone use your household income.'));
+      : 'Enter the gross salary each city would pay, for example from a job offer. Cities you leave alone use your household income. Salaries set here are not saved: they last until you reload or close the page.'));
 
   const linkBanner = fromLink.length > 0
     ? h('div', { class: 'banner link-income', role: 'note' },
@@ -109,6 +109,12 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
           overrides: Object.fromEntries(Object.entries(s.overrides).map(([k, o]) => [k, fromLink.includes(k) ? withoutSalary(o) : o])),
           linkIncomeCities: [],
         })) }, 'Use my own income instead'))
+    : null;
+  const skipped = state.linkIncomeSkipped && state.linkIncomeSkipped.earners !== state.profile.household.earnersGrossEur.length
+    && state.linkIncomeSkipped.cities.some((id) => ids.includes(id)) ? state.linkIncomeSkipped : null;
+  const skippedBanner = skipped
+    ? h('p', { class: 'banner link-income', role: 'note' },
+        `The link’s salaries for ${skipped.cities.filter((id) => ids.includes(id)).map((id) => data.city(id)?.name ?? id).join(', ')} are for ${skipped.earners === 2 ? 'two earners' : 'one earner'}, and your household has ${state.profile.household.earnersGrossEur.length === 2 ? 'two' : 'one'}, so your own income is used there. Change the earners in your household details and open the link again to use them.`)
     : null;
 
   const prefs = state.profile.preferences;
@@ -135,6 +141,10 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
         h('button', { type: 'button', class: 'quiet-button', 'aria-label': `Remove ${c.city.name}`, onclick: () => go(ids.filter((x) => x !== c.city.id)) }, 'Remove')));
 
   const salaryCell = (c: Column, r: CityResult): Child => {
+    // With the user's own take-home for this city, the salary does not change anything, so it is not offered.
+    if (c.ov.netMonthlyEur !== undefined) {
+      return [`${r.grossEur.map((g) => f.whole(g, 'EUR')).join(' + ')} a year`, h('span', { class: 'sub' }, 'Not used: your own take-home is used for this city.')];
+    }
     if (mode === 'same' && !c.ov.earnersGrossEur) return `${r.grossEur.map((g) => f.whole(g, 'EUR')).join(' + ')} a year`;
     return h('div', { class: 'salary-inputs' }, r.grossEur.map((g, j) => {
       const id = `salary-${c.city.id}-${j}`;
@@ -218,6 +228,7 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
     head,
     notes,
     linkBanner,
+    skippedBanner,
     incomeMode,
     cols.length < 2 ? h('p', { class: 'hint' }, 'Add another city to compare.') : null,
     h('div', { class: 'compare-wrap' }, table),

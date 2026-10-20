@@ -1,6 +1,6 @@
 import { asksMainCostPayer, MAX_CHILDREN, normalizeHousehold, totalChildren, type ChildAges, type DiscretionaryLevel, type Household, type Relationship } from '../core/budget/household.ts';
 import type { LifestyleDefinition, PreferenceDefinition } from '../core/types.ts';
-import { clearProfile, DEFAULT_PROFILE, type AppState, type Profile, type Store } from '../state/store.ts';
+import { clearProfile, DEFAULT_PROFILE, pruneSalaries, type AppState, type Profile, type Store } from '../state/store.ts';
 import { h, replaceChildren } from './dom.ts';
 import * as f from './format.ts';
 
@@ -88,7 +88,8 @@ function preferenceFields(def: PreferenceDefinition, profile: Profile, update: (
 
 export function mountProfile(root: HTMLElement, store: Store, storage: Storage | null, lifestyle: LifestyleDefinition, preferences: PreferenceDefinition): void {
   let lastKey = '';
-  const update = (patch: Patch): void => store.set((s) => ({ ...s, profile: patch(s.profile) }));
+  // A change in the number of earners also drops the cities' own salaries that no longer fit.
+  const update = (patch: Patch): void => store.set((s) => pruneSalaries({ ...s, profile: patch(s.profile) }));
 
   const setInvalid = (id: string, invalid: boolean, message: string, validHint: string): void => {
     const input = document.getElementById(id);
@@ -260,7 +261,7 @@ export function mountProfile(root: HTMLElement, store: Store, storage: Storage |
       h('button', { type: 'button', class: 'quiet-button', onclick: () => {
         clearProfile(storage);
         // The whole scenario resets: household, every city's own figures and any invalid field. The city stays selected.
-        store.set((st) => ({ ...st, profile: DEFAULT_PROFILE, overrides: {}, invalidFields: [] }));
+        store.set((st) => ({ ...st, profile: DEFAULT_PROFILE, overrides: {}, invalidFields: [], linkIncomeCities: [], linkIncomeSkipped: undefined }));
         lastKey = '';
         render(store.get());
       } }, 'Clear my data'),

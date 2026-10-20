@@ -2,7 +2,9 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { computeCityResult } from '../../src/core/budget/city-result.ts';
 import { DEFAULT_HOUSEHOLD, type CityOverrides, type Household } from '../../src/core/budget/household.ts';
-import { rankCities, relaxEssentials, type Candidate } from '../../src/core/rank/rank.ts';
+import { CLOSE_EUR, rankCities, relaxEssentials, relaxOne, relaxOptions, type Candidate } from '../../src/core/rank/rank.ts';
+import { mustHaveExclusions, type Fit } from '../../src/core/fit/fit.ts';
+import type { CityResult } from '../../src/core/budget/city-result.ts';
 import type { Preferences } from '../../src/core/fit/fit.ts';
 import type { City, Country, FxSnapshot, LifestyleDefinition, PreferenceDefinition } from '../../src/core/types.ts';
 import type { TaxParamSet } from '../../src/core/tax/index.ts';
@@ -91,5 +93,109 @@ describe('Find ranking (0.5.0)', () => {
     const after = rankCities(candidates(), relaxed, def, 'fit');
     assert.equal(after.excluded.length, 0);
     assert.ok(after.ranked.length >= 5);
+  });
+
+  test('equal results are ordered by name, whatever order the cities come in (0.5.1, W8)', () => {
+    // Two copies of Madrid under different names have identical fits and money.
+    const madrid = candidates().find((c) => c.city.id === 'es-madrid')!;
+    const twin = (id: string, name: string): Candidate => ({ ...madrid, city: { ...madrid.city, id, name } });
+    for (const sort of ['fit', 'money'] as const) {
+      const a = rankCities([twin('x-b', 'Bravo'), twin('x-a', 'Alpha')], prefs({ safety: 2 }), def, sort);
+      const b = rankCities([twin('x-a', 'Alpha'), twin('x-b', 'Bravo')], prefs({ safety: 2 }), def, sort);
+      assert.deepEqual(ids(a.ranked), ['x-a', 'x-b'], sort);
+      assert.deepEqual(ids(b.ranked), ['x-a', 'x-b'], sort);
+      assert.equal(a.ranked[1]!.closeToPrevious, true);
+    }
+  });
+
+  test('"too close to call" is judged on the scores shown, in whole points (0.5.1, W9)', () => {
+    // Berlin 71.5 and Helsinki 67.0 show as 72 and 67: five points apart, so not too close.
+    const hh = { ...DEFAULT_HOUSEHOLD, earnersGrossEur: [55000] };
+    const r = rankCities(candidates(hh), prefs({ safety: 4, climate: 3, healthcare: 2, convenience: 2 }), def, 'fit');
+    const hel = r.ranked.find((x) => x.city.id === 'fi-helsinki')!;
+    const ber = r.ranked.find((x) => x.city.id === 'de-berlin')!;
+    assert.equal(Math.round(ber.fit!.low * 100) - Math.round(hel.fit!.low * 100), 5);
+    assert.ok(ber.fit!.low - hel.fit!.low < 0.05, 'unrounded, they are under five points apart');
+    assert.equal(hel.closeToPrevious, false);
+  });
+
+  test('"too close to call" in money is judged on the amounts shown, to the nearest €10 (0.5.1, W9)', () => {
+    const hel = candidates().find((c) => c.city.id === 'fi-helsinki')!;
+    const withSavings = (id: string, name: string, eur: number): Candidate => {
+      const r = hel.result!;
+      const result: CityResult = { ...r, budget: { ...r.budget, savings: { ...r.budget.savings, typical: eur * r.fxRate } } };
+      return { city: { ...hel.city, id, name }, result };
+    };
+    // 494.8 and 444.9 show as €490 and €440: €50 apart, so not too close, although they differ by 49.9.
+    const apart = rankCities([withSavings('x-a', 'A', 494.8), withSavings('x-b', 'B', 444.9)], prefs({}), def, 'money');
+    assert.equal(CLOSE_EUR, 50);
+    assert.equal(apart.ranked[1]!.closeToPrevious, false);
+    // 494 and 445 show as €490 and €450: close.
+    const near = rankCities([withSavings('x-a', 'A', 494), withSavings('x-b', 'B', 445)], prefs({}), def, 'money');
+    assert.equal(near.ranked[1]!.closeToPrevious, true);
+  });
+
+  test('a city that cannot be calculated is listed apart with its reason (0.5.1, W8)', () => {
+    const c = candidates();
+    const broken: Candidate = { city: c[0]!.city, result: null, error: 'Country data missing.' };
+    const r = rankCities([broken, ...c.slice(1)], prefs({ safety: 2 }), def, 'fit');
+    assert.deepEqual(r.failed.map((x) => [x.city.id, x.reasons[0]]), [[c[0]!.city.id, 'Country data missing.']]);
+    assert.ok(!ids(r.ranked).includes(c[0]!.city.id));
+  });
+
+  test('a no-match keeps the fit sort the user chose (0.5.1, W2)', () => {
+    const p = prefs({ governance: 4, food: 4, climate: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
+    const r = rankCities(candidates(), p, def, 'fit');
+    assert.equal(r.ranked.length, 0);
+    assert.equal(r.sort, 'fit');
+  });
+
+  test('a no-match says which essential brings which cities back (0.5.1, W4)', () => {
+    const p = prefs({ governance: 4, food: 4, climate: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
+    const options = relaxOptions(candidates(), p, def);
+    assert.ok(options.length > 0);
+    for (const o of options) {
+      const r = rankCities(candidates(), relaxOne(p, o.dimension), def, 'fit');
+      assert.deepEqual([...r.ranked, ...r.unrankedIncomplete].map((x) => x.city.id).sort(), o.returning.map((c) => c.id).sort(), o.dimension);
+      assert.equal(relaxOne(p, o.dimension).importance[o.dimension], 3);
+    }
+    const counts = options.map((o) => o.returning.length);
+    assert.deepEqual(counts, [...counts].sort((a, b) => b - a), 'the most helpful comes first');
+    // Food alone: relaxing it brings back the cities that only failed on eating out.
+    assert.ok(options.find((o) => o.dimension === 'food')!.returning.some((c) => c.id === 'fi-helsinki'));
+  });
+});
+
+describe('the essential bar (0.5.1, W3)', () => {
+  const fit = (high: number, low = high): Fit => ({ dimensions: [{ id: 'food', high, low, coverage: 1 }] } as unknown as Fit);
+  test('is checked on the whole-point score shown', () => {
+    assert.deepEqual(mustHaveExclusions(fit(0.497), ['food'], def, prefs({ food: 4 })), [], 'shown as 50, so it meets "at least 50"');
+    const r = mustHaveExclusions(fit(0.494), ['food'], def, prefs({ food: 4 }));
+    assert.equal(r.length, 1);
+    assert.match(r[0]!, /scores 49 out of 100/);
+    assert.match(mustHaveExclusions(fit(0.8, 0.494), ['food'], def, prefs({ food: 4 }))[0]!, /cannot be shown to reach 50/);
+  });
+});
+
+describe('a salary per city never changes the household (0.5.1, W1)', () => {
+  const result = (hh: Household, ov: CityOverrides) => candidates(hh, { 'fi-helsinki': ov }).find((c) => c.city.id === 'fi-helsinki')!.result!;
+  const couple: Household = { ...DEFAULT_HOUSEHOLD, earnersGrossEur: [50000, 40000], relationship: 'married' };
+
+  test('two incomes for a one-earner household do not add an adult', () => {
+    const own = result(DEFAULT_HOUSEHOLD, {});
+    const r = result(DEFAULT_HOUSEHOLD, { earnersGrossEur: [60000, 20000] });
+    assert.deepEqual(r.grossEur, DEFAULT_HOUSEHOLD.earnersGrossEur);
+    assert.equal(r.budget.essentials.typical, own.budget.essentials.typical);
+  });
+
+  test('one income for a two-earner household does not drop the partner', () => {
+    const own = result(couple, {});
+    const r = result(couple, { earnersGrossEur: [50000] });
+    assert.deepEqual(r.grossEur, [50000, 40000]);
+    assert.equal(r.budget.essentials.typical, own.budget.essentials.typical);
+  });
+
+  test('a salary of the right shape is used', () => {
+    assert.deepEqual(result(couple, { earnersGrossEur: [70000, 10000] }).grossEur, [70000, 10000]);
   });
 });
