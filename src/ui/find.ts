@@ -160,7 +160,7 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
       ranking.failed.length > 0
         ? h('ul', { class: 'banner problems', role: 'alert' }, ranking.failed.map((x) => h('li', {}, `${x.city.name}: ${x.reasons.join(' ')}`)))
         : null,
-      data.cities.some((c) => c.fixture) ? h('p', { class: 'hint' }, 'Development previews have placeholder costs and are not ranked.') : null),
+      null),
     compareBar(),
     h('p', { class: 'standing-note' }, 'The fit is a match to your stated preferences, not a quality-of-life rating, and the money figures assume the same salary in every city unless you set one per city in Compare.'));
 }

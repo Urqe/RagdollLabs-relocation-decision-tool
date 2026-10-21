@@ -1,0 +1,47 @@
+{
+  "model": "ca",
+  "taxYear": 2026,
+  "currency": "CAD",
+  "retrieved": "2026-10-21",
+  "sources": [
+    "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4032-payroll-deductions-tables/t4032on-jan/t4032on-january-general-information.html",
+    "https://assets.kpmg.com/content/dam/kpmg/ca/pdf/2026/01/ca-federal-and-provincial-territorial-income-tax-rates-and-brackets-for-2026.pdf",
+    "https://www.rcgt.com/contentassets/5142f7cf936d42d7aa7666314c21ccd1/individual_taxation_ontario_2026.pdf"
+  ],
+  "federal": {
+    "brackets": [
+      { "from": 0, "rate": 0.14 },
+      { "from": 58523, "rate": 0.205 },
+      { "from": 117045, "rate": 0.26 },
+      { "from": 181440, "rate": 0.29 },
+      { "from": 258482, "rate": 0.33 }
+    ],
+    "basicPersonalAmount": { "max": 16452, "min": 14829, "reductionFrom": 181440, "reductionTo": 258482 },
+    "employmentAmount": 1501
+  },
+  "cpp": { "ympe": 74600, "basicExemption": 3500, "baseRate": 0.0495, "firstAdditionalRate": 0.01, "yampe": 85000, "secondAdditionalRate": 0.04, "employerMatches": true },
+  "ei": { "maxInsurableEarnings": 68900, "employeeRate": 0.0163, "employerMultiple": 1.4 },
+  "provinces": {
+    "on": {
+      "name": "Ontario",
+      "brackets": [
+        { "from": 0, "rate": 0.0505 },
+        { "from": 53891, "rate": 0.0915 },
+        { "from": 107785, "rate": 0.1116 },
+        { "from": 150000, "rate": 0.1216 },
+        { "from": 220000, "rate": 0.1316 }
+      ],
+      "basicPersonalAmount": 12989,
+      "spouseAmount": 11029,
+      "spouseIncomeThreshold": 1103,
+      "surtax": [ { "over": 5818, "rate": 0.2 }, { "over": 7446, "rate": 0.36 } ],
+      "healthPremium": [
+        { "above": 20000, "base": 0, "rate": 0.06, "max": 300 },
+        { "above": 36000, "base": 300, "rate": 0.06, "max": 450 },
+        { "above": 48000, "base": 450, "rate": 0.25, "max": 600 },
+        { "above": 72000, "base": 600, "rate": 0.25, "max": 750 },
+        { "above": 200000, "base": 750, "rate": 0.25, "max": 900 }
+      ]
+    }
+  }
+}

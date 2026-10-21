@@ -1015,5 +1015,125 @@
     "attribution": "Servicio Meteorológico Nacional",
     "cadence": "irregular",
     "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "doorinsight-toronto",
+    "name": "How much is rent in Toronto? (October 2026, Door Insight data)",
+    "publisher": "Door Insight; Moving2Canada",
+    "url": "https://moving2canada.com/planning/destination-guides/toronto/how-much-is-rent-in-toronto/",
+    "licence": "Facts from a published report",
+    "attribution": "Door Insight, as reported by Moving2Canada",
+    "cadence": "monthly",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "rentals-ca-2026-09",
+    "name": "National Rent Report, September 2026 (August data; reported by CP24)",
+    "publisher": "Rentals.ca; Urbanation; CP24",
+    "url": "https://www.cp24.com/local/toronto/2026/09/09/rent-prices-across-canada-fall-for-23rd-consecutive-month-but-multi-bedroom-units-in-toronto-see-rise/",
+    "licence": "Facts from a published report",
+    "attribution": "Rentals.ca and Urbanation, as reported by CP24",
+    "cadence": "monthly",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "expatistan-toronto",
+    "name": "Cost of living in Toronto (crowd-sourced prices, updated October 2026)",
+    "publisher": "Expatistan",
+    "url": "https://expatistan.com/cost-of-living/toronto",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Expatistan",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "livingcost-toronto",
+    "name": "Cost of living in Toronto (updated June 2026)",
+    "publisher": "livingcost.org",
+    "url": "https://livingcost.org/cost/canada/on/toronto",
+    "licence": "Facts from a cost-of-living database",
+    "attribution": "livingcost.org",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "ttc-fares-2026",
+    "name": "Fares and passes",
+    "publisher": "Toronto Transit Commission",
+    "url": "https://www.ttc.ca/en/Fares-and-passes",
+    "licence": "Public fares (facts)",
+    "attribution": "TTC",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "hud-fmr-sacramento",
+    "name": "Sacramento County HUD Fair Market Rents FY2026 and FY2027 (republished)",
+    "publisher": "VoucherMatch (HUD data)",
+    "url": "https://vouchermatch.com/section-8/county/california/sacramento-county",
+    "licence": "US government data, republished",
+    "attribution": "HUD Fair Market Rents, via VoucherMatch",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "fmr-map-california-2026",
+    "name": "California Fair Market Rents (republished HUD data)",
+    "publisher": "Fair Market Rent Map (HUD data)",
+    "url": "https://fairmarketrentmap.com/blog/fair-market-rent-california-2026",
+    "licence": "US government data, republished",
+    "attribution": "HUD Fair Market Rents, via Fair Market Rent Map",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "sacrt-fares",
+    "name": "SacRT fares",
+    "publisher": "Sacramento Regional Transit District",
+    "url": "https://sacrtredesign.exemplifi.io/fares/",
+    "licence": "Public fares (facts)",
+    "attribution": "SacRT",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "eccc-normals-toronto",
+    "name": "Climate normals 1991–2020, Toronto (via Wikipedia's climate table)",
+    "publisher": "Environment and Climate Change Canada",
+    "url": "https://en.wikipedia.org/wiki/Toronto#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Environment and Climate Change Canada",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "noaa-normals-sacramento",
+    "name": "Climate normals 1991–2020, Sacramento Executive Airport (via Wikipedia's climate table)",
+    "publisher": "NOAA",
+    "url": "https://en.wikipedia.org/wiki/Sacramento,_California#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "NOAA",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "statcan-census-2021",
+    "name": "Census of Population 2021: immigrants in Toronto (via Wikipedia)",
+    "publisher": "Statistics Canada",
+    "url": "https://en.wikipedia.org/wiki/Toronto#Demographics",
+    "licence": "Statistics Canada Open Licence; Wikipedia text CC BY-SA",
+    "attribution": "Statistics Canada",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "census-quickfacts-sacramento",
+    "name": "QuickFacts: Sacramento city, California",
+    "publisher": "US Census Bureau",
+    "url": "https://census.gov/quickfacts/fact/table/sacramentocitycalifornia/POP715222",
+    "licence": "US government work, public domain",
+    "attribution": "US Census Bureau, American Community Survey",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
   }
 ]

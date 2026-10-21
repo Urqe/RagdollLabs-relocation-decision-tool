@@ -11,7 +11,7 @@ import type { TaxParamSet } from '../../src/core/tax/index.ts';
 import { buildRelease } from '../../scripts/build-release.ts';
 import { kids } from './helpers.ts';
 
-const release = buildRelease(true);
+const release = buildRelease();
 const def = release.preferences as PreferenceDefinition;
 const country = (id: string): Country => release.countries.find((c) => c.id === id)!;
 const candidates = (hh: Household = DEFAULT_HOUSEHOLD, overrides: Record<string, CityOverrides> = {}): Candidate[] =>

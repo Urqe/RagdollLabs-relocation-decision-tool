@@ -77,16 +77,24 @@
       "recreation": 102.902116513003,
       "clothing": 134.994744248242,
       "communications": 143.437360788279
+    },
+    "CAN": {
+      "food": 145.787594075723,
+      "eatingOut": 150.834531429038,
+      "recreation": 116.096461643232,
+      "clothing": 139.57477632568,
+      "communications": 302.683578433643
     }
   },
   "exchangeRates2021": {
     "description": "Annual average 2021, units per euro (Eurostat ert_bil_eur_a, from ECB reference rates).",
     "EUR": 1,
     "USD": 1.1827,
-    "MXN": 23.9852
+    "MXN": 23.9852,
+    "CAD": 1.4826
   },
   "consumerPrices": {
-    "description": "All-items consumer price index, annual averages 2021 and 2024. Euro countries: HICP 2015 = 100 (Eurostat prc_hicp_aind). US: CPI-U, 1982-84 = 100 (BLS). Mexico: INPC, 2Q July 2018 = 100 (INEGI), mean of the twelve monthly values.",
+    "description": "All-items consumer price index, annual averages 2021 and 2024. Euro countries: HICP 2015 = 100 (Eurostat prc_hicp_aind). US: CPI-U, 1982-84 = 100 (BLS). Mexico: INPC, 2Q July 2018 = 100 (INEGI), mean of the twelve monthly values. Canada: CPI, 2010 = 100 (Statistics Canada, via the World Bank, FP.CPI.TOTL).",
     "FIN": {
       "2021": 106.12,
       "2024": 119.83
@@ -140,6 +148,10 @@
     "PRT": {
       "2021": 104.55,
       "2024": 122.15
+    },
+    "CAN": {
+      "2021": 121.587006296508,
+      "2024": 138.108185460789
     }
   },
   "cities": {
@@ -202,6 +214,14 @@
     "mx-la-paz": {
       "country": "MEX",
       "currency": "MXN"
+    },
+    "ca-toronto": {
+      "country": "CAN",
+      "currency": "CAD"
+    },
+    "us-sacramento": {
+      "country": "USA",
+      "currency": "USD"
     }
   }
 }

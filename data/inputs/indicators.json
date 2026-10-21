@@ -123,7 +123,7 @@
       "country": "FIN",
       "latitude": 61.5,
       "climate": {
-        "coldestMonthMean": -6.0,
+        "coldestMonthMean": -6,
         "warmestMonthMeanMax": 22.2,
         "station": "Tampere-Pirkkala airport",
         "period": "1991-2020",
@@ -273,7 +273,7 @@
       "country": "MEX",
       "latitude": 20.97,
       "climate": {
-        "coldestMonthMean": 24.0,
+        "coldestMonthMean": 24,
         "warmestMonthMeanMax": 36.3,
         "station": "Mérida Centro",
         "period": "1951-2010",
@@ -317,12 +317,52 @@
           "limitations": "A state rate for Baja California Sur, by state of registration; 2025 figures are preliminary."
         }
       }
+    },
+    "ca-toronto": {
+      "country": "CAN",
+      "latitude": 43.65,
+      "climate": {
+        "coldestMonthMean": -3.5,
+        "warmestMonthMeanMax": 27,
+        "station": "Toronto (The Annex)",
+        "period": "1991-2020",
+        "sourceId": "eccc-normals-toronto"
+      },
+      "foreignBornShare": {
+        "value": 46.6,
+        "period": "2021",
+        "sourceId": "statcan-census-2021",
+        "basis": "Immigrants (people born outside Canada) as a share of Toronto's population, 2021 census: 1,286,140 people (Statistics Canada, via Wikipedia)."
+      },
+      "carCommuteShare": null
+    },
+    "us-sacramento": {
+      "country": "USA",
+      "latitude": 38.58,
+      "climate": {
+        "coldestMonthMean": 8.5,
+        "warmestMonthMeanMax": 33.7,
+        "station": "Sacramento Executive Airport",
+        "period": "1991-2020",
+        "sourceId": "noaa-normals-sacramento"
+      },
+      "foreignBornShare": {
+        "value": 22.3,
+        "period": "2020-2024",
+        "sourceId": "census-quickfacts-sacramento",
+        "basis": "Foreign-born residents as a share of the population of the city of Sacramento (American Community Survey 2020–2024, 5-year, Census QuickFacts)."
+      },
+      "carCommuteShare": null
     }
   },
   "national": {
     "homicideRate": {
       "worldBankCode": "VC.IHR.PSRC.P5",
       "values": {
+        "CAN": {
+          "value": 1.98,
+          "year": "2023"
+        },
         "DEU": {
           "value": 0.911,
           "year": "2023"
@@ -356,6 +396,10 @@
     "voiceAccountability": {
       "worldBankCode": "GOV_WGI_VA.EST",
       "values": {
+        "CAN": {
+          "value": 1.495,
+          "year": "2025"
+        },
         "DEU": {
           "value": 1.542,
           "year": "2025"
@@ -389,6 +433,10 @@
     "governmentEffectiveness": {
       "worldBankCode": "GOV_WGI_GE.EST",
       "values": {
+        "CAN": {
+          "value": 1.757,
+          "year": "2025"
+        },
         "DEU": {
           "value": 1.49,
           "year": "2025"
@@ -422,6 +470,10 @@
     "ruleOfLaw": {
       "worldBankCode": "GOV_WGI_RL.EST",
       "values": {
+        "CAN": {
+          "value": 1.477,
+          "year": "2025"
+        },
         "DEU": {
           "value": 1.604,
           "year": "2025"
@@ -455,6 +507,10 @@
     "controlOfCorruption": {
       "worldBankCode": "GOV_WGI_CC.EST",
       "values": {
+        "CAN": {
+          "value": 1.595,
+          "year": "2025"
+        },
         "DEU": {
           "value": 1.676,
           "year": "2025"
@@ -488,6 +544,10 @@
     "lifeExpectancy": {
       "worldBankCode": "SP.DYN.LE00.IN",
       "values": {
+        "CAN": {
+          "value": 82.108,
+          "year": "2024"
+        },
         "DEU": {
           "value": 80.793,
           "year": "2024"
@@ -521,6 +581,10 @@
     "oopShare": {
       "worldBankCode": "SH.XPD.OOPC.CH.ZS",
       "values": {
+        "CAN": {
+          "value": 15.277,
+          "year": "2024"
+        },
         "DEU": {
           "value": 10.707,
           "year": "2024"

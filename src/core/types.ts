@@ -199,7 +199,7 @@ export interface CityCosts {
   servicePriceIndex?: Observation | null;
 }
 
-export const TAX_MODELS = ['fi', 'us', 'ee', 'de', 'es', 'pt', 'mx'] as const;
+export const TAX_MODELS = ['fi', 'us', 'ee', 'de', 'es', 'pt', 'mx', 'ca'] as const;
 export type TaxModelId = (typeof TAX_MODELS)[number];
 
 export interface TaxJurisdiction {
@@ -246,7 +246,6 @@ export interface FxSnapshot {
 export interface Release {
   version: string;
   builtAt: string;
-  containsFixtures: boolean;
   fx: FxSnapshot;
   sources: Source[];
   countries: Country[];

@@ -53,7 +53,7 @@ const savingsEur = (r: CityResult): number => r.budget.savings.typical / r.fxRat
 
 /**
  * Ranks cities for the user's household and preferences. Pure: same inputs, same output.
- * Must-haves are applied first; development fixtures never take part. Sorting by fit uses the low end
+ * Must-haves are applied first; a city marked as a fixture never takes part. Sorting by fit uses the low end
  * of the fit range (missing data counts against a city), then the high end, then the city name.
  * Sorting by money ranks complete budgets by estimated savings in euros; incomplete budgets are kept
  * apart, because their balance leaves costs out.

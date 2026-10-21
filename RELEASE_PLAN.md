@@ -392,6 +392,17 @@ Childcare for Hermosillo and the new cities is not in scope; it moves to the chi
 
 **Done when** all 15 cities in eight countries run on production data (hard data or labelled estimates) through Explore, Find and Compare for adults without children, every country has a car cost with the paid-off note, and no fixture reaches the deployed site.
 
+**Notes for the 0.7.1 review**
+
+- Most new figures are unverified estimates from cost-of-living sites (Expatistan, livingcost.org, Nomad List) or republications; `npm run estimates` lists all of them. The Mexican rents use a centre/elsewhere split from those sites; the city-wide value is the midpoint, a choice of this release.
+- Sacramento's HUD rents and Toronto's listing rents are read through republications and labelled unverified; Austin's HUD rents, read the same way in 0.3.0, are not labelled yet: make them consistent.
+- Car costs: US from AAA's small sedan (the running share is AAA's all-vehicle split); Spain and Portugal take depreciation as 30 to 40% of the total from German figures; Canada's figure is a mid-size sedan in its first year. Estonia has no published figure and stays missing, so a household with a car in Tallinn gets an incomplete transport cost.
+- Canada (Ontario): matches RCGT's $60,000 example and a published $80,000 calculator case to the dollar; spouse and eligible-dependant amounts are hand-worked. The Ontario tax reduction for low incomes is not modelled. Official calculator cross-check (CRA) is part of 0.7.1.
+- Mérida's climate normals are for 1951–2010; Sacramento's lifestyle prices are national because BEA's regional price parities could not be read; Toronto and Mexican cities have no car-commuting figure.
+- Fixtures are retired: no `fixtures/` tree, no `--with-fixtures` build, no preview UI. Validation still rejects anything marked as a fixture in `data/`.
+- Childcare is missing for the four Mexican cities, Toronto and Sacramento, by the owner's priority.
+- Compiled JavaScript 192.5 kB (52.3 kB compressed); `release.json` 357.4 kB, up from 194.4 kB, mostly from the estimates' bases and the five new cities.
+
 ### 0.7.1 — Maintenance: review of 0.7.0
 
 **Status:** Not started

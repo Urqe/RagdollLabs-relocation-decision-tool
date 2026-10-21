@@ -1,0 +1,495 @@
+{
+  "id": "ca-toronto",
+  "name": "Toronto",
+  "countryId": "ca",
+  "regionId": "ca-on",
+  "role": "regional-capital",
+  "tax": {
+    "model": "ca",
+    "subdivision": "on"
+  },
+  "languages": [
+    "en"
+  ],
+  "indicators": {
+    "homicideRate": {
+      "value": 1.98,
+      "unit": "per 100,000 people a year",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-homicide",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator VC.IHR.PSRC.P5."
+    },
+    "voiceAccountability": {
+      "value": 1.495,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_VA.EST."
+    },
+    "governmentEffectiveness": {
+      "value": 1.757,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_GE.EST."
+    },
+    "ruleOfLaw": {
+      "value": 1.477,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_RL.EST."
+    },
+    "controlOfCorruption": {
+      "value": 1.595,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_CC.EST."
+    },
+    "lifeExpectancy": {
+      "value": 82.108,
+      "unit": "years",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-life-expectancy",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SP.DYN.LE00.IN."
+    },
+    "oopShare": {
+      "value": 15.277,
+      "unit": "% of health spending",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-oop-share",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS."
+    },
+    "eatingOutPriceLevel": {
+      "value": 0.86,
+      "unit": "ratio to Finland",
+      "period": "2021",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
+    },
+    "coldestMonthMean": {
+      "value": -3.5,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "eccc-normals-toronto",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average temperature of the coldest month, Toronto (The Annex), climate normals 1991-2020."
+    },
+    "warmestMonthMeanMax": {
+      "value": 27,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "eccc-normals-toronto",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average daily high of the warmest month, Toronto (The Annex), climate normals 1991-2020."
+    },
+    "decemberDaylight": {
+      "value": 8.9,
+      "unit": "hours",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "astronomy"
+      ],
+      "basis": "Sunrise to sunset on 21 December at latitude 43.65°, calculated.",
+      "sourceId": "astronomy",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "foreignBornShare": {
+      "value": 46.6,
+      "unit": "%",
+      "period": "2021",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "statcan-census-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Immigrants (people born outside Canada) as a share of Toronto's population, 2021 census: 1,286,140 people (Statistics Canada, via Wikipedia)."
+    },
+    "carCommuteShare": null
+  },
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 2262,
+          "unit": "CAD/month",
+          "currency": "CAD",
+          "retrieved": "2026-10-21",
+          "period": "2026-10",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "doorinsight-toronto",
+            "rentals-ca-2026-09"
+          ],
+          "basis": "Average asking rents in the city of Toronto, October 2026 (Door Insight, as reported by Moving2Canada): one bedroom $2,262, two $2,930, three $3,674; the Rentals.ca and Urbanation report for August 2026 agrees ($2,939 and $3,642 for two and three bedrooms).",
+          "sourceId": "doorinsight-toronto",
+          "confidence": "low",
+          "limitations": "An unverified estimate from listing-site reports read through republications. Asking rents for vacant units; utilities, parking and tenant insurance are often extra. To be checked against the original reports or CMHC before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "one-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 2930,
+          "unit": "CAD/month",
+          "currency": "CAD",
+          "retrieved": "2026-10-21",
+          "period": "2026-10",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "doorinsight-toronto",
+            "rentals-ca-2026-09"
+          ],
+          "basis": "Average asking rents in the city of Toronto, October 2026 (Door Insight, as reported by Moving2Canada): one bedroom $2,262, two $2,930, three $3,674; the Rentals.ca and Urbanation report for August 2026 agrees ($2,939 and $3,642 for two and three bedrooms).",
+          "sourceId": "doorinsight-toronto",
+          "confidence": "low",
+          "limitations": "An unverified estimate from listing-site reports read through republications. Asking rents for vacant units; utilities, parking and tenant insurance are often extra. To be checked against the original reports or CMHC before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "two-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 3674,
+          "unit": "CAD/month",
+          "currency": "CAD",
+          "retrieved": "2026-10-21",
+          "period": "2026-10",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "doorinsight-toronto",
+            "rentals-ca-2026-09"
+          ],
+          "basis": "Average asking rents in the city of Toronto, October 2026 (Door Insight, as reported by Moving2Canada): one bedroom $2,262, two $2,930, three $3,674; the Rentals.ca and Urbanation report for August 2026 agrees ($2,939 and $3,642 for two and three bedrooms).",
+          "sourceId": "doorinsight-toronto",
+          "confidence": "low",
+          "limitations": "An unverified estimate from listing-site reports read through republications. Asking rents for vacant units; utilities, parking and tenant insurance are often extra. To be checked against the original reports or CMHC before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "three-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 4490,
+          "unit": "CAD/month",
+          "currency": "CAD",
+          "retrieved": "2026-10-21",
+          "period": "2026-10",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "doorinsight-toronto",
+            "rentals-ca-2026-09"
+          ],
+          "basis": "Average asking rents in the city of Toronto, October 2026 (Door Insight, as reported by Moving2Canada): one bedroom $2,262, two $2,930, three $3,674; the Rentals.ca and Urbanation report for August 2026 agrees ($2,939 and $3,642 for two and three bedrooms). No four-bedroom figure was published; the three-bedroom rent is scaled by the app's floor areas (110 m² against 90 m²).",
+          "sourceId": "doorinsight-toronto",
+          "confidence": "low",
+          "limitations": "An unverified estimate from listing-site reports read through republications. Asking rents for vacant units; utilities, parking and tenant insurance are often extra. To be checked against the original reports or CMHC before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "four-bedroom unit"
+          },
+          "unverified": true
+        }
+      }
+    },
+    "utilities": {
+      "1": {
+        "value": 130,
+        "low": 115,
+        "high": 150,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-toronto",
+          "livingcost-toronto"
+        ],
+        "basis": "Electricity, heating and water, from published averages: Expatistan gives C$198 a month for two people in an 85 m² flat (about 2.30 per m²) and C$134 for one person in a 45 m² studio (about 3.00 per m²); livingcost.org gives about US$84 (about C$119) for one person, about 2.60 per m² in a 45 m² flat. 2.6 per m² a month × 50 m², the app's assumed size for 1 bedroom.",
+        "sourceId": "expatistan-toronto",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; many Toronto rents include heat or water, so this can count something the rent already covers. To be checked before 1.0.",
+        "unverified": true
+      },
+      "2": {
+        "value": 182,
+        "low": 161,
+        "high": 210,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-toronto",
+          "livingcost-toronto"
+        ],
+        "basis": "Electricity, heating and water, from published averages: Expatistan gives C$198 a month for two people in an 85 m² flat (about 2.30 per m²) and C$134 for one person in a 45 m² studio (about 3.00 per m²); livingcost.org gives about US$84 (about C$119) for one person, about 2.60 per m² in a 45 m² flat. 2.6 per m² a month × 70 m², the app's assumed size for 2 bedrooms.",
+        "sourceId": "expatistan-toronto",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; many Toronto rents include heat or water, so this can count something the rent already covers. To be checked before 1.0.",
+        "unverified": true
+      },
+      "3": {
+        "value": 234,
+        "low": 207,
+        "high": 270,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-toronto",
+          "livingcost-toronto"
+        ],
+        "basis": "Electricity, heating and water, from published averages: Expatistan gives C$198 a month for two people in an 85 m² flat (about 2.30 per m²) and C$134 for one person in a 45 m² studio (about 3.00 per m²); livingcost.org gives about US$84 (about C$119) for one person, about 2.60 per m² in a 45 m² flat. 2.6 per m² a month × 90 m², the app's assumed size for 3 bedrooms.",
+        "sourceId": "expatistan-toronto",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; many Toronto rents include heat or water, so this can count something the rent already covers. To be checked before 1.0.",
+        "unverified": true
+      },
+      "4": {
+        "value": 286,
+        "low": 253,
+        "high": 330,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-toronto",
+          "livingcost-toronto"
+        ],
+        "basis": "Electricity, heating and water, from published averages: Expatistan gives C$198 a month for two people in an 85 m² flat (about 2.30 per m²) and C$134 for one person in a 45 m² studio (about 3.00 per m²); livingcost.org gives about US$84 (about C$119) for one person, about 2.60 per m² in a 45 m² flat. 2.6 per m² a month × 110 m², the app's assumed size for 4 bedrooms.",
+        "sourceId": "expatistan-toronto",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; many Toronto rents include heat or water, so this can count something the rent already covers. To be checked before 1.0.",
+        "unverified": true
+      }
+    },
+    "transitPassAdult": {
+      "value": 145.2,
+      "high": 155.1,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "ttc-fares-2026"
+      ],
+      "basis": "TTC adult fare of $3.30 with PRESTO for 44 rides a month; since 31 August 2026 fares are capped after 47 rides a month ($155.10), which replaced the monthly pass.",
+      "sourceId": "ttc-fares-2026",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "limitations": "Assumes two rides a working day."
+    },
+    "healthcarePerPerson": {
+      "value": 111,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Out-of-pocket health spending per person in Canada (US$974.38 in 2024, World Bank) at the 2024 average exchange rate (1.3694 dollars per US dollar).",
+      "sourceId": "wb-oop-health",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "limitations": "A national average. Doctors and hospitals are covered by OHIP; dental care, prescriptions and eyewear are often paid privately or through an employer plan."
+    },
+    "childcarePerChild": null,
+    "carMonthly": {
+      "value": 1288,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "WealthNorth (2026): a new mid-size sedan at $40,000 costs about $15,445 in its first year: depreciation $8,000, loan interest $1,470, insurance $2,100, fuel $2,475, maintenance $1,200 and licensing $200.",
+      "sourceId": "wealthnorth-car-2026",
+      "confidence": "low",
+      "limitations": "An unverified single claim for a mid-size sedan in its first year, when depreciation is highest; a compact car costs less. To be checked before 1.0.",
+      "unverified": true
+    },
+    "carRunningMonthly": {
+      "value": 498,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "What remains once the car is paid for: insurance, fuel, maintenance and licensing, $5,975 a year, about $498 a month. Ontario no longer charges for plate renewal.",
+      "sourceId": "wealthnorth-car-2026",
+      "confidence": "low",
+      "limitations": "An unverified single claim for a mid-size sedan in its first year, when depreciation is highest; a compact car costs less. To be checked before 1.0.",
+      "unverified": true
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 593,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: 1.63 CAD for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 258,
+      "unit": "CAD/month",
+      "currency": "CAD",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: 3.66 CAD for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 250,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: 1.28 CAD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 313,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: 1.25 CAD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 151,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: 1.36 CAD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    }
+  }
+}

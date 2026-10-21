@@ -45,6 +45,8 @@ Each file in `data/tax/` is checked against its model's schema in `src/data/tax-
 | Spain | 2026 | Madrid scale and minimums from Ley 13/2023 (BOCM); Valencian scale from Ley 5/2026 art. 18 (DOGV); 2026 low-income credit from RDL 5/2026. The low-income work reduction uses the 2025 rule (no 2026 change found). Joint filing for married couples (€3,400 reduction, personal minimum once) from the AEAT joint-filing pages. |
 | Portugal | 2026 | IRS table and specific deduction from PwC's 2026 tax guide; brackets cross-checked against the published "parcela a abater" column. Joint taxation (art. 69 CIRS, quociente conjugal) for married couples and registered partners from 0.6.0; reference cases worked by hand, official calculator cross-check in 0.6.1. |
 | Mexico | 2026 | Annual ISR tariff from Anexo 8 RMF 2026 (SAT, DOF 28 Dec 2025); employment subsidy from the decree of 31 Dec 2025; UMA 2026 from INEGI; IMSS employee and employer rates; Sonora payroll tax 3%. Tested against the published cuota fija column and cases worked by hand. |
+| Canada, Ontario | 2026 | CRA payroll tables T4032-ON (January 2026): CPP, CPP2, EI, federal and Ontario brackets, basic personal amounts, surtax and Health Premium; spouse amounts from TD1ON 2026 and RCGT's 2026 tables. Matches RCGT's published $60,000 example and a $80,000 calculator case to the dollar (0.7.0). |
+| Mexico, other states | 2026 | Payroll tax: Mexico City 4.00%, Yucatán 3.75%, Baja California Sur 3.00% (BHR Mexico, Contribuciones locales 2026). |
 | California | 2025 schedules | FTB's 2026 estimated-tax instructions direct use of the 2025 schedules until 2026 ones are published. Update when FTB publishes them. |
 
 ## Pilot city data (0.3.0)
@@ -57,7 +59,7 @@ Each file in `data/tax/` is checked against its model's schema in `src/data/tax-
 | Transport | Local monthly passes; Hermosillo has none, so 44 rides at the 9-peso fare. |
 | Healthcare | Out-of-pocket spending per person (Eurostat for the EU, World Bank for Mexico); US adds the worker's share of an employer plan premium. |
 | Childcare | Helsinki: the municipal fee rule from August 2026, calculated from gross household income and family size. Berlin: free, meal contribution only. Madrid: public network meals; tuition free. Austin: Texas average infant care. Hermosillo: missing. |
-| Car | Austin only (AAA national average); missing elsewhere. |
+| Car | From 0.7.0: national estimates for every country except Estonia (see below). |
 
 Two values are still read from a site that republishes the original, because the original blocks automated requests: HUD Fair Market Rents (via propmetrics.co) and Child Care Aware's Texas prices (via FOX 7 Austin). Both are to be checked by hand (review 0.3.1, T5 and T8).
 
@@ -72,6 +74,20 @@ Two values are still read from a site that republishes the original, because the
 | Healthcare | Eurostat out-of-pocket spending per inhabitant, national | same | same | same |
 
 Climate normals 1991–2020 come from Wikipedia's tables citing FMI (Tampere-Pirkkala), the Estonian Weather Service, AEMET and IPMA (Lisboa Instituto Geofísico, Porto airport); they are to be checked against the originals in 0.6.1, as V14 did for the pilot cities. Foreign-born and car-commuting shares are from Eurostat's Urban Audit; for Valencia, Lisbon and Porto Eurostat's "greater city" covers more than the municipality. Valencia's car-commuting figure is an unverified single claim (about 41% of all trips in the metropolitan area, 2018 survey, via Pateco). Estonia and Portugal were added to the World Bank import and to the price-level inputs (ICP 2021, HICP).
+
+## North America and cars (0.7.0)
+
+Owner priorities: usable for adults without children first, with unverified estimates where needed; childcare later.
+
+| City | Rent | Utilities | Transport |
+| --- | --- | --- | --- |
+| Hermosillo, Mexico City, Mérida, La Paz | Unverified estimates per m² (centre, elsewhere, city-wide midpoint) from Expatistan, livingcost.org and Nomad List | Unverified estimates per m² from the same sites | 44 rides a month at the local bus or metro fare |
+| Toronto | Door Insight and Rentals.ca asking rents by bedroom (unverified, read through republications) | Unverified estimate per m² from Expatistan and livingcost.org | TTC fare $3.30, capped at 47 rides |
+| Sacramento | HUD Fair Market Rents FY2027 by bedroom, utilities included (unverified, read through republications) | Included in the rent | SacRT monthly pass $100 |
+
+Childcare is missing for the four Mexican cities, Toronto and Sacramento (moved to the childcare release). Sacramento's lifestyle prices are national: BEA's regional price parities could not be read this time.
+
+**Car costs** (`carByCountry` in `data/inputs/costs.json`): the monthly cost of a new, non-luxury five-seat car, and the part that remains once it is paid for (fuel, insurance, maintenance, tax). US from AAA's small-sedan figure; Germany from ADAC (via fahrzeugschein.de), mobile.de and carwow; Finland from Todelliset Kulut; Spain from RACE and Motor16; Portugal from Autocost via Caetano; Mexico from El Imparcial; Canada from WealthNorth. Where a source gives no depreciation, 30 to 40% of the total is used, the share ADAC's figures give. Estonia has no published figure yet and stays missing. All but the US are unverified estimates.
 
 ## Preference indicators (0.4.0)
 

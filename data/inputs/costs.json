@@ -1311,6 +1311,156 @@
       "childcarePerChild": null,
       "car": "MX",
       "retrieved": "2026-10-21"
+    },
+    "ca-toronto": {
+      "currency": "CAD",
+      "rentObservations": {
+        "1": {
+          "value": 2262,
+          "dwelling": "one-bedroom unit"
+        },
+        "2": {
+          "value": 2930,
+          "dwelling": "two-bedroom unit"
+        },
+        "3": {
+          "value": 3674,
+          "dwelling": "three-bedroom unit"
+        },
+        "4": {
+          "value": 4490,
+          "dwelling": "four-bedroom unit",
+          "basis": "No four-bedroom figure was published; the three-bedroom rent is scaled by the app's floor areas (110 m² against 90 m²)."
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026-10",
+        "geoLevel": "city",
+        "sourceId": "doorinsight-toronto",
+        "derivedFrom": [
+          "rentals-ca-2026-09"
+        ],
+        "basis": "Average asking rents in the city of Toronto, October 2026 (Door Insight, as reported by Moving2Canada): one bedroom $2,262, two $2,930, three $3,674; the Rentals.ca and Urbanation report for August 2026 agrees ($2,939 and $3,642 for two and three bedrooms).",
+        "confidence": "medium",
+        "unverified": true,
+        "limitations": "An unverified estimate from listing-site reports read through republications. Asking rents for vacant units; utilities, parking and tenant insurance are often extra. To be checked against the original reports or CMHC before 1.0."
+      },
+      "utilitiesPerM2": {
+        "value": 2.6,
+        "low": 2.3,
+        "high": 3.0,
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-toronto",
+        "derivedFrom": [
+          "livingcost-toronto"
+        ],
+        "basis": "Electricity, heating and water, from published averages: Expatistan gives C$198 a month for two people in an 85 m² flat (about 2.30 per m²) and C$134 for one person in a 45 m² studio (about 3.00 per m²); livingcost.org gives about US$84 (about C$119) for one person, about 2.60 per m² in a 45 m² flat.",
+        "unverified": true,
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; many Toronto rents include heat or water, so this can count something the rent already covers. To be checked before 1.0."
+      },
+      "transitPassAdult": {
+        "value": 145.2,
+        "high": 155.1,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "ttc-fares-2026"
+        ],
+        "basis": "TTC adult fare of $3.30 with PRESTO for 44 rides a month; since 31 August 2026 fares are capped after 47 rides a month ($155.10), which replaced the monthly pass.",
+        "sourceId": "ttc-fares-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "high",
+        "limitations": "Assumes two rides a working day."
+      },
+      "healthcarePerPerson": {
+        "value": 111,
+        "unit": "CAD/month",
+        "currency": "CAD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Out-of-pocket health spending per person in Canada (US$974.38 in 2024, World Bank) at the 2024 average exchange rate (1.3694 dollars per US dollar).",
+        "sourceId": "wb-oop-health",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "A national average. Doctors and hospitals are covered by OHIP; dental care, prescriptions and eyewear are often paid privately or through an employer plan."
+      },
+      "childcarePerChild": null,
+      "car": "CA",
+      "retrieved": "2026-10-21"
+    },
+    "us-sacramento": {
+      "currency": "USD",
+      "rentObservations": {
+        "1": {
+          "value": 1793,
+          "dwelling": "one-bedroom unit"
+        },
+        "2": {
+          "value": 2201,
+          "dwelling": "two-bedroom unit"
+        },
+        "3": {
+          "value": 2887,
+          "dwelling": "three-bedroom unit"
+        },
+        "4": {
+          "value": 3329,
+          "dwelling": "four-bedroom unit"
+        },
+        "market": "recent-movers",
+        "statistic": "40th-percentile",
+        "period": "2026",
+        "geoLevel": "region",
+        "sourceId": "hud-fmr-sacramento",
+        "derivedFrom": [
+          "fmr-map-california-2026"
+        ],
+        "includes": [
+          "utilities"
+        ],
+        "basis": "HUD Fair Market Rents for FY2027 (from 1 October 2026), Sacramento--Roseville--Arden-Arcade metro area, as republished by VoucherMatch and agreed by Fair Market Rent Map: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
+        "confidence": "medium",
+        "unverified": true,
+        "limitations": "Read from republications of HUD's table, not HUD's own site; a metro-wide figure. FY2026 was $2,255 for two bedrooms. To be checked against HUD before 1.0."
+      },
+      "transitPassAdult": {
+        "value": 100,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "SacRT basic adult monthly pass.",
+        "sourceId": "sacrt-fares",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Read from SacRT's fare page on its redesign site."
+      },
+      "healthcarePerPerson": {
+        "value": 256,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024-2025",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "kff-ehbs-2025",
+          "cms-nhe-2024"
+        ],
+        "basis": "Employer health plan: the average worker share of a single-coverage premium ($1,440 a year, KFF 2025) plus out-of-pocket spending per person ($556.6 billion in 2024, CMS, over 340.0 million people).",
+        "sourceId": "kff-ehbs-2025",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+      },
+      "childcarePerChild": null,
+      "car": "US",
+      "retrieved": "2026-10-21"
     }
   },
   "carByCountry": {

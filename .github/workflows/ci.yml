@@ -26,8 +26,7 @@ jobs:
       - name: Install
         run: if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
       - run: npm run check
-      # Development fixtures stay in the deployed build, as labelled previews, until 0.6.0 retires them.
-      - run: npm run build:fixtures
+      - run: npm run build
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run e2e
       - uses: actions/upload-pages-artifact@v5

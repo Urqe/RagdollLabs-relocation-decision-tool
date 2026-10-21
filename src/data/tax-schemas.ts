@@ -189,8 +189,25 @@ const mx = obj({
   states: record(obj({ name: str, payrollTaxRate: fraction, confidence: str, source: str })),
 });
 
-const CURRENCY: Record<TaxModelId, string> = { fi: 'EUR', us: 'USD', ee: 'EUR', de: 'EUR', es: 'EUR', pt: 'EUR', mx: 'MXN' };
-export const TAX_SCHEMAS: Record<TaxModelId, Check> = { fi, us, ee, de, es, pt, mx };
+const ca = obj({
+  federal: obj({
+    brackets,
+    basicPersonalAmount: obj({ max: amount, min: amount, reductionFrom: amount, reductionTo: amount }, [ascending('reductionFrom', 'reductionTo'), (v, path, out) => {
+      if ((v.min as number) > (v.max as number)) out.push({ path, message: 'min must not exceed max' });
+    }]),
+    employmentAmount: amount,
+  }),
+  cpp: obj({ ympe: amount, basicExemption: amount, baseRate: fraction, firstAdditionalRate: fraction, yampe: amount, secondAdditionalRate: fraction, employerMatches: (v, path, out) => { if (typeof v !== 'boolean') out.push({ path, message: 'must be true or false' }); } }, [ascending('basicExemption', 'ympe', 'yampe')]),
+  ei: obj({ maxInsurableEarnings: amount, employeeRate: fraction, employerMultiple: num(1, 2, 'a multiple') }),
+  provinces: record(obj({
+    name: str, brackets, basicPersonalAmount: amount, spouseAmount: amount, spouseIncomeThreshold: amount,
+    surtax: list(obj({ over: amount, rate: fraction }), 0),
+    healthPremium: list(obj({ above: amount, base: amount, rate: fraction, max: amount }), 0),
+  })),
+});
+
+const CURRENCY: Record<TaxModelId, string> = { fi: 'EUR', us: 'USD', ee: 'EUR', de: 'EUR', es: 'EUR', pt: 'EUR', mx: 'MXN', ca: 'CAD' };
+export const TAX_SCHEMAS: Record<TaxModelId, Check> = { fi, us, ee, de, es, pt, mx, ca };
 
 /** Checks one tax parameter file: common header fields, then the model's own schema. */
 export function validateTaxFile(v: unknown, path: string, model: TaxModelId): Problem[] {
@@ -214,6 +231,7 @@ export function taxSubdivisions(model: TaxModelId, params: unknown): string[] | 
     case 'us': return isObj(params.states) ? Object.keys(params.states) : [];
     case 'es': return isObj(params.regions) ? Object.keys(params.regions) : [];
     case 'mx': return isObj(params.states) ? Object.keys(params.states) : [];
+    case 'ca': return isObj(params.provinces) ? Object.keys(params.provinces) : [];
     default: return null;
   }
 }

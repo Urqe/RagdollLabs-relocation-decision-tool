@@ -84,9 +84,9 @@ function sourceCell(c: CategoryResult, data: Dataset): Child {
   return [...groups.values()].map((group) => {
     const o = group[0]!;
     const s = data.source(o.sourceId);
-    const defs = s?.fixture ? [] : [...new Set(group.map(definition).filter((d): d is string => d !== null))];
+    const defs = [...new Set(group.map(definition).filter((d): d is string => d !== null))];
     return h('span', { class: `src conf-${o.confidence}` },
-      s ? (s.fixture ? 'Development fixture' : h('a', { href: s.url, rel: 'noopener', target: '_blank' }, s.name)) : o.sourceId,
+      s ? h('a', { href: s.url, rel: 'noopener', target: '_blank' }, s.name) : o.sourceId,
       `, ${o.period}`,
       o.provenance === 'inherited' ? `, ${GEO_WORD[o.geoLevel] ?? `${o.geoLevel} value`}` : '',
       o.provenance === 'estimated' && (o.derivedFrom?.length ?? 0) > 0 ? ', derived' : '',
@@ -245,7 +245,7 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
   const route = state.route;
   const requested = route.screen === 'explore' ? route.cityId : null;
   const found = requested ? data.city(requested) : undefined;
-  const city = requested ? found : (data.cities.find((c) => !c.fixture) ?? data.cities[0]);
+  const city = requested ? found : data.cities[0];
 
   const go = (id: string): void => { location.hash = formatRoute({ screen: 'explore', cityId: id }); };
   const picker = h('select', { id: 'city-picker', onchange: (e: Event) => go((e.target as HTMLSelectElement).value) },
@@ -282,10 +282,9 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
       h('h1', { id: 'city-name' }, city.name),
       h('p', { class: 'place' }, [region?.name, country.name].filter(Boolean).join(', '))),
     pickerField);
-  const fixtureNote = city.fixture ? h('p', { class: 'banner fixture', role: 'note' }, 'Development preview. The costs for this city are placeholders, not real figures, and it is left out of any comparison. Tax rules are real 2026 rules.') : null;
 
   if (state.invalidFields.length > 0) {
-    replaceChildren(root, head, fixtureNote, h('p', { class: 'empty prompt', role: 'status' }, 'Fix the highlighted household field to see results.'));
+    replaceChildren(root, head, h('p', { class: 'empty prompt', role: 'status' }, 'Fix the highlighted household field to see results.'));
     return;
   }
 
@@ -310,7 +309,6 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
 
   replaceChildren(root,
     head,
-    fixtureNote,
     salaryNote,
     result.problems.length > 0 ? h('ul', { class: 'banner problems', role: 'alert' }, result.problems.map((p) => h('li', {}, p))) : null,
     h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),

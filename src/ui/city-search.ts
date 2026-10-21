@@ -24,19 +24,14 @@ export function searchCities(cities: City[], query: string, data: Pick<Dataset, 
   return scored.sort((a, b) => a.rank - b.rank || a.city.name.localeCompare(b.city.name)).map((s) => s.city);
 }
 
-/** Options grouped by country, in the order countries first appear; development previews last, apart. */
+/** Options grouped by country, countries and cities in alphabetical order. */
 export function groupedOptions(cities: City[], data: Dataset, selectedId: string | null, label: (c: City) => string = (c) => c.name): HTMLElement[] {
-  const countries = [...new Set(cities.filter((c) => !c.fixture).map((c) => c.countryId))]
+  const countries = [...new Set(cities.map((c) => c.countryId))]
     .sort((a, b) => (data.country(a)?.name ?? a).localeCompare(data.country(b)?.name ?? b));
   const groups = countries.map((cid) =>
     h('optgroup', { label: data.country(cid)?.name ?? cid },
-      cities.filter((c) => c.countryId === cid && !c.fixture).sort((a, b) => a.name.localeCompare(b.name))
+      cities.filter((c) => c.countryId === cid).sort((a, b) => a.name.localeCompare(b.name))
         .map((c) => h('option', { value: c.id, selected: c.id === selectedId }, label(c)))));
-  const previews = cities.filter((c) => c.fixture);
-  if (previews.length > 0) {
-    groups.push(h('optgroup', { label: 'Development preview (placeholder costs)' },
-      previews.map((c) => h('option', { value: c.id, selected: c.id === selectedId }, `${c.name}, ${data.country(c.countryId)?.name ?? c.countryId}`))));
-  }
   return groups;
 }
 

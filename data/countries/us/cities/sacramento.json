@@ -1,0 +1,424 @@
+{
+  "id": "us-sacramento",
+  "name": "Sacramento",
+  "countryId": "us",
+  "regionId": "us-ca",
+  "role": "regional-capital",
+  "tax": {
+    "model": "us",
+    "subdivision": "ca"
+  },
+  "languages": [
+    "en"
+  ],
+  "indicators": {
+    "homicideRate": {
+      "value": 5.763,
+      "unit": "per 100,000 people a year",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-homicide",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator VC.IHR.PSRC.P5."
+    },
+    "voiceAccountability": {
+      "value": 0.645,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_VA.EST."
+    },
+    "governmentEffectiveness": {
+      "value": 1.191,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_GE.EST."
+    },
+    "ruleOfLaw": {
+      "value": 0.791,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_RL.EST."
+    },
+    "controlOfCorruption": {
+      "value": 0.865,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_CC.EST."
+    },
+    "lifeExpectancy": {
+      "value": 78.89,
+      "unit": "years",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-life-expectancy",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SP.DYN.LE00.IN."
+    },
+    "oopShare": {
+      "value": null,
+      "unit": "% of health spending",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-oop-share",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS: 10.927 in 2023.",
+      "limitations": "The US figure leaves out health insurance premiums, which most people there pay themselves, so it would make US healthcare look nearly free to use."
+    },
+    "eatingOutPriceLevel": {
+      "value": 0.8,
+      "unit": "ratio to Finland",
+      "period": "2021",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
+    },
+    "coldestMonthMean": {
+      "value": 8.5,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "noaa-normals-sacramento",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average temperature of the coldest month, Sacramento Executive Airport, climate normals 1991-2020."
+    },
+    "warmestMonthMeanMax": {
+      "value": 33.7,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "noaa-normals-sacramento",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average daily high of the warmest month, Sacramento Executive Airport, climate normals 1991-2020."
+    },
+    "decemberDaylight": {
+      "value": 9.5,
+      "unit": "hours",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "astronomy"
+      ],
+      "basis": "Sunrise to sunset on 21 December at latitude 38.58°, calculated.",
+      "sourceId": "astronomy",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "foreignBornShare": {
+      "value": 22.3,
+      "unit": "%",
+      "period": "2020-2024",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "census-quickfacts-sacramento",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Foreign-born residents as a share of the population of the city of Sacramento (American Community Survey 2020–2024, 5-year, Census QuickFacts)."
+    },
+    "carCommuteShare": null
+  },
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 1793,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-sacramento",
+            "fmr-map-california-2026"
+          ],
+          "basis": "HUD Fair Market Rents for FY2027 (from 1 October 2026), Sacramento--Roseville--Arden-Arcade metro area, as republished by VoucherMatch and agreed by Fair Market Rent Map: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-sacramento",
+          "confidence": "low",
+          "limitations": "Read from republications of HUD's table, not HUD's own site; a metro-wide figure. FY2026 was $2,255 for two bedrooms. To be checked against HUD before 1.0.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "one-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 2201,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-sacramento",
+            "fmr-map-california-2026"
+          ],
+          "basis": "HUD Fair Market Rents for FY2027 (from 1 October 2026), Sacramento--Roseville--Arden-Arcade metro area, as republished by VoucherMatch and agreed by Fair Market Rent Map: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-sacramento",
+          "confidence": "low",
+          "limitations": "Read from republications of HUD's table, not HUD's own site; a metro-wide figure. FY2026 was $2,255 for two bedrooms. To be checked against HUD before 1.0.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "two-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 2887,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-sacramento",
+            "fmr-map-california-2026"
+          ],
+          "basis": "HUD Fair Market Rents for FY2027 (from 1 October 2026), Sacramento--Roseville--Arden-Arcade metro area, as republished by VoucherMatch and agreed by Fair Market Rent Map: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-sacramento",
+          "confidence": "low",
+          "limitations": "Read from republications of HUD's table, not HUD's own site; a metro-wide figure. FY2026 was $2,255 for two bedrooms. To be checked against HUD before 1.0.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "three-bedroom unit"
+          },
+          "unverified": true
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 3329,
+          "unit": "USD/month",
+          "currency": "USD",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "region",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-sacramento",
+            "fmr-map-california-2026"
+          ],
+          "basis": "HUD Fair Market Rents for FY2027 (from 1 October 2026), Sacramento--Roseville--Arden-Arcade metro area, as republished by VoucherMatch and agreed by Fair Market Rent Map: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
+          "includes": [
+            "utilities"
+          ],
+          "sourceId": "hud-fmr-sacramento",
+          "confidence": "low",
+          "limitations": "Read from republications of HUD's table, not HUD's own site; a metro-wide figure. FY2026 was $2,255 for two bedrooms. To be checked against HUD before 1.0.",
+          "rent": {
+            "market": "recent-movers",
+            "statistic": "40th-percentile",
+            "dwelling": "four-bedroom unit"
+          },
+          "unverified": true
+        }
+      }
+    },
+    "transitPassAdult": {
+      "value": 100,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2026",
+      "geoLevel": "region",
+      "provenance": "observed",
+      "basis": "SacRT basic adult monthly pass.",
+      "sourceId": "sacrt-fares",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "limitations": "Read from SacRT's fare page on its redesign site."
+    },
+    "healthcarePerPerson": {
+      "value": 256,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024-2025",
+      "geoLevel": "country",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "kff-ehbs-2025",
+        "cms-nhe-2024"
+      ],
+      "basis": "Employer health plan: the average worker share of a single-coverage premium ($1,440 a year, KFF 2025) plus out-of-pocket spending per person ($556.6 billion in 2024, CMS, over 340.0 million people).",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+    },
+    "childcarePerChild": null,
+    "carMonthly": {
+      "value": 698,
+      "unit": "USD/month",
+      "currency": "USD",
+      "retrieved": "2026-10-21",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "AAA Your Driving Costs 2025: a new small sedan costs 55.87 cents a mile to own and run, $8,381 a year at 15,000 miles, including depreciation, finance charges, fuel, insurance, maintenance and fees.",
+      "sourceId": "aaa-fact-sheet-2025",
+      "confidence": "medium",
+      "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
+    },
+    "carRunningMonthly": {
+      "value": 369,
+      "unit": "USD/month",
+      "currency": "USD",
+      "retrieved": "2026-10-21",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "What remains once the car is paid for: fuel, maintenance, insurance and fees make up 52.8% of AAA's average new-vehicle cost ($6,113 of $11,577), applied to the small sedan: about $369 a month.",
+      "sourceId": "aaa-fact-sheet-2025",
+      "confidence": "medium",
+      "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
+    },
+    "groceriesPerAdultEquivalent": {
+      "value": 385,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: 1.06 USD for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 155,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: 2.20 USD for each euro spent in Finland.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 191,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: 0.98 USD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 251,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: 1.00 USD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 108,
+        "unit": "USD/month",
+        "currency": "USD",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: 0.97 USD for each euro spent in Finland.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    }
+  }
+}

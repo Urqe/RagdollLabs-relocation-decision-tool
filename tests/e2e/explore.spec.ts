@@ -1,6 +1,6 @@
 import { expect, test } from 'playwright/test';
 
-// Runs against `npm run build:fixtures`, served under the GitHub Pages subpath.
+// Runs against `npm run build`, served under the GitHub Pages subpath.
 
 test('explore a city: enter income, pick a city, see take-home, savings and sources', async ({ page }) => {
   await page.goto('./');
@@ -19,10 +19,11 @@ test('explore a city: enter income, pick a city, see take-home, savings and sour
   await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('Statistics Finland');
 });
 
-test('a development preview says its costs are placeholders', async ({ page }) => {
+test('no development preview remains: Sacramento runs on sourced data (0.7.0)', async ({ page }) => {
   await page.goto('./#/explore/us-sacramento');
-  await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('Development fixture');
-  await expect(page.getByRole('note')).toContainText('placeholders');
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Development fixture');
+  await expect(page.locator('.banner.fixture')).toHaveCount(0);
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('Fair Market Rents');
 });
 
 test('a deep link loads directly under the repository subpath', async ({ page }) => {
@@ -260,16 +261,15 @@ test('F9: a malformed link opens the app with "City not found"', async ({ page }
 
 // ---- 0.3.0 pilot ----
 
-test('pilot cities run on sourced data; placeholder cities are listed apart as previews', async ({ page }) => {
+test('cities run on sourced data, grouped by country in the picker', async ({ page }) => {
   await page.goto('./#/explore/fi-helsinki');
   await expect(page.getByRole('note')).toHaveCount(0);
   const table = page.getByRole('table', { name: /Monthly spending/ });
   await expect(table).not.toContainText('Development fixture');
   await expect(table).toContainText('Rents of dwellings');
   const groups = await page.locator('#city-picker optgroup').evaluateAll((gs) => gs.map((g) => (g as HTMLOptGroupElement).label));
-  expect(groups).toEqual(['Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States', 'Development preview (placeholder costs)']);
-  const preview = await page.locator('#city-picker optgroup[label^="Development preview"] option').allTextContents();
-  expect(preview).toEqual(['Sacramento, United States']);
+  expect(groups).toEqual(['Canada', 'Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States']);
+  expect(await page.locator('#city-picker option').count()).toBe(15);
 });
 
 test('a row explains what its value measures', async ({ page }) => {
@@ -280,9 +280,12 @@ test('a row explains what its value measures', async ({ page }) => {
   await expect(rent).toContainText('per m²');
 });
 
-test('Hermosillo: missing rent can be entered, and the Mexican tax model applies', async ({ page }) => {
+test('Hermosillo: rent is an unverified estimate that your own figure replaces, and the Mexican tax model applies', async ({ page }) => {
   await page.goto('./#/explore/mx-hermosillo');
-  await expect(page.locator('.band')).toContainText('no data for rent');
+  await expect(page.locator('.band')).not.toContainText('Incomplete');
+  await expect(page.getByRole('row', { name: /Rent/ })).toContainText('unverified estimate');
+  const own = page.locator('details.own');
+  if (!(await own.getAttribute('open'))) await own.locator('> summary').click();
   await page.getByLabel('Rent', { exact: true }).fill('12000');
   await page.getByLabel('Rent', { exact: true }).press('Tab');
   await page.getByLabel('My rent includes utilities').check();

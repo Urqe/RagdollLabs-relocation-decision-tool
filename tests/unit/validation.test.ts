@@ -8,16 +8,18 @@ import { join } from 'node:path';
 import { validateObservation } from '../../src/data/validate.ts';
 import type { City, Source } from '../../src/core/types.ts';
 
-const fixtures = readTree('fixtures');
 const data = readTree('data');
-const allSources = [...data.sources, ...fixtures.sources];
-// Sacramento is the last development fixture (until 0.7.0).
-const fixtureCity = fixtures.cities.find((c) => c.data.id === 'us-sacramento')!;
+// Development fixtures were retired in 0.7.0; the rules that keep placeholder data out of data/ stay, tested on
+// an in-memory fixture built from a production city.
+const fixtureSource: Source = { id: 'fixture', name: 'Development fixture', publisher: 'None', url: 'https://example.org', licence: 'Not data', attribution: 'Placeholder', cadence: 'irregular', lastChecked: '2026-10-19', fixture: true };
+const placeholder = { value: 70, low: 60, high: 81, unit: 'USD/month', currency: 'USD', period: '2026', geoLevel: 'city', provenance: 'estimated', sourceId: 'fixture', retrieved: '2026-10-19', confidence: 'low', limitations: 'Development fixture. Not real data.' } as const;
+const sac = data.cities.find((c) => c.data.id === 'us-sacramento')!;
+const fixtureCity = { path: 'fixtures/countries/us/cities/sacramento.json', data: { ...sac.data, fixture: true, costs: { ...sac.data.costs, internet: placeholder } } as City };
+const allSources = [...data.sources, fixtureSource];
 
 describe('repository data', () => {
-  test('current data/ and fixtures/ trees are valid', () => {
+  test('current data/ is valid', () => {
     assert.deepEqual(checkTree(data, data.sources).errors, []);
-    assert.deepEqual(checkTree(fixtures, allSources, data).errors, []);
   });
 
   test('current tax parameter files are valid', () => {
@@ -25,7 +27,7 @@ describe('repository data', () => {
   });
 
   test('every city names a tax model, subdivision and currency the release can calculate', () => {
-    assert.deepEqual(checkJurisdictions([data, { ...fixtures, countries: [...data.countries, ...fixtures.countries] }], taxParamFiles(), latestFx().data), []);
+    assert.deepEqual(checkJurisdictions([data], taxParamFiles(), latestFx().data), []);
   });
 });
 
@@ -124,8 +126,8 @@ describe('build-breaking problems', () => {
   test('a fixture file without the fixture flag fails', () => {
     const unflagged: City = { ...fixtureCity.data };
     delete unflagged.fixture;
-    const tree = { ...fixtures, cities: [{ path: fixtureCity.path, data: unflagged }] };
-    assert.ok(checkTree(tree, allSources).errors.some((e) => e.message.includes('must set "fixture": true')));
+    const tree = { base: 'fixtures' as const, sources: [fixtureSource], countries: [], regions: [], cities: [{ path: fixtureCity.path, data: unflagged }] };
+    assert.ok(checkTree(tree, allSources, data).errors.some((e) => e.message.includes('must set "fixture": true')));
   });
 
   test('an unverified estimate must be low confidence, say what it rests on, and cite known sources (0.6.1)', () => {

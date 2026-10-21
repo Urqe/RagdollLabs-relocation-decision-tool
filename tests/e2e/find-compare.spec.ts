@@ -17,14 +17,17 @@ test.describe('Find (0.5.0)', () => {
     await expect(card(page, 'fi-helsinki')).toContainText('fit');
     await expect(page.locator('.excluded-list')).toContainText('Hermosillo');
     await expect(page.locator('.excluded-list')).toContainText('Safety scores 0 out of 100');
-    // Austin (34) and Hermosillo (0) fall below 50 on safety; the other eight are ranked. Previews take no part.
+    // Austin, Sacramento and three Mexican cities fall below 50 on safety (US and Mexican homicide rates); the other ten are ranked.
     await expect(page.locator('.excluded-list')).toContainText('Austin');
-    await expect(page.locator('ol.find-list > li')).toHaveCount(8);
-    await expect(page.locator('.find-card[data-city="us-sacramento"]')).toHaveCount(0);
+    await expect(page.locator('ol.find-list > li')).toHaveCount(10);
+    await expect(page.locator('.excluded-list')).toContainText('Sacramento');
   });
 
   test('sorting by money keeps an incomplete budget out of the ranking', async ({ page }) => {
+    // A child in daycare: Hermosillo has no childcare figure yet, so its budget is incomplete.
     await page.goto('./#/find');
+    await page.evaluate(() => localStorage.setItem('rdt.profile.v1', JSON.stringify({ v: 2, profile: { household: { earnersGrossEur: [50000], children: { under14: 1, from14to16: 0, from17to24: 0 }, childrenInDaycare: 1 }, incomeMode: 'annual', monthsPerYear: 12, preferences: { importance: {}, choices: {} } } })));
+    await page.reload();
     await page.locator('label[for="sort-money"]').click();
     await expect(page.locator('#unranked-title')).toHaveText('Not ranked by money: a cost is missing');
     await expect(page.locator('.find-apart').first()).toContainText('Hermosillo');
@@ -44,7 +47,7 @@ test.describe('Find (0.5.0)', () => {
     await expect(page.locator('ol.find-list')).toHaveCount(0);
     await page.locator('#relax').click();
     await expect(page.locator('.no-match')).toHaveCount(0);
-    await expect(page.locator('ol.find-list > li')).toHaveCount(10);
+    await expect(page.locator('ol.find-list > li')).toHaveCount(15);
     await expect(page.locator('#card-food-value')).toHaveText('Very');
   });
 
@@ -108,10 +111,10 @@ test.describe('Compare (0.5.0)', () => {
     await expect(page.locator('tr[data-row="salary"] td[data-city="es-madrid"]')).toHaveText('€50,000 a year');
   });
 
-  test('development previews and unknown cities are left out, with a note', async ({ page }) => {
+  test('unknown cities are left out, with a note; Sacramento now takes part (0.7.0)', async ({ page }) => {
     await page.goto('./#/compare/fi-helsinki,us-sacramento,xx-nowhere');
-    await expect(page.locator('table.compare thead th')).toHaveCount(1);
-    await expect(page.locator('main')).toContainText('Sacramento is a development preview');
+    await expect(page.locator('table.compare thead th')).toHaveCount(2);
+    await expect(page.locator('main')).not.toContainText('development preview');
     await expect(page.locator('main')).toContainText('“xx-nowhere” is not in this data release');
   });
 

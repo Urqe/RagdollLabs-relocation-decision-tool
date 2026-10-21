@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from '../repo-data.ts';
 
-const COUNTRIES = ['FIN', 'DEU', 'ESP', 'EST', 'PRT', 'USA', 'MEX'];
+const COUNTRIES = ['FIN', 'DEU', 'ESP', 'EST', 'PRT', 'USA', 'MEX', 'CAN'];
 /** Indicator id in the app → World Bank code and API source. */
 const INDICATORS: Record<string, { code: string; source: number }> = {
   homicideRate: { code: 'VC.IHR.PSRC.P5', source: 2 },

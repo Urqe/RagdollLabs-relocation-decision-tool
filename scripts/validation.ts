@@ -113,17 +113,6 @@ export function checkDataVersion(v: unknown): Problem[] {
   return ok ? [] : [{ path: 'data/release.json', message: 'dataVersion must look like 2026-10-19.1' }];
 }
 
-/** The same id in data/ and fixtures/ would make one silently replace the other. */
-export function duplicateIds(data: Tree, fixtures: Tree): Problem[] {
-  const out: Problem[] = [];
-  const kinds: [string, JsonFileLike[], JsonFileLike[]][] = [['country', data.countries, fixtures.countries], ['region', data.regions, fixtures.regions], ['city', data.cities, fixtures.cities]];
-  for (const [kind, a, b] of kinds) {
-    const ids = new Set(a.map((f) => f.data.id));
-    for (const f of b) if (ids.has(f.data.id)) out.push({ path: f.path, message: `${kind} "${f.data.id}" also exists in data/; remove the fixture` });
-  }
-  return out;
-}
-type JsonFileLike = { path: string; data: { id: string } };
 
 /** The lifestyle definition: every category once, presets with positive multipliers, known sources. */
 export function checkLifestyle(v: unknown, sources: Source[]): Problem[] {

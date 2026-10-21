@@ -5,7 +5,7 @@ import { indexRelease } from '../../src/data/load.ts';
 import { buildRelease } from '../../scripts/build-release.ts';
 import type { Release } from '../../src/core/types.ts';
 
-const data = indexRelease(buildRelease(false) as unknown as Release);
+const data = indexRelease(buildRelease() as unknown as Release);
 const find = (q: string): string[] => searchCities(data.cities, q, data).map((c) => c.id);
 
 describe('city search (0.6.0)', () => {

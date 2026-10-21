@@ -77,7 +77,7 @@ test('city search by keyboard: down arrow into the list, Escape clears', async (
 test('the city pickers are grouped by country, in Explore and in Compare', async ({ page }) => {
   await page.goto('./#/compare/fi-helsinki');
   const groups = await page.locator('#compare-add optgroup').evaluateAll((gs) => gs.map((g) => (g as HTMLOptGroupElement).label));
-  expect(groups).toEqual(['Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States']);
+  expect(groups).toEqual(['Canada', 'Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States']);
   await page.getByLabel('Or search').fill('valen');
   await page.getByLabel('Or search').press('Enter');
   await expect(page).toHaveURL(/#\/compare\/fi-helsinki,es-valencia$/);

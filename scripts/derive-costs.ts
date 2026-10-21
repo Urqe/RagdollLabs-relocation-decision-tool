@@ -36,7 +36,8 @@ interface PerM2Rent {
   /** How the per-m² figures were made from the claims. */
   basis?: string;
 }
-interface DirectRent extends Omit<PerM2Rent, 'perM2' | 'dwelling'>, Record<Bedrooms, { value: number; dwelling: string }> {}
+/** Rents by bedroom count; `basis` marks one derived from another size rather than published. */
+interface DirectRent extends Omit<PerM2Rent, 'perM2' | 'dwelling'>, Record<Bedrooms, { value: number; dwelling: string; basis?: string }> {}
 
 interface CityInputs {
   currency: CurrencyCode;
@@ -128,10 +129,13 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
       const r = c.rentObservations;
       out.rent![b] = {
         cityWide: {
-          value: r[b].value, ...base, period: r.period, geoLevel: r.geoLevel, provenance: 'observed',
+          value: r[b].value, ...base, period: r.period, geoLevel: r.geoLevel, provenance: r.unverified || r[b].basis ? 'estimated' : 'observed',
+          ...(r.derivedFrom ? { derivedFrom: [r.sourceId, ...r.derivedFrom] } : {}),
+          ...(r[b].basis || r.basis ? { basis: [r.basis, r[b].basis].filter(Boolean).join(' ') } : {}),
           ...(r.includes ? { includes: r.includes } : {}),
-          sourceId: r.sourceId, confidence: r.confidence, limitations: r.limitations,
+          sourceId: r.sourceId, confidence: r.unverified ? 'low' : r.confidence, limitations: r.limitations,
           rent: { market: r.market, statistic: r.statistic, dwelling: r[b].dwelling },
+          ...(r.unverified ? { unverified: true } : {}),
         },
       };
     } else out.rent![b] = { cityWide: null };

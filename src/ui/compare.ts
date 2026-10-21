@@ -57,15 +57,13 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
   const go = (ids: string[]): void => { location.hash = formatRoute({ screen: 'compare', cityIds: ids, pay: null }); };
   const known = route.cityIds.map((id) => data.city(id));
   const unknown = route.cityIds.filter((_, i) => !known[i]);
-  const previews = known.filter((c): c is City => c !== undefined && c.fixture === true);
-  const cities = known.filter((c): c is City => c !== undefined && !c.fixture);
+  const cities = known.filter((c): c is City => c !== undefined);
   const ids = cities.map((c) => c.id);
-  const available = data.cities.filter((c) => !c.fixture && !ids.includes(c.id));
+  const available = data.cities.filter((c) => !ids.includes(c.id));
   document.title = cities.length > 0 ? `Compare ${cities.map((c) => c.name).join(', ')}: ${APP_NAME}` : `Compare: ${APP_NAME}`;
 
   const notes: Child[] = [
     unknown.length > 0 ? h('p', { class: 'banner problems', role: 'alert' }, `${unknown.map((u) => `“${u}”`).join(' and ')} ${unknown.length > 1 ? 'are' : 'is'} not in this data release, so ${unknown.length > 1 ? 'they are' : 'it is'} left out.`) : null,
-    previews.length > 0 ? h('p', { class: 'banner fixture', role: 'note' }, `${previews.map((c) => c.name).join(' and ')} ${previews.length > 1 ? 'are development previews' : 'is a development preview'} with placeholder costs, so ${previews.length > 1 ? 'they are' : 'it is'} left out of the comparison.`) : null,
   ];
   const head = [h('h1', {}, 'Compare cities'), h('p', { class: 'lede' }, 'Up to three cities side by side, for the same household.')];
   const adder = available.length > 0 && cities.length < MAX_COMPARE

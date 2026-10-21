@@ -80,9 +80,6 @@ function notes(fit: Fit, def: PreferenceDefinition, prefs: Preferences, essentia
 export function fitSection(city: City, prefs: Preferences, data: Dataset): HTMLElement {
   const def = data.release.preferences;
   const title = h('h2', { id: 'fit-title' }, 'Fit with what matters to you');
-  if (city.fixture) {
-    return h('section', { class: 'fit', 'aria-labelledby': 'fit-title' }, title, h('p', { class: 'hint' }, 'Not calculated for development previews.'));
-  }
   const fit = computeFit(city, prefs, def);
   if (fit === null) {
     const unscored = unscoredDimensions(def, prefs);
