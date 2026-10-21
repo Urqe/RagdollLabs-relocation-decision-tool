@@ -95,7 +95,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
-| 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | In progress |
+| 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia | Not started |
 | 0.7.0 | Feature | Expansion, North America: Canada tax model, Toronto, Sacramento, Mexico City, Mérida, La Paz; fixtures retired | Not started |
 | 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
@@ -345,7 +345,7 @@ Standard maintenance review of 0.5.0, plus an end-to-end review of Explore → F
 
 ### 0.6.0 — Expansion: Europe
 
-**Status:** In progress
+**Status:** Completed 2026-10-21 (6a2e6b1). All five cities on production data; Tallinn utilities, Lisbon and Porto water and Valencia car commuting moved to the backlog (no usable free source found).
 
 Split from the original 0.6.0 on 2026-10-21, as the plan allowed: ten cities of sourced data and a new tax model were too much for one release. North America is in 0.7.0.
 
