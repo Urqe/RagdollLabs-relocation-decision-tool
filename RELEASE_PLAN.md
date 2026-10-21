@@ -98,7 +98,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
-| 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | In progress |
+| 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | Completed 2026-10-21 (4aed96d) |
 | 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
 | 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
 | 0.9.x | Feature | Childcare data (lowest priority) | Not started |
@@ -377,7 +377,7 @@ Standard maintenance review, including regression of the pilot cities, plus offi
 
 ### 0.7.0 — Expansion: North America
 
-**Status:** In progress
+**Status:** Completed 2026-10-21 (4aed96d). All 15 cities on production data; Estonia's car cost and the new cities' childcare stay missing (no published figure; childcare moved to the childcare release by the owner).
 
 Priorities set by the owner on 2026-10-21: every city first becomes usable for adults without children, with unverified estimates where no hard data is at hand; precision and childcare come later.
 
