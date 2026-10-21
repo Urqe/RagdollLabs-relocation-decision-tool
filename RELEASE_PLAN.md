@@ -97,7 +97,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
-| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | In progress |
+| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
 | 0.7.0 | Feature | Expansion, North America: Canada tax model, Toronto, Sacramento, Mexico City, Mérida, La Paz; fixtures retired | Not started |
 | 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
 | 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
@@ -370,7 +370,7 @@ Split from the original 0.6.0 on 2026-10-21, as the plan allowed: ten cities of 
 
 ### 0.6.1 — Maintenance: review of 0.6.0
 
-**Status:** In progress
+**Status:** Completed 2026-10-21 (a50729b). Six findings: Y1–Y4 and Y6 fixed; Y5 (climate normals against the originals) moved to the verification release. Findings in [docs/reviews/0.6.1.md](docs/reviews/0.6.1.md).
 
 Standard maintenance review, including regression of the pilot cities, plus official calculator cross-checks for Portugal and Estonia. Also, as the first use of the estimate rule: unverified estimates for Tallinn's utilities, Lisbon and Porto water, and Valencia's car commuting, so these gaps close before 0.7.0.
 
