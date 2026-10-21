@@ -99,7 +99,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
 | 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | Completed 2026-10-21 (4aed96d) |
-| 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
+| 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada; cost realism for North America (metro prices, tips, car-dependent cities) | Not started |
 | 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
 | 0.9.x | Feature | Childcare data (lowest priority) | Not started |
 | 0.9.x (last) | Verification | Unverified estimates replaced or confirmed with hard data | Not started |
@@ -409,6 +409,15 @@ Childcare for Hermosillo and the new cities is not in scope; it moves to the chi
 
 Standard maintenance review, including regression of the earlier cities, plus an official calculator cross-check for Canada.
 
+**Cost realism for North America** (owner, 2026-10-21). The owner's check: on the same salary, Sacramento came out ahead of Helsinki, which does not match experience. The review found the default household and national prices make US cities look cheaper than they are:
+
+- **Metro price levels for US cities.** Groceries and the lifestyle categories now use US national prices from the 2021 international comparison. Scale them by the BEA Regional Price Parities for each metro area (goods for groceries and clothing, services for eating out and leisure). Look for an equivalent for Canada; if there is none, record that and leave Toronto on national prices.
+- **Tips on eating out in the US and Canada.** Menu prices exclude the usual tip on table service. Add it to eating out as an unverified estimate under the estimate rule, with the share of eating out that is table service stated.
+- **Car-dependent cities.** Where most commuters drive (the commuting indicator the app already has), Explore, Find and Compare say so when the household has no car, and the budget shows what one car would cost there. Whether to change the default to one car in those cities is decided in the review, with the reason recorded.
+- **Price updates.** Check whether moving the 2021 price levels forward with overall inflation understates categories that rose faster (eating out in particular); use category inflation where it is published.
+
+Done when Helsinki without a car against Sacramento with one is shown plainly, and the change in each US and Canadian city's figures is recorded in the review.
+
 ### 0.8.0–0.9.x — Improvements chosen from use
 
 **Status:** Not planned
@@ -451,6 +460,8 @@ Every unverified estimate (`npm run estimates`) is replaced with hard data from 
 - A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
 - Central and outer rents for cities without an official split, from listing sites' district averages (estimates allowed). (Owner, 2026-10-21.)
 - A household choice between a new car and a car already owned, changing the budget rather than only the note. (Owner, 2026-10-21.)
+- Pension top-up: an optional line for countries whose public pension replaces a smaller share of pay (OECD *Pensions at a Glance* net replacement rates), so that savings are compared like with like. For example, a US household saving into a 401(k) to match Finland's earnings-related pension. (Owner, 2026-10-21.)
+- Health insurance deductibles: a bad-year view of US healthcare costs (deductible and out-of-pocket maximum), not only the average out-of-pocket spend. (Owner, 2026-10-21.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.
