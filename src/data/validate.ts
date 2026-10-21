@@ -54,6 +54,15 @@ export function validateObservation(v: unknown, path: string, sourceIds: Set<str
   else if (!sourceIds.has(v.sourceId)) out.push({ path: `${path}.sourceId`, message: `unknown source "${v.sourceId}"` });
   if (v.provenance === 'inherited' && v.geoLevel === 'city') out.push({ path, message: 'an inherited value must name the broader level it came from' });
   if (v.includes !== undefined && !(Array.isArray(v.includes) && v.includes.every(isStr))) out.push({ path: `${path}.includes`, message: 'must be a list of strings' });
+  if (v.unverified !== undefined) {
+    if (v.unverified !== true) out.push({ path: `${path}.unverified`, message: 'must be true or left out' });
+    else {
+      if (v.confidence !== 'low') out.push({ path: `${path}.confidence`, message: 'an unverified estimate must be low confidence' });
+      if (!isStr(v.limitations)) out.push({ path: `${path}.limitations`, message: 'an unverified estimate must say which claims it rests on' });
+      if (v.provenance === 'observed') out.push({ path: `${path}.provenance`, message: 'an unverified estimate cannot be observed' });
+      if (Array.isArray(v.derivedFrom)) for (const id of v.derivedFrom) if (isStr(id) && !sourceIds.has(id) && id !== 'astronomy') out.push({ path: `${path}.derivedFrom`, message: `unknown source "${id}"` });
+    }
+  }
   return out;
 }
 

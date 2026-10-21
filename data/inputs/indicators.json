@@ -64,7 +64,8 @@
         "value": 26.1,
         "period": "2024",
         "sourceId": "eurostat-urban-audit",
-        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+        "limitations": "Eurostat's figure is for its 'greater city' of Madrid, which takes in neighbouring municipalities as well as the city itself."
       },
       "carCommuteShare": {
         "value": 40.6,
@@ -72,7 +73,7 @@
         "sourceId": "eurostat-urban-audit",
         "confidence": "low",
         "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
-        "limitations": "From 2011, the latest year published for Madrid; commuting has changed since."
+        "limitations": "From 2011, the latest year published for Madrid; commuting has changed since. Eurostat's figure is for its 'greater city' of Madrid, which takes in neighbouring municipalities as well as the city itself."
       }
     },
     "us-austin": {
@@ -183,7 +184,14 @@
         "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
         "limitations": "Eurostat's figure is for its 'greater city' of Valencia, which takes in neighbouring municipalities as well as the city itself."
       },
-      "carCommuteShare": null
+      "carCommuteShare": {
+        "value": 41,
+        "period": "2018",
+        "sourceId": "pateco-valencia-mobility",
+        "unverified": true,
+        "basis": "About 41% of trips in the Valencia metropolitan area are made by private vehicle (2018 mobility survey, as reported by Pateco).",
+        "limitations": "An unverified single claim: it covers all trips, not only journeys to work, and the whole metropolitan area rather than the city, so it is not directly comparable with the Urban Audit figures for other cities. To be checked before 1.0."
+      }
     },
     "pt-lisbon": {
       "country": "PRT",

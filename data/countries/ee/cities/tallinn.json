@@ -263,10 +263,98 @@
       }
     },
     "utilities": {
-      "1": null,
-      "2": null,
-      "3": null,
-      "4": null
+      "1": {
+        "value": 168,
+        "low": 128,
+        "high": 288,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "numbeo-via-guides",
+          "altero-housing-costs-2026",
+          "merdeka-utilities-2025",
+          "tlu-cost-of-living"
+        ],
+        "basis": "Electricity: 2,000 kWh a year (app assumption for 1 bedroom) at €0.2303 per kWh, the national household price with taxes. Heating, water, waste and building charges (kommunaalkulud) on top of electricity, estimated from published claims: Numbeo's €289 a month for all utilities in an 85 m² flat in Tallinn (about €3.40 per m², or about €2.60 without electricity); Altero's €180 to €400 for a 70 m² flat depending on season and building (about €1.80 to €5.00 per m² without electricity); Merdeka's example of €118 in a winter month for a 50 m² flat and €40 to €70 in summer (about €1.80 per m² over a year). Tallinn University's guide gives €80 to €150 in summer and €120 to €250 in winter for a rented flat. Applied to 50 m².",
+        "sourceId": "numbeo-via-guides",
+        "confidence": "low",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. An unverified estimate from guides and estate agents' articles, not official data; costs depend heavily on the building's insulation and the winter. To be checked against hard data before 1.0.",
+        "unverified": true
+      },
+      "2": {
+        "value": 234,
+        "low": 178,
+        "high": 402,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "numbeo-via-guides",
+          "altero-housing-costs-2026",
+          "merdeka-utilities-2025",
+          "tlu-cost-of-living"
+        ],
+        "basis": "Electricity: 2,700 kWh a year (app assumption for 2 bedrooms) at €0.2303 per kWh, the national household price with taxes. Heating, water, waste and building charges (kommunaalkulud) on top of electricity, estimated from published claims: Numbeo's €289 a month for all utilities in an 85 m² flat in Tallinn (about €3.40 per m², or about €2.60 without electricity); Altero's €180 to €400 for a 70 m² flat depending on season and building (about €1.80 to €5.00 per m² without electricity); Merdeka's example of €118 in a winter month for a 50 m² flat and €40 to €70 in summer (about €1.80 per m² over a year). Tallinn University's guide gives €80 to €150 in summer and €120 to €250 in winter for a rented flat. Applied to 70 m².",
+        "sourceId": "numbeo-via-guides",
+        "confidence": "low",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. An unverified estimate from guides and estate agents' articles, not official data; costs depend heavily on the building's insulation and the winter. To be checked against hard data before 1.0.",
+        "unverified": true
+      },
+      "3": {
+        "value": 299,
+        "low": 227,
+        "high": 515,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "numbeo-via-guides",
+          "altero-housing-costs-2026",
+          "merdeka-utilities-2025",
+          "tlu-cost-of-living"
+        ],
+        "basis": "Electricity: 3,400 kWh a year (app assumption for 3 bedrooms) at €0.2303 per kWh, the national household price with taxes. Heating, water, waste and building charges (kommunaalkulud) on top of electricity, estimated from published claims: Numbeo's €289 a month for all utilities in an 85 m² flat in Tallinn (about €3.40 per m², or about €2.60 without electricity); Altero's €180 to €400 for a 70 m² flat depending on season and building (about €1.80 to €5.00 per m² without electricity); Merdeka's example of €118 in a winter month for a 50 m² flat and €40 to €70 in summer (about €1.80 per m² over a year). Tallinn University's guide gives €80 to €150 in summer and €120 to €250 in winter for a rented flat. Applied to 90 m².",
+        "sourceId": "numbeo-via-guides",
+        "confidence": "low",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. An unverified estimate from guides and estate agents' articles, not official data; costs depend heavily on the building's insulation and the winter. To be checked against hard data before 1.0.",
+        "unverified": true
+      },
+      "4": {
+        "value": 363,
+        "low": 275,
+        "high": 627,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity",
+          "numbeo-via-guides",
+          "altero-housing-costs-2026",
+          "merdeka-utilities-2025",
+          "tlu-cost-of-living"
+        ],
+        "basis": "Electricity: 4,000 kWh a year (app assumption for 4 bedrooms) at €0.2303 per kWh, the national household price with taxes. Heating, water, waste and building charges (kommunaalkulud) on top of electricity, estimated from published claims: Numbeo's €289 a month for all utilities in an 85 m² flat in Tallinn (about €3.40 per m², or about €2.60 without electricity); Altero's €180 to €400 for a 70 m² flat depending on season and building (about €1.80 to €5.00 per m² without electricity); Merdeka's example of €118 in a winter month for a 50 m² flat and €40 to €70 in summer (about €1.80 per m² over a year). Tallinn University's guide gives €80 to €150 in summer and €120 to €250 in winter for a rented flat. Applied to 110 m².",
+        "sourceId": "numbeo-via-guides",
+        "confidence": "low",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. An unverified estimate from guides and estate agents' articles, not official data; costs depend heavily on the building's insulation and the winter. To be checked against hard data before 1.0.",
+        "unverified": true
+      }
     },
     "transitPassAdult": {
       "value": 0,

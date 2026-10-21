@@ -276,7 +276,7 @@
         "basis": "Electricity: 2,000 kWh a year (app assumption for 1 bedroom) at €0.2435 per kWh, the national household price with taxes.",
         "sourceId": "eurostat-electricity",
         "confidence": "medium",
-        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. Water, sanitation and waste are billed by the municipal water company and are not included."
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
       },
       "2": {
         "value": 55,
@@ -292,7 +292,7 @@
         "basis": "Electricity: 2,700 kWh a year (app assumption for 2 bedrooms) at €0.2435 per kWh, the national household price with taxes.",
         "sourceId": "eurostat-electricity",
         "confidence": "medium",
-        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. Water, sanitation and waste are billed by the municipal water company and are not included."
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
       },
       "3": {
         "value": 69,
@@ -308,7 +308,7 @@
         "basis": "Electricity: 3,400 kWh a year (app assumption for 3 bedrooms) at €0.2435 per kWh, the national household price with taxes.",
         "sourceId": "eurostat-electricity",
         "confidence": "medium",
-        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. Water, sanitation and waste are billed by the municipal water company and are not included."
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
       },
       "4": {
         "value": 81,
@@ -324,7 +324,7 @@
         "basis": "Electricity: 4,000 kWh a year (app assumption for 4 bedrooms) at €0.2435 per kWh, the national household price with taxes.",
         "sourceId": "eurostat-electricity",
         "confidence": "medium",
-        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling. Water, sanitation and waste are billed by the municipal water company and are not included."
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
       }
     },
     "transitPassAdult": {
@@ -463,6 +463,25 @@
         "confidence": "medium",
         "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
       }
+    },
+    "waterPerPerson": {
+      "value": 15,
+      "low": 10,
+      "high": 30,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "grey-lisbon-costs-2026"
+      ],
+      "basis": "Water, sanitation and waste per resident, estimated from published claims for Lisbon: about €30 to €60 a month for a household's water bill (Mogul), and €60 to €150 for electricity and water together in a one-bedroom flat (Grey), which leaves roughly €20 to €60 for water after the app's electricity estimate. Taken as a household of two: about €15 a person, €10 to €30. Lisbon's figures are used for Porto.",
+      "sourceId": "mogul-lisbon-costs",
+      "retrieved": "2026-10-21",
+      "confidence": "low",
+      "unverified": true,
+      "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. No Porto figure was found; Lisbon's is used. To be checked against the tariffs before 1.0."
     }
   }
 }

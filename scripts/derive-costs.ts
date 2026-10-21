@@ -40,7 +40,14 @@ interface CityInputs {
   rentMissing?: boolean;
   /** `limitations`: what the utilities figure leaves out for this city, added to the general note. */
   electricity?: { pricePerKwh: number; period: string; sourceId: string; geoLevel: GeoLevel; limitations?: string };
-  operatingCostsPerM2?: { value: number; low?: number; period: string; sourceId: string; geoLevel: GeoLevel; basis: string };
+  /**
+   * Building and running costs per m² a month on top of electricity (heating, water, building charges).
+   * `unverified`: an estimate from published unofficial claims, whose sources are `sourceId` and `derivedFrom`.
+   */
+  operatingCostsPerM2?: {
+    value: number; low?: number; high?: number; period: string; sourceId: string; geoLevel: GeoLevel; basis: string;
+    unverified?: boolean; derivedFrom?: string[]; limitations?: string;
+  };
   waterPerPerson?: Observation;
   transitPassAdult?: Observation | null;
   healthcarePerPerson?: Observation | null;
@@ -106,14 +113,17 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
       const power = (e.pricePerKwh * kwh) / 12;
       const building = o ? o.value * m2 : 0;
       const buildingLow = o ? (o.low ?? o.value) * m2 : 0;
+      const buildingHigh = o ? (o.high ?? o.value) * m2 : 0;
       out.utilities[b] = {
-        value: round(power + building), ...(o && o.low !== undefined ? { low: round(power + buildingLow) } : {}), ...base,
+        value: round(power + building), ...(o && o.low !== undefined ? { low: round(power + buildingLow) } : {}),
+        ...(o && o.high !== undefined ? { high: round(power + buildingHigh) } : {}), ...base,
         period: e.period, geoLevel: 'country', provenance: 'estimated',
-        derivedFrom: [e.sourceId, ...(o ? [o.sourceId] : [])],
+        derivedFrom: [e.sourceId, ...(o ? [o.sourceId, ...(o.derivedFrom ?? [])] : [])],
         basis: `Electricity: ${kwh.toLocaleString('en')} kWh a year (app assumption for ${b} bedroom${b === '1' ? '' : 's'}) at €${e.pricePerKwh.toFixed(4)} per kWh, the national household price with taxes.`
           + (o ? ` ${o.basis} Applied to ${m2} m².` : ''),
-        sourceId: e.sourceId, confidence: 'medium',
-        limitations: `Electricity use is an app assumption and varies with appliances, cooking and cooling.${e.limitations ? ` ${e.limitations}` : ''}`,
+        sourceId: o?.unverified ? o.sourceId : e.sourceId, confidence: o?.unverified ? 'low' : 'medium',
+        limitations: `Electricity use is an app assumption and varies with appliances, cooking and cooling.${e.limitations ? ` ${e.limitations}` : ''}${o?.limitations ? ` ${o.limitations}` : ''}`,
+        ...(o?.unverified ? { unverified: true } : {}),
       };
     }
   } else if (!c.rentObservations?.includes?.includes('utilities')) {

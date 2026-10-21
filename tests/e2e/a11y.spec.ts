@@ -90,3 +90,14 @@ for (const [name, route, profile] of [
     expect(await problems(page)).toEqual([]);
   });
 }
+
+// 0.6.1: the city search with results open, and pages with unverified estimates.
+test('basic accessibility: city search with results open, and unverified estimates', async ({ page }) => {
+  await page.goto('./#/explore/ee-tallinn');
+  await page.getByLabel('Search cities').fill('a');
+  await expect(page.locator('#city-search-results button').first()).toBeVisible();
+  expect(await problems(page)).toEqual([]);
+  await page.goto('./#/compare/pt-lisbon,es-valencia');
+  await page.getByLabel('Or search').fill('t');
+  expect(await problems(page)).toEqual([]);
+});

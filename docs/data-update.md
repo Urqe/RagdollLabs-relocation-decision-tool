@@ -8,6 +8,7 @@ All data is static and versioned with the code. Nothing is fetched at runtime.
 - `null` means missing. Never use 0 as a placeholder.
 - A national or regional value shown on a city uses `provenance: "inherited"` and the level it came from.
 - No AI-generated or guessed figures in `data/`. Placeholder values belong in `fixtures/` with `"fixture": true`.
+- **Unverified estimates** (from 0.6.1): when no official or primary source is at hand, figures published elsewhere (property sites, agencies, news, guides) can be used. Mark the observation `"unverified": true`, set confidence `low`, cite one source as `sourceId` and every other agreeing source in `derivedFrom`, and say in `limitations` which claims it rests on. Two or more agreeing claims give the value (or the range when they differ); a single claim may be used if `limitations` says it stands alone. With no published claim the value stays `null`. `npm run estimates` lists all of them; the verification release before 1.0.0 replaces or confirms each one.
 
 ## Workflow
 
@@ -65,12 +66,12 @@ Two values are still read from a site that republishes the original, because the
 | Category | Tampere | Tallinn | Valencia | Lisbon and Porto |
 | --- | --- | --- | --- | --- |
 | Rent | Statistics Finland 15fa, new leases per m², city and rental areas 1 and 3, imported by `npm run import:statfin` | KV.EE average asking rent per m², August 2026 (reported by Adaur); low confidence | idealista average asking rent per m², September 2026 | INE median rent per m² of new leases in the municipality, 12 months to June 2026 |
-| Utilities | Eurostat electricity at the app's use, plus Tampereen Vesi water fees per resident | **Missing**: heating, water and building charges (kommunaalkulud) have no usable free source; the budget is incomplete until the user enters a figure | Eurostat electricity plus INE water cost for the Valencian Community | Eurostat electricity only; water, sanitation and waste are not included and the row says so |
-| Transport | Nysse 30-day AB, €65 | Free for registered residents (€30 otherwise) | SUMA Mensual zone A, €21 with the 40% reduction to 31 Dec 2026 (€35 without) | Navegante or Andante municipal pass, €30 (metropolitan €40) |
+| Utilities | Eurostat electricity at the app's use, plus Tampereen Vesi water fees per resident | Eurostat electricity plus an **unverified estimate** of heating, water and building charges (kommunaalkulud), €2.60 per m² a month (€1.80 to €5.00), from Numbeo, Altero, Merdeka and Tallinn University (0.6.1) | Eurostat electricity plus INE water cost for the Valencian Community | Eurostat electricity plus an **unverified estimate** of water, sanitation and waste, €15 a person (€10 to €30), from Lisbon cost-of-living guides; Porto uses Lisbon's (0.6.1) |
+| Transport | Nysse 30-day AB, €65 | Free for registered residents (€30 otherwise) | SUMA Mensual zone A, €21 with the 40% reduction to 31 Dec 2026 (€35 without); unverified, from republished tables | Navegante (unverified, from news reports) or Andante (STCP) municipal pass, €30 (metropolitan €40) |
 | Childcare | National income-based fee rule, as Helsinki | Free municipal kindergartens from 1 Sept 2026 | Tuition free; meals up to €78.27 a month | Free nursery places (Creche Feliz) |
 | Healthcare | Eurostat out-of-pocket spending per inhabitant, national | same | same | same |
 
-Climate normals 1991–2020 come from Wikipedia's tables citing FMI (Tampere-Pirkkala), the Estonian Weather Service, AEMET and IPMA (Lisboa Instituto Geofísico, Porto airport); they are to be checked against the originals in 0.6.1, as V14 did for the pilot cities. Foreign-born and car-commuting shares are from Eurostat's Urban Audit; for Valencia, Lisbon and Porto Eurostat's "greater city" covers more than the municipality. Valencia has no car-commuting figure. Estonia and Portugal were added to the World Bank import and to the price-level inputs (ICP 2021, HICP).
+Climate normals 1991–2020 come from Wikipedia's tables citing FMI (Tampere-Pirkkala), the Estonian Weather Service, AEMET and IPMA (Lisboa Instituto Geofísico, Porto airport); they are to be checked against the originals in 0.6.1, as V14 did for the pilot cities. Foreign-born and car-commuting shares are from Eurostat's Urban Audit; for Valencia, Lisbon and Porto Eurostat's "greater city" covers more than the municipality. Valencia's car-commuting figure is an unverified single claim (about 41% of all trips in the metropolitan area, 2018 survey, via Pateco). Estonia and Portugal were added to the World Bank import and to the price-level inputs (ICP 2021, HICP).
 
 ## Preference indicators (0.4.0)
 

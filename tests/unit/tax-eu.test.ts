@@ -208,6 +208,39 @@ describe('Portugal 2026: joint taxation (0.6.0)', () => {
   });
 });
 
+describe('calculator and published cross-checks (0.6.1)', () => {
+  test('Estonia: parameters match the Tax and Customs Board\'s 2026 summary', () => {
+    // emta.ee/uudised/maksumuudatused-2026: 22% withheld, €700 a month for everyone, unemployment 1.6%,
+    // funded pension 2% (the default of 2, 4 or 6%), social tax minimum base €886.
+    assert.equal(ee.incomeTaxRate, 0.22);
+    assert.equal(ee.basicExemptionAnnual, 700 * 12);
+    assert.equal(ee.employee.unemploymentRate, 0.016);
+    assert.equal(ee.employee.fundedPensionRate, 0.02);
+    assert.equal(ee.employer.socialTaxMinMonthlyBase, 886);
+  });
+
+  test('Portugal: 2026 brackets agree with the OE2026 report (idealista, 9 Oct 2025)', () => {
+    assert.deepEqual(pt.brackets.slice(0, 6).map((b) => [b.from, b.rate]),
+      [[0, 0.125], [8342, 0.157], [12587, 0.212], [17838, 0.241], [23089, 0.311], [29397, 0.349]]);
+  });
+
+  test('Portugal: joint and separate returns reproduce a published worked example (Doutor Finanças, 2019, on the 2017 scale)', () => {
+    // €20,000 and €50,000, specific deduction €4,104 each, no deductions from the tax: separate €18,234.13,
+    // joint €17,433.18. That scale is used, with the example's simplifications (no social security
+    // above the deduction, no subsistence minimum, no deductions from the tax).
+    const y2017: PtParams = {
+      ...pt, taxYear: 2017, specificDeduction: 4104, socialSecurityEmployeeRate: 0, solidaritySurcharge: [], dependentDeduction: 0,
+      generalFamilyExpensesDeduction: 0, existenceMinimum: { ...pt.existenceMinimum, grossIncomeLimit: 0 },
+      // The five-bracket scale whose deduction column the example uses (€992.74, €2,714.93, €5,956.69).
+      brackets: [{ from: 0, rate: 0.145 }, { from: 7091, rate: 0.285 }, { from: 20261, rate: 0.37 }, { from: 40522, rate: 0.45 }, { from: 80640, rate: 0.48 }],
+    };
+    const irs = (relationship: 'married' | 'unmarried') =>
+      line(portugueseTax(taxInput({ grossLocal: [20000, 50000], relationship, adults: 2 }), y2017), 'pt.irs');
+    near(irs('unmarried'), 18234.13, 0.5);
+    near(irs('married'), 17433.18, 0.5);
+  });
+});
+
 describe('all four countries', () => {
   for (const [name, run] of [
     ['Estonia', (g: number[]) => estonianTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'x' }), ee)],

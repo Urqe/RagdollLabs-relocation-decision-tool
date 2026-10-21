@@ -17,10 +17,15 @@ test('the five European cities run on sourced data in Explore, Find and Compare'
   await expect(page.locator('table.compare thead th')).toHaveCount(3);
 });
 
-test('Tallinn has no utilities figure, so its budget is incomplete and says why', async ({ page }) => {
+test('unverified estimates are labelled as such, with every claim linked (0.6.1)', async ({ page }) => {
   await page.goto('./#/explore/ee-tallinn');
-  await expect(page.locator('.band')).toContainText('Incomplete');
-  await expect(page.locator('.band')).toContainText('utilities');
+  // Tallinn's utilities are an estimate since 0.6.1, so its budget is complete.
+  await expect(page.locator('.band')).not.toContainText('Incomplete');
+  const utilities = page.getByRole('row', { name: /Utilities/ });
+  await expect(utilities).toContainText('unverified estimate');
+  await expect(utilities.locator('.also a')).toHaveCount(4);
+  await page.goto('./#/explore/pt-porto');
+  await expect(page.getByRole('row', { name: /Utilities/ })).toContainText('unverified estimate');
 });
 
 test('Portugal: a married couple with one earner files jointly, which raises take-home', async ({ page }, info) => {

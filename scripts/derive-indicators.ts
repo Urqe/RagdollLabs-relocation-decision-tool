@@ -7,7 +7,11 @@ import { join } from 'node:path';
 import type { Observation } from '../src/core/types.ts';
 import { readTree, ROOT } from './repo-data.ts';
 
-interface CityValue { value: number; period: string; sourceId: string; basis: string; confidence?: Observation['confidence']; limitations?: string }
+interface CityValue {
+  value: number; period: string; sourceId: string; basis: string; confidence?: Observation['confidence']; limitations?: string;
+  /** An estimate from published unofficial claims; the other claims' sources are in `derivedFrom`. */
+  unverified?: boolean; derivedFrom?: string[];
+}
 interface CityInputs {
   country: string;
   latitude: number;
@@ -88,8 +92,10 @@ export function deriveIndicators(id: string): Record<string, Observation | null>
   for (const key of ['foreignBornShare', 'carCommuteShare'] as const) {
     const v = c[key];
     out[key] = v ? {
-      value: v.value, unit: '%', period: v.period, geoLevel: 'city', provenance: 'observed', sourceId: v.sourceId,
-      retrieved: inputs.retrieved, confidence: v.confidence ?? 'medium', basis: v.basis, ...(v.limitations ? { limitations: v.limitations } : {}),
+      value: v.value, unit: '%', period: v.period, geoLevel: 'city', provenance: v.unverified ? 'estimated' : 'observed', sourceId: v.sourceId,
+      ...(v.derivedFrom ? { derivedFrom: v.derivedFrom } : {}),
+      retrieved: inputs.retrieved, confidence: v.unverified ? 'low' : v.confidence ?? 'medium', basis: v.basis, ...(v.limitations ? { limitations: v.limitations } : {}),
+      ...(v.unverified ? { unverified: true } : {}),
     } : null;
   }
   return out;

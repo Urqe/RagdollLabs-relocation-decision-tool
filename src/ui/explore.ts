@@ -8,6 +8,7 @@ import { formatRoute, type AppState, type Store } from '../state/store.ts';
 import { citySearch, groupedOptions } from './city-search.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
 import { fitSection } from './fit.ts';
+import { alsoFrom } from './sources.ts';
 import * as f from './format.ts';
 
 const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
@@ -77,7 +78,7 @@ function sourceCell(c: CategoryResult, data: Dataset): Child {
   // Values from the same source, period and confidence share one line; their explanations are listed together.
   const groups = new Map<string, Observation[]>();
   for (const o of obs) {
-    const key = [o.sourceId, o.period, o.confidence, o.provenance, o.geoLevel].join('|');
+    const key = [o.sourceId, o.period, o.confidence, o.provenance, o.geoLevel, o.unverified ? 'u' : ''].join('|');
     groups.set(key, [...(groups.get(key) ?? []), o]);
   }
   return [...groups.values()].map((group) => {
@@ -90,6 +91,8 @@ function sourceCell(c: CategoryResult, data: Dataset): Child {
       o.provenance === 'inherited' ? `, ${GEO_WORD[o.geoLevel] ?? `${o.geoLevel} value`}` : '',
       o.provenance === 'estimated' && (o.derivedFrom?.length ?? 0) > 0 ? ', derived' : '',
       h('span', { class: 'conf' }, ` ${o.confidence} confidence`),
+      o.unverified ? h('span', { class: 'unverified' }, ', unverified estimate') : null,
+      o.unverified ? alsoFrom(o, data) : null,
       defs.length > 0 ? h('details', { class: 'how' }, h('summary', {}, 'How this is estimated'), defs.map((d) => h('p', {}, d))) : null);
   });
 }

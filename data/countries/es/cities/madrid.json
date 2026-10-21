@@ -146,7 +146,8 @@
       "sourceId": "eurostat-urban-audit",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+      "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+      "limitations": "Eurostat's figure is for its 'greater city' of Madrid, which takes in neighbouring municipalities as well as the city itself."
     },
     "carCommuteShare": {
       "value": 40.6,
@@ -158,7 +159,7 @@
       "retrieved": "2026-10-19",
       "confidence": "low",
       "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
-      "limitations": "From 2011, the latest year published for Madrid; commuting has changed since."
+      "limitations": "From 2011, the latest year published for Madrid; commuting has changed since. Eurostat's figure is for its 'greater city' of Madrid, which takes in neighbouring municipalities as well as the city itself."
     }
   },
   "costs": {

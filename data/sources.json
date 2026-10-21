@@ -675,5 +675,85 @@
     "attribution": "IPMA",
     "cadence": "irregular",
     "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "numbeo-via-guides",
+    "name": "Utilities for an 85 m² flat in Tallinn (Numbeo, as quoted by relocate.me and Expat Focus)",
+    "publisher": "Numbeo (crowd-sourced); relocate.me; Expat Focus",
+    "url": "https://relocate.me/cost-of-living/estonia/tallinn",
+    "licence": "Facts quoted from a crowd-sourced database",
+    "attribution": "Numbeo figures quoted by relocate.me",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "altero-housing-costs-2026",
+    "name": "Apartment or house: which costs less? (22 May 2026)",
+    "publisher": "Altero",
+    "url": "https://www.altero.ee/uudised/korter-voi-eramaja",
+    "licence": "Facts from an article",
+    "attribution": "Altero",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "merdeka-utilities-2025",
+    "name": "How a housing association works and what the monthly utilities are (2 July 2025)",
+    "publisher": "Merdeka Kinnisvara",
+    "url": "https://www.merdeka.ee/post/kuidas-toimib-korteriuhistu-ja-millised-on-igakuised-kommunaalkulud",
+    "licence": "Facts from an article",
+    "attribution": "Merdeka Kinnisvara",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "tlu-cost-of-living",
+    "name": "Cost of living in Tallinn (guide for international students)",
+    "publisher": "Tallinn University",
+    "url": "https://www.tlu.ee/node/104735",
+    "licence": "Facts from a guide",
+    "attribution": "Tallinn University",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "mogul-lisbon-costs",
+    "name": "Cost of living in Lisbon, Portugal: a guide",
+    "publisher": "Mogul Club",
+    "url": "https://mogul.club/blogposts/cost-of-living-in-lisbon-portugal-a-guide",
+    "licence": "Facts from a guide",
+    "attribution": "Mogul Club",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "grey-lisbon-costs-2026",
+    "name": "Cost of living in Lisbon for expats and digital nomads (updated 7 Oct 2026)",
+    "publisher": "Grey",
+    "url": "https://grey.co/blog/cost-of-living-lisbon",
+    "licence": "Facts from a guide",
+    "attribution": "Grey",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "pateco-valencia-mobility",
+    "name": "How we get around the Valencia metropolitan area",
+    "publisher": "Pateco (Oficina Comercio y Territorio)",
+    "url": "https://pateco.org/como-nos-desplazamos-por-el-area-metropolitana-de-valencia-y-que-mejoras-se-proponen/",
+    "licence": "Facts from an article",
+    "attribution": "Pateco, citing the 2018 metropolitan mobility survey",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "navegante-2019",
+    "name": "The new passes from April 2019: all the options (ECO, 19 March 2019)",
+    "publisher": "ECO",
+    "url": "https://eco.sapo.pt/descodificador/revolucao-nos-transportes-publicos-isto-e-tudo-o-que-muda/",
+    "licence": "Facts from a news report",
+    "attribution": "ECO",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
   }
 ]

@@ -150,7 +150,19 @@
       "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
       "limitations": "Eurostat's figure is for its 'greater city' of Valencia, which takes in neighbouring municipalities as well as the city itself."
     },
-    "carCommuteShare": null
+    "carCommuteShare": {
+      "value": 41,
+      "unit": "%",
+      "period": "2018",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "sourceId": "pateco-valencia-mobility",
+      "retrieved": "2026-10-19",
+      "confidence": "low",
+      "basis": "About 41% of trips in the Valencia metropolitan area are made by private vehicle (2018 mobility survey, as reported by Pateco).",
+      "limitations": "An unverified single claim: it covers all trips, not only journeys to work, and the whole metropolitan area rather than the city, so it is not directly comparable with the Urban Audit figures for other cities. To be checked before 1.0.",
+      "unverified": true
+    }
   },
   "costs": {
     "rent": {
@@ -339,12 +351,16 @@
       "currency": "EUR",
       "period": "2026",
       "geoLevel": "region",
-      "provenance": "observed",
+      "provenance": "estimated",
       "basis": "SUMA Mensual for one zone (A, the city of Valencia), valid on metro, tram and EMT buses: €35, or €21 with the Generalitat's 40% reduction, which runs to 31 December 2026.",
       "sourceId": "suma-fares-2026",
       "retrieved": "2026-10-21",
-      "confidence": "medium",
-      "limitations": "Read from republished fare tables (ValenciaMove, redtransporte.com); Metrovalencia's own page could not be read. €35 a month if the reduction ends."
+      "confidence": "low",
+      "limitations": "An unverified estimate: two republished fare tables agree (ValenciaMove gives €21 with the reduction; redtransporte.com gives €35 without it), but Metrovalencia's own page could not be read. €35 a month if the reduction ends. To be checked before 1.0.",
+      "unverified": true,
+      "derivedFrom": [
+        "suma-fares-2026"
+      ]
     },
     "healthcarePerPerson": {
       "value": 54,

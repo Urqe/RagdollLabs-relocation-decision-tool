@@ -623,7 +623,29 @@
         "limitations": "Requires registration in Tallinn. Private kindergartens charge fees. A municipal place is not guaranteed at a particular kindergarten."
       },
       "carMonthly": null,
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "electricity": {
+        "pricePerKwh": 0.2303,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "operatingCostsPerM2": {
+        "value": 2.6,
+        "low": 1.8,
+        "high": 5.0,
+        "period": "2025",
+        "sourceId": "numbeo-via-guides",
+        "geoLevel": "city",
+        "derivedFrom": [
+          "altero-housing-costs-2026",
+          "merdeka-utilities-2025",
+          "tlu-cost-of-living"
+        ],
+        "basis": "Heating, water, waste and building charges (kommunaalkulud) on top of electricity, estimated from published claims: Numbeo's €289 a month for all utilities in an 85 m² flat in Tallinn (about €3.40 per m², or about €2.60 without electricity); Altero's €180 to €400 for a 70 m² flat depending on season and building (about €1.80 to €5.00 per m² without electricity); Merdeka's example of €118 in a winter month for a 50 m² flat and €40 to €70 in summer (about €1.80 per m² over a year). Tallinn University's guide gives €80 to €150 in summer and €120 to €250 in winter for a rented flat.",
+        "unverified": true,
+        "limitations": "An unverified estimate from guides and estate agents' articles, not official data; costs depend heavily on the building's insulation and the winter. To be checked against hard data before 1.0."
+      }
     },
     "es-valencia": {
       "currency": "EUR",
@@ -676,12 +698,16 @@
         "currency": "EUR",
         "period": "2026",
         "geoLevel": "region",
-        "provenance": "observed",
+        "provenance": "estimated",
         "basis": "SUMA Mensual for one zone (A, the city of Valencia), valid on metro, tram and EMT buses: €35, or €21 with the Generalitat's 40% reduction, which runs to 31 December 2026.",
         "sourceId": "suma-fares-2026",
         "retrieved": "2026-10-21",
-        "confidence": "medium",
-        "limitations": "Read from republished fare tables (ValenciaMove, redtransporte.com); Metrovalencia's own page could not be read. €35 a month if the reduction ends."
+        "confidence": "low",
+        "limitations": "An unverified estimate: two republished fare tables agree (ValenciaMove gives €21 with the reduction; redtransporte.com gives €35 without it), but Metrovalencia's own page could not be read. €35 a month if the reduction ends. To be checked before 1.0.",
+        "unverified": true,
+        "derivedFrom": [
+          "suma-fares-2026"
+        ]
       },
       "healthcarePerPerson": {
         "value": 54,
@@ -739,8 +765,7 @@
         "pricePerKwh": 0.2435,
         "period": "2025-S2",
         "sourceId": "eurostat-electricity",
-        "geoLevel": "country",
-        "limitations": "Water, sanitation and waste are billed by the municipal water company and are not included."
+        "geoLevel": "country"
       },
       "transitPassAdult": {
         "value": 30,
@@ -749,11 +774,16 @@
         "currency": "EUR",
         "period": "2026",
         "geoLevel": "region",
-        "provenance": "observed",
+        "provenance": "estimated",
         "basis": "Navegante Municipal pass for Lisbon, €30 a month; the Navegante Metropolitano for the whole Lisbon area costs €40. Both unchanged in 2026.",
         "sourceId": "navegante-2026",
         "retrieved": "2026-10-21",
-        "confidence": "high"
+        "confidence": "low",
+        "unverified": true,
+        "derivedFrom": [
+          "navegante-2019"
+        ],
+        "limitations": "An unverified estimate: a news report (Postal do Algarve, December 2025) says both prices stay unchanged in 2026, matching the prices set when the passes began in 2019 (ECO); the operator's own price list was not read. To be checked before 1.0."
       },
       "healthcarePerPerson": {
         "value": 66,
@@ -782,7 +812,26 @@
         "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
       },
       "carMonthly": null,
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "waterPerPerson": {
+        "value": 15,
+        "low": 10,
+        "high": 30,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "grey-lisbon-costs-2026"
+        ],
+        "basis": "Water, sanitation and waste per resident, estimated from published claims for Lisbon: about €30 to €60 a month for a household's water bill (Mogul), and €60 to €150 for electricity and water together in a one-bedroom flat (Grey), which leaves roughly €20 to €60 for water after the app's electricity estimate. Taken as a household of two: about €15 a person, €10 to €30.",
+        "sourceId": "mogul-lisbon-costs",
+        "retrieved": "2026-10-21",
+        "confidence": "low",
+        "unverified": true,
+        "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. To be checked against the tariffs before 1.0."
+      }
     },
     "pt-porto": {
       "currency": "EUR",
@@ -811,8 +860,7 @@
         "pricePerKwh": 0.2435,
         "period": "2025-S2",
         "sourceId": "eurostat-electricity",
-        "geoLevel": "country",
-        "limitations": "Water, sanitation and waste are billed by the municipal water company and are not included."
+        "geoLevel": "country"
       },
       "transitPassAdult": {
         "value": 30,
@@ -854,7 +902,26 @@
         "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
       },
       "carMonthly": null,
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "waterPerPerson": {
+        "value": 15,
+        "low": 10,
+        "high": 30,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "grey-lisbon-costs-2026"
+        ],
+        "basis": "Water, sanitation and waste per resident, estimated from published claims for Lisbon: about €30 to €60 a month for a household's water bill (Mogul), and €60 to €150 for electricity and water together in a one-bedroom flat (Grey), which leaves roughly €20 to €60 for water after the app's electricity estimate. Taken as a household of two: about €15 a person, €10 to €30. Lisbon's figures are used for Porto.",
+        "sourceId": "mogul-lisbon-costs",
+        "retrieved": "2026-10-21",
+        "confidence": "low",
+        "unverified": true,
+        "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. No Porto figure was found; Lisbon's is used. To be checked against the tariffs before 1.0."
+      }
     }
   }
 }

@@ -28,6 +28,12 @@ export interface Observation {
   limitations?: string;
   /** For rent: which market and dwelling the value describes. Required for rents in data/. */
   rent?: RentDefinition;
+  /**
+   * An estimate from published but unofficial claims (guides, listings sites, news), used until hard data is in
+   * place. The cited sources are `sourceId` and `derivedFrom`; the verification release before 1.0.0 replaces or
+   * confirms each one. Always low confidence.
+   */
+  unverified?: boolean;
 }
 
 /**

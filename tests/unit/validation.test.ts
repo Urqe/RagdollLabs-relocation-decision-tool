@@ -2,6 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { checkDataVersion, checkJurisdictions, checkPreferences, checkTree, checkTaxParams, staleSources } from '../../scripts/validation.ts';
 import { latestFx, readTree, ROOT, taxParamFiles } from '../../scripts/repo-data.ts';
+import { unverifiedEstimates } from '../../scripts/list-estimates.ts';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { validateObservation } from '../../src/data/validate.ts';
@@ -125,6 +126,24 @@ describe('build-breaking problems', () => {
     delete unflagged.fixture;
     const tree = { ...fixtures, cities: [{ path: fixtureCity.path, data: unflagged }] };
     assert.ok(checkTree(tree, allSources).errors.some((e) => e.message.includes('must set "fixture": true')));
+  });
+
+  test('an unverified estimate must be low confidence, say what it rests on, and cite known sources (0.6.1)', () => {
+    const ok = { ...fixtureCity.data.costs.internet!, sourceId: 'fixture', unverified: true, confidence: 'low', limitations: 'Two guides agree.' };
+    assert.deepEqual(validateObservation(ok, 'x', new Set(['fixture'])), []);
+    const msgs = (o: object) => validateObservation(o, 'x', new Set(['fixture'])).map((e) => e.message);
+    assert.ok(msgs({ ...ok, confidence: 'medium' }).includes('an unverified estimate must be low confidence'));
+    assert.ok(msgs({ ...ok, limitations: undefined }).includes('an unverified estimate must say which claims it rests on'));
+    assert.ok(msgs({ ...ok, provenance: 'observed' }).includes('an unverified estimate cannot be observed'));
+    assert.ok(msgs({ ...ok, derivedFrom: ['nope'] }).some((m) => m.includes('unknown source "nope"')));
+    assert.ok(msgs({ ...ok, unverified: false }).includes('must be true or left out'));
+  });
+
+  test('every unverified estimate in data/ is listed for the verification release (0.6.1)', () => {
+    const list = unverifiedEstimates();
+    assert.ok(list.some((e) => e.city === 'ee-tallinn' && e.path === 'costs.utilities.2'));
+    assert.ok(list.some((e) => e.city === 'es-valencia' && e.path === 'indicators.carCommuteShare'));
+    assert.ok(list.every((e) => e.sources.length > 0 && e.limitations.length > 0));
   });
 
   test('a malformed data version fails', () => {

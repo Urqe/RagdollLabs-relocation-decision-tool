@@ -247,6 +247,7 @@ td.range { color: var(--muted); }
 .src { display: block; font-size: 0.875rem; }
 .src .conf { color: var(--muted); }
 .src.conf-low .conf { color: var(--amber); }
+.unverified { color: var(--amber); font-weight: 600; }
 .src.missing { color: var(--cranberry); font-weight: 600; }
 .muted { color: var(--muted); }
 .row-note { display: block; color: var(--muted); font-size: 0.8125rem; }

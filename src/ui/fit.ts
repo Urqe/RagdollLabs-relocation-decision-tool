@@ -2,6 +2,7 @@ import { computeFit, mustHaveExclusions, unscoredDimensions, type DimensionFit, 
 import type { City, PreferenceDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { h, type Child } from './dom.ts';
+import { alsoFrom } from './sources.ts';
 
 export const FIT_BAND_LABEL: Record<FitBand, string> = { strong: 'Strong', good: 'Good', mixed: 'Mixed', weak: 'Weak' };
 const ESSENTIAL = 4;
@@ -32,7 +33,7 @@ function indicatorRow(i: IndicatorScore, def: PreferenceDefinition, data: Datase
     o && o.value !== null
       ? [value(o.value, meta?.unit ?? ''), ` scores ${pct(i.score!)}. `,
           s ? h('a', { href: s.url, rel: 'noopener', target: '_blank' }, s.name) : o.sourceId, `, ${o.period}`,
-          GEO_NOTE[o.geoLevel] ?? '', `, ${o.confidence} confidence.`,
+          GEO_NOTE[o.geoLevel] ?? '', `, ${o.confidence} confidence`, o.unverified ? h('span', { class: 'unverified' }, ', unverified estimate') : '', o.unverified ? alsoFrom(o, data) : '', '.',
           o.limitations ? ` ${o.limitations}` : '']
       // A value left out on purpose says why; plain missing data just says so.
       : [h('span', { class: 'missing' }, o?.limitations ? 'not scored.' : 'no data.'), o?.limitations ? ` ${o.limitations}` : '']);

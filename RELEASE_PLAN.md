@@ -19,6 +19,7 @@ Correctness is not traded for speed:
 - Wrong calculations or misleading behaviour are fixed promptly, and high-severity calculation errors block further model expansion.
 - Deliberate simplifications are fine when documented, applied consistently and suitable for the supported household scenario.
 - More precision and more places come after the whole journey works.
+- Estimates before hard data (owner decision, 2026-10-21): where no official or primary source is at hand, a figure published elsewhere can be used as an **unverified estimate**. Two or more published claims that agree are used as their value or range; a single claim is used at low confidence and says it stands alone; with no published claim at all the value stays missing, never guessed. Every unverified estimate is labelled as such in the app, lists its sources, and is replaced or confirmed with hard data in the verification release before 1.0.0. `npm run estimates` lists them.
 
 "Matches reference cases within €1 a month" checks that a calculation is implemented correctly. It does not claim that real-world take-home or savings are accurate to €1.
 
@@ -96,10 +97,11 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
-| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia | Not started |
+| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | In progress |
 | 0.7.0 | Feature | Expansion, North America: Canada tax model, Toronto, Sacramento, Mexico City, Mérida, La Paz; fixtures retired | Not started |
 | 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
 | 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
+| 0.9.x (last) | Verification | Unverified estimates replaced or confirmed with hard data | Not started |
 | 1.0.0 | Feature | First shareable release | Not started |
 | 1.0.1 | Maintenance | Review of 1.0.0 | Not started |
 
@@ -368,9 +370,9 @@ Split from the original 0.6.0 on 2026-10-21, as the plan allowed: ten cities of 
 
 ### 0.6.1 — Maintenance: review of 0.6.0
 
-**Status:** Not started
+**Status:** In progress
 
-Standard maintenance review, including regression of the pilot cities, plus official calculator cross-checks for Portugal and Estonia.
+Standard maintenance review, including regression of the pilot cities, plus official calculator cross-checks for Portugal and Estonia. Also, as the first use of the estimate rule: unverified estimates for Tallinn's utilities, Lisbon and Porto water, and Valencia's car commuting, so these gaps close before 0.7.0.
 
 ### 0.7.0 — Expansion: North America
 
@@ -394,7 +396,13 @@ Standard maintenance review, including regression of the earlier cities, plus an
 
 **Status:** Not planned
 
-Planned once the full journey has been used. Candidates: richer comparison and sharing, better household and cost estimates (for example healthcare and childcare by income or eligibility), Mexican regional cost differences, and backlog items.
+Planned once the full journey has been used. The last of these releases is the verification release below. Candidates: richer comparison and sharing, better household and cost estimates (for example healthcare and childcare by income or eligibility), Mexican regional cost differences, and backlog items.
+
+### 0.9.x — Data verification
+
+**Status:** Not started
+
+Every unverified estimate (`npm run estimates`) is replaced with hard data from an official or primary source, or confirmed by one, or kept with the reason it cannot be; nothing stays unverified without a recorded decision. Values read from republications are checked against the original. A maintenance review of the changes follows as usual.
 
 ### 1.0.0 — First shareable release
 
@@ -418,9 +426,6 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
 - A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
-- Tallinn heating, water and building charges (kommunaalkulud): a sourced average per m², so Tallinn's budget is complete. (From 0.6.0.)
-- Lisbon and Porto water, sanitation and waste from the municipal tariffs (EPAL with Lisbon's sanitation, Águas e Energia do Porto). (From 0.6.0.)
-- Car commuting share for Valencia (municipal mobility survey). (From 0.6.0.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.
