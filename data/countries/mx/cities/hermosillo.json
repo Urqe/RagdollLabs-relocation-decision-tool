@@ -146,16 +146,336 @@
   "costs": {
     "rent": {
       "1": {
-        "cityWide": null
+        "cityWide": {
+          "value": 9100,
+          "low": 5950,
+          "high": 13050,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 182.00 per m² in the whole city (midpoint of centre and elsewhere) × 50 m², the app's assumed size for 1 bedroom. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          },
+          "unverified": true
+        },
+        "central": {
+          "value": 11750,
+          "low": 10650,
+          "high": 13050,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 235.00 per m² in the centre and expensive areas (as the sources call them) × 50 m², the app's assumed size for 1 bedroom. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          },
+          "unverified": true
+        },
+        "outer": {
+          "value": 6400,
+          "low": 5950,
+          "high": 7000,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 128.00 per m² in normal or cheaper areas × 50 m², the app's assumed size for 1 bedroom. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          },
+          "unverified": true
+        }
       },
       "2": {
-        "cityWide": null
+        "cityWide": {
+          "value": 12740,
+          "low": 8330,
+          "high": 18270,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 182.00 per m² in the whole city (midpoint of centre and elsewhere) × 70 m², the app's assumed size for 2 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          },
+          "unverified": true
+        },
+        "central": {
+          "value": 16450,
+          "low": 14910,
+          "high": 18270,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 235.00 per m² in the centre and expensive areas (as the sources call them) × 70 m², the app's assumed size for 2 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          },
+          "unverified": true
+        },
+        "outer": {
+          "value": 8960,
+          "low": 8330,
+          "high": 9800,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 128.00 per m² in normal or cheaper areas × 70 m², the app's assumed size for 2 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          },
+          "unverified": true
+        }
       },
       "3": {
-        "cityWide": null
+        "cityWide": {
+          "value": 16380,
+          "low": 10710,
+          "high": 23490,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 182.00 per m² in the whole city (midpoint of centre and elsewhere) × 90 m², the app's assumed size for 3 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          },
+          "unverified": true
+        },
+        "central": {
+          "value": 21150,
+          "low": 19170,
+          "high": 23490,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 235.00 per m² in the centre and expensive areas (as the sources call them) × 90 m², the app's assumed size for 3 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          },
+          "unverified": true
+        },
+        "outer": {
+          "value": 11520,
+          "low": 10710,
+          "high": 12600,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 128.00 per m² in normal or cheaper areas × 90 m², the app's assumed size for 3 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          },
+          "unverified": true
+        }
       },
       "4": {
-        "cityWide": null
+        "cityWide": {
+          "value": 20020,
+          "low": 13090,
+          "high": 28710,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 182.00 per m² in the whole city (midpoint of centre and elsewhere) × 110 m², the app's assumed size for 4 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          },
+          "unverified": true
+        },
+        "central": {
+          "value": 25850,
+          "low": 23430,
+          "high": 28710,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 235.00 per m² in the centre and expensive areas (as the sources call them) × 110 m², the app's assumed size for 4 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          },
+          "unverified": true
+        },
+        "outer": {
+          "value": 14080,
+          "low": 13090,
+          "high": 15400,
+          "unit": "MXN/month",
+          "currency": "MXN",
+          "retrieved": "2026-10-21",
+          "period": "2026",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "expatistan-hermosillo",
+            "livingcost-hermosillo",
+            "nomadlist-hermosillo"
+          ],
+          "basis": "MXN 128.00 per m² in normal or cheaper areas × 110 m², the app's assumed size for 4 bedrooms. Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+          "sourceId": "expatistan-hermosillo",
+          "confidence": "low",
+          "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size (listing averages, some furnished)",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          },
+          "unverified": true
+        }
       }
     },
     "groceriesPerAdultEquivalent": {
@@ -256,10 +576,86 @@
       "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
     },
     "utilities": {
-      "1": null,
-      "2": null,
-      "3": null,
-      "4": null
+      "1": {
+        "value": 1050,
+        "low": 1000,
+        "high": 1450,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-hermosillo",
+          "livingcost-hermosillo"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas, from published averages: Expatistan gives 1,771 pesos a month for two people in an 85 m² flat (about 21 per m²) and 951 pesos for one person in a 45 m² studio (about 21 per m²); livingcost.org gives US$71.50 (about 1,320 pesos) for one person, about 29 per m² in a 45 m² flat. 21 per m² a month × 50 m², the app's assumed size for 1 bedroom.",
+        "sourceId": "expatistan-hermosillo",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; summer bills with air conditioning are much higher and winter ones lower. Hermosillo's summer electricity tariff (1F) is subsidised up to a consumption limit. To be checked against CFE tariffs before 1.0.",
+        "unverified": true
+      },
+      "2": {
+        "value": 1470,
+        "low": 1400,
+        "high": 2030,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-hermosillo",
+          "livingcost-hermosillo"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas, from published averages: Expatistan gives 1,771 pesos a month for two people in an 85 m² flat (about 21 per m²) and 951 pesos for one person in a 45 m² studio (about 21 per m²); livingcost.org gives US$71.50 (about 1,320 pesos) for one person, about 29 per m² in a 45 m² flat. 21 per m² a month × 70 m², the app's assumed size for 2 bedrooms.",
+        "sourceId": "expatistan-hermosillo",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; summer bills with air conditioning are much higher and winter ones lower. Hermosillo's summer electricity tariff (1F) is subsidised up to a consumption limit. To be checked against CFE tariffs before 1.0.",
+        "unverified": true
+      },
+      "3": {
+        "value": 1890,
+        "low": 1800,
+        "high": 2610,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-hermosillo",
+          "livingcost-hermosillo"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas, from published averages: Expatistan gives 1,771 pesos a month for two people in an 85 m² flat (about 21 per m²) and 951 pesos for one person in a 45 m² studio (about 21 per m²); livingcost.org gives US$71.50 (about 1,320 pesos) for one person, about 29 per m² in a 45 m² flat. 21 per m² a month × 90 m², the app's assumed size for 3 bedrooms.",
+        "sourceId": "expatistan-hermosillo",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; summer bills with air conditioning are much higher and winter ones lower. Hermosillo's summer electricity tariff (1F) is subsidised up to a consumption limit. To be checked against CFE tariffs before 1.0.",
+        "unverified": true
+      },
+      "4": {
+        "value": 2310,
+        "low": 2200,
+        "high": 3190,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "retrieved": "2026-10-21",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "expatistan-hermosillo",
+          "livingcost-hermosillo"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas, from published averages: Expatistan gives 1,771 pesos a month for two people in an 85 m² flat (about 21 per m²) and 951 pesos for one person in a 45 m² studio (about 21 per m²); livingcost.org gives US$71.50 (about 1,320 pesos) for one person, about 29 per m² in a 45 m² flat. 21 per m² a month × 110 m², the app's assumed size for 4 bedrooms.",
+        "sourceId": "expatistan-hermosillo",
+        "confidence": "low",
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; summer bills with air conditioning are much higher and winter ones lower. Hermosillo's summer electricity tariff (1F) is subsidised up to a consumption limit. To be checked against CFE tariffs before 1.0.",
+        "unverified": true
+      }
     },
     "transitPassAdult": {
       "value": 396,
@@ -292,6 +688,37 @@
       "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
     },
     "childcarePerChild": null,
-    "carMonthly": null
+    "carMonthly": {
+      "value": 9700,
+      "low": 8600,
+      "high": 10800,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "El Imparcial (9 October 2026): a financed compact car of 300,000 pesos costs 8,600 to 10,800 pesos a month: a 5,710-peso loan payment, 1,500 to 2,500 for petrol, 800 to 1,500 for comprehensive insurance, 400 to 700 for maintenance and 200 to 400 for state fees.",
+      "sourceId": "elimparcial-auto-2026",
+      "confidence": "low",
+      "limitations": "An unverified single claim. The loan payment stands in for the cost of owning the car (it includes repaying it, not depreciation); parking, tolls and repairs are not included. To be checked before 1.0.",
+      "unverified": true
+    },
+    "carRunningMonthly": {
+      "value": 4000,
+      "low": 2900,
+      "high": 5100,
+      "unit": "MXN/month",
+      "currency": "MXN",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "What remains once the car is paid for: petrol, insurance, maintenance and state fees, 2,900 to 5,100 pesos a month in El Imparcial's example.",
+      "sourceId": "elimparcial-auto-2026",
+      "confidence": "low",
+      "limitations": "An unverified single claim. The loan payment stands in for the cost of owning the car (it includes repaying it, not depreciation); parking, tolls and repairs are not included. To be checked before 1.0.",
+      "unverified": true
+    }
   }
 }

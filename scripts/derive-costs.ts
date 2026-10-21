@@ -28,6 +28,13 @@ interface PerM2Rent {
   confidence: Observation['confidence'];
   includes?: string[];
   limitations: string;
+  /** Low and high per m² by location, when the figure is a range across claims. */
+  perM2Range?: Partial<Record<Location, { low: number; high: number }>>;
+  /** An estimate from published unofficial claims; their sources are `sourceId` and `derivedFrom`. */
+  unverified?: boolean;
+  derivedFrom?: string[];
+  /** How the per-m² figures were made from the claims. */
+  basis?: string;
 }
 interface DirectRent extends Omit<PerM2Rent, 'perM2' | 'dwelling'>, Record<Bedrooms, { value: number; dwelling: string }> {}
 
@@ -40,6 +47,11 @@ interface CityInputs {
   rentMissing?: boolean;
   /** `limitations`: what the utilities figure leaves out for this city, added to the general note. */
   electricity?: { pricePerKwh: number; period: string; sourceId: string; geoLevel: GeoLevel; limitations?: string };
+  /** All utilities per m² a month, where only whole-bill figures exist (no electricity price to build from). */
+  utilitiesPerM2?: {
+    value: number; low?: number; high?: number; period: string; sourceId: string; geoLevel: GeoLevel; basis: string;
+    derivedFrom?: string[]; unverified?: boolean; limitations: string;
+  };
   /**
    * Building and running costs per m² a month on top of electricity (heating, water, building charges).
    * `unverified`: an estimate from published unofficial claims, whose sources are `sourceId` and `derivedFrom`.
@@ -54,12 +66,29 @@ interface CityInputs {
   childcarePerChild?: Observation | null;
   childcareIncomeBased?: CityCosts['childcareIncomeBased'];
   carMonthly?: Observation | null;
+  /** Use the national car estimate for this country code (from `carByCountry`) instead of `carMonthly`. */
+  car?: string;
+}
+
+/** A national estimate of a new, non-luxury five-seat car per month: the whole cost and the running part. */
+interface CarEstimate {
+  currency: CurrencyCode;
+  total: { value: number; low?: number; high?: number };
+  running: { value: number; low?: number; high?: number };
+  period: string;
+  sourceId: string;
+  derivedFrom?: string[];
+  basis: string;
+  runningBasis: string;
+  limitations: string;
+  unverified?: boolean;
 }
 
 export interface CostInputs {
   retrieved: string;
   assumptions: { floorAreaM2: Record<Bedrooms, number>; electricityKwhPerYear: Record<Bedrooms, number> };
   cities: Record<string, CityInputs>;
+  carByCountry?: Record<string, CarEstimate>;
 }
 
 const round = (x: number): number => Math.round(x);
@@ -79,14 +108,19 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
         ? { cityWide: r.perM2 as Record<Bedrooms, number> }
         : (r.perM2 as Partial<Record<Location, Record<Bedrooms, number>>>);
       const entry: Partial<Record<Location, Observation>> = {};
+      const sym = cur === 'EUR' ? '€' : `${cur} `;
       for (const [loc, values] of Object.entries(byLocation) as [Location, Record<Bedrooms, number>][]) {
         const area = r.areas?.[loc];
+        const range = r.perM2Range?.[loc];
         entry[loc] = {
-          value: round(values[b] * m2), ...base, period: r.period, geoLevel: loc === 'cityWide' ? r.geoLevel : 'district', provenance: 'estimated',
-          derivedFrom: [r.sourceId], basis: `€${values[b].toFixed(2)} per m²${area ? ` in ${area}` : ''} × ${m2} m², the app's assumed size for ${b} bedroom${b === '1' ? '' : 's'}.`,
+          value: round(values[b] * m2), ...(range ? { low: round(range.low * m2), high: round(range.high * m2) } : {}), ...base,
+          period: r.period, geoLevel: loc === 'cityWide' ? r.geoLevel : 'district', provenance: 'estimated',
+          derivedFrom: [r.sourceId, ...(r.derivedFrom ?? [])],
+          basis: `${sym}${values[b].toFixed(2)} per m²${area ? ` in ${area}` : ''} × ${m2} m², the app's assumed size for ${b} bedroom${b === '1' ? '' : 's'}.${r.basis ? ` ${r.basis}` : ''}`,
           ...(r.includes ? { includes: r.includes } : {}),
-          sourceId: r.sourceId, confidence: r.confidence, limitations: r.limitations,
+          sourceId: r.sourceId, confidence: r.unverified ? 'low' : r.confidence, limitations: r.limitations,
           rent: { market: r.market, statistic: r.statistic, dwelling: r.dwelling[b], adjustment: `Converted from a rent per m² at ${m2} m².` },
+          ...(r.unverified ? { unverified: true } : {}),
         };
       }
       out.rent![b] = entry;
@@ -126,6 +160,18 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
         ...(o?.unverified ? { unverified: true } : {}),
       };
     }
+  } else if (c.utilitiesPerM2) {
+    const u = c.utilitiesPerM2;
+    out.utilities = {};
+    for (const b of BEDROOMS) {
+      const m2 = a.floorAreaM2[b];
+      out.utilities[b] = {
+        value: round(u.value * m2), ...(u.low !== undefined ? { low: round(u.low * m2) } : {}), ...(u.high !== undefined ? { high: round(u.high * m2) } : {}), ...base,
+        period: u.period, geoLevel: u.geoLevel, provenance: 'estimated', derivedFrom: [u.sourceId, ...(u.derivedFrom ?? [])],
+        basis: `${u.basis} ${u.value} per m² a month × ${m2} m², the app's assumed size for ${b} bedroom${b === '1' ? '' : 's'}.`,
+        sourceId: u.sourceId, confidence: u.unverified ? 'low' : 'medium', limitations: u.limitations, ...(u.unverified ? { unverified: true } : {}),
+      };
+    }
   } else if (!c.rentObservations?.includes?.includes('utilities')) {
     out.utilities = { '1': null, '2': null, '3': null, '4': null };
   }
@@ -134,6 +180,18 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
   for (const k of ['transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const) {
     if (c[k] !== undefined) (out as Record<string, unknown>)[k] = c[k];
   }
+  const car = c.car ? inputs.carByCountry?.[c.car] : undefined;
+  if (c.car && !car) throw new Error(`${id}: no car estimate for "${c.car}"`);
+  if (car) {
+    if (car.currency !== cur) throw new Error(`${id}: car estimate in ${car.currency}, city in ${cur}`);
+    const obs = (r: CarEstimate['total'], basis: string): Observation => ({
+      value: r.value, ...(r.low !== undefined ? { low: r.low } : {}), ...(r.high !== undefined ? { high: r.high } : {}), ...base,
+      period: car.period, geoLevel: 'country', provenance: 'inherited', ...(car.derivedFrom ? { derivedFrom: car.derivedFrom } : {}), basis,
+      sourceId: car.sourceId, confidence: car.unverified ? 'low' : 'medium', limitations: car.limitations, ...(car.unverified ? { unverified: true } : {}),
+    });
+    out.carMonthly = obs(car.total, car.basis);
+    out.carRunningMonthly = obs(car.running, car.runningBasis);
+  }
   return out;
 }
 
@@ -141,7 +199,7 @@ export function loadCostInputs(): CostInputs {
   return JSON.parse(readFileSync(join(ROOT, 'data/inputs/costs.json'), 'utf8')) as CostInputs;
 }
 
-const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const;
+const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly', 'carRunningMonthly'] as const;
 
 export function costDifferences(): string[] {
   const inputs = loadCostInputs();

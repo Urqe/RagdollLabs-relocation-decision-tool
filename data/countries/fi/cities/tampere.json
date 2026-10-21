@@ -611,7 +611,22 @@
         "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
       }
     },
-    "carMonthly": null,
+    "carMonthly": {
+      "value": 750,
+      "low": 600,
+      "high": 900,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "A new, non-luxury car in Finland: Todelliset Kulut (2026) puts an ordinary car at €600 to €900 a month; its example family car at about 15,000 km a year has depreciation of €250, insurance €80, fuel €180, maintenance and repairs €100, and tyres and wear €40 (its €300 loan payment is left out, because depreciation already counts the car's cost).",
+      "sourceId": "todellisetkulut-car-2026",
+      "confidence": "low",
+      "limitations": "An unverified estimate from published articles, not a motoring association's study of this country; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    },
     "groceriesPerAdultEquivalent": {
       "value": 362,
       "unit": "EUR/month",
@@ -708,6 +723,20 @@
         "confidence": "medium",
         "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
       }
+    },
+    "carRunningMonthly": {
+      "value": 400,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-21",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "What remains once the car is paid for: insurance €80, fuel €180, maintenance €100 and tyres €40 in Todelliset Kulut's example, about €400 a month; vehicle tax is not itemised.",
+      "sourceId": "todellisetkulut-car-2026",
+      "confidence": "low",
+      "limitations": "An unverified estimate from published articles, not a motoring association's study of this country; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
     }
   }
 }

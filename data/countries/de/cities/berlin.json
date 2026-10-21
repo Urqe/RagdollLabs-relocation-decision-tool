@@ -470,6 +470,45 @@
       "confidence": "high",
       "limitations": "Covers public and subsidised places; a place is not guaranteed at a particular Kita."
     },
-    "carMonthly": null
+    "carMonthly": {
+      "value": 550,
+      "low": 480,
+      "high": 688,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-19",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "mobile-de-golf-2023",
+        "carwow-golf-2026"
+      ],
+      "basis": "A new compact car such as a VW Golf at 15,000 km a year: ADAC's cost calculator gives €480 to €620 a month (as reported by fahrzeugschein.de, September 2026); mobile.de's Golf example gives €688 (depreciation €378, fuel €160, insurance and tax €93, workshop €57); carwow.de's Golf (July 2026) gives €529 without workshop costs or financing.",
+      "sourceId": "fahrzeugschein-adac-2026",
+      "confidence": "low",
+      "limitations": "An unverified estimate from published articles, partly from ADAC's calculator as reported by a third party; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    },
+    "carRunningMonthly": {
+      "value": 290,
+      "low": 260,
+      "high": 310,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-19",
+      "period": "2026",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "mobile-de-golf-2023",
+        "carwow-golf-2026"
+      ],
+      "basis": "What remains once the car is paid for (fuel, insurance, tax and workshop): €310 in mobile.de's example, and €228 plus workshop costs in carwow.de's, so about €260 to €310.",
+      "sourceId": "fahrzeugschein-adac-2026",
+      "confidence": "low",
+      "limitations": "An unverified estimate from published articles, partly from ADAC's calculator as reported by a third party; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    }
   }
 }

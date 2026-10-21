@@ -182,6 +182,8 @@ export interface CityCosts {
   transitPassAdult?: Observation | null;
   /** Running cost of one car per month: fuel, insurance, maintenance, depreciation. */
   carMonthly?: Observation | null;
+  /** The part of `carMonthly` that remains once the car is paid for: fuel, insurance, maintenance, tax and inspection. */
+  carRunningMonthly?: Observation | null;
   /** Out-of-pocket healthcare per person per month, after anything deducted from pay. */
   healthcarePerPerson?: Observation | null;
   /** Daycare per child per month. */

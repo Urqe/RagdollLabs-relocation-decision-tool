@@ -388,17 +388,30 @@
       "limitations": "A Texas average; Austin prices are likely higher."
     },
     "carMonthly": {
-      "value": 965,
+      "value": 698,
       "unit": "USD/month",
       "currency": "USD",
+      "retrieved": "2026-10-19",
       "period": "2025",
       "geoLevel": "country",
       "provenance": "inherited",
-      "basis": "Average cost of owning and running a new car in the US, including depreciation, finance, fuel and insurance, at 15,000 miles a year (AAA Your Driving Costs 2025).",
-      "sourceId": "aaa-driving-costs-2025",
-      "retrieved": "2026-10-19",
+      "basis": "AAA Your Driving Costs 2025: a new small sedan costs 55.87 cents a mile to own and run, $8,381 a year at 15,000 miles, including depreciation, finance charges, fuel, insurance, maintenance and fees.",
+      "sourceId": "aaa-fact-sheet-2025",
       "confidence": "medium",
-      "limitations": "A new-car national average; an older car costs less."
+      "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
+    },
+    "carRunningMonthly": {
+      "value": 369,
+      "unit": "USD/month",
+      "currency": "USD",
+      "retrieved": "2026-10-19",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "What remains once the car is paid for: fuel, maintenance, insurance and fees make up 52.8% of AAA's average new-vehicle cost ($6,113 of $11,577), applied to the small sedan: about $369 a month.",
+      "sourceId": "aaa-fact-sheet-2025",
+      "confidence": "medium",
+      "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
     }
   }
 }

@@ -755,5 +755,135 @@
     "attribution": "ECO",
     "cadence": "irregular",
     "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "expatistan-hermosillo",
+    "name": "Cost of living in Hermosillo (crowd-sourced prices, updated October 2026)",
+    "publisher": "Expatistan",
+    "url": "https://expatistan.com/cost-of-living/hermosillo",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Expatistan",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "livingcost-hermosillo",
+    "name": "Cost of living in Hermosillo (updated June 2026)",
+    "publisher": "livingcost.org",
+    "url": "https://livingcost.org/cost/mexico/hermosillo",
+    "licence": "Facts from a cost-of-living database",
+    "attribution": "livingcost.org",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "nomadlist-hermosillo",
+    "name": "Cost of living in Hermosillo (October 2026)",
+    "publisher": "Nomad List",
+    "url": "https://nomads.com/cost-of-living/in/hermosillo",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Nomad List",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "aaa-fact-sheet-2025",
+    "name": "Your Driving Costs 2025, fact sheet (September 2025)",
+    "publisher": "AAA",
+    "url": "https://newsroom.aaa.com/wp-content/uploads/2025/09/UPDATE-AAA-Fact-Sheet-Your-Driving-Cost-9.2025-1.pdf",
+    "licence": "Facts from a published study",
+    "attribution": "AAA, Your Driving Costs",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "fahrzeugschein-adac-2026",
+    "name": "What does a car cost a month? (17 Sep 2026, citing the ADAC cost calculator)",
+    "publisher": "fahrzeugschein.de",
+    "url": "https://www.fahrzeugschein.de/blog/artikel/was-kostet-dein-auto-wirklich",
+    "licence": "Facts from an article",
+    "attribution": "fahrzeugschein.de, citing ADAC",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "mobile-de-golf-2023",
+    "name": "Car running costs: VW Golf example (1 Nov 2023)",
+    "publisher": "mobile.de",
+    "url": "https://www.mobile.de/magazin/artikel/auto-unterhaltskosten-2452",
+    "licence": "Facts from an article",
+    "attribution": "mobile.de",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "carwow-golf-2026",
+    "name": "The true cost of a VW Golf (17 July 2026)",
+    "publisher": "carwow.de",
+    "url": "https://www.carwow.de/automagazin/auto-besitzen-und-fahren/taeglicher-gebrauch/die-wahren-kosten-des-vw-golf-so-teuer-ist-deutschlands-bestseller-wirklich",
+    "licence": "Facts from an article",
+    "attribution": "carwow.de",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "todellisetkulut-car-2026",
+    "name": "How much does a car cost a month in Finland? (2026)",
+    "publisher": "Todelliset Kulut",
+    "url": "https://www.todellisetkulut.fi/artikkelit/paljonko-auto-maksaa-kuukaudessa",
+    "licence": "Facts from an article",
+    "attribution": "Todelliset Kulut",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "race-car-costs-2026",
+    "name": "How much does it cost to keep a car (2026)",
+    "publisher": "Real Automóvil Club de España (RACE)",
+    "url": "https://www.race.es/cuanto-cuesta-mantener-coche",
+    "licence": "Facts from a published guide",
+    "attribution": "RACE",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "motor16-car-costs-2026",
+    "name": "What does a car really cost in Spain in 2026?",
+    "publisher": "Motor16",
+    "url": "https://www.motor16.com/las-ultimas-noticias/cuanto-cuesta-coche-espana/",
+    "licence": "Facts from an article",
+    "attribution": "Motor16",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "caetano-autocost",
+    "name": "How much does it cost to keep a car? (Autocost user data)",
+    "publisher": "Caetano",
+    "url": "https://caetano.pt/blog/quanto-custa-manter-carro/",
+    "licence": "Facts from an article",
+    "attribution": "Caetano, citing Autocost",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "elimparcial-auto-2026",
+    "name": "What a new car costs a month in Mexico in 2026 (9 Oct 2026)",
+    "publisher": "El Imparcial",
+    "url": "https://www.elimparcial.com/dinero/2026/10/09/cuanto-cuesta-estrenar-un-carro-en-mexico-en-2026-esto-se-pagaria-al-mes-entre-credito-gasolina-seguro-y-mantenimiento/",
+    "licence": "Facts from a news report",
+    "attribution": "El Imparcial",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "wealthnorth-car-2026",
+    "name": "Cost of owning a car in Canada (2026)",
+    "publisher": "WealthNorth",
+    "url": "https://wealthnorth.ca/personal-finance/car-buying/cost-of-owning-car-canada/",
+    "licence": "Facts from a guide",
+    "attribution": "WealthNorth",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
   }
 ]

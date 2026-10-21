@@ -20,6 +20,8 @@ export interface CategoryResult {
   local: Range | null;
   observations: Observation[];
   notes: string[];
+  /** Transport with a car: the monthly cost if the cars are already paid for (running costs only), for a side note. */
+  paidOffCars?: Range;
 }
 
 export type AffordabilityBand = 'comfortable' | 'workable' | 'tight' | 'short' | 'incomplete';
@@ -204,7 +206,10 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
     } else {
       const parts = [scaleRange(car, h.cars)];
       if (transitAdults > 0 && pass) parts.push(scaleRange(pass, transitAdults));
+      const running = obsRange(c.carRunningMonthly);
+      const paidOff = running ? addRanges(...[scaleRange(running, h.cars), ...parts.slice(1)]) : null;
       transport = {
+        ...(paidOff ? { paidOffCars: paidOff } : {}),
         id: 'transport', label: LABELS.transport, essential: true, status: 'estimated', local: addRanges(...parts),
         observations: [c.carMonthly, ...(transitAdults > 0 && c.transitPassAdult ? [c.transitPassAdult] : [])].filter((x): x is Observation => !!x),
         notes: [`${h.cars} car${h.cars > 1 ? 's' : ''}${transitAdults > 0 ? ` and ${transitAdults} transit pass${transitAdults > 1 ? 'es' : ''}` : ''}.`],

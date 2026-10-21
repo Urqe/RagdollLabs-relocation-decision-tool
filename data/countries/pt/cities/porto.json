@@ -366,7 +366,23 @@
       "confidence": "medium",
       "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
     },
-    "carMonthly": null,
+    "carMonthly": {
+      "value": 328,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-21",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "fahrzeugschein-adac-2026"
+      ],
+      "basis": "Autocost user data, as reported by Caetano: keeping a car in Portugal costs about €328 a month (€3,939 a year), including depreciation.",
+      "sourceId": "caetano-autocost",
+      "confidence": "low",
+      "limitations": "An unverified single claim from user-entered data, not tied to a car size or mileage. To be checked before 1.0.",
+      "unverified": true
+    },
     "groceriesPerAdultEquivalent": {
       "value": 334,
       "unit": "EUR/month",
@@ -482,6 +498,25 @@
       "confidence": "low",
       "unverified": true,
       "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. No Porto figure was found; Lisbon's is used. To be checked against the tariffs before 1.0."
+    },
+    "carRunningMonthly": {
+      "value": 213,
+      "low": 197,
+      "high": 230,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "retrieved": "2026-10-21",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "fahrzeugschein-adac-2026"
+      ],
+      "basis": "What remains once the car is paid for: the €328 less depreciation at 30 to 40% of the total, the share ADAC's figures give for Germany: about €213 (€197 to €230).",
+      "sourceId": "caetano-autocost",
+      "confidence": "low",
+      "limitations": "An unverified single claim from user-entered data, not tied to a car size or mileage. To be checked before 1.0.",
+      "unverified": true
     }
   }
 }

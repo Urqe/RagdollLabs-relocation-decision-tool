@@ -98,9 +98,10 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
-| 0.7.0 | Feature | Expansion, North America: Canada tax model, Toronto, Sacramento, Mexico City, Mérida, La Paz; fixtures retired | Not started |
+| 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | In progress |
 | 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
 | 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
+| 0.9.x | Feature | Childcare data (lowest priority) | Not started |
 | 0.9.x (last) | Verification | Unverified estimates replaced or confirmed with hard data | Not started |
 | 1.0.0 | Feature | First shareable release | Not started |
 | 1.0.1 | Maintenance | Review of 1.0.0 | Not started |
@@ -376,15 +377,20 @@ Standard maintenance review, including regression of the pilot cities, plus offi
 
 ### 0.7.0 — Expansion: North America
 
-**Status:** Not started
+**Status:** In progress
 
-- Canada (Ontario) tax model: federal and Ontario income tax, CPP and EI employee contributions, Ontario health premium, with gross-income and contribution-base assumptions written down first.
-- Real cost data and preference indicators for Toronto, Sacramento, Mexico City, Mérida and La Paz (Baja California Sur), to the same acceptance as 0.3.0.
-- State payroll tax rates for Mexico City, Yucatán and Baja California Sur.
-- Hermosillo rent, utilities and childcare, researched with the other Mexican sources (from review 0.3.1, T7; moved here from 0.6.0 with the Mexican cities).
-- Deploy builds without fixtures; the fixture banner, the development-preview heading and the `--with-fixtures` CI step are removed.
+Priorities set by the owner on 2026-10-21: every city first becomes usable for adults without children, with unverified estimates where no hard data is at hand; precision and childcare come later.
 
-**Done when** all 15 cities in eight countries run on production data through Explore, Find and Compare, and no fixture reaches the deployed site.
+1. Hermosillo rent and utilities, as unverified estimates where needed (from review 0.3.1, T7).
+2. Car costs for every country: the monthly cost of owning a new, non-luxury five-seat sedan or hatchback, from national estimates. Each is split into owning (depreciation and loan interest) and running (fuel, insurance, maintenance, tax and inspection); the budget counts the full cost and notes what remains once the car is paid off.
+3. Mexico City, Mérida and La Paz (Baja California Sur): costs and preference indicators to the same acceptance as 0.3.0, with state payroll tax rates for Mexico City, Yucatán and Baja California Sur.
+4. Canada (Ontario) tax model: federal and Ontario income tax, CPP and EI employee contributions, Ontario health premium, with gross-income and contribution-base assumptions written down first. Toronto's costs and indicators.
+5. Sacramento on production data.
+6. Deploy builds without fixtures; the fixture banner, the development-preview heading and the `--with-fixtures` CI step are removed.
+
+Childcare for Hermosillo and the new cities is not in scope; it moves to the childcare release below.
+
+**Done when** all 15 cities in eight countries run on production data (hard data or labelled estimates) through Explore, Find and Compare for adults without children, every country has a car cost with the paid-off note, and no fixture reaches the deployed site.
 
 ### 0.7.1 — Maintenance: review of 0.7.0
 
@@ -397,6 +403,12 @@ Standard maintenance review, including regression of the earlier cities, plus an
 **Status:** Not planned
 
 Planned once the full journey has been used. The last of these releases is the verification release below. Candidates: richer comparison and sharing, better household and cost estimates (for example healthcare and childcare by income or eligibility), Mexican regional cost differences, and backlog items.
+
+### 0.9.x — Childcare data
+
+**Status:** Not started
+
+Lowest priority (owner decision, 2026-10-21). Childcare for every city still missing it (Hermosillo and the cities added in 0.7.0), estimates allowed; then, if worth it, childcare by income or eligibility where the rules depend on them.
 
 ### 0.9.x — Data verification
 
@@ -426,6 +438,8 @@ Every unverified estimate (`npm run estimates`) is replaced with hard data from 
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
 - A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
+- Central and outer rents for cities without an official split, from listing sites' district averages (estimates allowed). (Owner, 2026-10-21.)
+- A household choice between a new car and a car already owned, changing the budget rather than only the note. (Owner, 2026-10-21.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.

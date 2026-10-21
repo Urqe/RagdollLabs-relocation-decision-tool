@@ -9,6 +9,7 @@ import type { Preferences } from '../../src/core/fit/fit.ts';
 import type { City, Country, FxSnapshot, LifestyleDefinition, PreferenceDefinition } from '../../src/core/types.ts';
 import type { TaxParamSet } from '../../src/core/tax/index.ts';
 import { buildRelease } from '../../scripts/build-release.ts';
+import { kids } from './helpers.ts';
 
 const release = buildRelease(true);
 const def = release.preferences as PreferenceDefinition;
@@ -51,14 +52,16 @@ describe('Find ranking (0.5.0)', () => {
   });
 
   test('sorting by money ranks complete budgets only; incomplete ones are kept apart', () => {
-    const r = rankCities(candidates(), prefs({}), def, 'money');
+    // A child in daycare: Hermosillo has no childcare figure (left for the childcare release), so its budget is incomplete.
+    const family: Household = { ...DEFAULT_HOUSEHOLD, children: kids(1), childrenInDaycare: 1 };
+    const r = rankCities(candidates(family), prefs({}), def, 'money');
     assert.equal(r.sort, 'money');
     assert.ok(r.ranked.every((x) => x.band !== 'incomplete'));
-    assert.ok(ids(r.unrankedIncomplete).includes('mx-hermosillo'), 'Hermosillo has no rent data');
+    assert.ok(ids(r.unrankedIncomplete).includes('mx-hermosillo'), 'Hermosillo has no childcare data');
     const s = r.ranked.map((x) => x.savingsEur);
     assert.deepEqual(s, [...s].sort((a, b) => b - a));
-    // Giving Hermosillo a rent and utilities completes its budget, and it joins the ranking.
-    const own = rankCities(candidates(DEFAULT_HOUSEHOLD, { 'mx-hermosillo': { rentMonthlyLocal: 15000, ownCosts: { utilities: 1500 } } }), prefs({}), def, 'money');
+    // Giving Hermosillo a childcare figure completes its budget, and it joins the ranking.
+    const own = rankCities(candidates(family, { 'mx-hermosillo': { ownCosts: { childcare: 3000 } } }), prefs({}), def, 'money');
     assert.ok(ids(own.ranked).includes('mx-hermosillo'));
   });
 

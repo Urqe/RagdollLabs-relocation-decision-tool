@@ -90,6 +90,21 @@ describe('spending basket', () => {
     assert.equal(t.local!.typical, 560);
   });
 
+  test('a car with a running-cost figure carries what remains once it is paid for (0.7.0)', () => {
+    const city = testCity({ carMonthly: obs(500, { low: 450, high: 600 }), carRunningMonthly: obs(250) });
+    const one = cat(costCategories(city, h({ cars: 1 }), {}, fx, 'EUR'), 'transport');
+    assert.equal(one.local!.typical, 500, 'the budget counts the whole cost');
+    assert.equal(one.paidOffCars!.typical, 250);
+    // Two adults, one car: the second adult's transit pass stays in both figures.
+    const mixed = cat(costCategories(city, h({ earnersGrossEur: [50000, 40000], cars: 1 }), {}, fx, 'EUR'), 'transport');
+    assert.equal(mixed.local!.typical, 560);
+    assert.equal(mixed.paidOffCars!.typical, 310);
+    const two = cat(costCategories(city, h({ earnersGrossEur: [50000, 40000], cars: 2 }), {}, fx, 'EUR'), 'transport');
+    assert.equal(two.paidOffCars!.typical, 500);
+    // Without a running figure there is no note.
+    assert.equal(cat(costCategories(testCity(), h({ cars: 1 }), {}, fx, 'EUR'), 'transport').paidOffCars, undefined);
+  });
+
   test('childcare only when a child is in daycare', () => {
     assert.equal(cat(costCategories(testCity(), h({ children: kids(1) }), {}, fx, 'EUR'), 'childcare').status, 'notApplicable');
     assert.equal(cat(costCategories(testCity(), h({ children: kids(1), childrenInDaycare: 1 }), {}, fx, 'EUR'), 'childcare').local!.typical, 300);

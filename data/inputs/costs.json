@@ -113,7 +113,6 @@
         "confidence": "medium",
         "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
       },
-      "carMonthly": null,
       "childcareIncomeBased": {
         "rate": 0.107,
         "maxFee": 335,
@@ -144,7 +143,8 @@
           "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
         }
       },
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "car": "FI"
     },
     "de-berlin": {
       "currency": "EUR",
@@ -222,7 +222,7 @@
         "confidence": "high",
         "limitations": "Covers public and subsidised places; a place is not guaranteed at a particular Kita."
       },
-      "carMonthly": null
+      "car": "DE"
     },
     "es-madrid": {
       "currency": "EUR",
@@ -306,7 +306,7 @@
         "confidence": "medium",
         "limitations": "Public places are limited; private nurseries charge tuition, which is not included."
       },
-      "carMonthly": null
+      "car": "ES"
     },
     "us-austin": {
       "currency": "USD",
@@ -381,23 +381,10 @@
         "confidence": "medium",
         "limitations": "A Texas average; Austin prices are likely higher."
       },
-      "carMonthly": {
-        "value": 965,
-        "unit": "USD/month",
-        "currency": "USD",
-        "period": "2025",
-        "geoLevel": "country",
-        "provenance": "inherited",
-        "basis": "Average cost of owning and running a new car in the US, including depreciation, finance, fuel and insurance, at 15,000 miles a year (AAA Your Driving Costs 2025).",
-        "sourceId": "aaa-driving-costs-2025",
-        "retrieved": "2026-10-19",
-        "confidence": "medium",
-        "limitations": "A new-car national average; an older car costs less."
-      }
+      "car": "US"
     },
     "mx-hermosillo": {
       "currency": "MXN",
-      "rentMissing": true,
       "transitPassAdult": {
         "value": 396,
         "high": 540,
@@ -429,7 +416,82 @@
         "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
       },
       "childcarePerChild": null,
-      "carMonthly": null
+      "rent": {
+        "perM2": {
+          "cityWide": {
+            "1": 182,
+            "2": 182,
+            "3": 182,
+            "4": 182
+          },
+          "central": {
+            "1": 235,
+            "2": 235,
+            "3": 235,
+            "4": 235
+          },
+          "outer": {
+            "1": 128,
+            "2": 128,
+            "3": 128,
+            "4": 128
+          }
+        },
+        "perM2Range": {
+          "cityWide": {
+            "low": 119,
+            "high": 261
+          },
+          "central": {
+            "low": 213,
+            "high": 261
+          },
+          "outer": {
+            "low": 119,
+            "high": 140
+          }
+        },
+        "areas": {
+          "central": "the centre and expensive areas (as the sources call them)",
+          "outer": "normal or cheaper areas",
+          "cityWide": "the whole city (midpoint of centre and elsewhere)"
+        },
+        "dwelling": {
+          "1": "flat of any size (listing averages, some furnished)",
+          "2": "flat of any size (listing averages, some furnished)",
+          "3": "flat of any size (listing averages, some furnished)",
+          "4": "flat of any size (listing averages, some furnished)"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-hermosillo",
+        "derivedFrom": [
+          "livingcost-hermosillo",
+          "nomadlist-hermosillo"
+        ],
+        "confidence": "low",
+        "unverified": true,
+        "basis": "Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$564 for a 40 m² one-bedroom flat in the centre and US$287 for a cheap one, US$999 and US$525 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 18,080 and 10,080 pesos for a furnished 85 m² flat in an expensive and a normal area, and 6,310 pesos for a 45 m² studio in a normal area; Nomad List gives US$518 for a one-bedroom flat in the centre. Per m²: centre about 213 to 261 pesos (mean 235), elsewhere 119 to 140 (mean 128); the city-wide figure is the midpoint of the two.",
+        "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, which say their Hermosillo data is thin; not an official rent statistic. To be checked against listings or a market report before 1.0."
+      },
+      "utilitiesPerM2": {
+        "value": 21,
+        "low": 20,
+        "high": 29,
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-hermosillo",
+        "derivedFrom": [
+          "livingcost-hermosillo"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas, from published averages: Expatistan gives 1,771 pesos a month for two people in an 85 m² flat (about 21 per m²) and 951 pesos for one person in a 45 m² studio (about 21 per m²); livingcost.org gives US$71.50 (about 1,320 pesos) for one person, about 29 per m² in a 45 m² flat.",
+        "unverified": true,
+        "limitations": "An unverified estimate from crowd-sourced averages over the year; summer bills with air conditioning are much higher and winter ones lower. Hermosillo's summer electricity tariff (1F) is subsidised up to a consumption limit. To be checked against CFE tariffs before 1.0."
+      },
+      "retrieved": "2026-10-21",
+      "car": "MX"
     },
     "fi-tampere": {
       "currency": "EUR",
@@ -526,7 +588,6 @@
         "confidence": "medium",
         "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
       },
-      "carMonthly": null,
       "childcareIncomeBased": {
         "rate": 0.107,
         "maxFee": 335,
@@ -557,7 +618,8 @@
           "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
         }
       },
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "car": "FI"
     },
     "ee-tallinn": {
       "currency": "EUR",
@@ -735,8 +797,8 @@
         "confidence": "medium",
         "limitations": "Meal prices fall with household income and differ in municipal and private nurseries. From age three, school is free; meals are still charged."
       },
-      "carMonthly": null,
-      "retrieved": "2026-10-21"
+      "retrieved": "2026-10-21",
+      "car": "ES"
     },
     "pt-lisbon": {
       "currency": "EUR",
@@ -811,7 +873,6 @@
         "confidence": "medium",
         "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
       },
-      "carMonthly": null,
       "retrieved": "2026-10-21",
       "waterPerPerson": {
         "value": 15,
@@ -831,7 +892,8 @@
         "confidence": "low",
         "unverified": true,
         "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. To be checked against the tariffs before 1.0."
-      }
+      },
+      "car": "PT"
     },
     "pt-porto": {
       "currency": "EUR",
@@ -901,7 +963,6 @@
         "confidence": "medium",
         "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
       },
-      "carMonthly": null,
       "retrieved": "2026-10-21",
       "waterPerPerson": {
         "value": 15,
@@ -921,7 +982,141 @@
         "confidence": "low",
         "unverified": true,
         "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. No Porto figure was found; Lisbon's is used. To be checked against the tariffs before 1.0."
-      }
+      },
+      "car": "PT"
+    }
+  },
+  "carByCountry": {
+    "FI": {
+      "currency": "EUR",
+      "total": {
+        "value": 750,
+        "low": 600,
+        "high": 900
+      },
+      "running": {
+        "value": 400
+      },
+      "period": "2026",
+      "sourceId": "todellisetkulut-car-2026",
+      "basis": "A new, non-luxury car in Finland: Todelliset Kulut (2026) puts an ordinary car at €600 to €900 a month; its example family car at about 15,000 km a year has depreciation of €250, insurance €80, fuel €180, maintenance and repairs €100, and tyres and wear €40 (its €300 loan payment is left out, because depreciation already counts the car's cost).",
+      "runningBasis": "What remains once the car is paid for: insurance €80, fuel €180, maintenance €100 and tyres €40 in Todelliset Kulut's example, about €400 a month; vehicle tax is not itemised.",
+      "limitations": "An unverified estimate from published articles, not a motoring association's study of this country; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    },
+    "DE": {
+      "currency": "EUR",
+      "total": {
+        "value": 550,
+        "low": 480,
+        "high": 688
+      },
+      "running": {
+        "value": 290,
+        "low": 260,
+        "high": 310
+      },
+      "period": "2026",
+      "sourceId": "fahrzeugschein-adac-2026",
+      "derivedFrom": [
+        "mobile-de-golf-2023",
+        "carwow-golf-2026"
+      ],
+      "basis": "A new compact car such as a VW Golf at 15,000 km a year: ADAC's cost calculator gives €480 to €620 a month (as reported by fahrzeugschein.de, September 2026); mobile.de's Golf example gives €688 (depreciation €378, fuel €160, insurance and tax €93, workshop €57); carwow.de's Golf (July 2026) gives €529 without workshop costs or financing.",
+      "runningBasis": "What remains once the car is paid for (fuel, insurance, tax and workshop): €310 in mobile.de's example, and €228 plus workshop costs in carwow.de's, so about €260 to €310.",
+      "limitations": "An unverified estimate from published articles, partly from ADAC's calculator as reported by a third party; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    },
+    "ES": {
+      "currency": "EUR",
+      "total": {
+        "value": 354,
+        "low": 243,
+        "high": 483
+      },
+      "running": {
+        "value": 230,
+        "low": 170,
+        "high": 290
+      },
+      "period": "2026",
+      "sourceId": "race-car-costs-2026",
+      "derivedFrom": [
+        "motor16-car-costs-2026",
+        "fahrzeugschein-adac-2026"
+      ],
+      "basis": "RACE (2026): keeping a petrol car costs €170 to €290 a month at 15,000 km a year, without depreciation; Motor16 gives €1,700 to €3,500 a year. Depreciation is added at 30 to 40% of the total, the share ADAC's figures give for Germany: about €354 a month (€243 to €483).",
+      "runningBasis": "What remains once the car is paid for: RACE's €170 to €290 a month for fuel, insurance, road tax, inspection and maintenance; €230 is the midpoint.",
+      "limitations": "An unverified estimate from published articles, with depreciation taken from German figures; a national figure for about 15,000 km a year. To be checked before 1.0.",
+      "unverified": true
+    },
+    "PT": {
+      "currency": "EUR",
+      "total": {
+        "value": 328
+      },
+      "running": {
+        "value": 213,
+        "low": 197,
+        "high": 230
+      },
+      "period": "2025",
+      "sourceId": "caetano-autocost",
+      "derivedFrom": [
+        "fahrzeugschein-adac-2026"
+      ],
+      "basis": "Autocost user data, as reported by Caetano: keeping a car in Portugal costs about €328 a month (€3,939 a year), including depreciation.",
+      "runningBasis": "What remains once the car is paid for: the €328 less depreciation at 30 to 40% of the total, the share ADAC's figures give for Germany: about €213 (€197 to €230).",
+      "limitations": "An unverified single claim from user-entered data, not tied to a car size or mileage. To be checked before 1.0.",
+      "unverified": true
+    },
+    "MX": {
+      "currency": "MXN",
+      "total": {
+        "value": 9700,
+        "low": 8600,
+        "high": 10800
+      },
+      "running": {
+        "value": 4000,
+        "low": 2900,
+        "high": 5100
+      },
+      "period": "2026",
+      "sourceId": "elimparcial-auto-2026",
+      "basis": "El Imparcial (9 October 2026): a financed compact car of 300,000 pesos costs 8,600 to 10,800 pesos a month: a 5,710-peso loan payment, 1,500 to 2,500 for petrol, 800 to 1,500 for comprehensive insurance, 400 to 700 for maintenance and 200 to 400 for state fees.",
+      "runningBasis": "What remains once the car is paid for: petrol, insurance, maintenance and state fees, 2,900 to 5,100 pesos a month in El Imparcial's example.",
+      "limitations": "An unverified single claim. The loan payment stands in for the cost of owning the car (it includes repaying it, not depreciation); parking, tolls and repairs are not included. To be checked before 1.0.",
+      "unverified": true
+    },
+    "US": {
+      "currency": "USD",
+      "total": {
+        "value": 698
+      },
+      "running": {
+        "value": 369
+      },
+      "period": "2025",
+      "sourceId": "aaa-fact-sheet-2025",
+      "basis": "AAA Your Driving Costs 2025: a new small sedan costs 55.87 cents a mile to own and run, $8,381 a year at 15,000 miles, including depreciation, finance charges, fuel, insurance, maintenance and fees.",
+      "runningBasis": "What remains once the car is paid for: fuel, maintenance, insurance and fees make up 52.8% of AAA's average new-vehicle cost ($6,113 of $11,577), applied to the small sedan: about $369 a month.",
+      "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
+    },
+    "CA": {
+      "currency": "CAD",
+      "total": {
+        "value": 1288
+      },
+      "running": {
+        "value": 498
+      },
+      "period": "2026",
+      "sourceId": "wealthnorth-car-2026",
+      "basis": "WealthNorth (2026): a new mid-size sedan at $40,000 costs about $15,445 in its first year: depreciation $8,000, loan interest $1,470, insurance $2,100, fuel $2,475, maintenance $1,200 and licensing $200.",
+      "runningBasis": "What remains once the car is paid for: insurance, fuel, maintenance and licensing, $5,975 a year, about $498 a month. Ontario no longer charges for plate renewal.",
+      "limitations": "An unverified single claim for a mid-size sedan in its first year, when depreciation is highest; a compact car costs less. To be checked before 1.0.",
+      "unverified": true
     }
   }
 }

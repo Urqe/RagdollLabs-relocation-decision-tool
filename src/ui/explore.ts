@@ -159,7 +159,8 @@ function breakdown(r: CityResult, data: Dataset): HTMLElement {
       h('th', { scope: 'row' }, h('span', { class: `swatch seg-${c.id}`, 'aria-hidden': 'true' }), c.label),
       h('td', { class: 'num' }, c.status === 'missing' ? 'No data' : c.status === 'included' ? 'Included' : c.status === 'notApplicable' ? '—' : f.monthly(c.local!.typical, cur)),
       h('td', { class: 'num range' }, c.local === null || c.local.low === c.local.high ? '' : `${f.monthly(c.local.low, cur)} to ${f.monthly(c.local.high, cur)}`),
-      h('td', {}, sourceCell(c, data), c.notes.length > 0 && c.status !== 'included' && c.status !== 'notApplicable' ? h('span', { class: 'row-note' }, c.notes.join(' ')) : null)));
+      h('td', {}, sourceCell(c, data), c.notes.length > 0 && c.status !== 'included' && c.status !== 'notApplicable' ? h('span', { class: 'row-note' }, c.notes.join(' ')) : null,
+        c.paidOffCars ? h('span', { class: 'row-note paid-off' }, `If the ${c.notes[0]?.startsWith('2 cars') ? 'cars are' : 'car is'} already paid for: about ${f.monthly(c.paidOffCars.typical, cur)} a month, for fuel, insurance, maintenance and tax${c.notes[0]?.includes('transit') ? ' (with the transit passes)' : ''}.`) : null)));
   return h('table', { class: 'breakdown' },
     h('caption', {}, `Monthly spending in ${cur}`),
     h('thead', {}, h('tr', {}, h('th', { scope: 'col' }, 'Category'), h('th', { scope: 'col', class: 'num' }, 'Typical'), h('th', { scope: 'col', class: 'num' }, 'Scenario range'), h('th', { scope: 'col' }, 'Source and confidence'))),
