@@ -190,6 +190,18 @@
     "pt-porto": {
       "country": "PRT",
       "currency": "EUR"
+    },
+    "mx-mexico-city": {
+      "country": "MEX",
+      "currency": "MXN"
+    },
+    "mx-merida": {
+      "country": "MEX",
+      "currency": "MXN"
+    },
+    "mx-la-paz": {
+      "country": "MEX",
+      "currency": "MXN"
     }
   }
 }

@@ -244,6 +244,79 @@
         "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
         "limitations": "From 2011, the latest year published; commuting has changed since. Eurostat's figure is for its 'greater city' of Porto, which takes in neighbouring municipalities as well as the city itself."
       }
+    },
+    "mx-mexico-city": {
+      "country": "MEX",
+      "latitude": 19.43,
+      "climate": {
+        "coldestMonthMean": 15.4,
+        "warmestMonthMeanMax": 27.5,
+        "station": "Ciudad de México (Tacubaya)",
+        "period": "1991-2020",
+        "sourceId": "smn-normals-mexico-city"
+      },
+      "foreignBornShare": null,
+      "carCommuteShare": null,
+      "regional": {
+        "homicideRate": {
+          "value": 8.7,
+          "period": "2025",
+          "geoLevel": "region",
+          "sourceId": "inegi-homicides",
+          "confidence": "medium",
+          "basis": "Mexico City: 817 deaths registered as presumed homicides in 2025 per 9,358,381 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1, 2 and 4; preliminary).",
+          "limitations": "A state rate for Mexico City, by state of registration; 2025 figures are preliminary."
+        }
+      }
+    },
+    "mx-merida": {
+      "country": "MEX",
+      "latitude": 20.97,
+      "climate": {
+        "coldestMonthMean": 24.0,
+        "warmestMonthMeanMax": 36.3,
+        "station": "Mérida Centro",
+        "period": "1951-2010",
+        "sourceId": "smn-normals-merida",
+        "limitations": "Normals for 1951–2010, the latest published in the table found; recent decades are warmer."
+      },
+      "foreignBornShare": null,
+      "carCommuteShare": null,
+      "regional": {
+        "homicideRate": {
+          "value": 1.8,
+          "period": "2025",
+          "geoLevel": "region",
+          "sourceId": "inegi-homicides",
+          "confidence": "medium",
+          "basis": "Yucatán: 42 deaths registered as presumed homicides in 2025 per 2,396,676 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1, 2 and 4; preliminary).",
+          "limitations": "A state rate for Yucatán, by state of registration; 2025 figures are preliminary."
+        }
+      }
+    },
+    "mx-la-paz": {
+      "country": "MEX",
+      "latitude": 24.14,
+      "climate": {
+        "coldestMonthMean": 18.8,
+        "warmestMonthMeanMax": 38.2,
+        "station": "La Paz",
+        "period": "1991-2020",
+        "sourceId": "smn-normals-la-paz"
+      },
+      "foreignBornShare": null,
+      "carCommuteShare": null,
+      "regional": {
+        "homicideRate": {
+          "value": 23.2,
+          "period": "2025",
+          "geoLevel": "region",
+          "sourceId": "inegi-homicides",
+          "confidence": "medium",
+          "basis": "Baja California Sur: 203 deaths registered as presumed homicides in 2025 per 875,994 residents (INEGI, Defunciones por homicidio, comunicado 42/26, tables 1, 2 and 4; preliminary).",
+          "limitations": "A state rate for Baja California Sur, by state of registration; 2025 figures are preliminary."
+        }
+      }
     }
   },
   "national": {

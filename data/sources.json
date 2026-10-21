@@ -885,5 +885,135 @@
     "attribution": "WealthNorth",
     "cadence": "irregular",
     "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "expatistan-mexico-city",
+    "name": "Cost of living in Mexico City (crowd-sourced prices, updated October 2026)",
+    "publisher": "Expatistan",
+    "url": "https://expatistan.com/cost-of-living/mexico-city",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Expatistan",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "nomadlist-mexico-city",
+    "name": "Cost of living in Mexico City (October 2026)",
+    "publisher": "Nomad List",
+    "url": "https://nomads.com/cost-of-living/in/mexico-city",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Nomad List",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "expatistan-merida",
+    "name": "Cost of living in Mérida (crowd-sourced prices, updated October 2026)",
+    "publisher": "Expatistan",
+    "url": "https://expatistan.com/cost-of-living/merida",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Expatistan",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "livingcost-merida",
+    "name": "Cost of living in Mérida (updated June 2026)",
+    "publisher": "livingcost.org",
+    "url": "https://livingcost.org/cost/mexico/merida",
+    "licence": "Facts from a cost-of-living database",
+    "attribution": "livingcost.org",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "nomadlist-merida",
+    "name": "Cost of living in Mérida (October 2026)",
+    "publisher": "Nomad List",
+    "url": "https://nomads.com/cost-of-living/in/merida",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Nomad List",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "livingcost-la-paz",
+    "name": "Cost of living in La Paz, Baja California Sur (updated June 2026)",
+    "publisher": "livingcost.org",
+    "url": "https://livingcost.org/cost/mexico/la-paz",
+    "licence": "Facts from a cost-of-living database",
+    "attribution": "livingcost.org",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "expatistan-la-paz",
+    "name": "Cost of living in La Paz, Mexico (crowd-sourced prices, updated October 2026)",
+    "publisher": "Expatistan",
+    "url": "https://expatistan.com/cost-of-living/la-paz-mexico",
+    "licence": "Facts from a crowd-sourced database",
+    "attribution": "Expatistan",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "semovi-fares",
+    "name": "Public transport fares in Mexico City (Semovi, reported by UnoTV)",
+    "publisher": "Secretaría de Movilidad de la Ciudad de México; UnoTV",
+    "url": "https://www.unotv.com/estados/ciudad-de-mexico/tarifas-del-transporte-publico-de-la-cdmx/",
+    "licence": "Public fares (facts)",
+    "attribution": "Semovi, as reported by UnoTV",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "vayven-fares-2026",
+    "name": "Public transport prices in Yucatán in 2026 (Posta)",
+    "publisher": "Agencia de Transporte de Yucatán; Posta",
+    "url": "https://www.posta.com.mx/yucatan/precios-de-transporte-publico-en-yucatan-en-2026/vl2145611",
+    "licence": "Public fares (facts)",
+    "attribution": "Va y Ven fares, as reported by Posta",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "zeta-la-paz-fare-2026",
+    "name": "La Paz approves a public transport fare increase (Zeta Tijuana, 13 Oct 2026)",
+    "publisher": "Zeta Tijuana",
+    "url": "https://zetatijuana.com/2026/10/aprueban-aumento-de-transporte-en-la-paz-y-credito-para-los-cabos/",
+    "licence": "Facts from a news report",
+    "attribution": "Zeta Tijuana",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "smn-normals-mexico-city",
+    "name": "Climate normals 1991–2020, Ciudad de México Tacubaya (via Wikipedia's climate table)",
+    "publisher": "Servicio Meteorológico Nacional",
+    "url": "https://en.wikipedia.org/wiki/Mexico_City#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Servicio Meteorológico Nacional",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "smn-normals-merida",
+    "name": "Climate normals 1951–2010, Mérida Centro (via Wikipedia's climate table)",
+    "publisher": "Servicio Meteorológico Nacional",
+    "url": "https://en.wikipedia.org/wiki/M%C3%A9rida,_Yucat%C3%A1n#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Servicio Meteorológico Nacional",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "smn-normals-la-paz",
+    "name": "Climate normals 1991–2020, La Paz (via Wikipedia's climate table)",
+    "publisher": "Servicio Meteorológico Nacional",
+    "url": "https://en.wikipedia.org/wiki/La_Paz,_Baja_California_Sur#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Servicio Meteorológico Nacional",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
   }
 ]

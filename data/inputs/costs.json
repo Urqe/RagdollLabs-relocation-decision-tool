@@ -984,6 +984,333 @@
         "limitations": "An unverified estimate from cost-of-living guides, not the municipal tariff; it assumes two people share the bill. No Porto figure was found; Lisbon's is used. To be checked against the tariffs before 1.0."
       },
       "car": "PT"
+    },
+    "mx-mexico-city": {
+      "currency": "MXN",
+      "rent": {
+        "perM2": {
+          "cityWide": {
+            "1": 363,
+            "2": 363,
+            "3": 363,
+            "4": 363
+          },
+          "central": {
+            "1": 479,
+            "2": 479,
+            "3": 479,
+            "4": 479
+          },
+          "outer": {
+            "1": 247,
+            "2": 247,
+            "3": 247,
+            "4": 247
+          }
+        },
+        "perM2Range": {
+          "cityWide": {
+            "low": 228,
+            "high": 521
+          },
+          "central": {
+            "low": 442,
+            "high": 521
+          },
+          "outer": {
+            "low": 228,
+            "high": 266
+          }
+        },
+        "areas": {
+          "central": "the centre and expensive areas (as the sources call them)",
+          "outer": "normal or cheaper areas",
+          "cityWide": "the whole city (midpoint of centre and elsewhere)"
+        },
+        "dwelling": {
+          "1": "flat of any size (listing averages, some furnished)",
+          "2": "flat of any size (listing averages, some furnished)",
+          "3": "flat of any size (listing averages, some furnished)",
+          "4": "flat of any size (listing averages, some furnished)"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-mexico-city",
+        "derivedFrom": [
+          "nomadlist-mexico-city"
+        ],
+        "confidence": "low",
+        "unverified": true,
+        "basis": "Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): Expatistan (October 2026) gives 37,582 and 19,348 pesos for a furnished 85 m² flat in an expensive and a normal area, and 23,444 and 11,986 pesos for a 45 m² studio; Nomad List gives US$1,027 for a one-bedroom flat in the centre (taken as 40 m²). Per m²: centre about 442 to 521 pesos (mean 479), elsewhere 228 to 266 (mean 247); the city-wide figure is the midpoint of the two.",
+        "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, not an official rent statistic; the sites say their data for the city is thin. To be checked against listings or a market report before 1.0."
+      },
+      "utilitiesPerM2": {
+        "value": 17,
+        "low": 14,
+        "high": 20,
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-mexico-city",
+        "derivedFrom": [],
+        "basis": "Electricity, water and gas, from Expatistan: 1,164 pesos a month for two people in an 85 m² flat (about 14 per m²) and 886 pesos for one person in a 45 m² studio (about 20 per m²).",
+        "unverified": true,
+        "limitations": "An unverified estimate from crowd-sourced averages over the year. Only one source was found To be checked against CFE tariffs before 1.0."
+      },
+      "transitPassAdult": {
+        "value": 220,
+        "high": 360,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "semovi-fares"
+        ],
+        "basis": "Metro fare of 5 pesos for 44 rides a month; 60 rides at the Metrobús fare of 6 pesos for the range. There is no monthly pass.",
+        "sourceId": "semovi-fares",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Assumes two rides a working day. Fares from Semovi as reported by UnoTV; they were kept unchanged."
+      },
+      "healthcarePerPerson": {
+        "value": 464,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2023",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Out-of-pocket health spending per person in Mexico (US$313.80 in 2023, World Bank) at the 2023 average exchange rate (17.74 pesos per dollar).",
+        "sourceId": "wb-oop-health",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
+      },
+      "childcarePerChild": null,
+      "car": "MX",
+      "retrieved": "2026-10-21"
+    },
+    "mx-merida": {
+      "currency": "MXN",
+      "rent": {
+        "perM2": {
+          "cityWide": {
+            "1": 202,
+            "2": 202,
+            "3": 202,
+            "4": 202
+          },
+          "central": {
+            "1": 248,
+            "2": 248,
+            "3": 248,
+            "4": 248
+          },
+          "outer": {
+            "1": 155,
+            "2": 155,
+            "3": 155,
+            "4": 155
+          }
+        },
+        "perM2Range": {
+          "cityWide": {
+            "low": 121,
+            "high": 293
+          },
+          "central": {
+            "low": 186,
+            "high": 293
+          },
+          "outer": {
+            "low": 121,
+            "high": 182
+          }
+        },
+        "areas": {
+          "central": "the centre and expensive areas (as the sources call them)",
+          "outer": "normal or cheaper areas",
+          "cityWide": "the whole city (midpoint of centre and elsewhere)"
+        },
+        "dwelling": {
+          "1": "flat of any size (listing averages, some furnished)",
+          "2": "flat of any size (listing averages, some furnished)",
+          "3": "flat of any size (listing averages, some furnished)",
+          "4": "flat of any size (listing averages, some furnished)"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-merida",
+        "derivedFrom": [
+          "livingcost-merida",
+          "nomadlist-merida"
+        ],
+        "confidence": "low",
+        "unverified": true,
+        "basis": "Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): Expatistan (October 2026) gives 15,831 and 10,297 pesos for a furnished 85 m² flat in an expensive and a normal area, and 11,431 and 7,028 pesos for a 45 m² studio; livingcost.org (June 2026) gives US$580 and US$394 for a 40 m² one-bedroom flat in the centre and a cheap one, US$1,026 and US$700 for 80 m² three-bedroom flats; Nomad List gives US$634 for a one-bedroom flat in the centre. Per m²: centre about 186 to 293 pesos (mean 248), elsewhere 121 to 182 (mean 155); the city-wide figure is the midpoint of the two.",
+        "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, not an official rent statistic; the sites say their data for the city is thin. To be checked against listings or a market report before 1.0."
+      },
+      "utilitiesPerM2": {
+        "value": 27,
+        "low": 23,
+        "high": 30,
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "expatistan-merida",
+        "derivedFrom": [
+          "livingcost-merida"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas: Expatistan gives 1,980 pesos a month for two people in an 85 m² flat (about 23 per m²) and 1,355 pesos for one person in a 45 m² studio (about 30 per m²); livingcost.org gives US$65.80 (about 1,216 pesos) for one person, about 27 per m² in a 45 m² flat.",
+        "unverified": true,
+        "limitations": "An unverified estimate from crowd-sourced averages over the year. Summer bills with air conditioning are higher. To be checked against CFE tariffs before 1.0."
+      },
+      "transitPassAdult": {
+        "value": 528,
+        "high": 720,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "vayven-fares-2026"
+        ],
+        "basis": "Va y Ven fare of 12 pesos for 44 rides a month; 60 rides for the range. There is no monthly pass.",
+        "sourceId": "vayven-fares-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Assumes two rides a working day. Students and older adults pay 5 pesos."
+      },
+      "healthcarePerPerson": {
+        "value": 464,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2023",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Out-of-pocket health spending per person in Mexico (US$313.80 in 2023, World Bank) at the 2023 average exchange rate (17.74 pesos per dollar).",
+        "sourceId": "wb-oop-health",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
+      },
+      "childcarePerChild": null,
+      "car": "MX",
+      "retrieved": "2026-10-21"
+    },
+    "mx-la-paz": {
+      "currency": "MXN",
+      "rent": {
+        "perM2": {
+          "cityWide": {
+            "1": 209,
+            "2": 209,
+            "3": 209,
+            "4": 209
+          },
+          "central": {
+            "1": 265,
+            "2": 265,
+            "3": 265,
+            "4": 265
+          },
+          "outer": {
+            "1": 152,
+            "2": 152,
+            "3": 152,
+            "4": 152
+          }
+        },
+        "perM2Range": {
+          "cityWide": {
+            "low": 119,
+            "high": 303
+          },
+          "central": {
+            "low": 198,
+            "high": 303
+          },
+          "outer": {
+            "low": 119,
+            "high": 180
+          }
+        },
+        "areas": {
+          "central": "the centre and expensive areas (as the sources call them)",
+          "outer": "normal or cheaper areas",
+          "cityWide": "the whole city (midpoint of centre and elsewhere)"
+        },
+        "dwelling": {
+          "1": "flat of any size (listing averages, some furnished)",
+          "2": "flat of any size (listing averages, some furnished)",
+          "3": "flat of any size (listing averages, some furnished)",
+          "4": "flat of any size (listing averages, some furnished)"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "livingcost-la-paz",
+        "derivedFrom": [
+          "expatistan-la-paz"
+        ],
+        "confidence": "low",
+        "unverified": true,
+        "basis": "Built from published listing averages, converted at 18.48 pesos per dollar (the app's ECB rates): livingcost.org (June 2026) gives US$656 and US$390 for a 40 m² one-bedroom flat in the centre and a cheap one, US$1,154 and US$721 for 80 m² three-bedroom flats; Expatistan (October 2026) gives 24,976 and 11,922 pesos for a furnished 85 m² flat in an expensive and a normal area, and 8,907 and 5,362 pesos for a 45 m² studio. Per m²: centre about 198 to 303 pesos (mean 265), elsewhere 119 to 180 (mean 152); the city-wide figure is the midpoint of the two.",
+        "limitations": "An unverified estimate from crowd-sourced cost-of-living sites, not an official rent statistic; the sites say their data for the city is thin. To be checked against listings or a market report before 1.0."
+      },
+      "utilitiesPerM2": {
+        "value": 17,
+        "low": 16,
+        "high": 18,
+        "period": "2026",
+        "geoLevel": "city",
+        "sourceId": "livingcost-la-paz",
+        "derivedFrom": [
+          "expatistan-la-paz"
+        ],
+        "basis": "Electricity (with air conditioning), water and gas: Expatistan gives 1,412 pesos a month for two people in an 85 m² flat (about 17 per m²) and 700 pesos for one person in a 45 m² studio (about 16 per m²); livingcost.org gives US$43 (about 795 pesos) for one person, about 18 per m² in a 45 m² flat.",
+        "unverified": true,
+        "limitations": "An unverified estimate from crowd-sourced averages over the year. Expatistan says its La Paz figures are mostly a guess; summer bills with air conditioning are higher. To be checked against CFE tariffs before 1.0."
+      },
+      "transitPassAdult": {
+        "value": 704,
+        "high": 960,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "zeta-la-paz-fare-2026"
+        ],
+        "basis": "Urban bus fare of 16 pesos, approved by La Paz's council in October 2026 (up from 12), for 44 rides a month; 12 pesos for the low end and 60 rides for the range. There is no monthly pass.",
+        "sourceId": "zeta-la-paz-fare-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Assumes two rides a working day; the date the new fare takes effect was not given.",
+        "low": 528
+      },
+      "healthcarePerPerson": {
+        "value": 464,
+        "unit": "MXN/month",
+        "currency": "MXN",
+        "period": "2023",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Out-of-pocket health spending per person in Mexico (US$313.80 in 2023, World Bank) at the 2023 average exchange rate (17.74 pesos per dollar).",
+        "sourceId": "wb-oop-health",
+        "retrieved": "2026-10-19",
+        "confidence": "low",
+        "limitations": "A national average. Salaried workers are covered by IMSS, but many people also pay for private care."
+      },
+      "childcarePerChild": null,
+      "car": "MX",
+      "retrieved": "2026-10-21"
     }
   },
   "carByCountry": {

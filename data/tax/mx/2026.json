@@ -137,6 +137,24 @@
       "payrollTaxRate": 0.03,
       "confidence": "medium",
       "source": "BHR Mexico, Contribuciones locales 2026: 3.00%, unchanged from 2025"
+    },
+    "cdmx": {
+      "name": "Mexico City",
+      "payrollTaxRate": 0.04,
+      "confidence": "medium",
+      "source": "BHR Mexico, Contribuciones locales 2026 (January 2026); El Contribuyente's 2026 ISN table agrees: 4.00%, unchanged from 2025"
+    },
+    "yuc": {
+      "name": "Yucatán",
+      "payrollTaxRate": 0.0375,
+      "confidence": "medium",
+      "source": "BHR Mexico, Contribuciones locales 2026 (January 2026); El Contribuyente's 2026 ISN table agrees: 3.75%, up from 3.00% in 2025"
+    },
+    "bcs": {
+      "name": "Baja California Sur",
+      "payrollTaxRate": 0.03,
+      "confidence": "medium",
+      "source": "BHR Mexico, Contribuciones locales 2026 (January 2026); El Contribuyente's 2026 ISN table agrees: 3.00%, up from 2.50% in 2025"
     }
   }
 }
