@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from '../repo-data.ts';
 
-const COUNTRIES = ['FIN', 'DEU', 'ESP', 'USA', 'MEX'];
+const COUNTRIES = ['FIN', 'DEU', 'ESP', 'EST', 'PRT', 'USA', 'MEX'];
 /** Indicator id in the app → World Bank code and API source. */
 const INDICATORS: Record<string, { code: string; source: number }> = {
   homicideRate: { code: 'VC.IHR.PSRC.P5', source: 2 },
@@ -39,9 +39,11 @@ async function latest(code: string, source: number): Promise<Record<string, { va
 
 const path = join(ROOT, 'data/inputs/indicators.json');
 const inputs = JSON.parse(readFileSync(path, 'utf8'));
+// Notes kept by hand (such as `notComparable`) survive a re-import.
+const previous = inputs.national ?? {};
 inputs.national = {};
 for (const [id, { code, source }] of Object.entries(INDICATORS)) {
-  inputs.national[id] = { worldBankCode: code, values: await latest(code, source) };
+  inputs.national[id] = { ...previous[id], worldBankCode: code, values: await latest(code, source) };
   console.log(id, inputs.national[id].values);
 }
 inputs.retrievedNational = new Date().toISOString().slice(0, 10);

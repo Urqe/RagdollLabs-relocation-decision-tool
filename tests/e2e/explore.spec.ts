@@ -7,13 +7,20 @@ test('explore a city: enter income, pick a city, see take-home, savings and sour
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
   await page.getByLabel('Gross income').fill('60000');
-  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere' });
 
   await expect(page.getByRole('heading', { level: 1, name: 'Tampere' })).toBeVisible();
   await expect(page).toHaveURL(/#\/explore\/fi-tampere$/);
   const takeHome = page.locator('[data-balance="take-home"]').locator('.figure');
   await expect(takeHome).toHaveText(/€\d/);
   await expect(page.locator('[data-balance="savings"]')).toBeVisible();
+  // Tampere runs on sourced data since 0.6.0.
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Development fixture');
+  await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('Statistics Finland');
+});
+
+test('a development preview says its costs are placeholders', async ({ page }) => {
+  await page.goto('./#/explore/us-sacramento');
   await expect(page.getByRole('table', { name: /Monthly spending/ })).toContainText('Development fixture');
   await expect(page.getByRole('note')).toContainText('placeholders');
 });
@@ -203,7 +210,7 @@ test('F5: "Clear my data" also clears this city\'s own figures', async ({ page }
   await expect(takeHomeText(page)).not.toHaveText('€9,000');
   await expect(page.locator('[data-balance="take-home"]')).toContainText('Gross pay minus');
   await page.getByLabel('City').selectOption({ label: 'Helsinki' });
-  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere' });
   await expect(page.getByLabel('Household take-home')).toHaveValue('');
   await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Your figure');
 });
@@ -247,7 +254,7 @@ test('F7: an invalid field stays invalid when the form is rebuilt', async ({ pag
 test('F9: a malformed link opens the app with "City not found"', async ({ page }) => {
   await page.goto('./#/explore/%');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('City not found');
-  await page.getByLabel('City').selectOption({ label: 'Tampere, Finland' });
+  await page.getByLabel('City').selectOption({ label: 'Tampere' });
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tampere');
 });
 
@@ -260,10 +267,9 @@ test('pilot cities run on sourced data; placeholder cities are listed apart as p
   await expect(table).not.toContainText('Development fixture');
   await expect(table).toContainText('Rents of dwellings');
   const groups = await page.locator('#city-picker optgroup').evaluateAll((gs) => gs.map((g) => (g as HTMLOptGroupElement).label));
-  expect(groups).toEqual(expect.arrayContaining(['Finland', 'Germany', 'Spain', 'United States', 'Mexico', 'Development preview (placeholder costs)']));
+  expect(groups).toEqual(['Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States', 'Development preview (placeholder costs)']);
   const preview = await page.locator('#city-picker optgroup[label^="Development preview"] option').allTextContents();
-  expect(preview).toContain('Tampere, Finland');
-  expect(preview).not.toContain('Helsinki, Finland');
+  expect(preview).toEqual(['Sacramento, United States']);
 });
 
 test('a row explains what its value measures', async ({ page }) => {

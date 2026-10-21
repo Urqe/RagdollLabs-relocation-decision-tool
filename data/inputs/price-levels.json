@@ -63,6 +63,20 @@
       "recreation": 79.4949236315802,
       "clothing": 87.9884178331392,
       "communications": 68.8496072960162
+    },
+    "EST": {
+      "food": 114.46963285178,
+      "eatingOut": 124.464592520724,
+      "recreation": 102.943022208817,
+      "clothing": 141.034947771876,
+      "communications": 104.591057023439
+    },
+    "PRT": {
+      "food": 118.589676993041,
+      "eatingOut": 93.9254471920877,
+      "recreation": 102.902116513003,
+      "clothing": 134.994744248242,
+      "communications": 143.437360788279
     }
   },
   "exchangeRates2021": {
@@ -118,6 +132,14 @@
         137.424,
         137.949
       ]
+    },
+    "EST": {
+      "2021": 114.72,
+      "2024": 155.1
+    },
+    "PRT": {
+      "2021": 104.55,
+      "2024": 122.15
     }
   },
   "cities": {
@@ -148,6 +170,26 @@
     "mx-hermosillo": {
       "country": "MEX",
       "currency": "MXN"
+    },
+    "fi-tampere": {
+      "country": "FIN",
+      "currency": "EUR"
+    },
+    "ee-tallinn": {
+      "country": "EST",
+      "currency": "EUR"
+    },
+    "es-valencia": {
+      "country": "ESP",
+      "currency": "EUR"
+    },
+    "pt-lisbon": {
+      "country": "PRT",
+      "currency": "EUR"
+    },
+    "pt-porto": {
+      "country": "PRT",
+      "currency": "EUR"
     }
   }
 }

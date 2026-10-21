@@ -5,6 +5,7 @@ import type { Range } from '../core/money/money.ts';
 import type { City, CurrencyCode, Observation, RentDefinition } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { formatRoute, type AppState, type Store } from '../state/store.ts';
+import { citySearch, groupedOptions } from './city-search.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
 import { fitSection } from './fit.ts';
 import * as f from './format.ts';
@@ -242,17 +243,14 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
   const found = requested ? data.city(requested) : undefined;
   const city = requested ? found : (data.cities.find((c) => !c.fixture) ?? data.cities[0]);
 
-  const picker = h('select', { id: 'city-picker', onchange: (e: Event) => { location.hash = formatRoute({ screen: 'explore', cityId: (e.target as HTMLSelectElement).value }); } },
+  const go = (id: string): void => { location.hash = formatRoute({ screen: 'explore', cityId: id }); };
+  const picker = h('select', { id: 'city-picker', onchange: (e: Event) => go((e.target as HTMLSelectElement).value) },
     city ? null : h('option', { value: '', selected: true, disabled: true }, 'Choose a city'),
     // Cities with sourced data are grouped by country; cities still on placeholder costs are kept apart.
-    [...new Set(data.cities.filter((c) => !c.fixture).map((c) => c.countryId))].map((cid) =>
-      h('optgroup', { label: data.country(cid)?.name ?? cid },
-        data.cities.filter((c) => c.countryId === cid && !c.fixture).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, c.name)))),
-    data.cities.some((c) => c.fixture)
-      ? h('optgroup', { label: 'Development preview (placeholder costs)' },
-          data.cities.filter((c) => c.fixture).map((c) => h('option', { value: c.id, selected: c.id === city?.id }, `${c.name}, ${data.country(c.countryId)?.name ?? c.countryId}`)))
-      : null);
-  const pickerField = h('div', { class: 'field picker' }, h('label', { for: 'city-picker' }, 'City'), picker);
+    groupedOptions(data.cities, data, city?.id ?? null));
+  const pickerField = h('div', { class: 'picker' },
+    h('div', { class: 'field' }, h('label', { for: 'city-picker' }, 'City'), picker),
+    citySearch({ id: 'city-search', label: 'Search cities', cities: data.cities, data, onPick: (c) => go(c.id) }));
 
   if (requested && !found) {
     document.title = `City not found: ${APP_NAME}`;

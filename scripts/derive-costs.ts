@@ -33,10 +33,13 @@ interface DirectRent extends Omit<PerM2Rent, 'perM2' | 'dwelling'>, Record<Bedro
 
 interface CityInputs {
   currency: CurrencyCode;
+  /** When this city's figures were retrieved, if not on the file's date. */
+  retrieved?: string;
   rent?: PerM2Rent;
   rentObservations?: DirectRent;
   rentMissing?: boolean;
-  electricity?: { pricePerKwh: number; period: string; sourceId: string; geoLevel: GeoLevel };
+  /** `limitations`: what the utilities figure leaves out for this city, added to the general note. */
+  electricity?: { pricePerKwh: number; period: string; sourceId: string; geoLevel: GeoLevel; limitations?: string };
   operatingCostsPerM2?: { value: number; low?: number; period: string; sourceId: string; geoLevel: GeoLevel; basis: string };
   waterPerPerson?: Observation;
   transitPassAdult?: Observation | null;
@@ -58,7 +61,7 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
   const c = inputs.cities[id]!;
   const a = inputs.assumptions;
   const cur = c.currency;
-  const base = { unit: `${cur}/month`, currency: cur, retrieved: inputs.retrieved };
+  const base = { unit: `${cur}/month`, currency: cur, retrieved: c.retrieved ?? inputs.retrieved };
   const out: Partial<CityCosts> = { rent: {} };
 
   for (const b of BEDROOMS) {
@@ -110,7 +113,7 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
         basis: `Electricity: ${kwh.toLocaleString('en')} kWh a year (app assumption for ${b} bedroom${b === '1' ? '' : 's'}) at €${e.pricePerKwh.toFixed(4)} per kWh, the national household price with taxes.`
           + (o ? ` ${o.basis} Applied to ${m2} m².` : ''),
         sourceId: e.sourceId, confidence: 'medium',
-        limitations: 'Electricity use is an app assumption and varies with appliances, cooking and cooling.',
+        limitations: `Electricity use is an app assumption and varies with appliances, cooking and cooling.${e.limitations ? ` ${e.limitations}` : ''}`,
       };
     }
   } else if (!c.rentObservations?.includes?.includes('utilities')) {

@@ -5,6 +5,7 @@ import { ESSENTIAL } from '../core/rank/rank.ts';
 import type { City } from '../core/types.ts';
 import type { Dataset } from '../data/load.ts';
 import { formatRoute, MAX_COMPARE, type AppState, type Store } from '../state/store.ts';
+import { citySearch, groupedOptions } from './city-search.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
 import { APP_NAME, BAND_LABEL } from './explore.ts';
 import { FIT_BAND_LABEL, names, scoreText } from './fit.ts';
@@ -40,12 +41,15 @@ function eurAndLocal(n: number, r: CityResult): Child {
   return r.currency === 'EUR' ? eur : [eur, h('span', { class: 'local' }, f.monthly(n, r.currency))];
 }
 
+/** Adding a city: a select grouped by country, and a search box for typing a name. */
 function cityPicker(id: string, label: string, options: City[], onPick: (cityId: string) => void, data: Dataset): HTMLElement {
-  return h('div', { class: 'field' },
-    h('label', { for: id }, label),
-    h('select', { id, onchange: (e: Event) => { const v = (e.target as HTMLSelectElement).value; if (v) onPick(v); } },
-      h('option', { value: '', selected: true }, 'Choose a city'),
-      options.map((c) => h('option', { value: c.id }, `${c.name}, ${data.country(c.countryId)?.name ?? c.countryId}`))));
+  return h('div', { class: 'picker compare-add' },
+    h('div', { class: 'field' },
+      h('label', { for: id }, label),
+      h('select', { id, onchange: (e: Event) => { const v = (e.target as HTMLSelectElement).value; if (v) onPick(v); } },
+        h('option', { value: '', selected: true }, 'Choose a city'),
+        groupedOptions(options, data, null))),
+    citySearch({ id: `${id}-search`, label: 'Or search', cities: options, data, onPick: (c) => onPick(c.id) }));
 }
 
 export function renderCompare(root: HTMLElement, state: AppState, data: Dataset, store: Store): void {
@@ -137,7 +141,7 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
         available.length > 0 ? h('select', { id: `replace-${c.city.id}`, 'aria-label': `Replace ${c.city.name}`, onchange: (e: Event) => {
           const v = (e.target as HTMLSelectElement).value;
           if (v) go(ids.map((x, j) => (j === i ? v : x)));
-        } }, h('option', { value: '', selected: true }, 'Replace…'), available.map((a) => h('option', { value: a.id }, a.name))) : null,
+        } }, h('option', { value: '', selected: true }, 'Replace…'), groupedOptions(available, data, null)) : null,
         h('button', { type: 'button', class: 'quiet-button', 'aria-label': `Remove ${c.city.name}`, onclick: () => go(ids.filter((x) => x !== c.city.id)) }, 'Remove')));
 
   const salaryCell = (c: Column, r: CityResult): Child => {

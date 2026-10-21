@@ -1,0 +1,474 @@
+{
+  "id": "es-valencia",
+  "name": "Valencia",
+  "countryId": "es",
+  "regionId": "es-valencia",
+  "role": "regional-capital",
+  "tax": {
+    "model": "es",
+    "subdivision": "valencia"
+  },
+  "languages": [
+    "es",
+    "ca"
+  ],
+  "indicators": {
+    "homicideRate": {
+      "value": 0.691,
+      "unit": "per 100,000 people a year",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-homicide",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator VC.IHR.PSRC.P5."
+    },
+    "voiceAccountability": {
+      "value": 1.117,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_VA.EST."
+    },
+    "governmentEffectiveness": {
+      "value": 1.13,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_GE.EST."
+    },
+    "ruleOfLaw": {
+      "value": 0.869,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_RL.EST."
+    },
+    "controlOfCorruption": {
+      "value": 0.653,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_CC.EST."
+    },
+    "lifeExpectancy": {
+      "value": 83.888,
+      "unit": "years",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-life-expectancy",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SP.DYN.LE00.IN."
+    },
+    "oopShare": {
+      "value": 20.855,
+      "unit": "% of health spending",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-oop-share",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS."
+    },
+    "eatingOutPriceLevel": {
+      "value": 0.63,
+      "unit": "ratio to Finland",
+      "period": "2021",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
+    },
+    "coldestMonthMean": {
+      "value": 12.1,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "aemet-normals-valencia",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average temperature of the coldest month, Valencia, climate normals 1991-2020."
+    },
+    "warmestMonthMeanMax": {
+      "value": 30.6,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "aemet-normals-valencia",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average daily high of the warmest month, Valencia, climate normals 1991-2020."
+    },
+    "decemberDaylight": {
+      "value": 9.4,
+      "unit": "hours",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "astronomy"
+      ],
+      "basis": "Sunrise to sunset on 21 December at latitude 39.47°, calculated.",
+      "sourceId": "astronomy",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "foreignBornShare": {
+      "value": 21.3,
+      "unit": "%",
+      "period": "2024",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "eurostat-urban-audit",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+      "limitations": "Eurostat's figure is for its 'greater city' of Valencia, which takes in neighbouring municipalities as well as the city itself."
+    },
+    "carCommuteShare": null
+  },
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 815,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-09",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "idealista-valencia-2026"
+          ],
+          "basis": "€16.30 per m² × 50 m², the app's assumed size for 1 bedroom.",
+          "sourceId": "idealista-valencia-2026",
+          "confidence": "medium",
+          "limitations": "Average asking rent per m² on idealista for the city of Valencia in September 2026; no split by size or district.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 1141,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-09",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "idealista-valencia-2026"
+          ],
+          "basis": "€16.30 per m² × 70 m², the app's assumed size for 2 bedrooms.",
+          "sourceId": "idealista-valencia-2026",
+          "confidence": "medium",
+          "limitations": "Average asking rent per m² on idealista for the city of Valencia in September 2026; no split by size or district.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 1467,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-09",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "idealista-valencia-2026"
+          ],
+          "basis": "€16.30 per m² × 90 m², the app's assumed size for 3 bedrooms.",
+          "sourceId": "idealista-valencia-2026",
+          "confidence": "medium",
+          "limitations": "Average asking rent per m² on idealista for the city of Valencia in September 2026; no split by size or district.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 1793,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-09",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "idealista-valencia-2026"
+          ],
+          "basis": "€16.30 per m² × 110 m², the app's assumed size for 4 bedrooms.",
+          "sourceId": "idealista-valencia-2026",
+          "confidence": "medium",
+          "limitations": "Average asking rent per m² on idealista for the city of Valencia in September 2026; no split by size or district.",
+          "rent": {
+            "market": "listings",
+            "statistic": "mean",
+            "dwelling": "flat of any size",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        }
+      }
+    },
+    "utilities": {
+      "1": {
+        "value": 44,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 2,000 kWh a year (app assumption for 1 bedroom) at €0.2669 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "2": {
+        "value": 60,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 2,700 kWh a year (app assumption for 2 bedrooms) at €0.2669 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "3": {
+        "value": 76,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 3,400 kWh a year (app assumption for 3 bedrooms) at €0.2669 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "4": {
+        "value": 89,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 4,000 kWh a year (app assumption for 4 bedrooms) at €0.2669 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      }
+    },
+    "waterPerPerson": {
+      "value": 12,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "region",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "ine-water-2024"
+      ],
+      "basis": "Average water and sanitation cost in the Valencian Community in 2024 (€2.63 per m³) at the measured average use of 151 litres a person a day (INE).",
+      "sourceId": "ine-water-2024",
+      "retrieved": "2026-10-21",
+      "confidence": "medium"
+    },
+    "transitPassAdult": {
+      "value": 21,
+      "high": 35,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "region",
+      "provenance": "observed",
+      "basis": "SUMA Mensual for one zone (A, the city of Valencia), valid on metro, tram and EMT buses: €35, or €21 with the Generalitat's 40% reduction, which runs to 31 December 2026.",
+      "sourceId": "suma-fares-2026",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "limitations": "Read from republished fare tables (ValenciaMove, redtransporte.com); Metrovalencia's own page could not be read. €35 a month if the reduction ends."
+    },
+    "healthcarePerPerson": {
+      "value": 54,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Household out-of-pocket health spending per inhabitant in Spain (€647.45 a year).",
+      "sourceId": "eurostat-health",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+    },
+    "childcarePerChild": {
+      "value": 78,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2025-2026",
+      "geoLevel": "region",
+      "provenance": "observed",
+      "basis": "Nursery education for children under three is free in the Valencian Community in 2026–2027 (public centres, and aid of up to €460 a month for authorised private ones). Meals are charged: in the Generalitat's own nurseries at most €78.27 a month, the rate for household incomes above four times the minimum wage.",
+      "sourceId": "gva-escoletes-2026",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "limitations": "Meal prices fall with household income and differ in municipal and private nurseries. From age three, school is free; meals are still charged."
+    },
+    "carMonthly": null,
+    "groceriesPerAdultEquivalent": {
+      "value": 318,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: prices are 0.88 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 85,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: prices are 1.20 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 126,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: prices are 0.64 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 193,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: prices are 0.77 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 87,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: prices are 0.78 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    }
+  }
+}

@@ -10,7 +10,8 @@ import type { City, Source } from '../../src/core/types.ts';
 const fixtures = readTree('fixtures');
 const data = readTree('data');
 const allSources = [...data.sources, ...fixtures.sources];
-const tampere = fixtures.cities.find((c) => c.data.id === 'fi-tampere')!;
+// Sacramento is the last development fixture (until 0.7.0).
+const fixtureCity = fixtures.cities.find((c) => c.data.id === 'us-sacramento')!;
 
 describe('repository data', () => {
   test('current data/ and fixtures/ trees are valid', () => {
@@ -75,8 +76,8 @@ describe('tax parameter contract (F8)', () => {
   });
 
   test('a city whose tax subdivision is not in the parameters fails', () => {
-    const city = fixtures.cities.find((c) => c.data.tax.model === 'fi')!;
-    const broken = { ...fixtures, countries: [...data.countries, ...fixtures.countries], cities: [{ ...city, data: { ...city.data, tax: { ...city.data.tax, subdivision: 'atlantis' } } }] };
+    const city = data.cities.find((c) => c.data.tax.model === 'fi')!;
+    const broken = { ...data, cities: [{ ...city, data: { ...city.data, tax: { ...city.data.tax, subdivision: 'atlantis' } } }] };
     assert.ok(checkJurisdictions([broken], files, latestFx().data).some((e) => e.message.includes('atlantis')));
   });
 });
@@ -98,31 +99,31 @@ describe('source freshness (F8)', () => {
 
 describe('build-breaking problems', () => {
   test('a fixture city placed in data/ fails', () => {
-    const tree = { ...data, countries: fixtures.countries.map((c) => ({ ...c, data: { ...c.data, fixture: undefined } as never })), regions: fixtures.regions.map((r) => ({ ...r, data: { ...r.data, fixture: undefined } as never })), cities: [tampere] };
+    const tree = { ...data, cities: [fixtureCity] };
     const errors = checkTree(tree, allSources).errors.map((e) => e.message);
     assert.ok(errors.includes('fixture data is not allowed in data/'));
     assert.ok(errors.includes('production city cites the fixture source'));
   });
 
   test('an unknown source id fails', () => {
-    const p = validateObservation({ ...tampere.data.costs.internet!, sourceId: 'nope' }, 'x', new Set(allSources.map((s: Source) => s.id)));
+    const p = validateObservation({ ...fixtureCity.data.costs.internet!, sourceId: 'nope' }, 'x', new Set(allSources.map((s: Source) => s.id)));
     assert.ok(p.some((e) => e.message.includes('unknown source')));
   });
 
   test('a unit whose currency disagrees with the currency field fails', () => {
-    const p = validateObservation({ ...tampere.data.costs.internet!, unit: 'USD/month' }, 'x', new Set(['fixture']));
+    const p = validateObservation({ ...fixtureCity.data.costs.internet!, unit: 'EUR/month' }, 'x', new Set(['fixture']));
     assert.ok(p.some((e) => e.message === 'currency must match the unit'));
   });
 
   test('a missing value with a range fails', () => {
-    const p = validateObservation({ ...tampere.data.costs.internet!, value: null }, 'x', new Set(['fixture']));
+    const p = validateObservation({ ...fixtureCity.data.costs.internet!, value: null }, 'x', new Set(['fixture']));
     assert.ok(p.some((e) => e.message === 'a missing value cannot have a range'));
   });
 
   test('a fixture file without the fixture flag fails', () => {
-    const unflagged: City = { ...tampere.data };
+    const unflagged: City = { ...fixtureCity.data };
     delete unflagged.fixture;
-    const tree = { ...fixtures, cities: [{ path: tampere.path, data: unflagged }] };
+    const tree = { ...fixtures, cities: [{ path: fixtureCity.path, data: unflagged }] };
     assert.ok(checkTree(tree, allSources).errors.some((e) => e.message.includes('must set "fixture": true')));
   });
 

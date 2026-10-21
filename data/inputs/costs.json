@@ -143,7 +143,8 @@
           "confidence": "medium",
           "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
         }
-      }
+      },
+      "retrieved": "2026-10-21"
     },
     "de-berlin": {
       "currency": "EUR",
@@ -429,6 +430,431 @@
       },
       "childcarePerChild": null,
       "carMonthly": null
+    },
+    "fi-tampere": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "cityWide": {
+            "1": 16.43,
+            "2": 15.11,
+            "3": 15.11,
+            "4": 15.11
+          },
+          "central": {
+            "1": 17.48,
+            "2": 16.8,
+            "3": 16.8,
+            "4": 16.8
+          },
+          "outer": {
+            "1": 14.11,
+            "2": 12.49,
+            "3": 12.49,
+            "4": 12.49
+          }
+        },
+        "dwelling": {
+          "1": "two-room flat (one bedroom and a living room)",
+          "2": "flat of three or more rooms",
+          "3": "flat of three or more rooms",
+          "4": "flat of three or more rooms"
+        },
+        "market": "new-leases",
+        "statistic": "mean",
+        "period": "2026-Q3",
+        "geoLevel": "city",
+        "sourceId": "statfin-rents",
+        "confidence": "medium",
+        "includes": [
+          "heating"
+        ],
+        "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+        "areas": {
+          "central": "rental area 1 (city centre and inner districts)",
+          "outer": "rental area 3 (outer districts)",
+          "cityWide": "the whole city"
+        }
+      },
+      "electricity": {
+        "pricePerKwh": 0.2254,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "waterPerPerson": {
+        "value": 21,
+        "low": 14,
+        "high": 43,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "tampereen-vesi-2026",
+          "motiva-water"
+        ],
+        "basis": "Tampereen Vesi usage fees for 2026 (water €1.93 and wastewater €3.36 per m³ with VAT, €5.29 together) at 130 litres a person a day; Motiva gives 90 to 270 litres, used for the range.",
+        "sourceId": "tampereen-vesi-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Landlords often bill water as a flat fee per resident, which can differ from metered cost."
+      },
+      "transitPassAdult": {
+        "value": 65,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "Nysse 30-day season ticket for an adult, zones AB, on the travel card.",
+        "sourceId": "nysse-fares-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 63,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Finland (€759.66 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "carMonthly": null,
+      "childcareIncomeBased": {
+        "rate": 0.107,
+        "maxFee": 335,
+        "minFee": 32,
+        "siblingShares": [
+          1,
+          0.4,
+          0.2
+        ],
+        "thresholdsByFamilySize": {
+          "2": 4369,
+          "3": 5635,
+          "4": 6399,
+          "5": 7163,
+          "6": 7925
+        },
+        "observation": {
+          "value": 335,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "period": "2026-2027",
+          "geoLevel": "country",
+          "provenance": "observed",
+          "basis": "Municipal early-education fee from 1 August 2026: 10.7% of monthly gross household income above a threshold for the family size, at most €335 for the youngest child; under €32 nothing is charged. The second child pays 40% and each further child 20% of the youngest child's fee.",
+          "sourceId": "fi-daycare-fees-2026",
+          "retrieved": "2026-10-19",
+          "confidence": "medium",
+          "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
+        }
+      },
+      "retrieved": "2026-10-21"
+    },
+    "ee-tallinn": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 15.1,
+          "2": 15.1,
+          "3": 15.1,
+          "4": 15.1
+        },
+        "dwelling": {
+          "1": "flat of any size, utilities not included",
+          "2": "flat of any size, utilities not included",
+          "3": "flat of any size, utilities not included",
+          "4": "flat of any size, utilities not included"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026-08",
+        "geoLevel": "city",
+        "sourceId": "kv-ee-rents-2026",
+        "confidence": "low",
+        "limitations": "Average asking rent per m² of 1,168 flats advertised on KV.EE in Tallinn in August 2026, as reported by Adaur; no split by size. Districts range from €12.5 (Lasnamäe) to €16.6 (Põhja-Tallinn). Asking rents exclude utilities and building charges (kommunaalkulud), which tenants pay on top."
+      },
+      "transitPassAdult": {
+        "value": 0,
+        "high": 30,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "city",
+        "provenance": "observed",
+        "basis": "Public transport in Tallinn is free for people registered as Tallinn residents in the population register; others pay €30 for a 30-day ticket.",
+        "sourceId": "tallinn-transport-tickets",
+        "retrieved": "2026-10-21",
+        "confidence": "high",
+        "limitations": "Free only once you are registered as living in Tallinn; until then, €30 a month."
+      },
+      "healthcarePerPerson": {
+        "value": 41,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Estonia (€487.52 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 0,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026-2027",
+        "geoLevel": "city",
+        "provenance": "observed",
+        "basis": "From 1 September 2026, Tallinn's municipal kindergartens and childcare groups charge no place fee when the child and both parents (or the single parent) are registered in Tallinn; meals have been free since 2017.",
+        "sourceId": "tallinn-kindergarten-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Requires registration in Tallinn. Private kindergartens charge fees. A municipal place is not guaranteed at a particular kindergarten."
+      },
+      "carMonthly": null,
+      "retrieved": "2026-10-21"
+    },
+    "es-valencia": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 16.3,
+          "2": 16.3,
+          "3": 16.3,
+          "4": 16.3
+        },
+        "dwelling": {
+          "1": "flat of any size",
+          "2": "flat of any size",
+          "3": "flat of any size",
+          "4": "flat of any size"
+        },
+        "market": "listings",
+        "statistic": "mean",
+        "period": "2026-09",
+        "geoLevel": "city",
+        "sourceId": "idealista-valencia-2026",
+        "confidence": "medium",
+        "limitations": "Average asking rent per m² on idealista for the city of Valencia in September 2026; no split by size or district."
+      },
+      "electricity": {
+        "pricePerKwh": 0.2669,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country"
+      },
+      "waterPerPerson": {
+        "value": 12,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "region",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "ine-water-2024"
+        ],
+        "basis": "Average water and sanitation cost in the Valencian Community in 2024 (€2.63 per m³) at the measured average use of 151 litres a person a day (INE).",
+        "sourceId": "ine-water-2024",
+        "retrieved": "2026-10-21",
+        "confidence": "medium"
+      },
+      "transitPassAdult": {
+        "value": 21,
+        "high": 35,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "SUMA Mensual for one zone (A, the city of Valencia), valid on metro, tram and EMT buses: €35, or €21 with the Generalitat's 40% reduction, which runs to 31 December 2026.",
+        "sourceId": "suma-fares-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Read from republished fare tables (ValenciaMove, redtransporte.com); Metrovalencia's own page could not be read. €35 a month if the reduction ends."
+      },
+      "healthcarePerPerson": {
+        "value": 54,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Spain (€647.45 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 78,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2025-2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "Nursery education for children under three is free in the Valencian Community in 2026–2027 (public centres, and aid of up to €460 a month for authorised private ones). Meals are charged: in the Generalitat's own nurseries at most €78.27 a month, the rate for household incomes above four times the minimum wage.",
+        "sourceId": "gva-escoletes-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Meal prices fall with household income and differ in municipal and private nurseries. From age three, school is free; meals are still charged."
+      },
+      "carMonthly": null,
+      "retrieved": "2026-10-21"
+    },
+    "pt-lisbon": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 17.43,
+          "2": 17.43,
+          "3": 17.43,
+          "4": 17.43
+        },
+        "dwelling": {
+          "1": "dwelling of any size (20 to 600 m²)",
+          "2": "dwelling of any size (20 to 600 m²)",
+          "3": "dwelling of any size (20 to 600 m²)",
+          "4": "dwelling of any size (20 to 600 m²)"
+        },
+        "market": "new-leases",
+        "statistic": "median",
+        "period": "2026-Q2",
+        "geoLevel": "city",
+        "sourceId": "ine-pt-rents-2026",
+        "confidence": "high",
+        "limitations": "Median rent per m² of the new lease contracts registered in the municipality of Lisboa in the 12 months to June 2026 (INE, local rent statistics); no split by size. Per m² of private floor area."
+      },
+      "electricity": {
+        "pricePerKwh": 0.2435,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country",
+        "limitations": "Water, sanitation and waste are billed by the municipal water company and are not included."
+      },
+      "transitPassAdult": {
+        "value": 30,
+        "high": 40,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "Navegante Municipal pass for Lisbon, €30 a month; the Navegante Metropolitano for the whole Lisbon area costs €40. Both unchanged in 2026.",
+        "sourceId": "navegante-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 66,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Portugal (€792.62 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 0,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Creche Feliz: nurseries for children under three are free in the social network and in the public and private nurseries that take part, including meals; the state pays the nursery. Public pre-school from three is also free.",
+        "sourceId": "creche-feliz",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
+      },
+      "carMonthly": null,
+      "retrieved": "2026-10-21"
+    },
+    "pt-porto": {
+      "currency": "EUR",
+      "rent": {
+        "perM2": {
+          "1": 14.48,
+          "2": 14.48,
+          "3": 14.48,
+          "4": 14.48
+        },
+        "dwelling": {
+          "1": "dwelling of any size (20 to 600 m²)",
+          "2": "dwelling of any size (20 to 600 m²)",
+          "3": "dwelling of any size (20 to 600 m²)",
+          "4": "dwelling of any size (20 to 600 m²)"
+        },
+        "market": "new-leases",
+        "statistic": "median",
+        "period": "2026-Q2",
+        "geoLevel": "city",
+        "sourceId": "ine-pt-rents-2026",
+        "confidence": "high",
+        "limitations": "Median rent per m² of the new lease contracts registered in the municipality of Porto in the 12 months to June 2026 (INE, local rent statistics); no split by size. Per m² of private floor area."
+      },
+      "electricity": {
+        "pricePerKwh": 0.2435,
+        "period": "2025-S2",
+        "sourceId": "eurostat-electricity",
+        "geoLevel": "country",
+        "limitations": "Water, sanitation and waste are billed by the municipal water company and are not included."
+      },
+      "transitPassAdult": {
+        "value": 30,
+        "high": 40,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "region",
+        "provenance": "observed",
+        "basis": "Andante Municipal pass for Porto, €30 a month; the Andante Metropolitano for the whole Porto area costs €40.",
+        "sourceId": "andante-2026",
+        "retrieved": "2026-10-21",
+        "confidence": "high"
+      },
+      "healthcarePerPerson": {
+        "value": 66,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "basis": "Household out-of-pocket health spending per inhabitant in Portugal (€792.62 a year).",
+        "sourceId": "eurostat-health",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+      },
+      "childcarePerChild": {
+        "value": 0,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Creche Feliz: nurseries for children under three are free in the social network and in the public and private nurseries that take part, including meals; the state pays the nursery. Public pre-school from three is also free.",
+        "sourceId": "creche-feliz",
+        "retrieved": "2026-10-21",
+        "confidence": "medium",
+        "limitations": "Free places are limited to each nursery's capacity; a private nursery outside the scheme charges fees. Pre-school meals and after-hours care can cost extra."
+      },
+      "carMonthly": null,
+      "retrieved": "2026-10-21"
     }
   }
 }

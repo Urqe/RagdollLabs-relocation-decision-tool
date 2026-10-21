@@ -31,7 +31,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-wgi",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "high",
       "basis": "World Bank indicator GOV_WGI_VA.EST."
     },
@@ -42,7 +42,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-wgi",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "high",
       "basis": "World Bank indicator GOV_WGI_GE.EST."
     },
@@ -53,7 +53,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-wgi",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "high",
       "basis": "World Bank indicator GOV_WGI_RL.EST."
     },
@@ -64,7 +64,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-wgi",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "high",
       "basis": "World Bank indicator GOV_WGI_CC.EST."
     },
@@ -75,7 +75,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-life-expectancy",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "medium",
       "basis": "World Bank indicator SP.DYN.LE00.IN."
     },
@@ -86,7 +86,7 @@
       "geoLevel": "country",
       "provenance": "inherited",
       "sourceId": "wb-oop-share",
-      "retrieved": "2026-10-19",
+      "retrieved": "2026-10-21",
       "confidence": "medium",
       "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS."
     },

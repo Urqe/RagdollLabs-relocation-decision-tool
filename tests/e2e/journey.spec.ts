@@ -10,6 +10,7 @@ const NO_MATCH = async (page: Page) => {
   await slide(page, 'governance', 4);
   await slide(page, 'food', 4);
   await slide(page, 'climate', 4);
+  await slide(page, 'convenience', 4);
   await page.locator('#card-climate-winter').selectOption({ label: 'Cold, with snow' });
   await page.locator('#card-climate-summer').selectOption({ label: 'Cool' });
   await page.locator('#card-climate-darkness').selectOption({ label: 'Fine with them' });

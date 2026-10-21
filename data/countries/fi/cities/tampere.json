@@ -1,0 +1,713 @@
+{
+  "id": "fi-tampere",
+  "name": "Tampere",
+  "countryId": "fi",
+  "regionId": "fi-pirkanmaa",
+  "role": "major-city",
+  "tax": {
+    "model": "fi",
+    "subdivision": "tampere"
+  },
+  "languages": [
+    "fi"
+  ],
+  "indicators": {
+    "homicideRate": {
+      "value": 0.982,
+      "unit": "per 100,000 people a year",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-homicide",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator VC.IHR.PSRC.P5."
+    },
+    "voiceAccountability": {
+      "value": 1.693,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_VA.EST."
+    },
+    "governmentEffectiveness": {
+      "value": 1.941,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_GE.EST."
+    },
+    "ruleOfLaw": {
+      "value": 2.012,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_RL.EST."
+    },
+    "controlOfCorruption": {
+      "value": 2.138,
+      "unit": "index, -2.5 to 2.5",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-wgi",
+      "retrieved": "2026-10-21",
+      "confidence": "high",
+      "basis": "World Bank indicator GOV_WGI_CC.EST."
+    },
+    "lifeExpectancy": {
+      "value": 82.337,
+      "unit": "years",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-life-expectancy",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SP.DYN.LE00.IN."
+    },
+    "oopShare": {
+      "value": 14.095,
+      "unit": "% of health spending",
+      "period": "2023",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "wb-oop-share",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "basis": "World Bank indicator SH.XPD.OOPC.CH.ZS."
+    },
+    "eatingOutPriceLevel": {
+      "value": 1,
+      "unit": "ratio to Finland",
+      "period": "2021",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Price level of restaurants and hotels relative to Finland, World Bank International Comparison Program 2021.",
+      "limitations": "The programme prices restaurants and hotels together, so hotel prices are part of this figure."
+    },
+    "coldestMonthMean": {
+      "value": -6,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "fmi-normals-tampere",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average temperature of the coldest month, Tampere-Pirkkala airport, climate normals 1991-2020."
+    },
+    "warmestMonthMeanMax": {
+      "value": 22.2,
+      "unit": "°C",
+      "period": "1991-2020",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "fmi-normals-tampere",
+      "retrieved": "2026-10-19",
+      "confidence": "high",
+      "basis": "Average daily high of the warmest month, Tampere-Pirkkala airport, climate normals 1991-2020."
+    },
+    "decemberDaylight": {
+      "value": 5.3,
+      "unit": "hours",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "astronomy"
+      ],
+      "basis": "Sunrise to sunset on 21 December at latitude 61.5°, calculated.",
+      "sourceId": "astronomy",
+      "retrieved": "2026-10-19",
+      "confidence": "high"
+    },
+    "foreignBornShare": {
+      "value": 10.9,
+      "unit": "%",
+      "period": "2025",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "eurostat-urban-audit",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+    },
+    "carCommuteShare": {
+      "value": 50,
+      "unit": "%",
+      "period": "2018",
+      "geoLevel": "city",
+      "provenance": "observed",
+      "sourceId": "eurostat-urban-audit",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V)."
+    }
+  },
+  "costs": {
+    "rent": {
+      "1": {
+        "cityWide": {
+          "value": 822,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€16.43 per m² in the whole city × 50 m², the app's assumed size for 1 bedroom.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "two-room flat (one bedroom and a living room)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        },
+        "central": {
+          "value": 874,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€17.48 per m² in rental area 1 (city centre and inner districts) × 50 m², the app's assumed size for 1 bedroom.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "two-room flat (one bedroom and a living room)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        },
+        "outer": {
+          "value": 706,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€14.11 per m² in rental area 3 (outer districts) × 50 m², the app's assumed size for 1 bedroom.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "two-room flat (one bedroom and a living room)",
+            "adjustment": "Converted from a rent per m² at 50 m²."
+          }
+        }
+      },
+      "2": {
+        "cityWide": {
+          "value": 1058,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.11 per m² in the whole city × 70 m², the app's assumed size for 2 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        },
+        "central": {
+          "value": 1176,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€16.80 per m² in rental area 1 (city centre and inner districts) × 70 m², the app's assumed size for 2 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        },
+        "outer": {
+          "value": 874,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€12.49 per m² in rental area 3 (outer districts) × 70 m², the app's assumed size for 2 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 70 m²."
+          }
+        }
+      },
+      "3": {
+        "cityWide": {
+          "value": 1360,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.11 per m² in the whole city × 90 m², the app's assumed size for 3 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        },
+        "central": {
+          "value": 1512,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€16.80 per m² in rental area 1 (city centre and inner districts) × 90 m², the app's assumed size for 3 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        },
+        "outer": {
+          "value": 1124,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€12.49 per m² in rental area 3 (outer districts) × 90 m², the app's assumed size for 3 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 90 m²."
+          }
+        }
+      },
+      "4": {
+        "cityWide": {
+          "value": 1662,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "city",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€15.11 per m² in the whole city × 110 m², the app's assumed size for 4 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        },
+        "central": {
+          "value": 1848,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€16.80 per m² in rental area 1 (city centre and inner districts) × 110 m², the app's assumed size for 4 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        },
+        "outer": {
+          "value": 1374,
+          "unit": "EUR/month",
+          "currency": "EUR",
+          "retrieved": "2026-10-21",
+          "period": "2026-Q3",
+          "geoLevel": "district",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "statfin-rents"
+          ],
+          "basis": "€12.49 per m² in rental area 3 (outer districts) × 110 m², the app's assumed size for 4 bedrooms.",
+          "includes": [
+            "heating"
+          ],
+          "sourceId": "statfin-rents",
+          "confidence": "medium",
+          "limitations": "Average rent per m² of new privately financed leases (Statistics Finland table 15fa); three-or-more-room flats share one figure. Heating is normally included; water and electricity are not.",
+          "rent": {
+            "market": "new-leases",
+            "statistic": "mean",
+            "dwelling": "flat of three or more rooms",
+            "adjustment": "Converted from a rent per m² at 110 m²."
+          }
+        }
+      }
+    },
+    "utilities": {
+      "1": {
+        "value": 38,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 2,000 kWh a year (app assumption for 1 bedroom) at €0.2254 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "2": {
+        "value": 51,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 2,700 kWh a year (app assumption for 2 bedrooms) at €0.2254 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "3": {
+        "value": 64,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 3,400 kWh a year (app assumption for 3 bedrooms) at €0.2254 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      },
+      "4": {
+        "value": 75,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "retrieved": "2026-10-21",
+        "period": "2025-S2",
+        "geoLevel": "country",
+        "provenance": "estimated",
+        "derivedFrom": [
+          "eurostat-electricity"
+        ],
+        "basis": "Electricity: 4,000 kWh a year (app assumption for 4 bedrooms) at €0.2254 per kWh, the national household price with taxes.",
+        "sourceId": "eurostat-electricity",
+        "confidence": "medium",
+        "limitations": "Electricity use is an app assumption and varies with appliances, cooking and cooling."
+      }
+    },
+    "waterPerPerson": {
+      "value": 21,
+      "low": 14,
+      "high": 43,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "city",
+      "provenance": "estimated",
+      "derivedFrom": [
+        "tampereen-vesi-2026",
+        "motiva-water"
+      ],
+      "basis": "Tampereen Vesi usage fees for 2026 (water €1.93 and wastewater €3.36 per m³ with VAT, €5.29 together) at 130 litres a person a day; Motiva gives 90 to 270 litres, used for the range.",
+      "sourceId": "tampereen-vesi-2026",
+      "retrieved": "2026-10-21",
+      "confidence": "medium",
+      "limitations": "Landlords often bill water as a flat fee per resident, which can differ from metered cost."
+    },
+    "transitPassAdult": {
+      "value": 65,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2026",
+      "geoLevel": "region",
+      "provenance": "observed",
+      "basis": "Nysse 30-day season ticket for an adult, zones AB, on the travel card.",
+      "sourceId": "nysse-fares-2026",
+      "retrieved": "2026-10-21",
+      "confidence": "high"
+    },
+    "healthcarePerPerson": {
+      "value": 63,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "Household out-of-pocket health spending per inhabitant in Finland (€759.66 a year).",
+      "sourceId": "eurostat-health",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "A national average across all ages; spending is lower for most working-age adults and higher for older people."
+    },
+    "childcareIncomeBased": {
+      "rate": 0.107,
+      "maxFee": 335,
+      "minFee": 32,
+      "siblingShares": [
+        1,
+        0.4,
+        0.2
+      ],
+      "thresholdsByFamilySize": {
+        "2": 4369,
+        "3": 5635,
+        "4": 6399,
+        "5": 7163,
+        "6": 7925
+      },
+      "observation": {
+        "value": 335,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2026-2027",
+        "geoLevel": "country",
+        "provenance": "observed",
+        "basis": "Municipal early-education fee from 1 August 2026: 10.7% of monthly gross household income above a threshold for the family size, at most €335 for the youngest child; under €32 nothing is charged. The second child pays 40% and each further child 20% of the youngest child's fee.",
+        "sourceId": "fi-daycare-fees-2026",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Uses gross wage income only and counts children under 17 in the family size (the rule counts children under 18). Families of more than six use the threshold for six. Part-time care costs less."
+      }
+    },
+    "carMonthly": null,
+    "groceriesPerAdultEquivalent": {
+      "value": 362,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on food and drink at home, €362 a month per adult equivalent in 2024, priced here: prices are 1.00 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "communicationsPerAdultEquivalent": {
+      "value": 70,
+      "unit": "EUR/month",
+      "currency": "EUR",
+      "period": "2024",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "derivedFrom": [
+        "eurostat-household-consumption",
+        "eurostat-hbs",
+        "icp-2021",
+        "consumer-prices"
+      ],
+      "basis": "Average spending in Finland on phone and internet (services and devices), €70 a month per adult equivalent in 2024, priced here: prices are 1.00 times Finland's.",
+      "sourceId": "icp-2021",
+      "retrieved": "2026-10-19",
+      "confidence": "medium",
+      "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+    },
+    "lifestyle": {
+      "eatingOut": {
+        "value": 196,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on eating out and hotels, €196 a month per adult equivalent in 2024, priced here: prices are 1.00 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "recreation": {
+        "value": 251,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on leisure and holidays, €251 a month per adult equivalent in 2024, priced here: prices are 1.00 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      },
+      "clothing": {
+        "value": 111,
+        "unit": "EUR/month",
+        "currency": "EUR",
+        "period": "2024",
+        "geoLevel": "country",
+        "provenance": "inherited",
+        "derivedFrom": [
+          "eurostat-household-consumption",
+          "eurostat-hbs",
+          "icp-2021",
+          "consumer-prices"
+        ],
+        "basis": "Average spending in Finland on clothes and shoes, €111 a month per adult equivalent in 2024, priced here: prices are 1.00 times Finland's.",
+        "sourceId": "icp-2021",
+        "retrieved": "2026-10-19",
+        "confidence": "medium",
+        "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
+      }
+    }
+  }
+}

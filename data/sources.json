@@ -114,7 +114,7 @@
     "licenceUrl": "https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets",
     "attribution": "World Bank, International Comparison Program 2021",
     "cadence": "irregular",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "consumer-prices",
@@ -124,7 +124,7 @@
     "licence": "Eurostat CC BY 4.0; BLS public domain; INEGI free use with attribution",
     "attribution": "Eurostat; BLS; INEGI",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "bea-rpp",
@@ -144,7 +144,7 @@
     "licence": "CC BY 4.0",
     "attribution": "Source: Statistics Finland, rents of dwellings",
     "cadence": "quarterly",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "eurostat-electricity",
@@ -154,7 +154,7 @@
     "licence": "CC BY 4.0",
     "attribution": "Source: Eurostat",
     "cadence": "quarterly",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "hsy-water-2026",
@@ -184,7 +184,7 @@
     "licence": "CC BY 4.0",
     "attribution": "Source: Eurostat",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "hsl-fares-2026",
@@ -274,7 +274,7 @@
     "licence": "Free reuse with attribution",
     "attribution": "Source: INE",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "madrid-escuelas-infantiles",
@@ -374,7 +374,7 @@
     "licence": "CC BY 4.0",
     "attribution": "World Bank; UNODC",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "inegi-homicides",
@@ -394,7 +394,7 @@
     "licence": "CC BY 4.0",
     "attribution": "World Bank, Worldwide Governance Indicators",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "wb-life-expectancy",
@@ -404,7 +404,7 @@
     "licence": "CC BY 4.0",
     "attribution": "World Bank",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "wb-oop-share",
@@ -414,7 +414,7 @@
     "licence": "CC BY 4.0",
     "attribution": "World Bank; WHO",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "fmi-normals",
@@ -474,7 +474,7 @@
     "licence": "CC BY 4.0",
     "attribution": "Source: Eurostat",
     "cadence": "annual",
-    "lastChecked": "2026-10-19"
+    "lastChecked": "2026-10-21"
   },
   {
     "id": "statistik-berlin-brandenburg",
@@ -505,5 +505,175 @@
     "attribution": "Sunrise equation",
     "cadence": "irregular",
     "lastChecked": "2026-10-19"
+  },
+  {
+    "id": "tampereen-vesi-2026",
+    "name": "Water and wastewater fees 2026, Tampere",
+    "publisher": "Tampereen Vesi",
+    "url": "https://tampereenvesi.fi/asiakkaille/hinnasto/",
+    "licence": "Public tariff (facts)",
+    "attribution": "Tampereen Vesi",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "nysse-fares-2026",
+    "name": "Nysse season ticket prices 2026",
+    "publisher": "Nysse (Tampere regional public transport)",
+    "url": "https://www.nysse.fi/en/tickets-and-fares/season-ticket.html",
+    "licence": "Public fares (facts)",
+    "attribution": "Nysse",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "kv-ee-rents-2026",
+    "name": "Tallinn rental listings, August 2026 (KV.EE data, reported by Adaur)",
+    "publisher": "KV.EE; Adaur",
+    "url": "https://www.adaur.ee/kv-ee-tallinna-uurikorterite-eest-kusitakse-3-protsenti-aastatagusest-korgemat-hinda/",
+    "licence": "Facts from a published market report",
+    "attribution": "KV.EE statistics, reported by Tõnu Toompark (Adaur)",
+    "cadence": "monthly",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "tallinn-transport-tickets",
+    "name": "Public transport tickets in Tallinn",
+    "publisher": "Tallinn City Government",
+    "url": "https://www.tallinn.ee/en/pilet/public-transport-tickets-tallinn",
+    "licence": "Public fares (facts)",
+    "attribution": "Tallinn City Government",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "tallinn-kindergarten-2026",
+    "name": "Tallinn municipal kindergartens free from September 2026 (ERR, 11 June 2026)",
+    "publisher": "ERR",
+    "url": "https://www.err.ee/1610053030/septembrist-on-tallinna-munitsipaallasteaiad-ja-hoiud-pealinlastele-tasuta",
+    "licence": "Facts from a news report",
+    "attribution": "ERR",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "idealista-valencia-2026",
+    "name": "Rental price report, Valencia province by municipality",
+    "publisher": "idealista",
+    "url": "https://www.idealista.com/sala-de-prensa/informes-precio-vivienda/alquiler/comunitat-valenciana/valencia-provincia/",
+    "licence": "Facts from a published price report",
+    "attribution": "idealista price reports",
+    "cadence": "monthly",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "suma-fares-2026",
+    "name": "SUMA Mensual fares 2026, Valencia metropolitan area (republished tables)",
+    "publisher": "Autoritat de Transport Metropolità de València; ValenciaMove; redtransporte.com",
+    "url": "https://valenciamove.com/blog/valencia-metro-ticket-guide/",
+    "licence": "Public fares (facts)",
+    "attribution": "ATMV fares, as republished by ValenciaMove and redtransporte.com",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "gva-escoletes-2026",
+    "name": "Free nursery education 0–3 for 2026–2027 and nursery meal prices 2025–2026",
+    "publisher": "Generalitat Valenciana",
+    "url": "https://ceice.gva.es/documents/162640666/0/INSTRUCCIONES+PRECIO+COMEDOR+INFANTIL+CURSO+25-26_firmado+(4).pdf/7fd93453-1326-38ca-2b31-6f2647c645dc",
+    "licence": "Official instructions (facts)",
+    "attribution": "Generalitat Valenciana, Conselleria d'Educació; ValenciaNews (15 July 2026) for the 2026–2027 aid",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "ine-pt-rents-2026",
+    "name": "Housing rental statistics at local level, 2nd quarter 2026",
+    "publisher": "Instituto Nacional de Estatística (INE)",
+    "url": "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_destaques&DESTAQUESdest_boui=770299146&DESTAQUESmodo=2&xlang=pt",
+    "licence": "Free reuse with attribution",
+    "attribution": "Source: INE, Statistics Portugal",
+    "cadence": "quarterly",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "navegante-2026",
+    "name": "Navegante pass prices 2026, Lisbon metropolitan area",
+    "publisher": "Transportes Metropolitanos de Lisboa (reported by Postal do Algarve, 23 Dec 2025)",
+    "url": "https://postal.pt/nacional/paga-estes-40e-todos-os-meses-preco-igual-em-2026/",
+    "licence": "Public fares (facts)",
+    "attribution": "TML fares, as reported by Postal do Algarve",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "andante-2026",
+    "name": "Andante monthly passes, Porto metropolitan area",
+    "publisher": "STCP",
+    "url": "https://stcp.pt/en/travel/tariffs/multimodal-andante-tickets/monthly-tickets",
+    "licence": "Public fares (facts)",
+    "attribution": "STCP",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "creche-feliz",
+    "name": "Creche Feliz: free nursery places (DECO PROteste, 22 May 2026)",
+    "publisher": "Segurança Social; DECO PROteste",
+    "url": "https://www.deco.proteste.pt/familia-consumo/bebes-criancas/noticias/creches-gratuitas-quem-tem-direito-como-fazer-candidatura",
+    "licence": "Facts from a consumer guide",
+    "attribution": "Segurança Social programme, explained by DECO PROteste",
+    "cadence": "annual",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "fmi-normals-tampere",
+    "name": "Climatological normals 1991–2020, Tampere-Pirkkala airport (via Wikipedia's climate table)",
+    "publisher": "Finnish Meteorological Institute",
+    "url": "https://en.wikipedia.org/wiki/Tampere#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Finnish Meteorological Institute",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "ewi-normals-tallinn",
+    "name": "Climatological normals 1991–2020, Tallinn (via Wikipedia's climate table)",
+    "publisher": "Estonian Weather Service",
+    "url": "https://en.wikipedia.org/wiki/Tallinn#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "Estonian Weather Service",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "aemet-normals-valencia",
+    "name": "Climatological normals 1991–2020, Valencia (via Wikipedia's climate table)",
+    "publisher": "Agencia Estatal de Meteorología (AEMET)",
+    "url": "https://en.wikipedia.org/wiki/Valencia#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "AEMET OpenData",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "ipma-normals-lisbon",
+    "name": "Climatological normals 1991–2020, Lisboa Instituto Geofísico (via Wikipedia's climate table)",
+    "publisher": "Instituto Português do Mar e da Atmosfera (IPMA)",
+    "url": "https://en.wikipedia.org/wiki/Lisbon#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "IPMA",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
+  },
+  {
+    "id": "ipma-normals-porto",
+    "name": "Climatological normals 1991–2020, Porto airport (via Wikipedia's climate table)",
+    "publisher": "Instituto Português do Mar e da Atmosfera (IPMA)",
+    "url": "https://en.wikipedia.org/wiki/Porto#Climate",
+    "licence": "Facts; Wikipedia text CC BY-SA",
+    "attribution": "IPMA",
+    "cadence": "irregular",
+    "lastChecked": "2026-10-21"
   }
 ]

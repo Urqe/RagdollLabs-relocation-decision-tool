@@ -42,7 +42,7 @@ Each file in `data/tax/` is checked against its model's schema in `src/data/tax-
 | Estonia | 2026 | Emta 2026 rates: 22% flat, €700 a month exemption for everyone. Matches a published calculator example (€2,000 a month → €1,658 net). |
 | Germany | 2026 | §32a EStG tariff and 2026 social insurance values. Annual assessment, not monthly withholding. Tariff and solidarity surcharge match the published 2026 Grundtabelle at ten points. |
 | Spain | 2026 | Madrid scale and minimums from Ley 13/2023 (BOCM); Valencian scale from Ley 5/2026 art. 18 (DOGV); 2026 low-income credit from RDL 5/2026. The low-income work reduction uses the 2025 rule (no 2026 change found). Joint filing for married couples (€3,400 reduction, personal minimum once) from the AEAT joint-filing pages. |
-| Portugal | 2026 | IRS table and specific deduction from PwC's 2026 tax guide; brackets cross-checked against the published "parcela a abater" column. |
+| Portugal | 2026 | IRS table and specific deduction from PwC's 2026 tax guide; brackets cross-checked against the published "parcela a abater" column. Joint taxation (art. 69 CIRS, quociente conjugal) for married couples and registered partners from 0.6.0; reference cases worked by hand, official calculator cross-check in 0.6.1. |
 | Mexico | 2026 | Annual ISR tariff from Anexo 8 RMF 2026 (SAT, DOF 28 Dec 2025); employment subsidy from the decree of 31 Dec 2025; UMA 2026 from INEGI; IMSS employee and employer rates; Sonora payroll tax 3%. Tested against the published cuota fija column and cases worked by hand. |
 | California | 2025 schedules | FTB's 2026 estimated-tax instructions direct use of the 2025 schedules until 2026 ones are published. Update when FTB publishes them. |
 
@@ -59,6 +59,18 @@ Each file in `data/tax/` is checked against its model's schema in `src/data/tax-
 | Car | Austin only (AAA national average); missing elsewhere. |
 
 Two values are still read from a site that republishes the original, because the original blocks automated requests: HUD Fair Market Rents (via propmetrics.co) and Child Care Aware's Texas prices (via FOX 7 Austin). Both are to be checked by hand (review 0.3.1, T5 and T8).
+
+## European cities (0.6.0)
+
+| Category | Tampere | Tallinn | Valencia | Lisbon and Porto |
+| --- | --- | --- | --- | --- |
+| Rent | Statistics Finland 15fa, new leases per m², city and rental areas 1 and 3, imported by `npm run import:statfin` | KV.EE average asking rent per m², August 2026 (reported by Adaur); low confidence | idealista average asking rent per m², September 2026 | INE median rent per m² of new leases in the municipality, 12 months to June 2026 |
+| Utilities | Eurostat electricity at the app's use, plus Tampereen Vesi water fees per resident | **Missing**: heating, water and building charges (kommunaalkulud) have no usable free source; the budget is incomplete until the user enters a figure | Eurostat electricity plus INE water cost for the Valencian Community | Eurostat electricity only; water, sanitation and waste are not included and the row says so |
+| Transport | Nysse 30-day AB, €65 | Free for registered residents (€30 otherwise) | SUMA Mensual zone A, €21 with the 40% reduction to 31 Dec 2026 (€35 without) | Navegante or Andante municipal pass, €30 (metropolitan €40) |
+| Childcare | National income-based fee rule, as Helsinki | Free municipal kindergartens from 1 Sept 2026 | Tuition free; meals up to €78.27 a month | Free nursery places (Creche Feliz) |
+| Healthcare | Eurostat out-of-pocket spending per inhabitant, national | same | same | same |
+
+Climate normals 1991–2020 come from Wikipedia's tables citing FMI (Tampere-Pirkkala), the Estonian Weather Service, AEMET and IPMA (Lisboa Instituto Geofísico, Porto airport); they are to be checked against the originals in 0.6.1, as V14 did for the pilot cities. Foreign-born and car-commuting shares are from Eurostat's Urban Audit; for Valencia, Lisbon and Porto Eurostat's "greater city" covers more than the municipality. Valencia has no car-commuting figure. Estonia and Portugal were added to the World Bank import and to the price-level inputs (ICP 2021, HICP).
 
 ## Preference indicators (0.4.0)
 

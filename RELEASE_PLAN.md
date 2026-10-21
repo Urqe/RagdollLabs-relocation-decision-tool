@@ -95,9 +95,11 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.4.1 | Maintenance | Review of 0.4.0 | Completed 2026-10-20 (5b92a0a) |
 | 0.5.0 | Feature | Find cities and basic Compare (pilot cities) | Completed 2026-10-20 (9cd7760) |
 | 0.5.1 | Maintenance | Review of the whole Explore → Find → Compare journey | Completed 2026-10-20 (59d9c25) |
-| 0.6.0 | Feature | Expansion: Canada tax model, remaining cities incl. Mexico City and La Paz; fixtures retired | Not started |
-| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for new countries | Not started |
-| 0.7.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
+| 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | In progress |
+| 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia | Not started |
+| 0.7.0 | Feature | Expansion, North America: Canada tax model, Toronto, Sacramento, Mexico City, Mérida, La Paz; fixtures retired | Not started |
+| 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada | Not started |
+| 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
 | 1.0.0 | Feature | First shareable release | Not started |
 | 1.0.1 | Maintenance | Review of 1.0.0 | Not started |
 
@@ -341,28 +343,54 @@ Findings in [docs/reviews/0.5.1.md](docs/reviews/0.5.1.md).
 
 Standard maintenance review of 0.5.0, plus an end-to-end review of Explore → Find → Compare on the pilot cities: whether the journeys connect, whether results are understandable, and whether matching and affordability tell a consistent story.
 
-### 0.6.0 — Expansion
+### 0.6.0 — Expansion: Europe
 
-**Status:** Not started
+**Status:** In progress
 
-- Canada (Ontario) tax model: federal and Ontario income tax, CPP and EI employee contributions, Ontario health premium, with gross-income and contribution-base assumptions written down first.
-- Real cost data and preference indicators for the remaining cities: Tampere, Tallinn, Valencia, Lisbon, Porto, Toronto, Sacramento, Mexico City, Mérida and La Paz (Baja California Sur), to the same acceptance as 0.3.0.
-- State payroll tax rates for Mexico City, Yucatán and Baja California Sur.
+Split from the original 0.6.0 on 2026-10-21, as the plan allowed: ten cities of sourced data and a new tax model were too much for one release. North America is in 0.7.0.
+
+- Real cost data and preference indicators for Tampere, Tallinn, Valencia, Lisbon and Porto, to the same acceptance as 0.3.0.
 - Portugal: optional joint taxation for married and unmarried partners (deferred from 0.2.2, F12).
 - City picker grouped by country with search.
-- Deploy builds without fixtures; the fixture banner, the development-preview heading and the `--with-fixtures` CI step are removed.
 
-Split into two releases (for example Europe, then North America) if the scope is too large.
+**Done when** the ten European and pilot cities run on production data through Explore, Find and Compare, and none of the five is a development preview any longer.
 
-**Done when** all 15 cities in eight countries run on production data through Explore, Find and Compare, and no fixture reaches the deployed site.
+**Notes for the 0.6.1 review**
+
+- Climate normals for the five cities come from Wikipedia tables that cite FMI, the Estonian Weather Service, AEMET and IPMA; FMI's own page needed the owner's approval and could not be read. Check each against the original, as V14 did. Tallinn's table does not name its station.
+- Read from republications because the original could not be fetched: idealista's Valencia figure came from its province page (the city page refused), SUMA fares from ValenciaMove and redtransporte.com (Metrovalencia blocks automated reading), Navegante prices from a news report.
+- Tallinn: rent from KV.EE listings via Adaur (low confidence, no split by size); utilities are missing, so its budget is incomplete. Lisbon and Porto: utilities are electricity only, water and waste are not included and the row says so. Valencia has no car-commuting figure.
+- Eurostat labels Valencia, Lisbon and Porto (and Madrid, ES001C) as "greater city": check whether Madrid's 0.4.0 basis ("of the city") is accurate.
+- Portuguese joint taxation is checked against hand-worked cases only; the official calculator cross-check is part of 0.6.1. Unmarried partners count only when entered as registered partners (união de facto).
+- Estonia's employer social-tax minimum base (€886) may be the 2025 minimum wage; it does not affect take-home.
+- `npm run import:statfin` now covers Tampere, and the World Bank import keeps hand-kept notes such as `notComparable`. Each city's cost inputs keep their own retrieval date.
+- Compiled JavaScript 186.4 kB (50.7 kB compressed); `release.json` 183.6 kB in the production build.
 
 ### 0.6.1 — Maintenance: review of 0.6.0
 
 **Status:** Not started
 
-Standard maintenance review, including regression of the pilot cities, plus official calculator cross-checks for Canada, Portugal and Estonia.
+Standard maintenance review, including regression of the pilot cities, plus official calculator cross-checks for Portugal and Estonia.
 
-### 0.7.0–0.9.x — Improvements chosen from use
+### 0.7.0 — Expansion: North America
+
+**Status:** Not started
+
+- Canada (Ontario) tax model: federal and Ontario income tax, CPP and EI employee contributions, Ontario health premium, with gross-income and contribution-base assumptions written down first.
+- Real cost data and preference indicators for Toronto, Sacramento, Mexico City, Mérida and La Paz (Baja California Sur), to the same acceptance as 0.3.0.
+- State payroll tax rates for Mexico City, Yucatán and Baja California Sur.
+- Hermosillo rent, utilities and childcare, researched with the other Mexican sources (from review 0.3.1, T7; moved here from 0.6.0 with the Mexican cities).
+- Deploy builds without fixtures; the fixture banner, the development-preview heading and the `--with-fixtures` CI step are removed.
+
+**Done when** all 15 cities in eight countries run on production data through Explore, Find and Compare, and no fixture reaches the deployed site.
+
+### 0.7.1 — Maintenance: review of 0.7.0
+
+**Status:** Not started
+
+Standard maintenance review, including regression of the earlier cities, plus an official calculator cross-check for Canada.
+
+### 0.8.0–0.9.x — Improvements chosen from use
 
 **Status:** Not planned
 
@@ -390,6 +418,9 @@ Planned once the full journey has been used. Candidates: richer comparison and s
 - Indicators for food variety and for a close local community; both options are offered and shown as "not covered" until then. (From 0.4.0.)
 - Replace Berlin's foreign-citizen share with the Zensus 2022 share born abroad once the census table can be read at the source. (From review 0.4.1, V15.)
 - A Hermosillo homicide rate, if INEGI's municipal tables can be read; the Sonora rate is used now. (From review 0.4.1, V5.)
+- Tallinn heating, water and building charges (kommunaalkulud): a sourced average per m², so Tallinn's budget is complete. (From 0.6.0.)
+- Lisbon and Porto water, sanitation and waste from the municipal tariffs (EPAL with Lisbon's sanitation, Águas e Energia do Porto). (From 0.6.0.)
+- Car commuting share for Valencia (municipal mobility survey). (From 0.6.0.)
 - More cities and countries.
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.

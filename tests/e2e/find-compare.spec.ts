@@ -17,10 +17,10 @@ test.describe('Find (0.5.0)', () => {
     await expect(card(page, 'fi-helsinki')).toContainText('fit');
     await expect(page.locator('.excluded-list')).toContainText('Hermosillo');
     await expect(page.locator('.excluded-list')).toContainText('Safety scores 0 out of 100');
-    // Austin (34) and Hermosillo (0) fall below 50 on safety; the other three are ranked. Previews take no part.
+    // Austin (34) and Hermosillo (0) fall below 50 on safety; the other eight are ranked. Previews take no part.
     await expect(page.locator('.excluded-list')).toContainText('Austin');
-    await expect(page.locator('ol.find-list > li')).toHaveCount(3);
-    await expect(page.locator('.find-card[data-city="fi-tampere"]')).toHaveCount(0);
+    await expect(page.locator('ol.find-list > li')).toHaveCount(8);
+    await expect(page.locator('.find-card[data-city="us-sacramento"]')).toHaveCount(0);
   });
 
   test('sorting by money keeps an incomplete budget out of the ranking', async ({ page }) => {
@@ -36,6 +36,7 @@ test.describe('Find (0.5.0)', () => {
     await slide(page, 'governance', 4);
     await slide(page, 'food', 4);
     await slide(page, 'climate', 4);
+    await slide(page, 'convenience', 4);
     await page.locator('#card-climate-winter').selectOption({ label: 'Cold, with snow' });
     await page.locator('#card-climate-summer').selectOption({ label: 'Cool' });
     await page.locator('#card-climate-darkness').selectOption({ label: 'Fine with them' });
@@ -43,7 +44,7 @@ test.describe('Find (0.5.0)', () => {
     await expect(page.locator('ol.find-list')).toHaveCount(0);
     await page.locator('#relax').click();
     await expect(page.locator('.no-match')).toHaveCount(0);
-    await expect(page.locator('ol.find-list > li')).toHaveCount(5);
+    await expect(page.locator('ol.find-list > li')).toHaveCount(10);
     await expect(page.locator('#card-food-value')).toHaveText('Very');
   });
 
@@ -61,7 +62,7 @@ test.describe('Compare (0.5.0)', () => {
   test('add, replace and remove cities', async ({ page }) => {
     await page.goto('./#/compare/fi-helsinki,es-madrid');
     await expect(page.locator('table.compare thead th')).toHaveCount(2);
-    await page.getByLabel('Add a city').selectOption({ label: 'Berlin, Germany' });
+    await page.getByLabel('Add a city').selectOption({ label: 'Berlin' });
     await expect(page.locator('table.compare thead th')).toHaveCount(3);
     await expect(page.getByLabel('Add a city')).toHaveCount(0);
     await page.getByLabel('Replace Madrid').selectOption({ label: 'Austin' });
@@ -108,9 +109,9 @@ test.describe('Compare (0.5.0)', () => {
   });
 
   test('development previews and unknown cities are left out, with a note', async ({ page }) => {
-    await page.goto('./#/compare/fi-helsinki,fi-tampere,xx-nowhere');
+    await page.goto('./#/compare/fi-helsinki,us-sacramento,xx-nowhere');
     await expect(page.locator('table.compare thead th')).toHaveCount(1);
-    await expect(page.locator('main')).toContainText('Tampere is a development preview');
+    await expect(page.locator('main')).toContainText('Sacramento is a development preview');
     await expect(page.locator('main')).toContainText('“xx-nowhere” is not in this data release');
   });
 

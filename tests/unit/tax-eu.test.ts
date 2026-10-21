@@ -160,6 +160,54 @@ describe('Portugal 2026', () => {
   });
 });
 
+describe('Portugal 2026: joint taxation (0.6.0)', () => {
+  // Worked by hand from art. 68, 68-A, 69, 70 and 78-A CIRS and the 2026 parameters, outside this code.
+  const pt2 = (grossLocal: number[], relationship: 'married' | 'registered' | 'unmarried', children = 0) =>
+    portugueseTax(taxInput({ grossLocal, relationship, adults: 2, children: kids(children) }), pt);
+  const irs = (r: TaxResult): number => line(r, 'pt.irs');
+
+  test('one earner, married: €60,000 → joint return, €9,921.88 IRS', () => {
+    // Taxable 53,400 (60,000 − 6,600 social security); half is 26,700: 26,700 × 31.1% − 3,092.77 = 5,210.93, doubled
+    // 10,421.86, less €250 for each spouse.
+    const r = pt2([60000], 'married');
+    near(irs(r), 9921.88, 0.05);
+    near(r.netAnnual, 43478.12, 0.05);
+    assert.ok(r.lines.some((l) => l.id === 'pt.irs' && l.earner === undefined), 'one household line');
+    assert.match(r.notes[0]!, /joint return/);
+  });
+
+  test('registered partners (união de facto) file jointly too; unmarried partners do not', () => {
+    near(irs(pt2([60000], 'registered')), 9921.88, 0.05);
+    near(irs(pt2([60000], 'unmarried')), 15124.92, 0.5);
+    assert.match(pt2([60000], 'unmarried').notes[0]!, /Registered partners/);
+  });
+
+  test('two earners with a child: joint €8,521.29 is lower than separate €9,357.45', () => {
+    // Both below the €4,587.09 floor of the specific deduction: taxable 35,412.91 and 15,412.91; half the sum is
+    // 25,412.91: 4,810.65, doubled 9,621.29, less €600 for the child and €500.
+    const r = pt2([40000, 20000], 'married', 1);
+    near(irs(r), 8521.29, 0.05);
+    near(r.netAnnual, 44878.71, 0.05);
+  });
+
+  test('equal incomes: joint and separate are the same, so separate returns are kept', () => {
+    const r = pt2([30000, 30000], 'married');
+    assert.equal(r.lines.filter((l) => l.id === 'pt.irs').length, 2);
+    // Each: 30,000 − 4,587.09 = 25,412.91, taxed 4,810.65, less 250.
+    near(r.netAnnual, 60000 - 6600 - 2 * 4560.65, 0.05);
+  });
+
+  test('the subsistence abatement stays with the earner on a low joint income', () => {
+    // 14,000: abatement 12,880 − 2.6 × 1,120 − 6,587.09 = 3,380.91; taxable 6,032; half 3,016 at 12.5%, doubled 754, less 500.
+    near(irs(pt2([14000], 'married')), 254, 0.05);
+  });
+
+  test('the solidarity surcharge is worked on half the joint income and doubled', () => {
+    // Taxable 178,000; half 89,000: scale 31,332.83 and surcharge 225, each doubled; less 500.
+    near(irs(pt2([200000], 'married')), 62615.66, 0.5); // the published deduction column rounds to the cent
+  });
+});
+
 describe('all four countries', () => {
   for (const [name, run] of [
     ['Estonia', (g: number[]) => estonianTax(taxInput({ grossLocal: g, relationship: 'unmarried', children: 0, subdivision: 'x' }), ee)],

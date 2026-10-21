@@ -1,6 +1,5 @@
 {
   "id": "pt",
   "name": "Portugal",
-  "currency": "EUR",
-  "fixture": true
+  "currency": "EUR"
 }

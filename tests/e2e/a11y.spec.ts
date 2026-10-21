@@ -74,7 +74,7 @@ test('keyboard: the household form and the own-figures section can be completed 
 
 // 0.5.1 (W8): Find with results and with a no-match, and Compare with a salary per city.
 const NO_MATCH = JSON.stringify({ v: 2, profile: { household: {}, incomeMode: 'annual', monthsPerYear: 12, preferences: {
-  importance: { governance: 4, food: 4, climate: 4 }, choices: { winter: 'cold', summer: 'cool', darkness: 'fine' } } } });
+  importance: { governance: 4, food: 4, climate: 4, convenience: 4 }, choices: { winter: 'cold', summer: 'cool', darkness: 'fine' } } } });
 for (const [name, route, profile] of [
   ['Find with every area weighted', './#/find', ALL_WEIGHTED],
   ['Find with no match', './#/find', NO_MATCH],

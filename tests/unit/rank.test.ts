@@ -20,6 +20,10 @@ const candidates = (hh: Household = DEFAULT_HOUSEHOLD, overrides: Record<string,
   }));
 const prefs = (importance: Record<string, number>, choices: Record<string, string> = {}): Preferences => ({ importance, choices });
 const ids = (xs: { city: City }[]): string[] => xs.map((x) => x.city.id);
+// Good governance, cheap eating out, a cold winter with cool summers and getting around without a car, all
+// essential: no city in the release meets all four (Helsinki, Tampere and Berlin fail on eating out, the
+// southern cities on climate, Tallinn on getting around, Hermosillo on governance).
+const NO_MATCH = prefs({ governance: 4, food: 4, climate: 4, convenience: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
 
 describe('Find ranking (0.5.0)', () => {
   test('development fixtures never take part', () => {
@@ -81,18 +85,16 @@ describe('Find ranking (0.5.0)', () => {
   });
 
   test('no match: every city excluded, and one relax brings them back', () => {
-    // Affordable eating out, good governance and a cold, cool climate, all essential: Helsinki and Berlin fail on
-    // eating out, Madrid and Austin on climate, Hermosillo on governance.
-    const p = prefs({ governance: 4, food: 4, climate: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
+    const p = NO_MATCH;
     const r = rankCities(candidates(), p, def, 'fit');
     assert.equal(r.ranked.length + r.unrankedIncomplete.length, 0);
-    assert.ok(r.excluded.length >= 5);
+    assert.equal(r.excluded.length, (release.cities as City[]).filter((c) => !c.fixture).length);
     const relaxed = relaxEssentials(p);
-    assert.deepEqual(relaxed.importance, { governance: 3, food: 3, climate: 3 });
+    assert.deepEqual(relaxed.importance, { governance: 3, food: 3, climate: 3, convenience: 3 });
     assert.deepEqual(relaxed.choices, p.choices);
     const after = rankCities(candidates(), relaxed, def, 'fit');
     assert.equal(after.excluded.length, 0);
-    assert.ok(after.ranked.length >= 5);
+    assert.equal(after.ranked.length, r.excluded.length);
   });
 
   test('equal results are ordered by name, whatever order the cities come in (0.5.1, W8)', () => {
@@ -111,7 +113,8 @@ describe('Find ranking (0.5.0)', () => {
   test('"too close to call" is judged on the scores shown, in whole points (0.5.1, W9)', () => {
     // Berlin 71.5 and Helsinki 67.0 show as 72 and 67: five points apart, so not too close.
     const hh = { ...DEFAULT_HOUSEHOLD, earnersGrossEur: [55000] };
-    const r = rankCities(candidates(hh), prefs({ safety: 4, climate: 3, healthcare: 2, convenience: 2 }), def, 'fit');
+    const pair = candidates(hh).filter((c) => c.city.id === 'de-berlin' || c.city.id === 'fi-helsinki');
+    const r = rankCities(pair, prefs({ safety: 4, climate: 3, healthcare: 2, convenience: 2 }), def, 'fit');
     const hel = r.ranked.find((x) => x.city.id === 'fi-helsinki')!;
     const ber = r.ranked.find((x) => x.city.id === 'de-berlin')!;
     assert.equal(Math.round(ber.fit!.low * 100) - Math.round(hel.fit!.low * 100), 5);
@@ -144,14 +147,14 @@ describe('Find ranking (0.5.0)', () => {
   });
 
   test('a no-match keeps the fit sort the user chose (0.5.1, W2)', () => {
-    const p = prefs({ governance: 4, food: 4, climate: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
+    const p = NO_MATCH;
     const r = rankCities(candidates(), p, def, 'fit');
     assert.equal(r.ranked.length, 0);
     assert.equal(r.sort, 'fit');
   });
 
   test('a no-match says which essential brings which cities back (0.5.1, W4)', () => {
-    const p = prefs({ governance: 4, food: 4, climate: 4 }, { winter: 'cold', summer: 'cool', darkness: 'fine' });
+    const p = NO_MATCH;
     const options = relaxOptions(candidates(), p, def);
     assert.ok(options.length > 0);
     for (const o of options) {

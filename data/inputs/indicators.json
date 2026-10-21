@@ -117,6 +117,125 @@
           "limitations": "A state rate for Sonora, by state of registration; INEGI's release does not give Hermosillo separately, and 2025 figures are preliminary."
         }
       }
+    },
+    "fi-tampere": {
+      "country": "FIN",
+      "latitude": 61.5,
+      "climate": {
+        "coldestMonthMean": -6.0,
+        "warmestMonthMeanMax": 22.2,
+        "station": "Tampere-Pirkkala airport",
+        "period": "1991-2020",
+        "sourceId": "fmi-normals-tampere"
+      },
+      "foreignBornShare": {
+        "value": 10.9,
+        "period": "2025",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I)."
+      },
+      "carCommuteShare": {
+        "value": 50,
+        "period": "2018",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V)."
+      }
+    },
+    "ee-tallinn": {
+      "country": "EST",
+      "latitude": 59.44,
+      "climate": {
+        "coldestMonthMean": -3.6,
+        "warmestMonthMeanMax": 22.2,
+        "station": "Tallinn",
+        "period": "1991-2020",
+        "sourceId": "ewi-normals-tallinn",
+        "limitations": "The published table does not name the station; Tallinn's main station is Tallinn-Harku."
+      },
+      "foreignBornShare": {
+        "value": 26.1,
+        "period": "2025",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+        "limitations": "Includes many long-term residents born elsewhere in the former Soviet Union."
+      },
+      "carCommuteShare": {
+        "value": 49.3,
+        "period": "2018",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V)."
+      }
+    },
+    "es-valencia": {
+      "country": "ESP",
+      "latitude": 39.47,
+      "climate": {
+        "coldestMonthMean": 12.1,
+        "warmestMonthMeanMax": 30.6,
+        "station": "Valencia",
+        "period": "1991-2020",
+        "sourceId": "aemet-normals-valencia"
+      },
+      "foreignBornShare": {
+        "value": 21.3,
+        "period": "2024",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+        "limitations": "Eurostat's figure is for its 'greater city' of Valencia, which takes in neighbouring municipalities as well as the city itself."
+      },
+      "carCommuteShare": null
+    },
+    "pt-lisbon": {
+      "country": "PRT",
+      "latitude": 38.72,
+      "climate": {
+        "coldestMonthMean": 11.8,
+        "warmestMonthMeanMax": 28.8,
+        "station": "Lisboa Instituto Geofísico",
+        "period": "1991-2020",
+        "sourceId": "ipma-normals-lisbon"
+      },
+      "foreignBornShare": {
+        "value": 17.3,
+        "period": "2021",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+        "limitations": "Eurostat's figure is for its 'greater city' of Lisbon, which takes in neighbouring municipalities as well as the city itself. From the 2021 census; immigration has grown since."
+      },
+      "carCommuteShare": {
+        "value": 56.3,
+        "period": "2011",
+        "sourceId": "eurostat-urban-audit",
+        "confidence": "low",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
+        "limitations": "From 2011, the latest year published; commuting has changed since. Eurostat's figure is for its 'greater city' of Lisbon, which takes in neighbouring municipalities as well as the city itself."
+      }
+    },
+    "pt-porto": {
+      "country": "PRT",
+      "latitude": 41.15,
+      "climate": {
+        "coldestMonthMean": 10.2,
+        "warmestMonthMeanMax": 24.8,
+        "station": "Porto airport",
+        "period": "1991-2020",
+        "sourceId": "ipma-normals-porto"
+      },
+      "foreignBornShare": {
+        "value": 7.6,
+        "period": "2021",
+        "sourceId": "eurostat-urban-audit",
+        "basis": "Foreign-born residents as a share of the population of the city (Urban Audit, DE2009I).",
+        "limitations": "Eurostat's figure is for its 'greater city' of Porto, which takes in neighbouring municipalities as well as the city itself. From the 2021 census; immigration has grown since."
+      },
+      "carCommuteShare": {
+        "value": 64.7,
+        "period": "2011",
+        "sourceId": "eurostat-urban-audit",
+        "confidence": "low",
+        "basis": "Share of journeys to work by car or motorcycle (Urban Audit, TT1012V).",
+        "limitations": "From 2011, the latest year published; commuting has changed since. Eurostat's figure is for its 'greater city' of Porto, which takes in neighbouring municipalities as well as the city itself."
+      }
     }
   },
   "national": {
@@ -131,6 +250,10 @@
           "value": 0.691,
           "year": "2023"
         },
+        "EST": {
+          "value": 1.536,
+          "year": "2023"
+        },
         "FIN": {
           "value": 0.982,
           "year": "2023"
@@ -138,6 +261,10 @@
         "MEX": {
           "value": 24.859,
           "year": "2023"
+        },
+        "PRT": {
+          "value": 0.72,
+          "year": "2022"
         },
         "USA": {
           "value": 5.763,
@@ -156,12 +283,20 @@
           "value": 1.117,
           "year": "2025"
         },
+        "EST": {
+          "value": 1.344,
+          "year": "2025"
+        },
         "FIN": {
           "value": 1.693,
           "year": "2025"
         },
         "MEX": {
           "value": -0.282,
+          "year": "2025"
+        },
+        "PRT": {
+          "value": 1.272,
           "year": "2025"
         },
         "USA": {
@@ -181,12 +316,20 @@
           "value": 1.13,
           "year": "2025"
         },
+        "EST": {
+          "value": 1.5,
+          "year": "2025"
+        },
         "FIN": {
           "value": 1.941,
           "year": "2025"
         },
         "MEX": {
           "value": -0.181,
+          "year": "2025"
+        },
+        "PRT": {
+          "value": 1.022,
           "year": "2025"
         },
         "USA": {
@@ -206,12 +349,20 @@
           "value": 0.869,
           "year": "2025"
         },
+        "EST": {
+          "value": 1.434,
+          "year": "2025"
+        },
         "FIN": {
           "value": 2.012,
           "year": "2025"
         },
         "MEX": {
           "value": -1.168,
+          "year": "2025"
+        },
+        "PRT": {
+          "value": 1.046,
           "year": "2025"
         },
         "USA": {
@@ -231,12 +382,20 @@
           "value": 0.653,
           "year": "2025"
         },
+        "EST": {
+          "value": 1.637,
+          "year": "2025"
+        },
         "FIN": {
           "value": 2.138,
           "year": "2025"
         },
         "MEX": {
           "value": -0.942,
+          "year": "2025"
+        },
+        "PRT": {
+          "value": 0.772,
           "year": "2025"
         },
         "USA": {
@@ -256,12 +415,20 @@
           "value": 83.888,
           "year": "2024"
         },
+        "EST": {
+          "value": 79.295,
+          "year": "2024"
+        },
         "FIN": {
           "value": 82.337,
           "year": "2024"
         },
         "MEX": {
           "value": 75.264,
+          "year": "2024"
+        },
+        "PRT": {
+          "value": 82.383,
           "year": "2024"
         },
         "USA": {
@@ -281,6 +448,10 @@
           "value": 20.855,
           "year": "2023"
         },
+        "EST": {
+          "value": 21.382,
+          "year": "2024"
+        },
         "FIN": {
           "value": 14.095,
           "year": "2023"
@@ -288,6 +459,10 @@
         "MEX": {
           "value": 41.236,
           "year": "2023"
+        },
+        "PRT": {
+          "value": 28.194,
+          "year": "2024"
         },
         "USA": {
           "value": 10.927,
@@ -299,5 +474,5 @@
       }
     }
   },
-  "retrievedNational": "2026-10-19"
+  "retrievedNational": "2026-10-21"
 }
