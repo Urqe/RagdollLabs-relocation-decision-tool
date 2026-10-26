@@ -9,6 +9,7 @@ import { citySearch, groupedOptions } from './city-search.ts';
 import { h, replaceChildren, type Child } from './dom.ts';
 import { fitSection } from './fit.ts';
 import { alsoFrom } from './sources.ts';
+import { financialCautions } from './results.ts';
 import * as f from './format.ts';
 
 const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
@@ -312,6 +313,10 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
     salaryNote,
     result.problems.length > 0 ? h('ul', { class: 'banner problems', role: 'alert' }, result.problems.map((p) => h('li', {}, p))) : null,
     h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),
+    financialCautions(city, state.profile.household, result).length > 0
+      ? h('div', { class: 'banner financial-cautions', role: 'note' },
+          h('strong', {}, 'Check these assumptions'),
+          h('ul', {}, financialCautions(city, state.profile.household, result).map((note) => h('li', {}, note)))) : null,
     ribbon(result),
     balances(result),
     breakdown(result, data),

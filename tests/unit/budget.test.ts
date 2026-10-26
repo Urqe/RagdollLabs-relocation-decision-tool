@@ -105,6 +105,17 @@ describe('spending basket', () => {
     assert.equal(cat(costCategories(testCity(), h({ cars: 1 }), {}, fx, 'EUR'), 'transport').paidOffCars, undefined);
   });
 
+  test('US family coverage replaces single premiums while out-of-pocket costs scale per person', () => {
+    const city = testCity({ healthcarePerPerson: obs(256), healthcareSinglePremiumMonthly: obs(120), healthcareFamilyPremiumMonthly: obs(6850 / 12) });
+    const single = cat(costCategories(city, h(), {}, fx, 'EUR'), 'healthcare');
+    const couple = cat(costCategories(city, h({ nonEarningAdults: 1 }), {}, fx, 'EUR'), 'healthcare');
+    const family = cat(costCategories(city, h({ nonEarningAdults: 1, children: kids(1) }), {}, fx, 'EUR'), 'healthcare');
+    near(single.local!.typical, 256, 0.01);
+    near(couple.local!.typical, 6850 / 12 + 2 * 136, 0.01);
+    near(family.local!.typical, 6850 / 12 + 3 * 136, 0.01);
+    assert.equal(cat(costCategories(city, h({ nonEarningAdults: 1 }), { ownCosts: { healthcare: 300 } }, fx, 'EUR'), 'healthcare').local!.typical, 300);
+  });
+
   test('childcare only when a child is in daycare', () => {
     assert.equal(cat(costCategories(testCity(), h({ children: kids(1) }), {}, fx, 'EUR'), 'childcare').status, 'notApplicable');
     assert.equal(cat(costCategories(testCity(), h({ children: kids(1), childrenInDaycare: 1 }), {}, fx, 'EUR'), 'childcare').local!.typical, 300);

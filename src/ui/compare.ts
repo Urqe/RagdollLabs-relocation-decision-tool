@@ -10,7 +10,7 @@ import { h, replaceChildren, type Child } from './dom.ts';
 import { APP_NAME, BAND_LABEL } from './explore.ts';
 import { FIT_BAND_LABEL, names, scoreText } from './fit.ts';
 import * as f from './format.ts';
-import { placeName, resultFor } from './results.ts';
+import { financialCautions, placeName, resultFor } from './results.ts';
 
 /** Whether the share link includes income. Off by default, and not remembered between visits. */
 let includeIncome = false;
@@ -173,6 +173,10 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
         ? [h('span', { class: 'partial' }, 'Partial: '), eurAndLocal(r.budget.savings.typical, r), h('span', { class: 'hint' }, 'Not an estimate of savings.')]
         : [h('span', { class: r.budget.savings.typical < 0 ? 'negative' : '' }, eurAndLocal(r.budget.savings.typical, r))]),
       row('band', 'Affordability', (_c, r) => h('span', { class: `band-word band-${r.budget.band}` }, BAND_LABEL[r.budget.band])),
+      row('assumptions', 'Check before deciding', (c, r) => {
+        const cautions = financialCautions(c.city, state.profile.household, r);
+        return cautions.length ? h('ul', { class: 'notes' }, cautions.map((note) => h('li', {}, note))) : 'No specific warning';
+      }),
       anyPrefs ? row('fit', 'Fit with what matters', (c) => {
         const fit = computeFit(c.city, prefs, def);
         if (fit === null) return h('span', { class: 'muted' }, 'Nothing to score');

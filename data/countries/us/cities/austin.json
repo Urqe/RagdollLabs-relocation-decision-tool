@@ -161,18 +161,23 @@
           "retrieved": "2026-10-19",
           "period": "2026",
           "geoLevel": "region",
-          "provenance": "observed",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-2026"
+          ],
+          "basis": "HUD FY2026 Fair Market Rent for the Austin metro, as republished by propmetrics.co: 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
           "includes": [
             "utilities"
           ],
           "sourceId": "hud-fmr-2026",
-          "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "confidence": "low",
+          "limitations": "Not checked against HUD directly. Metro-wide rather than a specific neighbourhood; FY2027 differs. Verify a current listing before deciding.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
             "dwelling": "one-bedroom unit"
-          }
+          },
+          "unverified": true
         }
       },
       "2": {
@@ -183,18 +188,23 @@
           "retrieved": "2026-10-19",
           "period": "2026",
           "geoLevel": "region",
-          "provenance": "observed",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-2026"
+          ],
+          "basis": "HUD FY2026 Fair Market Rent for the Austin metro, as republished by propmetrics.co: 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
           "includes": [
             "utilities"
           ],
           "sourceId": "hud-fmr-2026",
-          "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "confidence": "low",
+          "limitations": "Not checked against HUD directly. Metro-wide rather than a specific neighbourhood; FY2027 differs. Verify a current listing before deciding.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
             "dwelling": "two-bedroom unit"
-          }
+          },
+          "unverified": true
         }
       },
       "3": {
@@ -205,18 +215,23 @@
           "retrieved": "2026-10-19",
           "period": "2026",
           "geoLevel": "region",
-          "provenance": "observed",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-2026"
+          ],
+          "basis": "HUD FY2026 Fair Market Rent for the Austin metro, as republished by propmetrics.co: 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
           "includes": [
             "utilities"
           ],
           "sourceId": "hud-fmr-2026",
-          "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "confidence": "low",
+          "limitations": "Not checked against HUD directly. Metro-wide rather than a specific neighbourhood; FY2027 differs. Verify a current listing before deciding.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
             "dwelling": "three-bedroom unit"
-          }
+          },
+          "unverified": true
         }
       },
       "4": {
@@ -227,18 +242,23 @@
           "retrieved": "2026-10-19",
           "period": "2026",
           "geoLevel": "region",
-          "provenance": "observed",
+          "provenance": "estimated",
+          "derivedFrom": [
+            "hud-fmr-2026"
+          ],
+          "basis": "HUD FY2026 Fair Market Rent for the Austin metro, as republished by propmetrics.co: 40th percentile of gross rents paid by recent movers, including utilities except phone and internet.",
           "includes": [
             "utilities"
           ],
           "sourceId": "hud-fmr-2026",
-          "confidence": "medium",
-          "limitations": "HUD Fair Market Rents for FY2026, Austin-Round Rock-San Marcos metro area: the 40th percentile of gross rents paid by recent movers, including utilities except phone and internet. Read from propmetrics.co's republication of HUD's table; FY2027 (from October 2026) is $1,817 for two bedrooms.",
+          "confidence": "low",
+          "limitations": "Not checked against HUD directly. Metro-wide rather than a specific neighbourhood; FY2027 differs. Verify a current listing before deciding.",
           "rent": {
             "market": "recent-movers",
             "statistic": "40th-percentile",
             "dwelling": "four-bedroom unit"
-          }
+          },
+          "unverified": true
         }
       }
     },
@@ -371,7 +391,7 @@
       "sourceId": "kff-ehbs-2025",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+      "limitations": "Assumes employer coverage. Single premium is replaced by one family-plan premium for multi-person households. Actual plans and bad-year out-of-pocket costs can differ sharply; without employer coverage, marketplace premiums may be much higher."
     },
     "childcarePerChild": {
       "value": 946,
@@ -412,6 +432,32 @@
       "sourceId": "aaa-fact-sheet-2025",
       "confidence": "medium",
       "limitations": "A national average; insurance and fuel cost more in some states, including California. The running share is AAA's all-vehicle split applied to a small sedan."
+    },
+    "healthcareSinglePremiumMonthly": {
+      "value": 120,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "KFF 2025 Employer Health Benefits Survey: worker contribution $1,440 a year for single employer coverage. This amount is already included in healthcarePerPerson.",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-26",
+      "confidence": "medium",
+      "limitations": "Employer-plan average; the actual worker share varies by employer and plan."
+    },
+    "healthcareFamilyPremiumMonthly": {
+      "value": 570.8333333333334,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "KFF 2025 Employer Health Benefits Survey: worker contribution $6,850 a year for one family employer policy. Replaces the single premium for a household with two or more people.",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-26",
+      "confidence": "medium",
+      "limitations": "Employer-plan average; does not include out-of-pocket bills, which are added per person."
     }
   }
 }

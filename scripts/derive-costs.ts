@@ -64,6 +64,8 @@ interface CityInputs {
   waterPerPerson?: Observation;
   transitPassAdult?: Observation | null;
   healthcarePerPerson?: Observation | null;
+  healthcareSinglePremiumMonthly?: Observation | null;
+  healthcareFamilyPremiumMonthly?: Observation | null;
   childcarePerChild?: Observation | null;
   childcareIncomeBased?: CityCosts['childcareIncomeBased'];
   carMonthly?: Observation | null;
@@ -181,7 +183,7 @@ export function deriveCity(inputs: CostInputs, id: string): Partial<CityCosts> {
   }
 
   if (c.waterPerPerson !== undefined) out.waterPerPerson = c.waterPerPerson;
-  for (const k of ['transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const) {
+  for (const k of ['transitPassAdult', 'healthcarePerPerson', 'healthcareSinglePremiumMonthly', 'healthcareFamilyPremiumMonthly', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly'] as const) {
     if (c[k] !== undefined) (out as Record<string, unknown>)[k] = c[k];
   }
   const car = c.car ? inputs.carByCountry?.[c.car] : undefined;
@@ -203,7 +205,7 @@ export function loadCostInputs(): CostInputs {
   return JSON.parse(readFileSync(join(ROOT, 'data/inputs/costs.json'), 'utf8')) as CostInputs;
 }
 
-const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly', 'carRunningMonthly'] as const;
+const KEYS = ['rent', 'utilities', 'waterPerPerson', 'transitPassAdult', 'healthcarePerPerson', 'healthcareSinglePremiumMonthly', 'healthcareFamilyPremiumMonthly', 'childcarePerChild', 'childcareIncomeBased', 'carMonthly', 'carRunningMonthly'] as const;
 
 export function costDifferences(): string[] {
   const inputs = loadCostInputs();

@@ -21,6 +21,16 @@ test('Toronto uses the Ontario tax model', async ({ page }) => {
   await expect(page.locator('details.pay')).toContainText('Canada Pension Plan');
 });
 
+test('Sacramento flags the zero-car and employer-plan assumptions before the budget', async ({ page }) => {
+  await page.goto('./#/explore/us-sacramento');
+  const cautions = page.locator('.financial-cautions');
+  await expect(cautions).toContainText('No car selected');
+  await expect(cautions).toContainText('employer single plan');
+  await expect(cautions).toContainText('reducing estimated savings');
+  await page.goto('./#/compare/fi-helsinki,us-sacramento');
+  await expect(page.locator('[data-row="assumptions"] [data-city="us-sacramento"]')).toContainText('No car selected');
+});
+
 test('a car adds its monthly cost and says what remains once it is paid for', async ({ page }, info) => {
   test.skip(info.project.name === 'mobile', 'household panel is collapsed on phones');
   await page.goto('./#/explore/de-berlin');

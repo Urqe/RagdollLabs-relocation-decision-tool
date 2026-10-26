@@ -92,7 +92,11 @@ export function rankCities(candidates: Candidate[], prefs: Preferences, def: Pre
     ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && r.fit !== null && ranked[i - 1]!.fit !== null && closeAsShown(r.fit.low, ranked[i - 1]!.fit!.low) }));
   } else {
     ranked = kept.filter((k) => k.band !== 'incomplete').sort(byMoney);
-    ranked = ranked.map((r, i) => ({ ...r, closeToPrevious: i > 0 && Math.abs(roundMonthly(ranked[i - 1]!.savingsEur) - roundMonthly(r.savingsEur)) < CLOSE_EUR }));
+    ranked = ranked.map((r, i) => {
+      const above = ranked[i - 1];
+      const overlaps = above && r.result.budget.savings.high / r.result.fxRate >= above.result.budget.savings.low / above.result.fxRate;
+      return { ...r, closeToPrevious: i > 0 && (Boolean(overlaps) || Math.abs(roundMonthly(above!.savingsEur) - roundMonthly(r.savingsEur)) < CLOSE_EUR) };
+    });
     unrankedIncomplete = kept.filter((k) => k.band === 'incomplete').sort(byName);
   }
   excluded.sort((a, b) => a.city.name.localeCompare(b.city.name));
