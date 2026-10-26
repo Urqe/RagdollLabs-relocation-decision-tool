@@ -23,6 +23,35 @@ Correctness is not traded for speed:
 
 "Matches reference cases within €1 a month" checks that a calculation is implemented correctly. It does not claim that real-world take-home or savings are accurate to €1.
 
+## Product direction — decision-first redesign (owner decision, 2026-10-26)
+
+**North star:** Help people discover where they might thrive, understand the biggest trade-offs, and decide which destinations deserve serious investigation. The product is a relocation decision companion, **not** a comprehensive tax, cost-of-living or indicator database.
+
+**Two levels of confidence and effort:**
+1. **Discover (directional):** broad city coverage using sensible published estimates, qualitative city character, household-level financial ranges, and visible uncertainty. Users should get a useful answer without providing exact salary, tax status or every expense.
+2. **Investigate (detailed):** opt in for shortlisted cities or real job offers. Reuse the existing tax and budget engines, allow own values, surface assumptions and sources, and show sensitivity to rent, salary, exchange rate, healthcare and transport.
+
+**Non-negotiable product principles**
+- **Insight before evidence:** first show who a city might suit, why, what improves, what is sacrificed, and what to verify. Exact numbers, methodology and sources belong in progressive disclosure, not the default visual hierarchy.
+- **Ranges over false precision:** label directional numbers as estimates; round to useful units and use low/typical/high scenarios. Do not imply a narrow accuracy range from thin source data. Distinguish verified fact, proxy and editorial interpretation. No invented facts or unexplained model scores.
+- **Broad before deep:** add a city when it can offer a useful, honestly qualified directional profile. Do not block the entire city because one cost field is missing. Essential unknowns should appear as an explicit decision risk, not as zeros or silently complete savings.
+- **Preferences are human, not just statistical:** articulate climate experience, community, food, walkability, healthcare access, personal safety and constraints in plain language. National proxies must never be represented as neighbourhood facts. Explain weighted rankings and show ties where evidence doesn't support a winner.
+- **Eligibility comes before aspiration:** nationality/visa/work permission, language, remote-work feasibility, partner employment and other deal-breakers need a separate feasibility check; never merge them into a spurious overall QoL number.
+- **Useful comparisons:** expose the decisive drivers and reversal conditions (e.g. how much lower salary or higher rent would change the winner). Do not make users interpret a long data table to discover the trade-off.
+- **Preserve existing engines:** retain and test calculations, datasets, accessibility and provenance machinery, but make precise modelling an optional depth, not the main experience.
+- **No automatic AI text masquerading as facts:** city interpretations should be curated, versioned and distinguish evidence from subjective assessment. No runtime LLM dependency for v1.
+- **Manage scope by decision value:** prioritize a feature if it changes an actionable recommendation, reveals a meaningful risk, or helps users decide what to investigate. Otherwise defer it, even if the data is available.
+
+**Product success tests (not vanity metrics):** In usability sessions, a first-time user should identify three promising cities and explain the top two trade-offs within roughly five minutes, without opening the source details. Compare should reveal which assumption could reverse the apparent winner. Test with users who have not built the product; record confusions and adjust before more coverage.
+
+**Visual and interaction direction**
+- Create a warm, editorial, premium travel-and-lifestyle feel: considered typography, generous whitespace, strong hierarchy, restrained colour, polished charts and contextual city imagery/illustration with proper licences. Avoid generic enterprise-dashboard cards, full-width dense tables and decorative metrics.
+- Lead the home page with a compelling promise and a clear **Find my places / Explore a city / Compare places** entry. Let visitors try discovery with sensible defaults before lengthy household setup. A personal scenario should feel conversational but remain deterministic and locally private.
+- City cards: place identity + distinctive one-line character + top strengths + meaningful compromises + approximate affordability, with confidence cues. Use visual comparisons for rent/income ranges and trade-offs; deeper source details in a clearly labelled drawer/section.
+- Keep UI honest: cards should not imply verified suitability or exact budgets. Avoid fake photography, fabricated rankings, scores with unjustified precision, or flags as substitutes for the city experience.
+- Mobile-first (390px baseline), keyboard and screen-reader friendly, visible focus, reduced-motion support, light/dark themes, performant on static GitHub Pages. Validate loading and empty states. Polish transitions sparingly; no animation that blocks use.
+- Deliver a small design system (tokens, colour, type scale, spacing, buttons, fields, cards, data-viz styles, icon policy), 3 screen concepts and before/after screenshots; implement directly in the existing dependency-light TypeScript application unless a demonstrable reason demands another framework.
+
 ## How a release is run
 
 When the owner says "move on to the next release":
@@ -99,12 +128,17 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
 | 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | Completed 2026-10-21 (4aed96d) |
-| 0.7.1 | Maintenance | Review of 0.7.0; cross-check for Canada; cost realism for North America (metro prices, tips, car-dependent cities) | Not started |
-| 0.8.0–0.9.x | Feature / maintenance | Chosen from use of the working product | Not planned |
-| 0.9.x | Feature | Childcare data (lowest priority) | Not started |
-| 0.9.x (last) | Verification | Unverified estimates replaced or confirmed with hard data | Not started |
-| 1.0.0 | Feature | First shareable release | Not started |
-| 1.0.1 | Maintenance | Review of 1.0.0 | Not started |
+| 0.7.1 | Maintenance | Risk-focused review of 0.7.0; prevent misleading North American comparisons and check Canada | Not started |
+| 0.8.0 | Feature | Product UX and visual refresh: discovery-first navigation, design system, city cards, visual hierarchy | Not started |
+| 0.8.1 | Maintenance | UX, accessibility, mobile and responsiveness review of new design | Not started |
+| 0.9.0 | Feature | Directional discovery: lightweight profiles, ranges, qualitative trade-offs and broader-city contract | Not started |
+| 0.9.1 | Maintenance | Calibration and misleading-rankings review with real scenarios | Not started |
+| 0.10.0 | Feature | Decision-oriented shortlist and comparison; what could reverse the recommendation | Not started |
+| 0.10.1 | Maintenance | End-to-end usability, financial scenario and decision-risk review | Not started |
+| 0.11.0 | Feature | Investigate mode: opt-in details, assumptions, feasibility and evidence | Not started |
+| 0.11.1 | Maintenance | Verification of high-impact assumptions and detailed calculations | Not started |
+| 1.0.0 | Feature | First shareable decision-first release | Not started |
+| 1.0.1 | Maintenance | Post-release review | Not started |
 
 The previous plan put Canada and Mexico tax models in 0.3.0, real cost data in 0.4.0 and 0.5.0, Explore completion in 0.6.0, and preferences, Find and Compare in 0.7.0 to 0.9.0. That scope was reassigned on 2026-10-19 after the follow-up review in [docs/reviews/0.2.2.md](docs/reviews/0.2.2.md); nothing from it was dropped.
 
@@ -403,50 +437,92 @@ Childcare for Hermosillo and the new cities is not in scope; it moves to the chi
 - Childcare is missing for the four Mexican cities, Toronto and Sacramento, by the owner's priority.
 - Compiled JavaScript 192.5 kB (52.3 kB compressed); `release.json` 357.4 kB, up from 194.4 kB, mostly from the estimates' bases and the five new cities.
 
-### 0.7.1 — Maintenance: review of 0.7.0
+### 0.7.1 — Maintenance: risk-focused review of 0.7.0
 
 **Status:** Not started
 
-Standard maintenance review, including regression of the earlier cities, plus an official calculator cross-check for Canada.
+Keep the maintenance promise, but **fix material misleading results rather than exhaustively perfecting prices**. Cross-check the Canadian tax reference case against an external official calculator if accessible; document any remaining uncertainty. Investigate the reported Sacramento-vs-Helsinki anomaly and test realistic car ownership, healthcare exposure, tax and regional price assumptions. Add an explicit car-dependency warning where relevant. Use approximate, sourced metro-level adjustments for US prices and tips only if they materially change conclusions; otherwise keep broad ranges and record the gap. Repair any bugs and confidence-label inconsistencies (including Austin's HUD data). Defer micro-level cost inflation and exhaustive sourcing to targeted investigation.
 
-**Cost realism for North America** (owner, 2026-10-21). The owner's check: on the same salary, Sacramento came out ahead of Helsinki, which does not match experience. The review found the default household and national prices make US cities look cheaper than they are:
+**Done when:** no known high-severity misleading financial ranking remains; the Helsinki/Sacramento case clearly states its assumptions; the maintenance review names remaining uncertainty; tests, build and deployment pass.
 
-- **Metro price levels for US cities.** Groceries and the lifestyle categories now use US national prices from the 2021 international comparison. Scale them by the BEA Regional Price Parities for each metro area (goods for groceries and clothing, services for eating out and leisure). Look for an equivalent for Canada; if there is none, record that and leave Toronto on national prices.
-- **Tips on eating out in the US and Canada.** Menu prices exclude the usual tip on table service. Add it to eating out as an unverified estimate under the estimate rule, with the share of eating out that is table service stated.
-- **Car-dependent cities.** Where most commuters drive (the commuting indicator the app already has), Explore, Find and Compare say so when the household has no car, and the budget shows what one car would cost there. Whether to change the default to one car in those cities is decided in the review, with the reason recorded.
-- **Price updates.** Check whether moving the 2021 price levels forward with overall inflation understates categories that rose faster (eating out in particular); use category inflation where it is published.
-
-Done when Helsinki without a car against Sacramento with one is shown plainly, and the change in each US and Canadian city's figures is recorded in the review.
-
-### 0.8.0–0.9.x — Improvements chosen from use
-
-**Status:** Not planned
-
-Planned once the full journey has been used. The last of these releases is the verification release below. Candidates: richer comparison and sharing, better household and cost estimates (for example healthcare and childcare by income or eligibility), Mexican regional cost differences, and backlog items.
-
-### 0.9.x — Childcare data
+### 0.8.0 — Feature: premium UI refresh and discovery-first navigation
 
 **Status:** Not started
 
-Lowest priority (owner decision, 2026-10-21). Childcare for every city still missing it (Hermosillo and the cities added in 0.7.0), estimates allowed; then, if worth it, childcare by income or eligibility where the rules depend on them.
+Create and implement the visual design system specified in Product direction. Treat this as a real redesign rather than a CSS reskin.
 
-### 0.9.x — Data verification
+1. Audit current hierarchy on desktop/mobile: identify the first-screen information overload, long forms, table density and unclear entry points. Capture before screenshots.
+2. Sketch three coherent layouts for **Find**, **Explore**, and **Compare** and select one system; emphasize expressive city identities, editorial typography, space, engaging but restrained imagery, and legible interactive charts.
+3. Make **Find my places** the recommended first-time entry. Move household and advanced preference detail behind progressive disclosure; provide meaningful defaults and an easy edit path. Keep Explore and Compare accessible in global navigation.
+4. Rework city result cards around **why it fits / what you give up / estimated affordability / what to check**. Include uncertainty without clutter. Avoid making 0–100 proxy scores the lead.
+5. Refresh city Explore hero, main insight, scenario summary and expandable cost/source information. Rework Compare with a glanceable side-by-side top section before a dense details table.
+6. Responsive 390px and desktop designs, keyboard focus, contrast, screen readers, reduced motion, light/dark; ensure styles remain performant and no city image/illustration is fetched at the expense of content clarity.
+
+**Deliverables:** documented design tokens/components and imagery policy, before/after screenshots on three journeys, interaction notes, functional implementation.
+
+**Done when:** the first screen makes the purpose and next action obvious without reading instructions; a tester can find and shortlist cities without encountering the full household form; results still disclose estimation limits; no regression in calculations or accessibility.
+
+### 0.8.1 — Maintenance: redesign usability review
 
 **Status:** Not started
 
-Every unverified estimate (`npm run estimates`) is replaced with hard data from an official or primary source, or confirmed by one, or kept with the reason it cannot be; nothing stays unverified without a recorded decision. Values read from republications are checked against the original. A maintenance review of the changes follows as usual.
+Review every first-time and returning-user journey at desktop and 390px in both themes; keyboard/screen reader, empty/incomplete data, long city names, loading/slow devices. Test with at least two users who did not build the app: can they find three promising places and identify two trade-offs in about five minutes? Fix observed stumbling blocks. Check sources remain accessible but do not dominate the page. Document unresolved issues.
 
-### 1.0.0 — First shareable release
+### 0.9.0 — Feature: useful directional discovery
 
 **Status:** Not started
 
-- All three journeys working across every supported city, with documented limitations.
-- Final accessibility audit on every screen; full keyboard journey as an end-to-end test.
-- Copy and visual polish across all screens.
-- Data release v1.0 with a changelog of sources and dates.
-- Independent tax reference cases in place for every country.
+1. Add a separate **directional city profile** contract: short city character, climate/lifestyle/safety/healthcare/transport trade-offs, indicative living-cost band, provenance, publication date, confidence and explicit unknowns. Clearly separate sourced observations from interpretation; do not auto-generate unsupported claims.
+2. Permit a city to appear in discovery with partial quantitative information. Missing values must not turn into zero costs, precise savings or a confident ranking. Display estimate ranges, and classify cities as promising, possible or needs investigation when evidence is weak.
+3. Offer **quick start** with lifestyle and priorities before exact income; show meaningful descriptive recommendations without income, then optionally refine with a rough income band and household. Keep detailed exact calculations intact under Investigate.
+4. Replace low-confidence exact-looking scores with plain-language fit and transparent primary drivers; show ties rather than arbitrary ranking. Hard eligibility constraints remain distinct.
+5. Prove the model using a few added cities in different markets before mass expansion; document marginal effort to add each. Do not require exact tax rules, many cost rows or exhaustive sources just to support a directional city profile.
 
-**Done when** all checks pass and the owner agrees the URL can be shared.
+**Done when:** a meaningful new city can be added with a modest, reviewable profile; users can discover places without complete financial inputs; zero/missing data is never portrayed as assured affordability.
+
+### 0.9.1 — Maintenance: interpretation and ranking calibration
+
+**Status:** Not started
+
+Validate narratives and proxy scope, especially differences between national safety/healthcare statistics and specific city/neighbourhood experiences. Compare deliberately difficult cases (Helsinki, Lisbon, La Paz, Sacramento, Hermosillo) under several preference profiles. Flag reversals and unsupported certainty; test low-confidence and incomplete profiles. Fix rules or wording that make questionable absolute claims.
+
+### 0.10.0 — Feature: decision-oriented comparison
+
+**Status:** Not started
+
+Add a visual shortlist of two or three cities showing top gains, sacrifices, estimated monthly financial bands, most important unknowns and confidence. Keep same-income vs location-specific job-offer scenarios. Show simple sensitivity levers (income, rent, car, healthcare, FX) and one explicit **what would change the winner?** insight per comparison if supportable. Preserve sources and optional full tables. Do not produce a single winner when uncertainty overlaps materially.
+
+### 0.10.1 — Maintenance: comparative decision review
+
+**Status:** Not started
+
+End-to-end scenario tests for one/two earners, missing costs, city-specific offers and reversed rankings. Verify sensitivity calculations, currency/tax assumptions, link sharing and privacy. Conduct a usability walkthrough with an unfamiliar user and fix confusing labels or misleading certainty.
+
+### 0.11.0 — Feature: opt-in investigation depth
+
+**Status:** Not started
+
+Make an explicit **Investigate this city** mode for finalists. Reuse existing gross-to-net engines, budget line items, city overrides, provenance and confidence. Add a concise feasibility checklist (residency/work authorization, partner employment, healthcare eligibility, language and practical logistics) without pretending to provide legal advice or nationwide answers for personal eligibility. Flag financially material uncertainties and direct users to verify them; show a realistic vs optimistic/pessimistic scenario, not a fake exact forecast. Childcare and niche tax regimes only when a real target cohort requires them.
+
+### 0.11.1 — Maintenance: risk-based validation
+
+**Status:** Not started
+
+Prioritize correctness of detailed calculations and the most decision-sensitive unknowns; verify official calculators when possible, focus on rent, healthcare, transport and local tax assumptions likely to reverse a recommendation. Keep `npm run estimates` as a quality-control inventory; **do not require every unverified estimate to be replaced by primary data before launch**. Low-confidence estimates stay visibly labelled and non-decisive; unsupported assertions are removed. Document acceptable uncertainty and residual risks.
+
+### 1.0.0 — First shareable decision-first release
+
+**Status:** Not started
+
+Ship Discover → Shortlist/Compare → Investigate as a coherent, attractive, usable journey. Carry out full accessibility and responsive audits, copy check, basic performance measurements and user testing. Publish transparent data/methodology, last-updated dates and limitations. The owner decides what level of accuracy and geographical coverage is appropriate for sharing. No requirement for complete primary-source coverage of every city.
+
+**Done when:** new users can discover possibilities rapidly, see concrete trade-offs, distinguish estimates from facts, and know what to verify before acting; all critical correctness issues are resolved and CI passes.
+
+### 1.0.1 — Post-release maintenance
+
+**Status:** Not started
+
+Review real usage feedback, decision usefulness, misleading results, performance, accessibility and stale data. Prioritize fixes over feature count.
 
 ## Backlog (not scheduled)
 
@@ -462,7 +538,9 @@ Every unverified estimate (`npm run estimates`) is replaced with hard data from 
 - A household choice between a new car and a car already owned, changing the budget rather than only the note. (Owner, 2026-10-21.)
 - Pension top-up: an optional line for countries whose public pension replaces a smaller share of pay (OECD *Pensions at a Glance* net replacement rates), so that savings are compared like with like. For example, a US household saving into a 401(k) to match Finland's earnings-related pension. (Owner, 2026-10-21.)
 - Health insurance deductibles: a bad-year view of US healthcare costs (deductible and out-of-pocket maximum), not only the average out-of-pocket spend. (Owner, 2026-10-21.)
-- More cities and countries.
+- Further geographic expansion after directional-profile economics have been proven.
+- Exhaustive hard-data verification for every unverified cost (replaced by risk-based validation in 0.11.1).
+- Childcare coverage across all cities (deferred until a target user case justifies it).
 - Reverse-solve: gross salary needed to match another city's savings.
 - Self-employment and special expatriate tax regimes.
 - Live exchange rates.
