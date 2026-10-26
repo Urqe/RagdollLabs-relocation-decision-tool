@@ -128,7 +128,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.6.0 | Feature | Expansion, Europe: Tampere, Tallinn, Valencia, Lisbon, Porto; Portuguese joint taxation; city picker | Completed 2026-10-21 (6a2e6b1) |
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
 | 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | Completed 2026-10-21 (4aed96d) |
-| 0.7.1 | Maintenance | Risk-focused review of 0.7.0; prevent misleading North American comparisons and check Canada | Not started |
+| 0.7.1 | Maintenance | Risk-focused review of 0.7.0; prevent misleading North American comparisons and check Canada | Completed 2026-10-26 |
 | 0.8.0 | Feature | Product UX and visual refresh: discovery-first navigation, design system, city cards, visual hierarchy | Not started |
 | 0.8.1 | Maintenance | UX, accessibility, mobile and responsiveness review of new design | Not started |
 | 0.9.0 | Feature | Directional discovery: lightweight profiles, ranges, qualitative trade-offs and broader-city contract | Not started |
@@ -439,7 +439,7 @@ Childcare for Hermosillo and the new cities is not in scope; it moves to the chi
 
 ### 0.7.1 — Maintenance: risk-focused review of 0.7.0
 
-**Status:** Not started
+**Status:** Completed 2026-10-26. Findings and remaining uncertainty: [docs/reviews/0.7.1.md](docs/reviews/0.7.1.md).
 
 Keep the maintenance promise, but **fix material misleading results rather than exhaustively perfecting prices**. Cross-check the Canadian tax reference case against an external official calculator if accessible; document any remaining uncertainty. Investigate the reported Sacramento-vs-Helsinki anomaly and test realistic car ownership, healthcare exposure, tax and regional price assumptions. Add an explicit car-dependency warning where relevant. Use approximate, sourced metro-level adjustments for US prices and tips only if they materially change conclusions; otherwise keep broad ranges and record the gap. Repair any bugs and confidence-label inconsistencies (including Austin's HUD data). Defer micro-level cost inflation and exhaustive sourcing to targeted investigation.
 

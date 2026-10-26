@@ -129,7 +129,7 @@ describe('Find ranking (0.5.0)', () => {
     const hel = candidates().find((c) => c.city.id === 'fi-helsinki')!;
     const withSavings = (id: string, name: string, eur: number): Candidate => {
       const r = hel.result!;
-      const result: CityResult = { ...r, budget: { ...r.budget, savings: { ...r.budget.savings, typical: eur * r.fxRate } } };
+      const result: CityResult = { ...r, budget: { ...r.budget, savings: { low: eur * r.fxRate, typical: eur * r.fxRate, high: eur * r.fxRate } } };
       return { city: { ...hel.city, id, name }, result };
     };
     // 494.8 and 444.9 show as €490 and €440: €50 apart, so not too close, although they differ by 49.9.
@@ -139,6 +139,19 @@ describe('Find ranking (0.5.0)', () => {
     // 494 and 445 show as €490 and €450: close.
     const near = rankCities([withSavings('x-a', 'A', 494), withSavings('x-b', 'B', 445)], prefs({}), def, 'money');
     assert.equal(near.ranked[1]!.closeToPrevious, true);
+  });
+
+  test('overlapping budget ranges are too close to call even when typical values differ by more than €50', () => {
+    const hel = candidates().find((c) => c.city.id === 'fi-helsinki')!;
+    const r = hel.result!;
+    const item = (id: string, typical: number, low: number, high: number): Candidate => ({
+      city: { ...hel.city, id, name: id },
+      result: { ...r, budget: { ...r.budget, savings: { low, typical, high } } },
+    });
+    const overlap = rankCities([item('higher', 1000, 800, 1200), item('lower', 650, 550, 850)], prefs({}), def, 'money');
+    assert.equal(overlap.ranked[1]!.closeToPrevious, true);
+    const separate = rankCities([item('higher', 1000, 800, 1200), item('lower', 650, 550, 750)], prefs({}), def, 'money');
+    assert.equal(separate.ranked[1]!.closeToPrevious, false);
   });
 
   test('a city that cannot be calculated is listed apart with its reason (0.5.1, W8)', () => {

@@ -218,9 +218,25 @@ export function costCategories(city: City, h: Household, o: CityOverrides, fx: F
   }
 
   const people = nAdults + nKids;
-  const healthcare = own.healthcare !== undefined
+  let healthcare = own.healthcare !== undefined
     ? yours('healthcare', true, own.healthcare)
     : fromObs('healthcare', true, c.healthcarePerPerson, people, [`For ${people} ${people === 1 ? 'person' : 'people'}. Health contributions already deducted from pay are not counted here.`]);
+  // A family employer plan is one policy, not a single-policy premium charged once per person.
+  if (own.healthcare === undefined && people > 1 && c.healthcareSinglePremiumMonthly && c.healthcareFamilyPremiumMonthly) {
+    const perPerson = obsRange(c.healthcarePerPerson);
+    const single = obsRange(c.healthcareSinglePremiumMonthly);
+    const family = obsRange(c.healthcareFamilyPremiumMonthly);
+    if (perPerson && single && family) {
+      const outOfPocket = {
+        low: Math.max(0, perPerson.low - single.high),
+        typical: Math.max(0, perPerson.typical - single.typical),
+        high: Math.max(0, perPerson.high - single.low),
+      };
+      healthcare = { ...healthcare, local: addRanges(family, scaleRange(outOfPocket, people)),
+        observations: [c.healthcareFamilyPremiumMonthly, c.healthcarePerPerson!],
+        notes: [`One employer family-plan premium plus average out-of-pocket spending for ${people} people. Actual plan, employer subsidy and bad-year bills can differ sharply.`] };
+    }
+  }
 
   const childcare = h.childrenInDaycare === 0
     ? notApplicable('childcare', true, 'No children in daycare.')

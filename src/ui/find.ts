@@ -8,7 +8,7 @@ import { APP_NAME, BAND_LABEL } from './explore.ts';
 import { FIT_BAND_LABEL, names, scoreText } from './fit.ts';
 import * as f from './format.ts';
 import { preferenceCards } from './pref-cards.ts';
-import { placeName, resultFor, upperFirst } from './results.ts';
+import { financialCautions, placeName, resultFor, upperFirst } from './results.ts';
 
 /** Cities ticked for comparison. Kept for the session so a re-render does not lose them. */
 const selected = new Set<string>();
@@ -47,7 +47,7 @@ function compareBar(): HTMLElement {
       : null);
 }
 
-function card(r: RankedCity, rank: number | null, data: Dataset, state: AppState, rerender: () => void): HTMLElement {
+function card(r: RankedCity, rank: number | null, sort: SortKey, data: Dataset, state: AppState, rerender: () => void): HTMLElement {
   const id = `cmp-${r.city.id}`;
   const full = selected.size >= MAX_COMPARE && !selected.has(r.city.id);
   return h('li', { class: 'find-card', 'data-city': r.city.id },
@@ -64,9 +64,12 @@ function card(r: RankedCity, rank: number | null, data: Dataset, state: AppState
           document.getElementById(id)?.focus();
         } }),
         h('span', {}, 'Compare'))),
-    r.closeToPrevious ? h('p', { class: 'close-note' }, 'Too close to call with the city above.') : null,
+    r.closeToPrevious ? h('p', { class: 'close-note' }, sort === 'money'
+      ? 'Too close to call with the city above: estimate ranges overlap or typical amounts are within €50 a month.'
+      : 'Too close to call with the city above on fit.') : null,
     fitLine(r),
     h('p', { class: `find-money band-${r.band}` }, moneyLine(r)),
+    financialCautions(r.city, state.profile.household, r.result).map((note) => h('p', { class: 'hint financial-caution' }, note)),
     // A salary set for this city in Compare changes its money figures, so the card says so.
     salaryFits(state.profile.household, state.overrides[r.city.id] ?? {})
       ? h('p', { class: 'own-mark own-salary-note' }, `Uses the salary set for this city in Compare: ${r.result.grossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year.`)
@@ -132,7 +135,7 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
   const sortNote = requested === 'fit' && ranking.sort === 'money'
     ? h('p', { class: 'hint' }, 'Nothing is set to matter yet, so cities are sorted by money left over. Set what matters above to sort by fit.')
     : ranking.sort === 'money'
-      ? h('p', { class: 'hint' }, 'Estimated savings per month, converted to euros at the ECB rate. Cities whose budget is missing a cost are listed after the ranking, not inside it.')
+      ? h('p', { class: 'hint' }, 'Estimated savings per month, converted to euros at the ECB rate. This order is indicative: a car, insurance plan or different rent can reverse close comparisons. Cities with a missing cost are listed apart.')
       : h('p', { class: 'hint' }, 'By the low end of each fit range, so missing data counts against a city. Results within 5 points are marked as too close to call.');
 
   const nothingRanked = ranking.ranked.length === 0 && ranking.unrankedIncomplete.length === 0;
@@ -144,12 +147,12 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
       sortControl,
       sortNote,
       nothingRanked && ranking.excluded.length > 0 ? noMatch(store, essentialLabels, candidates, prefs, def) : null,
-      ranking.ranked.length > 0 ? h('ol', { class: 'find-list' }, ranking.ranked.map((r, i) => card(r, i + 1, data, state, rerender))) : null,
+      ranking.ranked.length > 0 ? h('ol', { class: 'find-list' }, ranking.ranked.map((r, i) => card(r, i + 1, ranking.sort, data, state, rerender))) : null,
       ranking.unrankedIncomplete.length > 0
         ? h('section', { class: 'find-apart', 'aria-labelledby': 'unranked-title' },
             h('h3', { id: 'unranked-title' }, 'Not ranked by money: a cost is missing'),
             h('p', { class: 'hint' }, 'Open the city to enter your own figure for the missing cost; it then joins the ranking.'),
-            h('ul', { class: 'find-list' }, ranking.unrankedIncomplete.map((r) => card(r, null, data, state, rerender))))
+            h('ul', { class: 'find-list' }, ranking.unrankedIncomplete.map((r) => card(r, null, ranking.sort, data, state, rerender))))
         : null,
       ranking.excluded.length > 0
         ? h('section', { class: 'find-apart', 'aria-labelledby': 'excluded-title' },

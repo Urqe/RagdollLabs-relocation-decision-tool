@@ -98,7 +98,7 @@ export function validateRegion(v: unknown, path: string): Problem[] {
   return out;
 }
 
-const MONEY_KEYS = ['waterPerPerson', 'internet', 'communicationsPerAdultEquivalent', 'groceriesPerAdultEquivalent', 'transitPassAdult', 'carMonthly', 'carRunningMonthly', 'healthcarePerPerson', 'childcarePerChild'];
+const MONEY_KEYS = ['waterPerPerson', 'internet', 'communicationsPerAdultEquivalent', 'groceriesPerAdultEquivalent', 'transitPassAdult', 'carMonthly', 'carRunningMonthly', 'healthcarePerPerson', 'healthcareSinglePremiumMonthly', 'healthcareFamilyPremiumMonthly', 'childcarePerChild'];
 const RENT_MARKETS = ['all-leases', 'new-leases', 'listings', 'recent-movers'];
 const RENT_STATS = ['mean', 'median', 'lower-quartile', 'upper-quartile', '40th-percentile'];
 

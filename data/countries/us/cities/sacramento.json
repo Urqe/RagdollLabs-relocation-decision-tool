@@ -294,7 +294,7 @@
       "sourceId": "kff-ehbs-2025",
       "retrieved": "2026-10-19",
       "confidence": "medium",
-      "limitations": "Assumes an employer plan. Without one, marketplace premiums are much higher; family coverage costs the worker about $6,850 a year."
+      "limitations": "Assumes employer coverage. Single premium is replaced by one family-plan premium for multi-person households. Actual plans and bad-year out-of-pocket costs can differ sharply; without employer coverage, marketplace premiums may be much higher."
     },
     "childcarePerChild": null,
     "carMonthly": {
@@ -419,6 +419,32 @@
         "confidence": "medium",
         "limitations": "Price levels from the 2021 international comparison, moved to 2024 with overall inflation; national prices, so the city itself may differ."
       }
+    },
+    "healthcareSinglePremiumMonthly": {
+      "value": 120,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "KFF 2025 Employer Health Benefits Survey: worker contribution $1,440 a year for single employer coverage. This amount is already included in healthcarePerPerson.",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-26",
+      "confidence": "medium",
+      "limitations": "Employer-plan average; the actual worker share varies by employer and plan."
+    },
+    "healthcareFamilyPremiumMonthly": {
+      "value": 570.8333333333334,
+      "unit": "USD/month",
+      "currency": "USD",
+      "period": "2025",
+      "geoLevel": "country",
+      "provenance": "inherited",
+      "basis": "KFF 2025 Employer Health Benefits Survey: worker contribution $6,850 a year for one family employer policy. Replaces the single premium for a household with two or more people.",
+      "sourceId": "kff-ehbs-2025",
+      "retrieved": "2026-10-26",
+      "confidence": "medium",
+      "limitations": "Employer-plan average; does not include out-of-pocket bills, which are added per person."
     }
   }
 }

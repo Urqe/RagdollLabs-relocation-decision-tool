@@ -186,6 +186,10 @@ export interface CityCosts {
   carRunningMonthly?: Observation | null;
   /** Out-of-pocket healthcare per person per month, after anything deducted from pay. */
   healthcarePerPerson?: Observation | null;
+  /** Worker share of a single employer health plan, included in healthcarePerPerson (US). */
+  healthcareSinglePremiumMonthly?: Observation | null;
+  /** Worker share of one family employer health plan, replacing the single premium for households with 2+ people (US). */
+  healthcareFamilyPremiumMonthly?: Observation | null;
   /** Daycare per child per month. */
   childcarePerChild?: Observation | null;
   /** Daycare fees set by household income and size (Finland). Used instead of `childcarePerChild` when present. */
