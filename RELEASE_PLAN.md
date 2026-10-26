@@ -129,7 +129,7 @@ A green test suite is necessary but not enough. The review looks at the new code
 | 0.6.1 | Maintenance | Review of 0.6.0; cross-checks for Portugal and Estonia; first unverified estimates | Completed 2026-10-21 (a50729b) |
 | 0.7.0 | Feature | Expansion, North America: Hermosillo rent and utilities, car costs everywhere, Mexico City, Mérida, La Paz, Canada tax model, Toronto, Sacramento; fixtures retired | Completed 2026-10-21 (4aed96d) |
 | 0.7.1 | Maintenance | Risk-focused review of 0.7.0; prevent misleading North American comparisons and check Canada | Completed 2026-10-26 |
-| 0.8.0 | Feature | Product UX and visual refresh: discovery-first navigation, design system, city cards, visual hierarchy | In progress |
+| 0.8.0 | Feature | Product UX and visual refresh: discovery-first navigation, design system, city cards, visual hierarchy | Completed 2026-10-26 (`97033f6`) |
 | 0.8.1 | Maintenance | UX, accessibility, mobile and responsiveness review of new design | Not started |
 | 0.9.0 | Feature | Directional discovery: lightweight profiles, ranges, qualitative trade-offs and broader-city contract | Not started |
 | 0.9.1 | Maintenance | Calibration and misleading-rankings review with real scenarios | Not started |
@@ -447,7 +447,7 @@ Keep the maintenance promise, but **fix material misleading results rather than 
 
 ### 0.8.0 — Feature: premium UI refresh and discovery-first navigation
 
-**Status:** In progress
+**Status:** Completed 2026-10-26. Implementation commit `97033f6762c3a4b30afd544bcbdc459c2d871316`; design and screenshots: [docs/design/0.8.0/README.md](docs/design/0.8.0/README.md).
 
 Create and implement the visual design system specified in Product direction. Treat this as a real redesign rather than a CSS reskin.
 
