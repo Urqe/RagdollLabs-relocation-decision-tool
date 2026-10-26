@@ -1,3 +1,4 @@
+import { openDepth } from './open-depth.ts';
 import { expect, test } from 'playwright/test';
 
 // 0.7.0: North America and the remaining Mexican cities, car costs with the paid-off note, fixtures retired.
@@ -7,6 +8,7 @@ const NEW_CITIES = ['ca-toronto', 'us-sacramento', 'mx-mexico-city', 'mx-merida'
 test('the new cities compute a complete budget for an adult without children', async ({ page }) => {
   for (const id of [...NEW_CITIES, 'mx-hermosillo']) {
     await page.goto(`./#/explore/${id}`);
+  await openDepth(page);
     await expect(page.locator('[data-balance="take-home"] .figure')).toHaveText(/\d/);
     await expect(page.locator('.band')).not.toContainText('Incomplete');
     await expect(page.locator('main')).not.toContainText('cannot be calculated');
@@ -15,6 +17,7 @@ test('the new cities compute a complete budget for an adult without children', a
 
 test('Toronto uses the Ontario tax model', async ({ page }) => {
   await page.goto('./#/explore/ca-toronto');
+  await openDepth(page);
   await page.locator('details.pay > summary').click();
   await expect(page.locator('details.pay')).toContainText('Federal income tax');
   await expect(page.locator('details.pay')).toContainText('Ontario Health Premium');
@@ -23,17 +26,20 @@ test('Toronto uses the Ontario tax model', async ({ page }) => {
 
 test('Sacramento flags the zero-car and employer-plan assumptions before the budget', async ({ page }) => {
   await page.goto('./#/explore/us-sacramento');
+  await openDepth(page);
   const cautions = page.locator('.financial-cautions');
   await expect(cautions).toContainText('No car selected');
   await expect(cautions).toContainText('employer single plan');
   await expect(cautions).toContainText('reducing estimated savings');
   await page.goto('./#/compare/fi-helsinki,us-sacramento');
+  await openDepth(page);
   await expect(page.locator('[data-row="assumptions"] [data-city="us-sacramento"]')).toContainText('No car selected');
 });
 
 test('a car adds its monthly cost and says what remains once it is paid for', async ({ page }, info) => {
   test.skip(info.project.name === 'mobile', 'household panel is collapsed on phones');
   await page.goto('./#/explore/de-berlin');
+  await openDepth(page);
   await page.locator('details.more > summary').click();
   await page.locator('label[for="cars-1"]').click();
   const transport = page.getByRole('row', { name: /Transport/ });
@@ -44,12 +50,14 @@ test('a car adds its monthly cost and says what remains once it is paid for', as
 
 test('Mexico City lists the state payroll tax as an employer cost', async ({ page }) => {
   await page.goto('./#/explore/mx-mexico-city');
+  await openDepth(page);
   await page.locator('details.pay > summary').click();
   await expect(page.locator('details.pay')).toContainText('Mexico City’s 4.0% state payroll tax');
 });
 
 test('every city is in Find, and none is a development preview', async ({ page }) => {
   await page.goto('./#/find');
+  await openDepth(page);
   await expect(page.locator('.find-card')).toHaveCount(15);
   await expect(page.locator('main')).not.toContainText('Development preview');
 });

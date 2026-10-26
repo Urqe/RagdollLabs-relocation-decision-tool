@@ -11,6 +11,7 @@ import { APP_NAME, BAND_LABEL } from './explore.ts';
 import { FIT_BAND_LABEL, names, scoreText } from './fit.ts';
 import * as f from './format.ts';
 import { financialCautions, placeName, resultFor } from './results.ts';
+import { placeArt } from './place-identity.ts';
 
 /** Whether the share link includes income. Off by default, and not remembered between visits. */
 let includeIncome = false;
@@ -65,7 +66,7 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
   const notes: Child[] = [
     unknown.length > 0 ? h('p', { class: 'banner problems', role: 'alert' }, `${unknown.map((u) => `“${u}”`).join(' and ')} ${unknown.length > 1 ? 'are' : 'is'} not in this data release, so ${unknown.length > 1 ? 'they are' : 'it is'} left out.`) : null,
   ];
-  const head = [h('h1', {}, 'Compare cities'), h('p', { class: 'lede' }, 'Up to three cities side by side, for the same household.')];
+  const head = [h('div', { class: 'compare-heading' }, h('p', { class: 'eyebrow' }, 'Side by side'), h('h1', {}, 'The places on your mind.'), h('p', { class: 'lede' }, 'See the trade-offs at a glance, then inspect the numbers for the same household.'))];
   const adder = available.length > 0 && cities.length < MAX_COMPARE
     ? cityPicker('compare-add', cities.length === 0 ? 'First city' : 'Add a city', available, (v) => go([...ids, v]), data)
     : null;
@@ -124,6 +125,22 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
   const essential = def.dimensions.filter((d) => (prefs.importance[d.id] ?? 0) >= ESSENTIAL).map((d) => d.id);
   const anyPrefs = Object.values(prefs.importance).some((v) => v > 0);
   const n = cols.length;
+  const overview = h('section', { class: 'compare-overview', 'aria-label': 'City comparison at a glance' }, cols.map((c) => {
+    const r = c.result;
+    const fit = anyPrefs ? computeFit(c.city, prefs, def) : null;
+    const cautions = r ? financialCautions(c.city, state.profile.household, r) : [];
+    return h('article', { class: 'compare-overview-card' },
+      placeArt(c.city, true),
+      h('div', { class: 'overview-copy' },
+        h('h2', {}, h('a', { href: formatRoute({ screen: 'explore', cityId: c.city.id }) }, c.city.name)),
+        h('p', { class: 'place' }, placeName(c.city, data)),
+        r ? [h('p', { class: `overview-money band-${r.budget.band}` },
+          h('strong', {}, BAND_LABEL[r.budget.band]),
+          r.budget.band === 'incomplete' ? ' · Savings cannot be estimated' : ` · ${f.monthly(Math.abs(r.budget.savings.typical / r.fxRate), 'EUR')} ${r.budget.savings.typical < 0 ? 'short' : 'left to save'} monthly`),
+          h('p', {}, h('span', { class: 'eyebrow' }, 'Why it fits'), fit?.strongest.length ? names(fit.strongest) : 'Set priorities in Find to see your match.'),
+          h('p', {}, h('span', { class: 'eyebrow' }, 'What to check'), cautions[0] ?? 'Confirm the job, housing and permission to work before deciding.')]
+          : h('p', { class: 'missing' }, c.error ?? 'Cannot be calculated')));
+  }));
 
   // Cells come in city order; each row has a label that spans the row on phones.
   const row = (key: string, label: string, cell: (c: Column, r: CityResult) => Child): HTMLElement =>
@@ -233,10 +250,12 @@ export function renderCompare(root: HTMLElement, state: AppState, data: Dataset,
   replaceChildren(root,
     head,
     notes,
+    overview,
     linkBanner,
     skippedBanner,
     incomeMode,
     cols.length < 2 ? h('p', { class: 'hint' }, 'Add another city to compare.') : null,
+    h('h2', { class: 'table-heading' }, 'The detailed numbers'),
     h('div', { class: 'compare-wrap' }, table),
     adder,
     share,

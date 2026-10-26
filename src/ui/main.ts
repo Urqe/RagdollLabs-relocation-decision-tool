@@ -1,6 +1,6 @@
 import type { Release } from '../core/types.ts';
 import { indexRelease, type Dataset } from '../data/load.ts';
-import { applyLinkPay, createStore, formatRoute, loadProfile, parseRoute, saveProfile, STORAGE_KEY, type AppState } from '../state/store.ts';
+import { applyLinkPay, createStore, formatRoute, loadProfile, parseRoute, saveProfile, type AppState } from '../state/store.ts';
 import { renderCompare } from './compare.ts';
 import { renderFind } from './find.ts';
 import { h } from './dom.ts';
@@ -24,7 +24,7 @@ async function loadRelease(): Promise<Dataset> {
   return indexRelease((await res.json()) as Release);
 }
 
-/** Phones: the household form collapses to a one-line summary. Desktop CSS ignores the collapsed state. */
+/** The scenario opens on demand at every width; the first screen stays focused on discovery. */
 function mountPanelToggle(panel: HTMLElement, button: HTMLButtonElement, startCollapsed: boolean): void {
   const set = (collapsed: boolean): void => {
     panel.classList.toggle('collapsed', collapsed);
@@ -47,12 +47,6 @@ async function start(): Promise<void> {
   }
 
   const storage = safeStorage();
-  let returning = false;
-  try {
-    returning = storage?.getItem(STORAGE_KEY) != null;
-  } catch {
-    returning = false;
-  }
   // Salaries in a shared link are applied once; the address then drops them.
   const fromLink = (s: AppState): AppState => {
     const next = applyLinkPay(s);
@@ -73,7 +67,7 @@ async function start(): Promise<void> {
     else renderExplore(main, s, data, store);
   };
 
-  mountPanelToggle(panel, document.getElementById('panel-summary') as HTMLButtonElement, returning);
+  mountPanelToggle(panel, document.getElementById('panel-summary') as HTMLButtonElement, true);
   mountProfile(form, store, storage, data.release.lifestyle, data.release.preferences);
   store.subscribe((s, prev) => {
     if (s.profile !== prev.profile) saveProfile(storage, s.profile);

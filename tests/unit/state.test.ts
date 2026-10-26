@@ -9,9 +9,9 @@ describe('routes', () => {
       assert.deepEqual(parseRoute(formatRoute(r)), r);
     }
   });
-  test('an unknown or empty hash opens Explore', () => {
-    assert.deepEqual(parseRoute(''), { screen: 'explore', cityId: null });
-    assert.deepEqual(parseRoute('#/nonsense'), { screen: 'explore', cityId: null });
+  test('an unknown or empty hash opens Find', () => {
+    assert.deepEqual(parseRoute(''), { screen: 'find' });
+    assert.deepEqual(parseRoute('#/nonsense'), { screen: 'find' });
   });
 });
 

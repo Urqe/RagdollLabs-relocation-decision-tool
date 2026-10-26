@@ -11,6 +11,7 @@ import { fitSection } from './fit.ts';
 import { alsoFrom } from './sources.ts';
 import { financialCautions } from './results.ts';
 import * as f from './format.ts';
+import { climateCaption, placeArt } from './place-identity.ts';
 
 const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
   comfortable: (r) => `About ${f.percent(r.budget.savings.typical / r.budget.takeHome)} of take-home is left to save in the typical case.`,
@@ -32,6 +33,7 @@ const BAND_TEXT: Record<AffordabilityBand, (r: CityResult) => string> = {
 /** Missing categories the user can fill in with "Use your own figures". */
 const OWN_FIGURE_CATEGORIES: readonly string[] = ['rent', ...OWN_COST_CATEGORIES];
 const upperFirst = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
+let costOpen = false;
 function missingList(r: CityResult, ids: string[]): string {
   const names = ids.map((m) => r.budget.categories.find((c) => c.id === m)?.label.toLowerCase() ?? m);
   return names.length <= 1 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
@@ -309,19 +311,24 @@ export function renderExplore(root: HTMLElement, state: AppState, data: Dataset,
     : null;
 
   replaceChildren(root,
-    head,
+    h('section', { class: 'explore-hero' },
+      h('div', { class: 'explore-hero-copy' },
+        h('p', { class: 'eyebrow' }, 'Explore a place'),
+        head,
+        h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),
+        h('p', { class: 'hero-next' }, 'Use the same household across cities. Change your scenario above to see what shifts.')),
+      h('div', { class: 'explore-portrait' }, placeArt(city), h('p', { class: 'climate-caption' }, climateCaption(city)))),
     salaryNote,
     result.problems.length > 0 ? h('ul', { class: 'banner problems', role: 'alert' }, result.problems.map((p) => h('li', {}, p))) : null,
-    h('p', { class: `band band-${result.budget.band}` }, h('strong', {}, BAND_LABEL[result.budget.band]), ' ', BAND_TEXT[result.budget.band](result)),
+    h('section', { class: 'explore-at-glance', 'aria-label': 'Monthly budget at a glance' }, balances(result), ribbon(result)),
+    fitSection(city, state.profile.preferences, data),
     financialCautions(city, state.profile.household, result).length > 0
       ? h('div', { class: 'banner financial-cautions', role: 'note' },
           h('strong', {}, 'Check these assumptions'),
           h('ul', {}, financialCautions(city, state.profile.household, result).map((note) => h('li', {}, note)))) : null,
-    ribbon(result),
-    balances(result),
-    breakdown(result, data),
-    payDetail(result),
-    fitSection(city, state.profile.preferences, data),
+    h('details', { class: 'cost-details', open: costOpen, ontoggle: (e: Event) => { costOpen = (e.target as HTMLDetailsElement).open; } },
+      h('summary', {}, 'See the cost breakdown and sources'),
+      breakdown(result, data), payDetail(result)),
     ownFigures(city, result, ov, store),
     h('p', { class: 'standing-note' },
       'The income you enter is treated as a salary earned while living in this city. The app does not say whether that salary is available locally, and it does not check immigration, work permits or permission to work remotely.'),

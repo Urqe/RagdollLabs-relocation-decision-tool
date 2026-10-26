@@ -1,3 +1,4 @@
+import { openDepth } from './open-depth.ts';
 import { expect, test } from 'playwright/test';
 
 // 0.6.0: Tampere, Tallinn, Valencia, Lisbon and Porto on sourced data, Portuguese joint taxation and city search.
@@ -7,30 +8,36 @@ const NEW_CITIES = ['fi-tampere', 'ee-tallinn', 'es-valencia', 'pt-lisbon', 'pt-
 test('the five European cities run on sourced data in Explore, Find and Compare', async ({ page }) => {
   for (const id of NEW_CITIES) {
     await page.goto(`./#/explore/${id}`);
+  await openDepth(page);
     await expect(page.locator('[data-balance="take-home"] .figure')).toHaveText(/€\d/);
     await expect(page.getByRole('table', { name: /Monthly spending/ })).not.toContainText('Development fixture');
     await expect(page.locator('.banner.fixture')).toHaveCount(0);
   }
   await page.goto('./#/find');
+  await openDepth(page);
   for (const id of NEW_CITIES) await expect(page.locator(`.find-card[data-city="${id}"]`)).toHaveCount(1);
   await page.goto('./#/compare/ee-tallinn,pt-lisbon,es-valencia');
+  await openDepth(page);
   await expect(page.locator('table.compare thead th')).toHaveCount(3);
 });
 
 test('unverified estimates are labelled as such, with every claim linked (0.6.1)', async ({ page }) => {
   await page.goto('./#/explore/ee-tallinn');
+  await openDepth(page);
   // Tallinn's utilities are an estimate since 0.6.1, so its budget is complete.
   await expect(page.locator('.band')).not.toContainText('Incomplete');
   const utilities = page.getByRole('row', { name: /Utilities/ });
   await expect(utilities).toContainText('unverified estimate');
   await expect(utilities.locator('.also a')).toHaveCount(4);
   await page.goto('./#/explore/pt-porto');
+  await openDepth(page);
   await expect(page.getByRole('row', { name: /Utilities/ })).toContainText('unverified estimate');
 });
 
 test('Portugal: a married couple with one earner files jointly, which raises take-home', async ({ page }, info) => {
   test.skip(info.project.name === 'mobile', 'household panel is collapsed on phones');
   await page.goto('./#/explore/pt-porto');
+  await openDepth(page);
   await page.getByLabel('Gross income').fill('60000');
   const takeHome = page.locator('[data-balance="take-home"] .figure');
   await expect(takeHome).toHaveText('€3,190'); // single: 60,000 − 6,600 − 15,124.92, a month
@@ -47,6 +54,7 @@ test('Portugal: a married couple with one earner files jointly, which raises tak
 
 test('city search: typing finds a city by name or country, accents optional; Enter opens it', async ({ page }) => {
   await page.goto('./#/explore/fi-helsinki');
+  await openDepth(page);
   const search = page.getByLabel('Search cities');
   await search.fill('portugal');
   await expect(page.locator('#city-search-results button')).toHaveText([/Lisbon/, /Porto/]);
@@ -62,6 +70,7 @@ test('city search: typing finds a city by name or country, accents optional; Ent
 test('city search by keyboard: down arrow into the list, Escape clears', async ({ page }, info) => {
   test.skip(info.project.name === 'mobile', 'keyboard flow on desktop and tablet widths');
   await page.goto('./#/explore/fi-helsinki');
+  await openDepth(page);
   const search = page.getByLabel('Search cities');
   await search.fill('a');
   await search.press('ArrowDown');
@@ -76,6 +85,7 @@ test('city search by keyboard: down arrow into the list, Escape clears', async (
 
 test('the city pickers are grouped by country, in Explore and in Compare', async ({ page }) => {
   await page.goto('./#/compare/fi-helsinki');
+  await openDepth(page);
   const groups = await page.locator('#compare-add optgroup').evaluateAll((gs) => gs.map((g) => (g as HTMLOptGroupElement).label));
   expect(groups).toEqual(['Canada', 'Estonia', 'Finland', 'Germany', 'Mexico', 'Portugal', 'Spain', 'United States']);
   await page.getByLabel('Or search').fill('valen');

@@ -86,7 +86,7 @@ export function parseRoute(hash: string): Route {
     return { screen: 'compare', cityIds, pay: payRaw ? parsePay(decode(payRaw), cityIds.length) : null };
   }
   if (parts[0] === 'explore') return { screen: 'explore', cityId: parts[1] ?? null };
-  return { screen: 'explore', cityId: null };
+  return { screen: 'find' };
 }
 
 export function formatRoute(r: Route): string {

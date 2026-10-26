@@ -9,6 +9,7 @@ import { FIT_BAND_LABEL, names, scoreText } from './fit.ts';
 import * as f from './format.ts';
 import { preferenceCards } from './pref-cards.ts';
 import { financialCautions, placeName, resultFor, upperFirst } from './results.ts';
+import { climateCaption, placeArt } from './place-identity.ts';
 
 /** Cities ticked for comparison. Kept for the session so a re-render does not lose them. */
 const selected = new Set<string>();
@@ -50,30 +51,50 @@ function compareBar(): HTMLElement {
 function card(r: RankedCity, rank: number | null, sort: SortKey, data: Dataset, state: AppState, rerender: () => void): HTMLElement {
   const id = `cmp-${r.city.id}`;
   const full = selected.size >= MAX_COMPARE && !selected.has(r.city.id);
+  const cautions = financialCautions(r.city, state.profile.household, r.result);
+  const strength = r.fit?.strongest.length ? names(r.fit.strongest) : null;
+  const sacrifice = r.fit?.compromises.length ? names(r.fit.compromises) : r.fit?.weakSpots.length ? names(r.fit.weakSpots) : null;
+  const uncertainRent = r.result.budget.categories.find((c) => c.id === 'rent')?.observations.some((o) => o.confidence === 'low' || o.unverified);
+  const savingsShare = r.band === 'incomplete' || r.result.budget.takeHome <= 0 ? 0 : Math.max(0, Math.min(100, r.result.budget.savings.typical / r.result.budget.takeHome * 100));
   return h('li', { class: 'find-card', 'data-city': r.city.id },
-    h('div', { class: 'find-card-head' },
-      rank !== null ? h('span', { class: 'rank', 'aria-hidden': 'true' }, String(rank)) : null,
-      h('div', {},
-        h('h3', {}, h('a', { href: formatRoute({ screen: 'explore', cityId: r.city.id }) }, r.city.name)),
-        h('p', { class: 'place' }, placeName(r.city, data))),
-      h('label', { class: 'check compare-pick' },
+    h('div', { class: 'find-card-portrait' }, placeArt(r.city, true),
+      h('p', { class: 'climate-caption' }, climateCaption(r.city))),
+    h('div', { class: 'find-card-content' },
+      h('div', { class: 'find-card-head' },
+        h('div', {},
+          rank !== null ? h('span', { class: 'rank' }, `Place ${rank}`) : null,
+          h('h3', {}, h('a', { href: formatRoute({ screen: 'explore', cityId: r.city.id }) }, r.city.name)),
+          h('p', { class: 'place' }, placeName(r.city, data))),
+        h('label', { class: 'check compare-pick' },
         h('input', { type: 'checkbox', id, checked: selected.has(r.city.id), disabled: full, onchange: (e: Event) => {
           if ((e.target as HTMLInputElement).checked) selected.add(r.city.id);
           else selected.delete(r.city.id);
           rerender();
           document.getElementById(id)?.focus();
         } }),
-        h('span', {}, 'Compare'))),
-    r.closeToPrevious ? h('p', { class: 'close-note' }, sort === 'money'
-      ? 'Too close to call with the city above: estimate ranges overlap or typical amounts are within €50 a month.'
-      : 'Too close to call with the city above on fit.') : null,
-    fitLine(r),
-    h('p', { class: `find-money band-${r.band}` }, moneyLine(r)),
-    financialCautions(r.city, state.profile.household, r.result).map((note) => h('p', { class: 'hint financial-caution' }, note)),
-    // A salary set for this city in Compare changes its money figures, so the card says so.
-    salaryFits(state.profile.household, state.overrides[r.city.id] ?? {})
-      ? h('p', { class: 'own-mark own-salary-note' }, `Uses the salary set for this city in Compare: ${r.result.grossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year.`)
-      : null);
+        h('span', {}, 'Shortlist'))),
+      h('div', { class: 'card-insights' },
+        h('p', {}, h('span', { class: 'eyebrow' }, 'Why it fits'), strength ? `A stronger match for ${strength}.` : r.fit ? 'Your priorities give this city a mixed picture.' : 'Set a few priorities to see your personal fit.'),
+        h('p', {}, h('span', { class: 'eyebrow' }, 'What you give up'), sacrifice ? `A compromise on ${sacrifice}.` : r.fit ? 'No clear compromise in the areas you selected; other factors remain untested.' : 'Personal trade-offs appear when you choose priorities.')),
+      h('div', { class: 'card-finance' },
+        h('p', { class: 'eyebrow' }, 'Estimated affordability'),
+        h('p', { class: `find-money band-${r.band}` }, moneyLine(r)),
+        r.band !== 'incomplete' ? h('div', { class: 'savings-track', role: 'img', 'aria-label': `Typical savings are about ${Math.round(savingsShare)}% of modelled take-home pay` },
+          h('span', { style: `width:${savingsShare}%` })) : null),
+      r.closeToPrevious ? h('p', { class: 'close-note' }, sort === 'money'
+        ? 'Too close to call with the place above: estimate ranges overlap or typical amounts are within €50 a month.'
+        : 'Too close to call with the place above on fit.') : null,
+      h('details', { class: 'card-check' },
+        h('summary', {}, 'What to check', cautions.length || uncertainRent ? h('span', { class: 'check-count' }, ` ${cautions.length + (uncertainRent ? 1 : 0)} notes`) : null),
+        h('ul', {},
+          cautions.map((note) => h('li', {}, note)),
+          uncertainRent ? h('li', {}, 'The rent estimate is low confidence. Check current listings in your preferred area.') : null,
+          h('li', {}, 'Confirm a feasible job or income, residency, and the costs that matter to you.'))),
+      h('details', { class: 'card-evidence' }, h('summary', {}, 'How this matches your priorities'),
+        fitLine(r) ?? h('p', { class: 'hint' }, 'No priorities selected yet. Choose a starter brief above or set your own.')),
+      salaryFits(state.profile.household, state.overrides[r.city.id] ?? {})
+        ? h('p', { class: 'own-mark own-salary-note' }, `Uses the salary set for this city in Compare: ${r.result.grossEur.map((g) => f.whole(g, 'EUR')).join(' and ')} a year.`)
+        : null));
 }
 
 function noMatch(store: Store, essentialLabels: string, candidates: Candidate[], prefs: AppState['profile']['preferences'], def: PreferenceDefinition): HTMLElement {
@@ -104,12 +125,30 @@ export function renderFind(root: HTMLElement, state: AppState, data: Dataset, st
   const rerender = (): void => renderFind(root, store.get(), data, store);
   const requested: SortKey = state.findSort ?? 'fit';
 
-  const head = [
-    h('h1', {}, 'Find cities'),
-    h('p', { class: 'lede' }, 'Cities ranked for your household and for what matters to you. Each result shows how well the city fits you and what your income leaves after living costs there.'),
-  ];
-  const prefsBlock = h('details', { class: 'find-prefs', open: prefsOpen ?? !anySet, ontoggle: (e: Event) => { prefsOpen = (e.target as HTMLDetailsElement).open; } },
-    h('summary', {}, anySet ? `What matters to you (${Object.values(prefs.importance).filter((v) => v > 0).length} areas set)` : 'What matters to you'),
+  const starter = (importance: Record<string, number>, choices: Record<string, string>): void => {
+    store.set((s) => ({ ...s, profile: { ...s.profile, preferences: { importance, choices } }, findSort: 'fit' }));
+    document.getElementById('find-results-title')?.focus();
+  };
+  const head = [h('section', { class: 'find-hero' },
+    h('p', { class: 'eyebrow' }, 'A more human way to compare places'),
+    h('h1', {}, 'Find somewhere you can picture a life.'),
+    h('p', { class: 'lede' }, 'Start with what matters. See promising places, the compromises they ask of you, and the numbers worth checking.'),
+    h('div', { class: 'journey-links' },
+      h('a', { class: 'button', href: '#find-starters' }, 'Find my places'),
+      h('a', { href: '#/explore' }, 'Explore a city'),
+      h('a', { href: '#/compare' }, 'Compare places'))),
+    h('section', { class: 'starter-brief', id: 'find-starters', 'aria-labelledby': 'starter-title' },
+      h('div', {}, h('p', { class: 'eyebrow' }, 'Start with a question'), h('h2', { id: 'starter-title' }, 'What feels like a good place to you?'),
+        h('p', { class: 'hint' }, 'Try a brief, then adjust it. The sample household uses €50,000 gross a year until you change it.')),
+      h('div', { class: 'starter-options' },
+        h('button', { type: 'button', onclick: () => starter({ safety: 2, climate: 2, convenience: 2 }, { winter: 'mild', summer: 'warm', darkness: 'avoid', 'getting-around': 'transit' }) },
+          h('strong', {}, 'Warm & easy'), h('span', {}, 'Milder winters, everyday convenience and safety')),
+        h('button', { type: 'button', onclick: () => starter({ safety: 3, governance: 2, healthcare: 2 }, {}) },
+          h('strong', {}, 'Steady ground'), h('span', {}, 'Safety, public services and healthcare')),
+        h('button', { type: 'button', onclick: () => { prefsOpen = true; rerender(); document.querySelector<HTMLDetailsElement>('.find-prefs')?.scrollIntoView(); } },
+          h('strong', {}, 'Make it mine'), h('span', {}, 'Choose your own priorities'))))];
+  const prefsBlock = h('details', { class: 'find-prefs', open: prefsOpen ?? false, ontoggle: (e: Event) => { prefsOpen = (e.target as HTMLDetailsElement).open; } },
+    h('summary', {}, anySet ? `Fine-tune your priorities (${Object.values(prefs.importance).filter((v) => v > 0).length} areas set)` : 'Fine-tune your priorities'),
     h('p', { class: 'hint' }, 'Slide each area to how much it matters. “Essential” also leaves out cities that score below 50 on it.'),
     preferenceCards(def, prefs, store));
 

@@ -18,6 +18,7 @@ const NO_MATCH = async (page: Page) => {
 
 test('no match keeps the fit sort and offers to relax one essential at a time (W2, W4)', async ({ page }) => {
   await page.goto('./#/find');
+  await page.locator('.find-prefs > summary').click();
   await NO_MATCH(page);
   const box = page.locator('.no-match');
   await expect(box).toContainText('No city meets everything you marked essential');
@@ -35,7 +36,7 @@ test('a salary set in Compare is marked on the Find card (W5)', async ({ page })
   await page.goto('./#/compare/fi-helsinki,de-berlin');
   await page.locator('label[for="income-per-city"]').click();
   await page.locator('#salary-de-berlin-0').fill('80000');
-  await page.getByRole('link', { name: 'Find cities' }).click();
+  await page.getByRole('link', { name: 'Find my places' }).click();
   await expect(card(page, 'de-berlin')).toContainText('Uses the salary set for this city in Compare: €80,000 a year.');
   await expect(card(page, 'fi-helsinki')).not.toContainText('salary set for this city');
 });
@@ -62,6 +63,7 @@ test('a shared link for two earners does not turn a one-earner household into a 
 test('changing the number of earners drops the salaries that no longer fit (W1)', async ({ page }, info) => {
   test.skip(info.project.name.includes('mobile') || info.project.name.includes('ipad'), 'household panel is collapsed on phones');
   await page.goto('./#/compare/fi-helsinki,de-berlin');
+  await page.locator('.panel-summary').click();
   await page.locator('label[for="income-per-city"]').click();
   await page.locator('#salary-de-berlin-0').fill('80000');
   await expect(page.locator('td[data-city="de-berlin"]').last()).toContainText('salary');
@@ -73,8 +75,9 @@ test('changing the number of earners drops the salaries that no longer fit (W1)'
 
 test('a ticked city left out by a new essential is unticked, not sent to Compare unseen (W7)', async ({ page }) => {
   await page.goto('./#/find');
-  await card(page, 'mx-hermosillo').getByLabel('Compare').check();
-  await card(page, 'fi-helsinki').getByLabel('Compare').check();
+  await page.locator('.find-prefs > summary').click();
+  await card(page, 'mx-hermosillo').getByLabel('Shortlist').check();
+  await card(page, 'fi-helsinki').getByLabel('Shortlist').check();
   await expect(page.getByRole('link', { name: 'Compare 2 cities' })).toBeVisible();
   await slide(page, 'safety', 4);
   await expect(page.locator('.excluded-list')).toContainText('Hermosillo');
@@ -85,6 +88,7 @@ test('a ticked city left out by a new essential is unticked, not sent to Compare
 test('keyboard: Find to Compare without a mouse (W8)', async ({ page }, info) => {
   test.skip(info.project.name.includes('mobile') || info.project.name.includes('ipad'), 'keyboard flow on desktop and tablet widths');
   await page.goto('./#/find');
+  await page.locator('.find-prefs > summary').click();
   const safety = page.locator('#card-safety');
   await safety.focus();
   await page.keyboard.press('ArrowRight');

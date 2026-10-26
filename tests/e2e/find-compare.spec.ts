@@ -6,11 +6,25 @@ const slide = async (page: Page, area: string, value: number) => {
 };
 
 test.describe('Find (0.5.0)', () => {
+  test('a first visit can choose a brief and shortlist without opening the full scenario', async ({ page }) => {
+    await page.goto('./');
+    await expect(page.locator('.panel-summary')).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.getByLabel('Gross income')).toBeHidden();
+    await page.getByRole('button', { name: /Warm & easy/ }).click();
+    await expect(page.locator('#sort-fit')).toBeChecked();
+    await expect(card(page, 'es-madrid').locator('.card-insights')).toContainText('Why it fits');
+    await card(page, 'es-madrid').getByLabel('Shortlist').check();
+    await card(page, 'fi-helsinki').getByLabel('Shortlist').check();
+    await page.getByRole('link', { name: 'Compare 2 cities' }).click();
+    await expect(page.locator('.compare-overview-card')).toHaveCount(2);
+    await expect(page.locator('table.compare')).toBeVisible();
+  });
   test('ranks the pilot cities, applies essentials first, and lists the left-out cities with reasons', async ({ page }) => {
     await page.goto('./#/find');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Find cities');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Find somewhere you can picture a life.');
     // Nothing set yet: sorted by money, with the reason given.
     await expect(page.locator('.find-results')).toContainText('Nothing is set to matter yet');
+    await page.locator('.find-prefs > summary').click();
     await slide(page, 'safety', 4);
     await expect(page.locator('#card-safety-value')).toHaveText('Essential');
     await expect(page.locator('#sort-fit')).toBeChecked();
@@ -36,6 +50,7 @@ test.describe('Find (0.5.0)', () => {
 
   test('no match: one click relaxes the essentials and the cities come back', async ({ page }) => {
     await page.goto('./#/find');
+    await page.locator('.find-prefs > summary').click();
     await slide(page, 'governance', 4);
     await slide(page, 'food', 4);
     await slide(page, 'climate', 4);
@@ -53,8 +68,8 @@ test.describe('Find (0.5.0)', () => {
 
   test('ticking two cities leads to a comparison of them', async ({ page }) => {
     await page.goto('./#/find');
-    await card(page, 'fi-helsinki').getByLabel('Compare').check();
-    await card(page, 'es-madrid').getByLabel('Compare').check();
+    await card(page, 'fi-helsinki').getByLabel('Shortlist').check();
+    await card(page, 'es-madrid').getByLabel('Shortlist').check();
     await page.getByRole('link', { name: 'Compare 2 cities' }).click();
     await expect(page).toHaveURL(/#\/compare\/.*fi-helsinki/);
     await expect(page.locator('table.compare thead th')).toHaveCount(2);
